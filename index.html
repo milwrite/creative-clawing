@@ -31,7 +31,7 @@
     }
 
     main {
-      width: min(980px, 92vw);
+      width: min(1140px, 94vw);
       margin: 0 auto;
       padding: 52px 0 64px;
     }
@@ -59,17 +59,13 @@
       border-bottom: 1px solid var(--line-strong);
     }
 
-    .top a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
+    .top a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
 
     .controls {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     input[type="search"] {
@@ -100,53 +96,30 @@
       border-bottom: 1px solid transparent;
     }
 
-    .chip.active {
-      color: var(--text);
-      border-bottom-color: var(--line-strong);
-    }
+    .chip.active { color: var(--text); border-bottom-color: var(--line-strong); }
 
     .list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 18px 26px;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 26px 24px;
     }
 
-    article {
-      display: grid;
-      gap: 6px;
-      align-content: start;
+    article { display: grid; gap: 8px; align-content: start; }
+
+    .preview {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border: 0;
+      display: block;
+      background: rgba(0,0,0,.35);
     }
 
-    h2 {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 520;
-    }
+    h2 { margin: 0; font-size: 1rem; font-weight: 520; }
+    p { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.4; }
+    .meta { font-size: 0.75rem; color: #c5d3f3; opacity: 0.8; }
+    article a { color: var(--accent); text-decoration: none; font-size: 0.84rem; }
 
-    p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .meta {
-      font-size: 0.75rem;
-      color: #c5d3f3;
-      opacity: 0.8;
-    }
-
-    article a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.84rem;
-    }
-
-    .empty {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 10px;
-    }
+    .empty { color: var(--muted); font-size: 0.9rem; margin-top: 10px; }
 
     footer {
       margin-top: 28px;
@@ -156,7 +129,7 @@
       font-size: 0.78rem;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
       .controls { grid-template-columns: 1fr; }
       .chips { justify-content: flex-start; }
       .list { grid-template-columns: 1fr; }
@@ -225,6 +198,7 @@
 
       list.innerHTML = out.map(i => `
         <article>
+          <iframe class="preview" src="${i.url}" loading="lazy" title="${i.name}" referrerpolicy="no-referrer"></iframe>
           <h2>${i.name}</h2>
           <p>${i.desc}</p>
           <div class="meta">${i.type}</div>
