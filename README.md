@@ -1,3 +1,5 @@
 # creative-clawing
 
-github pages bootstrap repo.
+gallery shell for artifact presentation on github pages.
+
+live site: https://milwrite.github.io/creative-clawing/
