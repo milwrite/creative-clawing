@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<title>Scan Drift</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#03070d;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#info{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);padding:7px 12px;border:1px solid #1b3848;background:rgba(0,0,0,.45);color:#9ee7ff;border-radius:8px;font:12px ui-monospace,monospace}
+.back-btn{position:fixed;top:12px;right:12px;padding:8px 12px;border:1px solid #1b3848;background:rgba(0,0,0,.45);color:#9ee7ff;border-radius:8px;font:12px ui-monospace,monospace;text-decoration:none}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<div id="info">Scan Drift · move or drag to warp · tap for pulse</div>
+<canvas id="c"></canvas>
+<script>
+if(window.self!==window.top){document.querySelectorAll('#info,.back-btn').forEach(e=>e.style.display='none');}
+const c=document.getElementById('c');
+const ctx=c.getContext('2d',{desynchronized:true});
+let W=0,H=0,DPR=1,t=0,mx=0.5,my=0.5,pulse=0;
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  c.width=Math.round(W*DPR);c.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+resize();
+addEventListener('resize',()=>setTimeout(resize,80));
+addEventListener('orientationchange',()=>setTimeout(resize,180));
+addEventListener('pointermove',e=>{mx=e.clientX/W;my=e.clientY/H;});
+addEventListener('pointerdown',e=>{mx=e.clientX/W;my=e.clientY/H;pulse=1;});
+addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+
+function draw(){
+  t+=0.016;
+  pulse*=0.95;
+  ctx.fillStyle='rgba(3,7,13,0.16)';
+  ctx.fillRect(0,0,W,H);
+
+  const rows=Math.max(36,Math.floor(H/10));
+  const amp=18+mx*28+pulse*30;
+  for(let r=0;r<rows;r++){
+    const y=(r/rows)*H;
+    const phase=t*3+r*0.22+my*8;
+    const xOff=Math.sin(phase)*amp + Math.sin(phase*0.37+t*2.2)*amp*0.4;
+    const hue=185+r*0.8+Math.sin(t+r*0.03)*20;
+    ctx.strokeStyle=`hsla(${hue} 95% 65% / ${0.08+0.35*Math.abs(Math.sin(phase*0.4))})`;
+    ctx.beginPath();
+    for(let x=0;x<=W+30;x+=12){
+      const wave=Math.sin((x*0.014)+phase)*6 + Math.cos((x*0.007)-phase*1.1)*5;
+      if(x===0) ctx.moveTo(x+xOff,y+wave);
+      else ctx.lineTo(x+xOff,y+wave);
+    }
+    ctx.stroke();
+  }
+
+  const g=ctx.createRadialGradient(mx*W,my*H,0,mx*W,my*H,140+pulse*120);
+  g.addColorStop(0,`hsla(${200+mx*80} 100% 70% / ${0.26+pulse*0.2})`);
+  g.addColorStop(1,'hsla(220 100% 50% / 0)');
+  ctx.fillStyle=g;
+  ctx.beginPath();ctx.arc(mx*W,my*H,150+pulse*120,0,Math.PI*2);ctx.fill();
+
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

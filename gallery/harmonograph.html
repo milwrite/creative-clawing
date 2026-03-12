@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Harmonograph — 19th Century Drawing Machine</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#0a0a12;overflow:hidden;display:flex;flex-direction:column}
+  canvas{display:block;flex:1;width:100%;touch-action:none}
+  .back{position:fixed;top:calc(0.8rem + env(safe-area-inset-top));left:calc(0.8rem + env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+  .back:hover{border-color:#666;color:#fff}
+  .panel{background:#111;border-top:1px solid #222;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-shrink:0}
+  .panel .info{color:#ccc;white-space:nowrap}
+  .panel .hint{color:#555}
+  .in-iframe .back,.in-iframe .panel{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add("in-iframe");</script>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+<div>
+<span class="info" id="params">harmonograph, c. 1844</span>
+<span class="hint"> · tap to reset pendulums</span>
+</div>
+</div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+const paramsEl = document.getElementById('params');
+let W, H, dpr;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = c.clientWidth; H = c.clientHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// Harmonograph parameters: two pendulums for X, two for Y
+let pens;
+let t, drawing, raf;
+
+function randomFreq() {
+  // Near-integer ratios produce the prettiest figures
+  const base = 1 + Math.floor(Math.random() * 4);
+  return base + (Math.random() - 0.5) * 0.02; // slight detuning
+}
+
+function initPendulums() {
+  pens = {
+    x1: { f: randomFreq(), p: Math.random() * Math.PI * 2, a: 0.4 + Math.random() * 0.15, d: 0.001 + Math.random() * 0.003 },
+    x2: { f: randomFreq(), p: Math.random() * Math.PI * 2, a: 0.2 + Math.random() * 0.15, d: 0.0005 + Math.random() * 0.002 },
+    y1: { f: randomFreq(), p: Math.random() * Math.PI * 2, a: 0.4 + Math.random() * 0.15, d: 0.001 + Math.random() * 0.003 },
+    y2: { f: randomFreq(), p: Math.random() * Math.PI * 2, a: 0.2 + Math.random() * 0.15, d: 0.0005 + Math.random() * 0.002 },
+  };
+
+  paramsEl.textContent = `f: ${pens.x1.f.toFixed(2)}/${pens.y1.f.toFixed(2)} · ratio ≈ ${(pens.x1.f / pens.y1.f).toFixed(3)}`;
+}
+
+function getPoint(t) {
+  const scale = Math.min(W, H) * 0.42;
+  const cx = W / 2, cy = H / 2;
+
+  const x = pens.x1.a * Math.sin(pens.x1.f * t + pens.x1.p) * Math.exp(-pens.x1.d * t)
+          + pens.x2.a * Math.sin(pens.x2.f * t + pens.x2.p) * Math.exp(-pens.x2.d * t);
+  const y = pens.y1.a * Math.sin(pens.y1.f * t + pens.y1.p) * Math.exp(-pens.y1.d * t)
+          + pens.y2.a * Math.sin(pens.y2.f * t + pens.y2.p) * Math.exp(-pens.y2.d * t);
+
+  return { x: cx + x * scale, y: cy + y * scale };
+}
+
+function start() {
+  if (raf) cancelAnimationFrame(raf);
+  resize();
+  ctx.fillStyle = '#0a0a12';
+  ctx.fillRect(0, 0, W, H);
+  initPendulums();
+  t = 0;
+  drawing = true;
+
+  // Ink color: warm sepia/gold tones like old pen drawings
+  const hue = 25 + Math.random() * 25;
+
+  let prev = getPoint(0);
+  const dt = 0.04;
+  const stepsPerFrame = 40;
+
+  function draw() {
+    for (let i = 0; i < stepsPerFrame; i++) {
+      t += dt;
+      const cur = getPoint(t);
+
+      // Amplitude check: stop when motion is negligible
+      const amp = Math.exp(-Math.min(pens.x1.d, pens.y1.d) * t);
+      if (amp < 0.005) {
+        drawing = false;
+        return;
+      }
+
+      const alpha = Math.min(0.8, 0.15 + amp * 0.6);
+      ctx.beginPath();
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(cur.x, cur.y);
+      ctx.strokeStyle = `hsla(${hue}, 50%, 65%, ${alpha})`;
+      ctx.lineWidth = 0.5 + amp * 1.2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      prev = cur;
+    }
+
+    if (drawing) raf = requestAnimationFrame(draw);
+  }
+
+  raf = requestAnimationFrame(draw);
+}
+
+start();
+
+c.addEventListener('click', start);
+c.addEventListener('touchstart', e => { e.preventDefault(); start(); }, { passive: false });
+window.addEventListener('resize', () => { if (!drawing) { resize(); } });
+</script>
+<!-- iframe handled by .in-iframe class -->
+</body>
+</html>

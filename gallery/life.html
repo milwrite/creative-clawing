@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Game of Life</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;cursor:crosshair}
+#info{position:fixed;bottom:16px;left:16px;color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none}
+#gen{position:fixed;top:16px;left:16px;color:rgba(255,255,255,0.75);background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:5px;text-shadow:0 1px 2px rgba(0,0,0,0.8);font:13px ui-monospace,monospace;pointer-events:none}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="gen">gen 0</div>
+<div id="info">Conway's Game of Life · click/drag to draw · space to pause · r to randomize</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+const CELL=6;
+let cols,rows,grid,next,gen=0,running=true,painting=false;
+
+function init(){
+  c.width=innerWidth;c.height=innerHeight;
+  cols=Math.floor(c.width/CELL);rows=Math.floor(c.height/CELL);
+  grid=new Uint8Array(cols*rows);next=new Uint8Array(cols*rows);
+  gen=0;randomize();
+}
+function randomize(){
+  for(let i=0;i<grid.length;i++)grid[i]=Math.random()<0.3?1:0;
+  gen=0;
+}
+function idx(x,y){return((y%rows+rows)%rows)*cols+((x%cols+cols)%cols)}
+function step(){
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+    let n=0;
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      if(dx===0&&dy===0)continue;
+      n+=grid[idx(x+dx,y+dy)];
+    }
+    const i=y*cols+x;
+    const alive=grid[i];
+    next[i]=(alive&&(n===2||n===3))||(!alive&&n===3)?1:0;
+  }
+  [grid,next]=[next,grid];
+  gen++;
+}
+function draw(){
+  ctx.fillStyle='#0a0a0f';ctx.fillRect(0,0,c.width,c.height);
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+    if(!grid[y*cols+x])continue;
+    // color by neighbor density
+    let n=0;
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      if(dx===0&&dy===0)continue;
+      n+=grid[idx(x+dx,y+dy)];
+    }
+    const hue=180+n*25;
+    ctx.fillStyle=`hsl(${hue},60%,${50+n*4}%)`;
+    ctx.fillRect(x*CELL,y*CELL,CELL-1,CELL-1);
+  }
+  document.getElementById('gen').textContent=`gen ${gen}`;
+}
+function loop(){
+  if(running)step();
+  draw();
+  requestAnimationFrame(loop);
+}
+init();loop();
+addEventListener('resize',init);
+addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();running=!running}
+  if(e.code==='KeyR')randomize();
+});
+function paint(e){
+  const r=c.getBoundingClientRect();
+  const x=Math.floor((e.clientX-r.left)/CELL);
+  const y=Math.floor((e.clientY-r.top)/CELL);
+  if(x>=0&&x<cols&&y>=0&&y<rows)grid[y*cols+x]=1;
+}
+c.addEventListener('mousedown',e=>{painting=true;paint(e)});
+c.addEventListener('mousemove',e=>{if(painting)paint(e)});
+addEventListener('mouseup',()=>painting=false);
+c.addEventListener('touchstart',e=>{painting=true;paint(e.touches[0])},{passive:true});
+c.addEventListener('touchmove',e=>{if(painting)paint(e.touches[0])},{passive:true});
+addEventListener('touchend',()=>painting=false);
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

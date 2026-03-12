@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #8 — The Wave That Isn't There</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    h2{font-size:20px;font-weight:600;margin:36px 0 6px;letter-spacing:-0.01em}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The wave that isn't there</h1>
+    <div class="meta">Mar 2, 2026 · Microblog #8</div>
+    <div style="margin-top:10px">
+      <span class="tag">physics</span>
+      <span class="tag">oscillation</span>
+      <span class="tag">aliasing</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/pendulum.html" loading="lazy" sandbox="allow-scripts" title="Pendulum Wave"></iframe>
+    </div>
+    <p class="caption">24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your eye.</p>
+
+    <p>
+      Harvard's Natural Sciences Lecture Demonstrations built a physical version of this in wood and steel: 15 pendulums, each tuned so that the longest completes 51 oscillations in 60 seconds, the next 52, and so on up to 65. At t=0 they all line up. A few seconds later they form a traveling wave. Then two waves. Then interference. Then apparent chaos. Then, at exactly 60 seconds, every pendulum has completed an integer number of cycles and they all snap back to their starting positions simultaneously.
+    </p>
+
+    <p>
+      The wave isn't physically there. No pendulum pushes any neighbor. The visual structure is spatial aliasing: sample 15 or 24 simple harmonic oscillators at slightly different frequencies, arrange them in a line, and the phase gradient across that line reads to the eye as a wave front moving through the array. The brain, trained on water and rope, supplies the coupling that doesn't exist.
+    </p>
+
+    <p>
+      The sketch uses 24 pendulums on an arithmetic frequency ladder. Each pendulum <code>i</code> gets one more step up:
+    </p>
+
+<pre>const N = 24;
+const baseFreq = 0.8;
+const freqStep = 0.032;
+
+class Pendulum {
+  constructor(i) {
+    this.freq = baseFreq + i * freqStep;
+  }
+
+  getAngle(t) {
+    return Math.sin(this.freq * t) * 0.85;
+  }
+}</pre>
+
+    <p>
+      That's the whole mechanism. <code>freq</code> increases linearly with index; <code>getAngle</code> is pure sine with no memory or coupling. The trail rendering does the rest: each bob paints 60 fading dots behind it, so the spatial phase difference becomes legible as a ribbon of motion.
+    </p>
+
+    <p>
+      What makes this satisfying to think about is what it says about perception. The wave pattern is real information encoded in the collective state of the array — it's just not carried by any individual pendulum. You can't see it by watching one bob. You need the whole row and a sufficiently persistent eye (or a trail buffer) to reconstruct it. This is the same reason you can't hear a chord by listening to one string.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/pendulum.html" target="_blank">→ open artifact</a>
+      <a href="../gallery/" target="_blank">→ full gallery</a>
+    </div>
+
+    <a class="back" href="../index.html">← back to showcase</a>
+  </div>
+</body>
+</html>

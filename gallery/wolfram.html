@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Wolfram Automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0a;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center}
+#ui button{background:rgba(20,20,20,0.85);color:#ccc;border:1px solid #444;padding:6px 12px;font:12px ui-monospace,monospace;cursor:pointer;border-radius:4px;backdrop-filter:blur(6px);transition:border-color 0.15s}
+#ui button:hover{border-color:#777;color:#fff}
+#rule-label{color:#aaa;font:13px ui-monospace,monospace;min-width:70px;text-align:center}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <button id="btn-prev">◀</button>
+  <span id="rule-label">Rule 30</span>
+  <button id="btn-next">▶</button>
+  <button id="btn-rand">random</button>
+</div>
+<script>
+if(window.self!==window.top){
+  document.querySelectorAll('.back-btn,#ui').forEach(e=>e.style.display='none');
+}
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,CELL,COLS,DPR=window.devicePixelRatio||1;
+
+let rule=30;
+let grid=[];        // array of Uint8Array rows
+let rowCount=0;     // total rows generated (for color)
+let running=true;
+
+// Visually interesting rules to cycle through
+const NOTABLE=[30,45,54,60,73,90,105,106,110,124,150,182,184,193,225];
+let ruleIdx=NOTABLE.indexOf(30);
+
+function resize(){
+  W=canvas.width=window.innerWidth*DPR;
+  H=canvas.height=window.innerHeight*DPR;
+  canvas.style.width=window.innerWidth+'px';
+  canvas.style.height=window.innerHeight+'px';
+  CELL=Math.max(3,Math.round(Math.min(W,H)/100)*DPR);
+  COLS=Math.ceil(W/CELL)+2;
+  reset();
+}
+window.addEventListener('resize',resize);
+
+function reset(){
+  grid=[];
+  rowCount=0;
+  ctx.fillStyle='#0a0a0a';
+  ctx.fillRect(0,0,W,H);
+  document.getElementById('rule-label').textContent='Rule '+rule;
+
+  // Seed: single center cell
+  const row=new Uint8Array(COLS);
+  row[Math.floor(COLS/2)]=1;
+  grid.push(row);
+  drawRowAt(row,H-CELL,0); // draw seed at bottom first
+}
+
+function applyRule(prev){
+  const next=new Uint8Array(COLS);
+  for(let i=0;i<COLS;i++){
+    const l=prev[(i-1+COLS)%COLS];
+    const c=prev[i];
+    const r=prev[(i+1)%COLS];
+    const pattern=(l<<2)|(c<<1)|r;
+    next[i]=(rule>>pattern)&1;
+  }
+  return next;
+}
+
+// Color scheme: hue varies by column position + row depth, giving gradient texture
+function cellColor(col,row){
+  const hue=(col*1.8+row*2.7+rule*1.1)%360;
+  const sat=70+Math.sin(row*0.04)*15;
+  const lit=55+Math.sin(col*0.02)*10;
+  return `hsl(${hue},${sat}%,${lit}%)`;
+}
+
+function drawRowAt(row,y,rowIdx){
+  for(let x=0;x<COLS;x++){
+    if(row[x]){
+      ctx.fillStyle=cellColor(x,rowIdx);
+      ctx.fillRect(x*CELL,y,CELL-1,CELL-1);
+    }
+  }
+}
+
+const ROWS_PER_TICK=2; // how many new rows to generate each animation frame
+
+function tick(){
+  if(!running){ requestAnimationFrame(tick); return; }
+
+  for(let i=0;i<ROWS_PER_TICK;i++){
+    const prev=grid[grid.length-1];
+    const next=applyRule(prev);
+    grid.push(next);
+    rowCount++;
+
+    // Scroll canvas up by CELL pixels using self-copy
+    // Safe approach: blit canvas to itself offset upward
+    ctx.drawImage(canvas,0,CELL,W,H-CELL,0,0,W,H-CELL);
+    // Clear new bottom row
+    ctx.fillStyle='#0a0a0a';
+    ctx.fillRect(0,H-CELL,W,CELL);
+    // Draw new row at bottom
+    drawRowAt(next,H-CELL,rowCount);
+
+    // Keep memory bounded
+    if(grid.length>2000) grid.splice(0,500);
+
+    // Auto-advance rule after a full screen worth of rows
+    const ROWS_ON_SCREEN=Math.ceil(H/CELL);
+    if(rowCount>0 && rowCount%Math.max(ROWS_ON_SCREEN,80)===0){
+      // After filling the screen, pause briefly then switch to next notable rule
+      // (only in auto mode — don't interrupt manual selections)
+      // We track whether the user has touched the rule controls
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
+document.getElementById('btn-next').onclick=()=>{
+  ruleIdx=(ruleIdx+1)%NOTABLE.length;
+  rule=NOTABLE[ruleIdx];
+  reset();
+};
+document.getElementById('btn-prev').onclick=()=>{
+  ruleIdx=(ruleIdx-1+NOTABLE.length)%NOTABLE.length;
+  rule=NOTABLE[ruleIdx];
+  reset();
+};
+document.getElementById('btn-rand').onclick=()=>{
+  rule=Math.floor(Math.random()*256);
+  ruleIdx=-1;
+  reset();
+};
+
+// Keyboard: left/right arrows, r for random
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){
+    ruleIdx=(ruleIdx+1)%NOTABLE.length;
+    rule=NOTABLE[ruleIdx];
+    reset();
+  } else if(e.key==='ArrowLeft'||e.key==='ArrowDown'){
+    ruleIdx=(ruleIdx-1+NOTABLE.length)%NOTABLE.length;
+    rule=NOTABLE[ruleIdx];
+    reset();
+  } else if(e.key==='r'||e.key==='R'){
+    rule=Math.floor(Math.random()*256);
+    ruleIdx=-1;
+    reset();
+  }
+});
+
+resize();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

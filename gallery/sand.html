@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxMCIgcj0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogIDxsaW5lIHgxPSI4IiB5MT0iMTgiIHgyPSIyNCIgeTI9IjE4IiBzdHJva2U9IiNlMGUwZTAiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPHBhdGggZD0iTTEwIDE4IEwxNiAyOCBMMjIgMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwZTBlMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+Cg=="/>
+<title>Falling Sand</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+#palette{position:fixed;bottom:16px;left:16px;display:flex;gap:8px;z-index:100}
+.mat{padding:6px 12px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;border:2px solid transparent;transition:border-color 0.15s;user-select:none}
+.mat.active{border-color:#fff}
+#info{position:fixed;top:16px;left:16px;color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:5px;font:12px ui-monospace,monospace;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<a href="./" class="back-btn" id="backbtn">← Gallery</a>
+<div id="info">drag to draw</div>
+<div id="palette">
+  <div class="mat active" id="m1" style="background:#c8a84b;color:#000" onclick="setMat(1)">1 Sand</div>
+  <div class="mat" id="m2" style="background:#2060c0;color:#fff" onclick="setMat(2)">2 Water</div>
+  <div class="mat" id="m3" style="background:#555;color:#fff" onclick="setMat(3)">3 Wall</div>
+  <div class="mat" id="m4" style="background:#c0401a;color:#fff" onclick="setMat(4)">4 Fire</div>
+  <div class="mat" id="m0" style="background:#1a1a2e;color:#888;border:1px solid #444" onclick="setMat(0)">E Erase</div>
+</div>
+<script>
+if(window.self!==window.top){
+  document.getElementById('backbtn').style.display='none';
+  document.getElementById('palette').style.display='none';
+  document.getElementById('info').style.display='none';
+}
+
+// Materials
+const EMPTY=0,SAND=1,WATER=2,WALL=3,FIRE=4,SMOKE=5;
+const CELL=3;
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let cols,rows,grid,updated,curMat=SAND,drawing=false,mx=0,my=0;
+
+// Colors: [r,g,b] per material, with slight variation
+function matColor(m,i){
+  const v=(i*137+i*i*13)&31; // deterministic variation
+  if(m===EMPTY) return [10,10,20];
+  if(m===SAND)  return [180+v*2,150+(v>>1),60+v];
+  if(m===WATER) return [20+v,80+v*2,200+v];
+  if(m===WALL)  return [80+v,80+v,85+v];
+  if(m===FIRE)  return [220+v,80+(v*2),0];
+  if(m===SMOKE) return [60+v,60+v,65+v];
+  return [10,10,20];
+}
+
+function idx(x,y){return y*cols+x}
+function get(x,y){
+  if(x<0||x>=cols||y<0||y>=rows)return WALL;
+  return grid[idx(x,y)];
+}
+function set(x,y,m){
+  if(x<0||x>=cols||y<0||y>=rows)return;
+  grid[idx(x,y)]=m;
+}
+function swap(ax,ay,bx,by){
+  const i=idx(ax,ay),j=idx(bx,by);
+  const t=grid[i];grid[i]=grid[j];grid[j]=t;
+}
+
+function init(){
+  const pw=Math.floor(innerWidth/CELL);
+  const ph=Math.floor(innerHeight/CELL);
+  c.width=pw;c.height=ph;
+  cols=pw;rows=ph;
+  grid=new Uint8Array(cols*rows);
+  updated=new Uint8Array(cols*rows);
+}
+
+let frame=0;
+function tick(){
+  frame++;
+  updated.fill(0);
+  // Update bottom to top so particles don't double-move
+  for(let y=rows-2;y>=0;y--){
+    // Alternate left-right scan direction each row
+    const left=(frame+y)%2===0;
+    for(let i=0;i<cols;i++){
+      const x=left?i:cols-1-i;
+      const mi=idx(x,y);
+      if(updated[mi])continue;
+      const m=grid[mi];
+      if(m===EMPTY||m===WALL)continue;
+
+      if(m===SAND){
+        const below=get(x,y+1);
+        if(below===EMPTY||below===WATER){
+          swap(x,y,x,y+1);
+          updated[idx(x,y+1)]=1;
+        } else {
+          const dl=get(x-1,y+1),dr=get(x+1,y+1);
+          const tryLeft=dl===EMPTY||dl===WATER;
+          const tryRight=dr===EMPTY||dr===WATER;
+          if(tryLeft&&tryRight){
+            if(Math.random()<0.5){swap(x,y,x-1,y+1);updated[idx(x-1,y+1)]=1;}
+            else{swap(x,y,x+1,y+1);updated[idx(x+1,y+1)]=1;}
+          } else if(tryLeft){swap(x,y,x-1,y+1);updated[idx(x-1,y+1)]=1;}
+          else if(tryRight){swap(x,y,x+1,y+1);updated[idx(x+1,y+1)]=1;}
+        }
+      }
+      else if(m===WATER){
+        const below=get(x,y+1);
+        if(below===EMPTY){
+          swap(x,y,x,y+1);updated[idx(x,y+1)]=1;
+        } else {
+          const dl=get(x-1,y+1),dr=get(x+1,y+1);
+          if((dl===EMPTY)&&(dr===EMPTY)){
+            if(Math.random()<0.5){swap(x,y,x-1,y+1);updated[idx(x-1,y+1)]=1;}
+            else{swap(x,y,x+1,y+1);updated[idx(x+1,y+1)]=1;}
+          } else if(dl===EMPTY){swap(x,y,x-1,y+1);updated[idx(x-1,y+1)]=1;}
+          else if(dr===EMPTY){swap(x,y,x+1,y+1);updated[idx(x+1,y+1)]=1;}
+          else {
+            // scan up to 3 cells sideways for an empty spot
+            let ml=0,mr=0;
+            for(let s=1;s<=3;s++){
+              if(get(x-s,y)===EMPTY)ml=s; else break;
+            }
+            for(let s=1;s<=3;s++){
+              if(get(x+s,y)===EMPTY)mr=s; else break;
+            }
+            if(ml&&mr){
+              if(Math.random()<0.5){swap(x,y,x-ml,y);updated[idx(x-ml,y)]=1;}
+              else{swap(x,y,x+mr,y);updated[idx(x+mr,y)]=1;}
+            } else if(ml){swap(x,y,x-ml,y);updated[idx(x-ml,y)]=1;}
+            else if(mr){swap(x,y,x+mr,y);updated[idx(x+mr,y)]=1;}
+          }
+        }
+      }
+      else if(m===FIRE){
+        // Spread fire to adjacent empty cells
+        const neighbors=[[x,y-1],[x-1,y],[x+1,y],[x,y+1]];
+        for(const[nx,ny]of neighbors){
+          const nb=get(nx,ny);
+          if(nb===EMPTY&&Math.random()<0.06){
+            set(nx,ny,FIRE);updated[idx(nx,ny)]=1;
+          } else if(nb===SAND&&Math.random()<0.008){
+            // fire can ignite sand
+            set(nx,ny,FIRE);updated[idx(nx,ny)]=1;
+          }
+        }
+        // Produce smoke above
+        if(get(x,y-1)===EMPTY&&Math.random()<0.15){
+          set(x,y-1,SMOKE);updated[idx(x,y-1)]=1;
+        }
+        // Die into smoke
+        if(Math.random()<0.012){set(x,y,SMOKE);continue;}
+        // Rise through empty space
+        if(get(x,y-1)===EMPTY&&Math.random()<0.7){
+          swap(x,y,x,y-1);updated[idx(x,y-1)]=1;
+        } else if(Math.random()<0.35){
+          const fdx=Math.random()<0.5?-1:1;
+          if(get(x+fdx,y)===EMPTY){swap(x,y,x+fdx,y);updated[idx(x+fdx,y)]=1;}
+        }
+      }
+      else if(m===SMOKE){
+        if(Math.random()<0.005){set(x,y,EMPTY);continue;}
+        if(get(x,y-1)===EMPTY&&Math.random()<0.5){
+          swap(x,y,x,y-1);updated[idx(x,y-1)]=1;
+        } else {
+          const dx=Math.random()<0.5?-1:1;
+          if(get(x+dx,y)===EMPTY&&Math.random()<0.4){swap(x,y,x+dx,y);updated[idx(x+dx,y)]=1;}
+        }
+      }
+    }
+  }
+}
+
+function draw(){
+  const img=ctx.getImageData(0,0,cols,rows);
+  const d=img.data;
+  for(let i=0;i<cols*rows;i++){
+    const m=grid[i];
+    const col=matColor(m,i);
+    const b=i*4;
+    d[b]=col[0];d[b+1]=col[1];d[b+2]=col[2];d[b+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+}
+
+function loop(){
+  tick();draw();
+  requestAnimationFrame(loop);
+}
+
+init();loop();
+addEventListener('resize',init);
+
+function setMat(m){
+  curMat=m;
+  document.querySelectorAll('.mat').forEach(el=>el.classList.remove('active'));
+  const id='m'+m;
+  const el=document.getElementById(id);
+  if(el)el.classList.add('active');
+}
+addEventListener('keydown',e=>{
+  if(e.key==='1')setMat(SAND);
+  if(e.key==='2')setMat(WATER);
+  if(e.key==='3')setMat(WALL);
+  if(e.key==='4')setMat(FIRE);
+  if(e.key==='e'||e.key==='0')setMat(EMPTY);
+  if(e.code==='KeyR')init();
+});
+
+const BRUSH=4;
+function paintAt(cx,cy){
+  const r=c.getBoundingClientRect();
+  const gx=Math.floor((cx-r.left)/r.width*cols);
+  const gy=Math.floor((cy-r.top)/r.height*rows);
+  for(let dy=-BRUSH;dy<=BRUSH;dy++){
+    for(let dx=-BRUSH;dx<=BRUSH;dx++){
+      if(dx*dx+dy*dy>BRUSH*BRUSH)continue;
+      const x=gx+dx,y=gy+dy;
+      if(x<0||x>=cols||y<0||y>=rows)continue;
+      set(x,y,curMat);
+    }
+  }
+}
+c.addEventListener('mousedown',e=>{drawing=true;paintAt(e.clientX,e.clientY)});
+c.addEventListener('mousemove',e=>{if(drawing)paintAt(e.clientX,e.clientY)});
+addEventListener('mouseup',()=>drawing=false);
+c.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;paintAt(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
+c.addEventListener('touchmove',e=>{e.preventDefault();if(drawing)paintAt(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
+addEventListener('touchend',()=>drawing=false);
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII Donut</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+  canvas { display: block; }
+  #ui {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.75rem; align-items: center; z-index: 10;
+  }
+  button {
+    background: #111; color: #ccc; border: 1px solid #2a2a2a;
+    padding: 0.35rem 0.9rem; border-radius: 4px; cursor: pointer;
+    font-size: 0.78rem; letter-spacing: 0.03em;
+    transition: background 0.15s;
+  }
+  button:hover { background: #1e1e1e; color: #fff; }
+  #label { font-size: 0.72rem; color: #444; font-family: monospace; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <a href="index.html"><button>← gallery</button></a>
+  <span id="label">ASCII DONUT</span>
+  <button id="toggleColor">green</button>
+  <button id="toggleSpeed">normal</button>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// hide controls when embedded in an iframe
+if (window.self !== window.top) {
+  document.getElementById('ui').style.display = 'none';
+}
+
+// ── constants ──────────────────────────────────────────────
+const CHARS  = '.,-~:;=!*#$@';
+const R1     = 1;     // tube radius
+const R2     = 2;     // torus radius
+const K2     = 5;     // viewer Z distance
+const DTHETA = 0.04;  // inner loop step
+const DPHI   = 0.018; // outer loop step
+
+// ── state ──────────────────────────────────────────────────
+let A = 1.0, B = 1.0;
+let W = 80, H = 40;   // character grid dimensions
+let colorIdx = 0;
+let speedIdx = 1;
+
+const colorModes = ['green', 'amber', 'cyan', 'rainbow'];
+const speedSteps  = [0.5, 1.0, 2.0];
+const speedLabels = ['slow', 'normal', 'fast'];
+
+const toggleColor = document.getElementById('toggleColor');
+const toggleSpeed = document.getElementById('toggleSpeed');
+
+if (toggleColor) {
+  toggleColor.addEventListener('click', () => {
+    colorIdx = (colorIdx + 1) % colorModes.length;
+    toggleColor.textContent = colorModes[colorIdx];
+  });
+}
+if (toggleSpeed) {
+  toggleSpeed.addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % speedSteps.length;
+    toggleSpeed.textContent = speedLabels[speedIdx];
+  });
+}
+
+// ── resize ─────────────────────────────────────────────────
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  // pack the grid so characters stay roughly square on screen
+  const charPx = Math.max(8, Math.floor(Math.min(canvas.width, canvas.height) / 50));
+  W = Math.floor(canvas.width  / charPx);
+  H = Math.floor(canvas.height / (charPx * 2));
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── torus projection ───────────────────────────────────────
+function computeFrame() {
+  const output = new Uint8Array(W * H);   // index into CHARS; 255 = empty
+  const zbuf   = new Float32Array(W * H);
+  const lbuf   = new Float32Array(W * H);
+  output.fill(255);
+
+  // scale so torus fills roughly 70% of the shorter side
+  const K1 = H * K2 * 3 / (8 * (R1 + R2));
+
+  const cosA = Math.cos(A), sinA = Math.sin(A);
+  const cosB = Math.cos(B), sinB = Math.sin(B);
+
+  for (let theta = 0; theta < 6.2832; theta += DTHETA) {
+    const costh = Math.cos(theta), sinth = Math.sin(theta);
+    for (let phi = 0; phi < 6.2832; phi += DPHI) {
+      const cosph = Math.cos(phi), sinph = Math.sin(phi);
+
+      const cx = R2 + R1 * costh;
+      const cy = R1 * sinth;
+
+      const x  = cx * (cosB * cosph + sinA * sinB * sinph) - cy * cosA * sinB;
+      const y  = cx * (sinB * cosph - sinA * cosB * sinph) + cy * cosA * cosB;
+      const z  = K2 + cosA * cx * sinph + cy * sinA;
+      const ooz = 1 / z;
+
+      const px = (W / 2 + K1 * ooz * x)         | 0;
+      const py = (H / 2 - K1 * ooz * y * 0.5)   | 0;
+
+      if (px < 0 || px >= W || py < 0 || py >= H) continue;
+
+      // illumination: light from top-left-front
+      const L = cosph * costh * sinB
+              - cosA  * costh * sinph
+              - sinA  * sinth
+              + cosB * (cosA * sinth - costh * sinA * sinph);
+
+      if (L > 0) {
+        const idx = py * W + px;
+        if (ooz > zbuf[idx]) {
+          zbuf[idx]  = ooz;
+          lbuf[idx]  = L;
+          output[idx] = Math.min(CHARS.length - 1, (L * CHARS.length) | 0);
+        }
+      }
+    }
+  }
+  return { output, lbuf };
+}
+
+// ── color ──────────────────────────────────────────────────
+function charColor(L, i, j) {
+  switch (colorModes[colorIdx]) {
+    case 'green': {
+      const v = (100 + 155 * L) | 0;
+      return `rgb(0,${v},${v >> 3})`;
+    }
+    case 'amber': {
+      const v = (80 + 175 * L) | 0;
+      return `rgb(${v},${(v * 0.7) | 0},0)`;
+    }
+    case 'cyan': {
+      const v = (80 + 175 * L) | 0;
+      return `rgb(0,${(v * 0.8) | 0},${v})`;
+    }
+    case 'rainbow': {
+      const hue = (i / W * 300 + j / H * 120 + A * 20) % 360;
+      return `hsl(${hue | 0},100%,${40 + (L * 45) | 0}%)`;
+    }
+  }
+}
+
+// ── render ─────────────────────────────────────────────────
+function draw() {
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const cw = canvas.width  / W;
+  const ch = canvas.height / H;
+  // choose font size so characters fill cells (~square glyphs)
+  const fz = Math.max(6, (Math.min(cw, ch * 2)) | 0);
+  ctx.font = `bold ${fz}px monospace`;
+  ctx.textBaseline = 'top';
+
+  const { output, lbuf } = computeFrame();
+
+  for (let j = 0; j < H; j++) {
+    for (let i = 0; i < W; i++) {
+      const ci = output[j * W + i];
+      if (ci === 255) continue;
+      const L = lbuf[j * W + i];
+      ctx.fillStyle = charColor(L, i, j);
+      ctx.fillText(CHARS[ci], i * cw, j * ch);
+    }
+  }
+}
+
+// ── animation loop ─────────────────────────────────────────
+let last = 0;
+function loop(ts) {
+  const dt = Math.min((ts - last) / 1000, 0.05);
+  last = ts;
+  const s = speedSteps[speedIdx];
+  A += 0.07 * s * (dt / 0.016);
+  B += 0.03 * s * (dt / 0.016);
+  draw();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

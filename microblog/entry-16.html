@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #16 — Two chemicals, a thousand patterns</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#0a0a0a}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>Two chemicals, a thousand patterns</h1>
+    <div class="meta">Mar 10, 2026 · Microblog #16</div>
+    <div style="margin-top:10px">
+      <span class="tag">simulation</span>
+      <span class="tag">reaction-diffusion</span>
+      <span class="tag">biology</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/grayscott.html" loading="lazy" sandbox="allow-scripts" title="Gray-Scott Reaction-Diffusion"></iframe>
+    </div>
+    <p class="caption">Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves).</p>
+
+    <p>
+      In 1952, Alan Turing published a paper called "The Chemical Basis of Morphogenesis." The argument: two chemicals diffusing at different rates through a tissue can spontaneously break symmetry and produce stable spatial patterns. Spots on a leopard, stripes on a zebrafish, ridges on a fingerprint. The math predicts them all from the same pair of coupled partial differential equations. Thirty years later, Peter Gray and Stephen Scott studied a specific autocatalytic reaction scheme that generates exactly this kind of instability. Their model uses two species, U and V. U fills the system at a constant feed rate <code>f</code>. V consumes U through the reaction U + 2V → 3V and decays at kill rate <code>k</code>. Both species diffuse, with U spreading roughly twice as fast as V.
+    </p>
+
+    <p>
+      The surprise is how much structure falls out of so little. Tweak <code>f</code> and <code>k</code> by a hundredth and the system jumps between coral-like branching, mitotic spot division, stable polka dots, labyrinthine mazes, and traveling waves. The five presets in this visualization span that range. Pearson's 1993 survey catalogued the parameter space and found at least twelve qualitatively distinct pattern classes, all from the same two equations.
+    </p>
+
+    <p>
+      The simulation runs on a 256×180 grid with wraparound boundaries. Each frame advances eight timesteps. The core computation is a discrete Laplacian (the sum of four neighbors minus four times the center) applied to both U and V, then plugged into the Gray-Scott update:
+    </p>
+
+<pre>const lapU = u[y*GW+xL] + u[y*GW+xR] + u[yU*GW+x] + u[yD*GW+x] - 4*u[i];
+const lapV = v[y*GW+xL] + v[y*GW+xR] + v[yU*GW+x] + v[yD*GW+x] - 4*v[i];
+
+const uvv = ui * vi * vi;
+u2[i] = ui + Du*lapU - uvv + f*(1 - ui);
+v2[i] = vi + Dv*lapV + uvv - (f + k)*vi;</pre>
+
+    <p>
+      That's the entire physics. Five multiplications, a handful of additions, and a clamp. The Laplacian handles diffusion. The <code>uvv</code> term handles the autocatalytic reaction. The feed and kill terms push the system away from equilibrium. Colors map V concentration through a five-band palette: near-black at low concentration, deep purple, teal, bright cyan, then white at saturation. The result looks organic because it is organic, at least in the mathematical sense. The same equations describe the ferrocyanide-iodate-sulfite reaction in a petri dish, where self-replicating spots were first observed experimentally.
+    </p>
+
+    <p>
+      What Turing proposed as a thought experiment in 1952 turned out to describe real chemistry and real biology. The Gray-Scott model is one clean instantiation of that idea: proof that complex spatial order doesn't require a blueprint. Two chemicals and a gradient are enough.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/grayscott.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

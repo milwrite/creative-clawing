@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Mandelbrot Set</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#05070b;overflow:hidden}
+canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;max-width:min(92vw,680px);white-space:normal}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+@media(max-width:640px){#info{font-size:12px;padding:5px 10px}}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Mandelbrot set · click to zoom in · scroll to zoom · double-click to reset</div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+
+let cx = -0.5, cy = 0.0, zoom = 2.6;
+let W, H, DPR;
+let renderToken = 0;
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = innerWidth;
+  H = innerHeight;
+  c.width = Math.round(W * DPR);
+  c.height = Math.round(H * DPR);
+  c.style.width = W + 'px';
+  c.style.height = H + 'px';
+  scheduleRender();
+}
+
+function hslToRgb(h, s, l) {
+  h = ((h % 1) + 1) % 1;
+  const c2 = (1 - Math.abs(2 * l - 1)) * s;
+  const x2 = c2 * (1 - Math.abs((h * 6) % 2 - 1));
+  const m = l - c2 / 2;
+  let r = 0, g = 0, b = 0;
+  if      (h < 1/6) { r = c2; g = x2; }
+  else if (h < 2/6) { r = x2; g = c2; }
+  else if (h < 3/6) {          g = c2; b = x2; }
+  else if (h < 4/6) {          g = x2; b = c2; }
+  else if (h < 5/6) { r = x2;          b = c2; }
+  else              { r = c2;          b = x2; }
+  return [(r + m) * 255 | 0, (g + m) * 255 | 0, (b + m) * 255 | 0];
+}
+
+function smoothColor(iter, maxIter, zx, zy) {
+  if (iter === maxIter) return 0;
+  const logZn = Math.log(zx * zx + zy * zy) / 2;
+  const nu = Math.log(logZn / Math.LN2) / Math.LN2;
+  return iter + 1 - nu;
+}
+
+function scheduleRender() {
+  const token = ++renderToken;
+  const iterBase = 80 + (Math.log2(2.6 / zoom) * 25 | 0);
+  const mobileScale = W < 700 ? 0.78 : 1;
+  const reducedScale = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0.75 : 1;
+  const maxIter = Math.max(90, Math.floor(iterBase * mobileScale * reducedScale));
+  // Work in physical pixels so putImageData fills the full canvas on hi-DPI screens
+  const PW = c.width, PH = c.height;
+  const scale = zoom / Math.min(W, H);
+  const imgData = ctx.createImageData(PW, PH);
+  const data = imgData.data;
+  let row = 0;
+
+  function batch() {
+    if (token !== renderToken) return;
+    const end = Math.min(row + 6, PH);
+    for (let py = row; py < end; py++) {
+      const y0 = cy + (py / DPR - H / 2) * scale;
+      for (let px = 0; px < PW; px++) {
+        const x0 = cx + (px / DPR - W / 2) * scale;
+        let x = 0, y = 0, iter = 0;
+        while (x * x + y * y <= 4 && iter < maxIter) {
+          const xt = x * x - y * y + x0;
+          y = 2 * x * y + y0;
+          x = xt;
+          iter++;
+        }
+        const idx = (py * PW + px) * 4;
+        if (iter === maxIter) {
+          data[idx] = 5; data[idx+1] = 7; data[idx+2] = 11; data[idx+3] = 255;
+        } else {
+          const t = smoothColor(iter, maxIter, x, y) / maxIter;
+          const hue = 0.56 + t * 0.12;
+          const [r, g, b] = hslToRgb(hue, 0.72, 0.08 + t * 0.56);
+          data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255;
+        }
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+    row = end;
+    if (row < PH) requestAnimationFrame(batch);
+  }
+  requestAnimationFrame(batch);
+}
+
+function zoomTo(px, py, factor) {
+  const scale = zoom / Math.min(W, H);
+  cx += (px - W / 2) * scale;
+  cy += (py - H / 2) * scale;
+  zoom *= factor;
+  scheduleRender();
+}
+
+c.addEventListener('click', e => {
+  zoomTo(e.clientX, e.clientY, 0.35);
+});
+
+c.addEventListener('dblclick', () => {
+  cx = -0.5; cy = 0.0; zoom = 2.6;
+  scheduleRender();
+});
+
+c.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoomTo(e.clientX, e.clientY, e.deltaY > 0 ? 1.5 : 0.67);
+}, { passive: false });
+
+// Pinch zoom
+let lastPinchDist = null;
+c.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    lastPinchDist = Math.hypot(dx, dy);
+  }
+}, { passive: true });
+c.addEventListener('touchmove', e => {
+  if (e.touches.length === 2 && lastPinchDist) {
+    e.preventDefault();
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.hypot(dx, dy);
+    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    zoomTo(mx, my, lastPinchDist / dist);
+    lastPinchDist = dist;
+  }
+}, { passive: false });
+c.addEventListener('touchend', () => { lastPinchDist = null; }, { passive: true });
+
+addEventListener('resize', resize);
+addEventListener('orientationchange', () => setTimeout(resize, 140));
+window.visualViewport?.addEventListener('resize', resize);
+resize();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+</body>
+</html>

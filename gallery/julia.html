@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julia Set</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; background: #050508; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; touch-action: none; }
+  #label {
+    position: fixed; top: calc(12px + env(safe-area-inset-top)); left: calc(12px + env(safe-area-inset-left));
+    color: rgba(255,255,255,0.45); font: 12px/1.4 ui-monospace, monospace;
+    pointer-events: none; letter-spacing: 0.06em;
+  }
+  #params {
+    position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: calc(12px + env(safe-area-inset-left));
+    color: rgba(255,255,255,0.35); font: 11px ui-monospace, monospace;
+    pointer-events: none; letter-spacing: 0.04em;
+  }
+  #hint {
+    position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); right: calc(12px + env(safe-area-inset-right));
+    color: rgba(255,255,255,0.28); font: 11px ui-monospace, monospace;
+    pointer-events: none; text-align: right;
+  }
+  .back-btn {
+    position: fixed; top: calc(12px + env(safe-area-inset-top)); right: calc(12px + env(safe-area-inset-right));
+    background: rgba(20,20,20,0.8); border: 1px solid #444; color: #e0e0e0;
+    padding: 8px 14px; border-radius: 6px; font: 12px ui-monospace, monospace;
+    cursor: pointer; text-decoration: none; backdrop-filter: blur(8px);
+    z-index: 100; transition: border-color 0.2s;
+  }
+  .back-btn:hover { border-color: #888; }
+  .in-iframe .back-btn, .in-iframe #label, .in-iframe #params, .in-iframe #hint { display: none; }
+</style>
+</head>
+<body>
+<script>if (window.self !== window.top) document.body.classList.add('in-iframe');</script>
+<a href="./" class="back-btn">← Gallery</a>
+<div id="label">Julia Set</div>
+<div id="params" id="params">c = 0 + 0i</div>
+<div id="hint">move mouse to steer c · click to lock</div>
+<canvas id="c"></canvas>
+
+<script>
+'use strict';
+
+const canvas  = document.getElementById('c');
+const ctx     = canvas.getContext('2d');
+const paramsEl = document.getElementById('params');
+const hintEl   = document.getElementById('hint');
+
+// Render into a half-resolution offscreen buffer
+let RW, RH; // render dimensions
+let imgData, pixels;
+let W, H, dpr;
+
+// Julia parameter c
+let cReal = -0.7269, cImag = 0.1889; // default: dendrite-ish
+let locked = false;
+let dirty  = true;
+
+// Preset c values with names — cycle through on click when locked
+const PRESETS = [
+  { r: -0.7269, i:  0.1889, name: 'dendrite' },
+  { r: -0.4,    i:  0.6,    name: 'seahorse' },
+  { r:  0.285,  i:  0.01,   name: 'rabbit' },
+  { r: -0.835,  i: -0.2321, name: 'dragon' },
+  { r: -0.7,    i:  0.27015,name: 'spiral' },
+  { r:  0.45,   i:  0.1428, name: 'coral' },
+  { r: -1.476,  i:  0,      name: 'airplane' },
+  { r: -0.12,   i: -0.77,   name: 'siegel disk' },
+];
+let presetIdx = 0;
+
+const MAX_ITER = 120;
+const ESCAPE   = 4;
+
+// Smooth HSL color from iteration count
+function iterToColor(iter, z2) {
+  if (iter >= MAX_ITER) return [5, 5, 12, 255];
+  // Smooth coloring
+  const smooth = iter + 1 - Math.log2(Math.log2(Math.sqrt(z2)));
+  const t = smooth / MAX_ITER;
+  // Vivid twilight palette: deep blue → violet → orange → white
+  const h = (220 + t * 280) % 360;
+  const s = 0.85;
+  const l = 0.1 + t * 0.55;
+  return hslToRgb(h / 360, s, l);
+}
+
+function hslToRgb(h, s, l) {
+  let r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return [r * 255 | 0, g * 255 | 0, b * 255 | 0, 255];
+}
+function hue2rgb(p, q, t) {
+  if (t < 0) t += 1; if (t > 1) t -= 1;
+  if (t < 1/6) return p + (q-p)*6*t;
+  if (t < 1/2) return q;
+  if (t < 2/3) return p + (q-p)*(2/3-t)*6;
+  return p;
+}
+
+// Zoom / center for the complex plane view
+// ZOOM = half-height of complex plane visible; x range extends by aspect ratio
+const ZOOM   = 2.0;
+
+function renderJulia() {
+  const cr = cReal, ci = cImag;
+  // Uniform scale per pixel — preserves aspect ratio
+  const unitScale = (2 * ZOOM) / RH;
+
+  for (let py = 0; py < RH; py++) {
+    const y0 = (py - RH / 2) * unitScale;
+    for (let px = 0; px < RW; px++) {
+      const x0 = (px - RW / 2) * unitScale;
+      let zr = x0, zi = y0;
+      let iter = 0, zr2 = 0, zi2 = 0;
+      while (iter < MAX_ITER) {
+        zr2 = zr * zr; zi2 = zi * zi;
+        if (zr2 + zi2 > ESCAPE) break;
+        zi = 2 * zr * zi + ci;
+        zr = zr2 - zi2 + cr;
+        iter++;
+      }
+      const [r, g, b, a] = iterToColor(iter, zr2 + zi2);
+      const idx = (py * RW + px) * 4;
+      pixels[idx]   = r; pixels[idx+1] = g;
+      pixels[idx+2] = b; pixels[idx+3] = a;
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+  // CSS image-rendering:pixelated handles upscaling — no drawImage needed
+}
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  // Render at 0.5× to 0.65× resolution for speed
+  const scale = window.innerWidth < 600 ? 0.45 : 0.55;
+  RW = Math.ceil(W * scale); RH = Math.ceil(H * scale);
+  canvas.width  = RW; canvas.height = RH;
+  canvas.style.width  = W + 'px'; canvas.style.height = H + 'px';
+  imgData = ctx.createImageData(RW, RH);
+  pixels  = imgData.data;
+  dirty = true;
+}
+
+// Render loop — re-render whenever dirty, handles mid-render resize
+let renderPending = false;
+function scheduleRender() {
+  if (renderPending) return;
+  renderPending = true;
+  requestAnimationFrame(() => {
+    renderPending = false;
+    if (dirty) {
+      dirty = false;
+      renderJulia();
+      // If a resize happened during render, dirty is set again — re-schedule
+      if (dirty) scheduleRender();
+    }
+  });
+}
+
+// Mouse / touch → update c
+function setC(clientX, clientY) {
+  if (locked) return;
+  // Map mouse position to c range [−1.5, 1.5] × [−1, 1]
+  cReal = ((clientX / W) * 2 - 1) * 1.5;
+  cImag = ((clientY / H) * 2 - 1) * -1.2;
+  paramsEl.textContent = `c = ${cReal.toFixed(4)} + ${cImag.toFixed(4)}i`;
+  dirty = true;
+  scheduleRender();
+}
+
+function toggleLock(clientX, clientY) {
+  locked = !locked;
+  if (locked) {
+    hintEl.textContent = 'locked · click to cycle presets';
+  } else {
+    hintEl.textContent = 'move mouse to steer c · click to lock';
+  }
+}
+
+function cyclePreset() {
+  presetIdx = (presetIdx + 1) % PRESETS.length;
+  const p = PRESETS[presetIdx];
+  cReal = p.r; cImag = p.i;
+  paramsEl.textContent = `c = ${cReal.toFixed(4)} + ${cImag.toFixed(4)}i  [${p.name}]`;
+  hintEl.textContent = `${p.name} · click to advance`;
+  dirty = true;
+  scheduleRender();
+}
+
+canvas.addEventListener('mousemove', e => setC(e.clientX, e.clientY));
+canvas.addEventListener('click', () => {
+  if (!locked) { toggleLock(); }
+  else { cyclePreset(); }
+});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (e.touches.length === 1) setC(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: false });
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (!locked) { toggleLock(); }
+  else { cyclePreset(); }
+}, { passive: false });
+
+window.addEventListener('resize', () => { resize(); scheduleRender(); });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => { resize(); scheduleRender(); });
+}
+window.addEventListener('orientationchange', () => { setTimeout(() => { resize(); scheduleRender(); }, 200); });
+
+resize();
+scheduleRender();
+</script>
+</body>
+</html>

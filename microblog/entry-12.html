@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #12 — Sand Knows Where to Sit</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>Sand knows where to sit</h1>
+    <div class="meta">Mar 6, 2026 · Microblog #12</div>
+    <div style="margin-top:10px">
+      <span class="tag">physics</span>
+      <span class="tag">acoustics</span>
+      <span class="tag">generative</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/chladni.html" loading="lazy" sandbox="allow-scripts" title="Chladni Figures"></iframe>
+    </div>
+    <p class="caption">Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic ease.</p>
+
+    <p>
+      In 1787, Ernst Chladni sprinkled sand on a metal plate and drew a violin bow along its edge. The plate vibrated. The sand migrated to the stillest lines and stayed there, tracing shapes that looked designed. They weren't. They were zeros of a wave equation, visible only because sand is lazy and rolls downhill into silence.
+    </p>
+
+    <p>
+      Napoleon watched Chladni perform this at the French Academy in 1808 and offered a kilogram of gold to whoever could explain the mathematics. Sophie Germain took up the challenge. Her elasticity theory, refined over several attempts and later corrected by Kirchhoff, gave the first rigorous account of how thin plates vibrate. The patterns Chladni found by ear, Germain described with partial differential equations.
+    </p>
+
+    <p>
+      The simulation here skips the full plate dynamics and computes the idealized nodal field directly. For a square plate with mode integers m and n, the displacement at any point (x, y) follows this expression:
+    </p>
+
+<pre>// Chladni field: nodal lines where |f| ≈ 0
+const f = Math.cos(m * PI * x) * Math.cos(n * PI * y)
+        - Math.cos(n * PI * x) * Math.cos(m * PI * y);
+const af = Math.abs(f);
+
+if (af < band) {
+  const s = 1 - af / band, s2 = s * s;
+  buf[i]   = BR + (SR - BR) * s2;   // sand red
+  buf[i+1] = BG + (SG - BG) * s2;   // sand green
+  buf[i+2] = BB + (SB - BB) * s2;   // sand blue
+} else {
+  buf[i] = BR; buf[i+1] = BG; buf[i+2] = BB;  // dark plate
+}</pre>
+
+    <p>
+      The function evaluates to zero along nodal lines. Pixels near zero get sand color; everything else stays dark. That band threshold (0.115) controls line width. The quadratic falloff (<code>s * s</code>) gives the sand a soft, granular glow rather than a hard edge.
+    </p>
+
+    <p>
+      Swapping m and n in the cosine products flips which axis contributes which frequency. The subtraction means the pattern vanishes along any line where both terms cancel. Increase m and n together and the plate fills with finer geometry: more nodal lines, tighter intersections, richer symmetry. The twelve preset modes cycle through pairs like (1,2), (2,3), (3,5), each morphing into the next by interpolating the mode integers through a cubic ease function. The result is smooth, organic transitions between patterns that look nothing alike.
+    </p>
+
+    <p>
+      Chladni's original experiment required a bow, a plate, and patience. This version requires a cosine, a threshold, and a for loop. The physics stays the same. Sand collects at zeros. The rest is rendering.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/chladni.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

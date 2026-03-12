@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Phyllotaxis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#05070b;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;max-width:min(92vw,520px)}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+@media(max-width:640px){#info{font-size:12px;padding:5px 10px}}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Phyllotaxis · golden angle 137.5° · click to pulse</div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+
+// Golden angle: 2π × (2 − φ) where φ = (1+√5)/2
+const PHI = (1 + Math.sqrt(5)) / 2;
+const GOLDEN_ANGLE = Math.PI * 2 * (2 - PHI); // ≈ 137.508°
+
+let N = 1400;
+let W, H, ox, oy, maxR, DPR;
+let t = 0;
+let pulse = 0; // 0..1 pulse wave on click
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = innerWidth;
+  H = innerHeight;
+  c.width = Math.round(W * DPR);
+  c.height = Math.round(H * DPR);
+  c.style.width = W + 'px';
+  c.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ox = W / 2;
+  oy = H / 2;
+  maxR = Math.min(W, H) * 0.455;
+  const baseN = Math.floor((W * H) / 520);
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  N = Math.min(1400, Math.max(700, reduced ? Math.floor(baseN * 0.7) : baseN));
+}
+
+addEventListener('resize', resize);
+addEventListener('orientationchange', () => setTimeout(resize, 140));
+window.visualViewport?.addEventListener('resize', resize);
+resize();
+
+function triggerPulse() {
+  pulse = 1;
+}
+
+c.addEventListener('click', triggerPulse);
+c.addEventListener('pointerdown', triggerPulse);
+
+function loop() {
+  t += 0.006;
+  pulse = Math.max(0, pulse - 0.03);
+
+  ctx.fillStyle = 'rgba(5,7,11,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  for (let i = 0; i < N; i++) {
+    const frac = i / N;
+
+    // Base spiral position — slow rotation over time
+    const theta = i * GOLDEN_ANGLE + t * 0.08;
+    const r = maxR * Math.sqrt(frac);
+
+    // Pulse: radial breathe
+    const pulseFactor = 1 + pulse * 0.18 * Math.sin(frac * Math.PI * 4);
+    const pr = r * pulseFactor;
+
+    const x = ox + pr * Math.cos(theta);
+    const y = oy + pr * Math.sin(theta);
+
+    // Keep palette restrained (teal → indigo), avoid full-spectrum rainbow drift
+    const hue = 198 + frac * 34 + pulse * 8;
+    const lightness = 42 + frac * 24;
+    const alpha = 0.55 + frac * 0.45;
+    const radius = 1.5 + frac * 2.2;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${hue},72%,${lightness}%,${alpha})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+</body>
+</html>

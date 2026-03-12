@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Marching Squares</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; overflow: hidden; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  canvas { display: block; touch-action: none; }
+  #ui {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    color: #555; font-size: 11px; text-align: center; pointer-events: none;
+    white-space: nowrap;
+  }
+  #back {
+    position: fixed; top: 14px; left: 14px;
+    color: #666; text-decoration: none; font-size: 11px;
+    border: 1px solid #2a2a2a; padding: 5px 11px; border-radius: 5px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #back:hover { color: #ccc; border-color: #555; }
+  #mode-btn {
+    position: fixed; top: 14px; right: 14px;
+    background: transparent; color: #666; font-family: inherit;
+    font-size: 11px; border: 1px solid #2a2a2a; padding: 5px 11px;
+    border-radius: 5px; cursor: pointer; min-height: 44px; min-width: 44px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #mode-btn:hover { color: #ccc; border-color: #555; }
+  #back { min-height: 44px; display: flex; align-items: center; }
+  @media (max-width: 500px) {
+    #ui { font-size: 10px; bottom: 14px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">marching squares · tap to cycle palette</div>
+<a href="../" id="back">← gallery</a>
+<button id="mode-btn">filled</button>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const isIframe = window.self !== window.top;
+
+if (isIframe) {
+  document.getElementById('ui').style.display = 'none';
+  document.getElementById('back').style.display = 'none';
+  document.getElementById('mode-btn').style.display = 'none';
+}
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── palette ───────────────────────────────────────────────
+const palettes = [
+  // indigo-cyan
+  ['#0a0a1a','#1a0a2e','#2d1b69','#1a6fa8','#0dc5c1','#7fffd4'],
+  // fire (dark bg)
+  ['#0a0a0a','#1a0500','#5c1a00','#c44b00','#ff8c00','#ffe082'],
+  // forest
+  ['#060d06','#0a1a0a','#1a3a1a','#2e6b2e','#5aab5a','#b4e8b4'],
+  // amethyst
+  ['#0a040f','#1a0a2e','#3d1a6e','#7b3fa3','#c17adb','#f0c4ff'],
+];
+let paletteIdx = 0;
+
+canvas.addEventListener('click', () => { paletteIdx = (paletteIdx + 1) % palettes.length; });
+canvas.addEventListener('touchend', (e) => { e.preventDefault(); paletteIdx = (paletteIdx + 1) % palettes.length; }, { passive: false });
+
+// ── mode toggle ───────────────────────────────────────────
+let filled = false;
+document.getElementById('mode-btn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  filled = !filled;
+  e.target.textContent = filled ? 'lines' : 'filled';
+});
+
+// ── marching squares lookup ───────────────────────────────
+// Vertices: v0=top-left, v1=top-right, v2=bottom-right, v3=bottom-left
+// Case = (v0>t)<<3 | (v1>t)<<2 | (v2>t)<<1 | (v3>t)<<0
+// Edges: 0=top(v0-v1), 1=right(v1-v2), 2=bottom(v2-v3), 3=left(v3-v0)
+// Each entry: array of [edgeA, edgeB] pairs to draw
+const EDGE_TABLE = [
+  [],              // 0  0000
+  [[2,3]],         // 1  0001  v3 in
+  [[1,2]],         // 2  0010  v2 in
+  [[1,3]],         // 3  0011  v2,v3 in
+  [[0,1]],         // 4  0100  v1 in
+  [[0,3],[1,2]],   // 5  0101  saddle: v1,v3 in
+  [[0,2]],         // 6  0110  v1,v2 in
+  [[0,3]],         // 7  0111  v0 out only
+  [[0,3]],         // 8  1000  v0 in
+  [[0,2]],         // 9  1001  v0,v3 in
+  [[0,1],[2,3]],   // 10 1010  saddle: v0,v2 in
+  [[0,1]],         // 11 1011  v1 out only
+  [[1,3]],         // 12 1100  v0,v1 in
+  [[1,2]],         // 13 1101  v2 out only
+  [[2,3]],         // 14 1110  v3 out only
+  [],              // 15 1111
+];
+
+// Edge midpoints (lerped) for cell at (col, row) with cell size (cw, ch)
+// Returns {x,y} in pixel space
+function edgePoint(edge, col, row, cw, ch, v0, v1, v2, v3, thresh) {
+  let t, x, y;
+  switch (edge) {
+    case 0: // top: v0 to v1, x varies, y fixed at top
+      t = Math.abs(v1 - v0) < 1e-9 ? 0.5 : (thresh - v0) / (v1 - v0);
+      return { x: (col + t) * cw, y: row * ch };
+    case 1: // right: v1 to v2, x fixed at right, y varies
+      t = Math.abs(v2 - v1) < 1e-9 ? 0.5 : (thresh - v1) / (v2 - v1);
+      return { x: (col + 1) * cw, y: (row + t) * ch };
+    case 2: // bottom: v2 to v3 (right to left), y fixed at bottom
+      t = Math.abs(v3 - v2) < 1e-9 ? 0.5 : (thresh - v2) / (v3 - v2);
+      return { x: (col + 1 - t) * cw, y: (row + 1) * ch };
+    case 3: // left: v3 to v0 (bottom to top), x fixed at left
+      t = Math.abs(v0 - v3) < 1e-9 ? 0.5 : (thresh - v3) / (v0 - v3);
+      return { x: col * cw, y: (row + 1 - t) * ch };
+  }
+}
+
+// ── noise field ────────────────────────────────────────────
+// Sum of sine waves — smooth, periodic, deterministic
+function field(nx, ny, t) {
+  // nx, ny in [0, 1], t = time
+  const x = nx * Math.PI * 2;
+  const y = ny * Math.PI * 2;
+  return (
+    Math.sin(x * 2.1 + t * 0.9) * Math.cos(y * 1.7 + t * 0.6)
+    + Math.sin(x * 0.9 - y * 1.4 + t * 0.4) * 0.7
+    + Math.cos(x * 3.3 + y * 2.6 - t * 0.7) * 0.35
+    + Math.sin(x * 1.2 + y * 3.1 + t * 0.3) * 0.25
+  ) / 2.3; // roughly in [-1, 1]
+}
+
+// ── main loop ──────────────────────────────────────────────
+const COLS = 120;
+const ROWS = 90;
+const LEVELS = 6; // number of contour levels
+
+let t = 0;
+let grid = [];
+
+function buildGrid() {
+  grid = [];
+  for (let r = 0; r <= ROWS; r++) {
+    grid[r] = [];
+    for (let c = 0; c <= COLS; c++) {
+      grid[r][c] = field(c / COLS, r / ROWS, t);
+    }
+  }
+}
+
+function draw() {
+  t += 0.005;
+  buildGrid();
+
+  const pal = palettes[paletteIdx];
+  const cw = W / COLS;
+  const ch = H / ROWS;
+
+  ctx.fillStyle = pal[0];
+  ctx.fillRect(0, 0, W, H);
+
+  const thresholds = [];
+  for (let i = 0; i < LEVELS; i++) {
+    thresholds.push(-0.75 + (i / (LEVELS - 1)) * 1.5);
+  }
+
+  // For filled mode, draw filled regions per level (back to front)
+  if (filled) {
+    for (let li = 0; li < LEVELS; li++) {
+      const thresh = thresholds[li];
+      const color = pal[1 + li % (pal.length - 1)];
+      ctx.fillStyle = color + 'cc'; // slight transparency
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const v0 = grid[r][c];
+          const v1 = grid[r][c + 1];
+          const v2 = grid[r + 1][c + 1];
+          const v3 = grid[r + 1][c];
+          const caseIdx = ((v0 > thresh) ? 8 : 0) | ((v1 > thresh) ? 4 : 0) |
+                          ((v2 > thresh) ? 2 : 0) | ((v3 > thresh) ? 1 : 0);
+          if (caseIdx === 0 || caseIdx === 15) {
+            if (caseIdx === 15) {
+              ctx.fillRect(c * cw, r * ch, cw + 1, ch + 1);
+            }
+            continue;
+          }
+          const pairs = EDGE_TABLE[caseIdx];
+          // Draw the inside triangle(s)
+          pairs.forEach(([eA, eB]) => {
+            const pA = edgePoint(eA, c, r, cw, ch, v0, v1, v2, v3, thresh);
+            const pB = edgePoint(eB, c, r, cw, ch, v0, v1, v2, v3, thresh);
+            // Corner points that are "inside"
+            const corners = [[c*cw,r*ch],[((c+1)*cw),r*ch],[((c+1)*cw),(r+1)*ch],[c*cw,(r+1)*ch]];
+            const vals = [v0,v1,v2,v3];
+            ctx.beginPath();
+            ctx.moveTo(pA.x, pA.y);
+            ctx.lineTo(pB.x, pB.y);
+            vals.forEach((v, i) => {
+              if (v > thresh) ctx.lineTo(corners[i][0], corners[i][1]);
+            });
+            ctx.closePath();
+            ctx.fill();
+          });
+        }
+      }
+    }
+  }
+
+  // Draw contour lines for all levels
+  for (let li = 0; li < LEVELS; li++) {
+    const thresh = thresholds[li];
+    // Color: interpolate through palette
+    const colorIdx = (li / (LEVELS - 1)) * (pal.length - 2);
+    const ci = Math.min(Math.floor(colorIdx), pal.length - 3);
+    const cf = colorIdx - ci;
+    const color = pal[ci + 1 + Math.round(cf)];
+
+    ctx.strokeStyle = filled ? (color + '99') : color;
+    ctx.lineWidth = filled ? 0.8 : 1.2;
+    ctx.beginPath();
+
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const v0 = grid[r][c];
+        const v1 = grid[r][c + 1];
+        const v2 = grid[r + 1][c + 1];
+        const v3 = grid[r + 1][c];
+        const caseIdx = ((v0 > thresh) ? 8 : 0) | ((v1 > thresh) ? 4 : 0) |
+                        ((v2 > thresh) ? 2 : 0) | ((v3 > thresh) ? 1 : 0);
+        if (caseIdx === 0 || caseIdx === 15) continue;
+
+        const pairs = EDGE_TABLE[caseIdx];
+        pairs.forEach(([eA, eB]) => {
+          const pA = edgePoint(eA, c, r, cw, ch, v0, v1, v2, v3, thresh);
+          const pB = edgePoint(eB, c, r, cw, ch, v0, v1, v2, v3, thresh);
+          ctx.moveTo(pA.x, pA.y);
+          ctx.lineTo(pB.x, pB.y);
+        });
+      }
+    }
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

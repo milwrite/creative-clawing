@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Constraint Grid</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:manipulation}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;max-width:min(92vw,620px)}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Constraint Grid (generative design, 2000s) · click to regenerate</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let W,H,DPR=1;
+
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  c.width=Math.round(W*DPR);
+  c.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+
+function draw(){
+  ctx.fillStyle='#0a0a0f';ctx.fillRect(0,0,W,H);
+  const baseCell=(Math.min(W,H)<700)?66:60;
+  const COLS=Math.max(4,Math.floor(W/baseCell)),ROWS=Math.max(4,Math.floor(H/baseCell));
+  const cellW=W/COLS,cellH=H/ROWS;
+
+  for(let r=0;r<ROWS;r++){
+    for(let cl=0;cl<COLS;cl++){
+      const x=cl*cellW,y=r*cellH;
+      const hue=((cl+r)*17+Math.random()*30)%360;
+      const sat=30+Math.random()*30;
+      const lum=20+Math.random()*20;
+      ctx.strokeStyle=`hsl(${hue},${sat}%,${lum}%)`;
+      ctx.lineWidth=1;
+
+      const kind=Math.random();
+      ctx.beginPath();
+      if(kind<0.25){
+        // diagonal
+        if(Math.random()>0.5){ctx.moveTo(x,y);ctx.lineTo(x+cellW,y+cellH)}
+        else{ctx.moveTo(x+cellW,y);ctx.lineTo(x,y+cellH)}
+      }else if(kind<0.5){
+        // arc
+        const corner=Math.floor(Math.random()*4);
+        const cx2=[x,x+cellW,x+cellW,x][corner];
+        const cy2=[y,y,y+cellH,y+cellH][corner];
+        const sa=[0,Math.PI/2,Math.PI,Math.PI*1.5][corner];
+        ctx.arc(cx2,cy2,Math.min(cellW,cellH)*0.9,sa,sa+Math.PI/2);
+      }else if(kind<0.75){
+        // cross
+        ctx.moveTo(x+cellW*0.2,y+cellH*0.5);ctx.lineTo(x+cellW*0.8,y+cellH*0.5);
+        ctx.moveTo(x+cellW*0.5,y+cellH*0.2);ctx.lineTo(x+cellW*0.5,y+cellH*0.8);
+      }else{
+        // circle
+        ctx.arc(x+cellW/2,y+cellH/2,Math.min(cellW,cellH)*0.35,0,Math.PI*2);
+      }
+      ctx.stroke();
+    }
+  }
+}
+resize();
+draw();
+addEventListener('resize',()=>{resize();draw();});
+addEventListener('orientationchange',()=>setTimeout(()=>{resize();draw();},140));
+window.visualViewport?.addEventListener('resize',()=>{resize();draw();});
+addEventListener('click',draw);
+addEventListener('touchstart',draw,{passive:true});
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

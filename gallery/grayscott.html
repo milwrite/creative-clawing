@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzA1MDgxMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzA4YzBjMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSI0IiBmaWxsPSIjMDhjMGMwIiBvcGFjaXR5PSIwLjYiLz4KPC9zdmc+Cg=="/>
+<title>Gray-Scott Reaction-Diffusion</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050810;overflow:hidden}
+canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(10,10,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#08c0c0}
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(200,220,255,0.8);background:rgba(0,0,0,0.6);padding:6px 16px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Gray-Scott · click to seed · space to cycle preset</div>
+<script>
+if (window.self !== window.top) {
+  document.querySelectorAll('.back-btn,#info').forEach(e => e.style.display = 'none');
+}
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Simulation grid (smaller than screen, drawn scaled)
+const GW = 256, GH = 180;
+let u = new Float32Array(GW * GH);
+let v = new Float32Array(GW * GH);
+let u2 = new Float32Array(GW * GH);
+let v2 = new Float32Array(GW * GH);
+
+const PRESETS = [
+  { name: 'Coral',   f: 0.0620, k: 0.0609, Du: 0.16, Dv: 0.08 },
+  { name: 'Mitosis', f: 0.0280, k: 0.0620, Du: 0.16, Dv: 0.08 },
+  { name: 'Spots',   f: 0.0350, k: 0.0650, Du: 0.16, Dv: 0.08 },
+  { name: 'Maze',    f: 0.0520, k: 0.0640, Du: 0.16, Dv: 0.08 },
+  { name: 'Waves',   f: 0.0180, k: 0.0510, Du: 0.16, Dv: 0.08 },
+];
+let presetIdx = 0;
+
+function getPreset() { return PRESETS[presetIdx]; }
+
+function seed(cx, cy, radius) {
+  const r = radius || 8;
+  for (let dy = -r; dy <= r; dy++) {
+    for (let dx = -r; dx <= r; dx++) {
+      if (dx * dx + dy * dy > r * r) continue;
+      const gx = ((cx + dx) % GW + GW) % GW;
+      const gy = ((cy + dy) % GH + GH) % GH;
+      const i = gy * GW + gx;
+      u[i] = 0.5 + (Math.random() - 0.5) * 0.1;
+      v[i] = 0.25 + (Math.random() - 0.5) * 0.1;
+    }
+  }
+}
+
+function init() {
+  // Start: u=1 everywhere, v=0
+  u.fill(1); v.fill(0);
+  // Seed a handful of random spots
+  for (let s = 0; s < 12; s++) {
+    seed(
+      4 + Math.floor(Math.random() * (GW - 8)),
+      4 + Math.floor(Math.random() * (GH - 8)),
+      5 + Math.floor(Math.random() * 6)
+    );
+  }
+}
+
+function step() {
+  const p = getPreset();
+  const { f, k, Du, Dv } = p;
+
+  for (let y = 0; y < GH; y++) {
+    for (let x = 0; x < GW; x++) {
+      const i = y * GW + x;
+      const xL = x === 0 ? GW - 1 : x - 1;
+      const xR = x === GW - 1 ? 0 : x + 1;
+      const yU = y === 0 ? GH - 1 : y - 1;
+      const yD = y === GH - 1 ? 0 : y + 1;
+
+      // 5-point Laplacian
+      const lapU = u[y * GW + xL] + u[y * GW + xR] + u[yU * GW + x] + u[yD * GW + x] - 4 * u[i];
+      const lapV = v[y * GW + xL] + v[y * GW + xR] + v[yU * GW + x] + v[yD * GW + x] - 4 * v[i];
+
+      const ui = u[i], vi = v[i];
+      const uvv = ui * vi * vi;
+
+      u2[i] = Math.max(0, Math.min(1, ui + Du * lapU - uvv + f * (1 - ui)));
+      v2[i] = Math.max(0, Math.min(1, vi + Dv * lapV + uvv - (f + k) * vi));
+    }
+  }
+
+  // Swap buffers
+  const tmp = u; u = u2; u2 = tmp;
+  const tmp2 = v; v = v2; v2 = tmp2;
+}
+
+// Color map: v concentration 0→1 maps to dark→cyan→white
+function colorV(val) {
+  // Clamp
+  val = Math.max(0, Math.min(1, val));
+  let r, g, b;
+  if (val < 0.15) {
+    // Very low V: near black / dark blue
+    const t = val / 0.15;
+    r = t * 8 | 0;
+    g = t * 12 | 0;
+    b = t * 30 | 0;
+  } else if (val < 0.4) {
+    // Low V: deep purple/blue
+    const t = (val - 0.15) / 0.25;
+    r = (8 + t * 60) | 0;
+    g = (12 + t * 30) | 0;
+    b = (30 + t * 120) | 0;
+  } else if (val < 0.65) {
+    // Mid V: cyan/teal
+    const t = (val - 0.4) / 0.25;
+    r = (68 - t * 40) | 0;
+    g = (42 + t * 150) | 0;
+    b = (150 + t * 80) | 0;
+  } else if (val < 0.85) {
+    // High V: bright cyan/white
+    const t = (val - 0.65) / 0.2;
+    r = (28 + t * 200) | 0;
+    g = (192 + t * 50) | 0;
+    b = (230 + t * 20) | 0;
+  } else {
+    // Very high: near white
+    const t = (val - 0.85) / 0.15;
+    r = (228 + t * 27) | 0;
+    g = (242 + t * 13) | 0;
+    b = (250 + t * 5) | 0;
+  }
+  return [r, g, b];
+}
+
+// Offscreen for pixel rendering
+const sim = document.createElement('canvas');
+sim.width = GW; sim.height = GH;
+const sc = sim.getContext('2d');
+const imgData = sc.createImageData(GW, GH);
+const pxData = imgData.data;
+
+let W, H;
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function drawSim() {
+  for (let i = 0; i < GW * GH; i++) {
+    const [r, g, b] = colorV(v[i]);
+    const base = i * 4;
+    pxData[base] = r; pxData[base + 1] = g; pxData[base + 2] = b; pxData[base + 3] = 255;
+  }
+  sc.putImageData(imgData, 0, 0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'low';
+  ctx.drawImage(sim, 0, 0, W, H);
+}
+
+// Interaction
+canvas.addEventListener('click', e => {
+  const gx = Math.floor((e.clientX / W) * GW);
+  const gy = Math.floor((e.clientY / H) * GH);
+  seed(gx, gy, 10);
+});
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  for (const touch of e.touches) {
+    const gx = Math.floor((touch.clientX / W) * GW);
+    const gy = Math.floor((touch.clientY / H) * GH);
+    seed(gx, gy, 8);
+  }
+}, { passive: false });
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    presetIdx = (presetIdx + 1) % PRESETS.length;
+    updateInfo();
+    // Re-seed for the new preset
+    u.fill(1); v.fill(0);
+    for (let s = 0; s < 10; s++) {
+      seed(
+        4 + Math.floor(Math.random() * (GW - 8)),
+        4 + Math.floor(Math.random() * (GH - 8)),
+        5 + Math.floor(Math.random() * 7)
+      );
+    }
+  }
+});
+
+const infoEl = document.getElementById('info');
+function updateInfo() {
+  const p = getPreset();
+  if (infoEl) infoEl.textContent = `Gray-Scott · ${p.name} (f=${p.f}, k=${p.k}) · click to seed · space to cycle`;
+}
+
+const STEPS_PER_FRAME = 8;
+
+window.addEventListener('resize', resize);
+resize();
+init();
+updateInfo();
+
+function frame() {
+  for (let s = 0; s < STEPS_PER_FRAME; s++) step();
+  drawSim();
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>

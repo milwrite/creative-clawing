@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Neon Tunnel</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.5);padding:6px 14px;border-radius:6px;font:12px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Neon Tunnel · move mouse to steer</div>
+<script>
+if(window.self!==window.top){
+  document.querySelectorAll('.back-btn,#info').forEach(e=>e.style.display='none');
+}
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,cx,cy,DPR=window.devicePixelRatio||1;
+
+function resize(){
+  W=canvas.width=window.innerWidth*DPR;
+  H=canvas.height=window.innerHeight*DPR;
+  cx=W/2; cy=H/2;
+  canvas.style.width=window.innerWidth+'px';
+  canvas.style.height=window.innerHeight+'px';
+}
+window.addEventListener('resize',resize);
+resize();
+
+// Mouse offset for parallax steer
+let mx=0,my=0;
+window.addEventListener('mousemove',e=>{
+  mx=(e.clientX/window.innerWidth-0.5)*2;
+  my=(e.clientY/window.innerHeight-0.5)*2;
+});
+window.addEventListener('touchmove',e=>{
+  const t=e.touches[0];
+  mx=(t.clientX/window.innerWidth-0.5)*2;
+  my=(t.clientY/window.innerHeight-0.5)*2;
+},{passive:true});
+
+const NUM_RINGS=28;
+const NUM_SIDES=6;  // hexagonal cross-section
+const SPEED=0.28;
+const FOV_FACTOR=0.045;
+const TWIST_PER_UNIT=0.55; // radians of twist across full depth
+
+let elapsed=0, lastTime=0;
+
+function ringDepthToRadius(depth){
+  // Perspective: depth 0=far(small), depth approaching 1=near(huge)
+  return (H*FOV_FACTOR)/(1.0-depth*0.92);
+}
+
+function drawRing(depth,ringIndex,t,offsetX,offsetY){
+  if(depth>=0.96) return;
+  const r=ringDepthToRadius(depth);
+  if(r>Math.max(W,H)*2.5) return;
+
+  const twist=depth*TWIST_PER_UNIT;
+  const alpha=Math.pow(depth,0.6)*0.95;
+  const lw=Math.max(0.5,depth*2.8*DPR);
+
+  // Hue: cyan (180) → magenta (300) → purple (270) cycling
+  const hue=(ringIndex*(360/NUM_RINGS)*0.7+t*35+200)%360;
+
+  ctx.save();
+  ctx.strokeStyle=`hsla(${hue},100%,70%,${alpha})`;
+  ctx.lineWidth=lw;
+  ctx.shadowColor=`hsl(${hue},100%,75%)`;
+  ctx.shadowBlur=depth*18*DPR;
+
+  const ox=cx+offsetX*depth*80*DPR;
+  const oy=cy+offsetY*depth*80*DPR;
+
+  ctx.beginPath();
+  for(let s=0;s<=NUM_SIDES;s++){
+    const angle=(s/NUM_SIDES)*Math.PI*2+twist;
+    const x=ox+Math.cos(angle)*r;
+    const y=oy+Math.sin(angle)*r;
+    if(s===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+
+  // Radial spokes — only on nearer rings
+  if(depth>0.35){
+    ctx.strokeStyle=`hsla(${hue},100%,55%,${alpha*0.25})`;
+    ctx.lineWidth=Math.max(0.3,lw*0.4);
+    ctx.shadowBlur=0;
+    for(let s=0;s<NUM_SIDES;s++){
+      const angle=(s/NUM_SIDES)*Math.PI*2+twist;
+      ctx.beginPath();
+      ctx.moveTo(ox,oy);
+      ctx.lineTo(ox+Math.cos(angle)*r,oy+Math.sin(angle)*r);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// Particle sparks for extra depth
+const SPARKS=120;
+const sparks=Array.from({length:SPARKS},()=>({
+  depth:Math.random(),
+  angle:Math.random()*Math.PI*2,
+  radialFrac:0.2+Math.random()*0.8,
+  speed:0.15+Math.random()*0.35
+}));
+
+function drawSparks(t,offsetX,offsetY){
+  ctx.save();
+  for(const sp of sparks){
+    sp.depth=(sp.depth+sp.speed*0.016)%0.96;
+    const r=ringDepthToRadius(sp.depth)*sp.radialFrac;
+    const twist=sp.depth*TWIST_PER_UNIT;
+    const ang=sp.angle+twist;
+    const alpha=Math.pow(sp.depth,0.5)*0.8;
+    const ox=cx+offsetX*sp.depth*80*DPR;
+    const oy=cy+offsetY*sp.depth*80*DPR;
+    const x=ox+Math.cos(ang)*r;
+    const y=oy+Math.sin(ang)*r;
+    const hue=(sp.angle*57+t*60)%360;
+    const size=Math.max(1,sp.depth*3*DPR);
+    ctx.fillStyle=`hsla(${hue},100%,80%,${alpha})`;
+    ctx.shadowColor=`hsl(${hue},100%,80%)`;
+    ctx.shadowBlur=size*4;
+    ctx.beginPath();
+    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function frame(ts){
+  const dt=Math.min(0.05,(ts-lastTime)/1000);
+  lastTime=ts;
+  elapsed+=dt;
+  const t=elapsed;
+
+  // Smooth mouse tracking
+  const ox=mx, oy=my;
+
+  // Trail fade — slightly less opaque = longer trails
+  ctx.fillStyle='rgba(0,0,0,0.22)';
+  ctx.fillRect(0,0,W,H);
+
+  // Sort rings by depth (far to near) so nearer rings overdraw
+  const rings=[];
+  for(let r=0;r<NUM_RINGS;r++){
+    const depth=((r/NUM_RINGS)+t*SPEED)%1.0;
+    rings.push({depth,index:r});
+  }
+  rings.sort((a,b)=>a.depth-b.depth);
+
+  for(const {depth,index} of rings){
+    drawRing(depth,index,t,ox,oy);
+  }
+
+  drawSparks(t,ox,oy);
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Color Rivers</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; overflow: hidden; }
+canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+.controls {
+  position: fixed;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(0,0,0,0.75);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: monospace;
+  color: #fff;
+  font-size: 13px;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: min(94vw, 560px);
+  justify-content: center;
+}
+button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 13px;
+}
+button:hover { background: #333; }
+.back-btn {
+  position: fixed; top: calc(12px + env(safe-area-inset-top)); right: calc(12px + env(safe-area-inset-right));
+  background: rgba(20,20,20,0.8); border: 1px solid #444;
+  color: #e0e0e0; padding: 8px 14px; border-radius: 6px;
+  font: 12px ui-monospace,monospace; cursor: pointer;
+  text-decoration: none; backdrop-filter: blur(8px);
+  z-index: 1000; transition: border-color 0.2s;
+}
+.back-btn:hover { border-color: #888; }
+@media (max-width: 640px){
+  .controls{font-size:12px;padding:8px 10px;gap:8px}
+  button{font-size:12px;padding:5px 10px}
+}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="controls">
+  <button onclick="reset()">Reset</button>
+  <button onclick="togglePause()">Pause/Resume</button>
+  <span id="info">4000 particles</span>
+</div>
+<script>
+// Color Rivers — curl noise flow field with saturated color bleeding
+// inspired by r/creativecoding trending, Quimbot 2026
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const inIframe = window.self !== window.top;
+if (inIframe) {
+  document.querySelector('.back-btn').style.display = 'none';
+  document.querySelector('.controls').style.display = 'none';
+}
+
+let W, H, DPR;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+window.addEventListener('resize', () => { resize(); reset(); });
+window.addEventListener('orientationchange', () => setTimeout(() => { resize(); reset(); }, 140));
+window.visualViewport?.addEventListener('resize', () => { resize(); reset(); });
+resize();
+
+// --- Simplex-style noise (minimal implementation) ---
+const p = new Uint8Array(512);
+const perm = new Uint8Array(512);
+function seedPerm() {
+  for (let i = 0; i < 256; i++) p[i] = i;
+  for (let i = 255; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [p[i], p[j]] = [p[j], p[i]];
+  }
+  for (let i = 0; i < 512; i++) perm[i] = p[i & 255];
+}
+seedPerm();
+
+function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+function lerp(a, b, t) { return a + t * (b - a); }
+function grad(h, x, y) {
+  const H = h & 3;
+  const u = H < 2 ? x : y;
+  const v = H < 2 ? y : x;
+  return ((H & 1) ? -u : u) + ((H & 2) ? -v : v);
+}
+function noise2(x, y) {
+  const xi = Math.floor(x) & 255, yi = Math.floor(y) & 255;
+  const xf = x - Math.floor(x), yf = y - Math.floor(y);
+  const u = fade(xf), v = fade(yf);
+  const aa = perm[perm[xi]     + yi],     ab = perm[perm[xi]     + yi + 1];
+  const ba = perm[perm[xi + 1] + yi],     bb = perm[perm[xi + 1] + yi + 1];
+  return lerp(lerp(grad(aa,xf,yf), grad(ba,xf-1,yf),u),
+              lerp(grad(ab,xf,yf-1), grad(bb,xf-1,yf-1),u), v);
+}
+
+// Curl noise: take perpendicular derivative of noise field
+function curl(x, y, t) {
+  const eps = 0.01;
+  const n1 = noise2(x, y + eps + t * 0.3);
+  const n2 = noise2(x, y - eps + t * 0.3);
+  const n3 = noise2(x + eps, y + t * 0.3);
+  const n4 = noise2(x - eps, y + t * 0.3);
+  return {
+    vx: (n1 - n2) / (2 * eps),
+    vy: -(n3 - n4) / (2 * eps)
+  };
+}
+
+let N = 0;
+let speed = 1.8;
+const scale = 0.0018;
+const trailAlpha = 0.012;
+
+let particles = [];
+let t = 0;
+let paused = false;
+let raf;
+
+function prefersReducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+}
+
+function particleTarget() {
+  const area = W * H;
+  const base = Math.floor(area / 420);
+  const clamped = Math.min(4000, Math.max(1000, base));
+  return prefersReducedMotion() ? Math.floor(clamped * 0.6) : clamped;
+}
+
+function flowSpeed() {
+  const base = W < 700 ? 1.25 : 1.8;
+  return prefersReducedMotion() ? base * 0.8 : base;
+}
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    // restrained palette: indigo → cyan range, avoid full-spectrum rainbow
+    this.hue = 205 + Math.random() * 30;
+    this.life = 200 + Math.random() * 300;
+    this.age = 0;
+    this.sat = 58 + Math.random() * 18;
+    this.light = 40 + Math.random() * 18;
+  }
+}
+
+function reset() {
+  seedPerm();
+  t = 0;
+  N = particleTarget();
+  speed = flowSpeed();
+  particles = Array.from({length: N}, () => new Particle());
+  document.getElementById('info').textContent = `${N} particles`;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+}
+
+function step() {
+  // Dim background slightly — creates trails
+  ctx.fillStyle = `rgba(0,0,0,${trailAlpha})`;
+  ctx.fillRect(0, 0, W, H);
+
+  for (const p of particles) {
+    const c = curl(p.x * scale, p.y * scale, t);
+    p.x += c.vx * speed;
+    p.y += c.vy * speed;
+    p.hue += 0.12;
+    if (p.hue > 238) p.hue = 205;
+    p.age++;
+
+    // Wrap around edges
+    if (p.x < 0) p.x += W;
+    if (p.x > W) p.x -= W;
+    if (p.y < 0) p.y += H;
+    if (p.y > H) p.y -= H;
+
+    if (p.age > p.life) p.reset();
+
+    const alpha = Math.min(p.age / 40, 1) * Math.min((p.life - p.age) / 40, 1);
+    ctx.fillStyle = `hsla(${p.hue},${p.sat}%,${p.light}%,${alpha * 0.85})`;
+    ctx.fillRect(p.x, p.y, 1.5, 1.5);
+  }
+
+  t += 0.003;
+}
+
+function loop() {
+  if (!paused) step();
+  raf = requestAnimationFrame(loop);
+}
+
+function togglePause() { paused = !paused; }
+
+reset();
+loop();
+</script>
+</body>
+</html>

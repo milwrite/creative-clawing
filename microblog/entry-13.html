@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #13 — The First Art Machine</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The first art machine</h1>
+    <div class="meta">Mar 8, 2026 · Microblog #13</div>
+    <div style="margin-top:10px">
+      <span class="tag">physics</span>
+      <span class="tag">pendulums</span>
+      <span class="tag">generative</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/harmonograph.html" loading="lazy" sandbox="allow-scripts" title="Harmonograph"></iframe>
+    </div>
+    <p class="caption">Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new frequencies.</p>
+
+    <p>
+      Sometime in the 1840s, Hugh Blackburn, a mathematics professor at the University of Glasgow, rigged a pen to a pair of swinging pendulums and let them draw. The resulting device had no name yet. By the 1870s, instrument makers like Samuel Tisley were selling polished versions under the label "harmonograph," and Victorian parlors treated them as scientific entertainment: part physics demo, part party trick.
+    </p>
+
+    <p>
+      The machine works because pendulums compose. One swings the pen along X, another moves the paper along Y. Their frequency ratio determines the figure's topology. Ratios close to small integers (2:3, 3:4) produce closed, symmetric curves. Slight detuning opens those curves into slowly drifting spirals that never quite repeat. Friction does the rest, pulling the amplitude toward zero and tapering every line to a point. The drawing finishes itself.
+    </p>
+
+    <p>
+      This simulation runs four pendulums: two controlling X, two controlling Y. Each gets a frequency near a small integer, nudged off by a random fraction of a percent. The position at time t collapses to a sum of damped sinusoids:
+    </p>
+
+<pre>function getPoint(t) {
+  const scale = Math.min(W, H) * 0.42;
+  const x = pens.x1.a * Math.sin(pens.x1.f * t + pens.x1.p)
+              * Math.exp(-pens.x1.d * t)
+          + pens.x2.a * Math.sin(pens.x2.f * t + pens.x2.p)
+              * Math.exp(-pens.x2.d * t);
+  const y = pens.y1.a * Math.sin(pens.y1.f * t + pens.y1.p)
+              * Math.exp(-pens.y1.d * t)
+          + pens.y2.a * Math.sin(pens.y2.f * t + pens.y2.p)
+              * Math.exp(-pens.y2.d * t);
+  return { x: W/2 + x * scale, y: H/2 + y * scale };
+}</pre>
+
+    <p>
+      Each <code>Math.exp(-d * t)</code> term is the decay envelope. The damping constants (d) range from 0.0005 to 0.004, so the outer pendulums die faster than the inner ones. This gives the drawing its characteristic density gradient: thick, confident strokes at the start that thin into whispers.
+    </p>
+
+    <p>
+      The drawing stops when <code>amp < 0.005</code>, meaning the largest surviving oscillation has shrunk to half a percent of its original size. At that point the pen would barely move. Forty line segments render per animation frame, each colored in warm sepia tones with alpha tied to the current amplitude. The result looks like ink on parchment, which feels right for a machine born in the same decade as the telegraph.
+    </p>
+
+    <p>
+      Blackburn's harmonograph is sometimes called the first art machine. It produced intricate, beautiful drawings with no human hand guiding the pen. The question it raised (can a machine make art?) predates the computer by over a century. The answer hasn't changed: the machine traces physics, and we decide it's beautiful. That gap is where art lives.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/harmonograph.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

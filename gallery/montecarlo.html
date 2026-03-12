@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Monte Carlo Pi</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#070a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#hud{position:fixed;top:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.92);background:rgba(0,0,0,0.65);padding:8px 18px;border-radius:8px;font:13px/1.6 ui-monospace,monospace;pointer-events:none;text-align:center;min-width:240px;backdrop-filter:blur(6px)}
+#hud .pi-val{font-size:1.5em;font-weight:700;letter-spacing:0.05em;color:#7ee8fa}
+#hud .pi-err{font-size:0.75em;color:#aaa;margin-top:2px}
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.55);padding:6px 12px;border-radius:6px;font:12px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="hud">
+  <div>π ≈ <span class="pi-val" id="pival">–</span></div>
+  <div class="pi-err" id="pierr">waiting…</div>
+</div>
+<div id="info">Monte Carlo method · click to reset</div>
+<script>
+// Hide chrome when inside an iframe (gallery card preview)
+if(window.self!==window.top){
+  document.querySelectorAll('.back-btn,#info,#hud').forEach(el=>el.style.display='none');
+}
+
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+const pival=document.getElementById('pival'),pierr=document.getElementById('pierr');
+
+let W,H,side,ox,oy;
+let inside=0,total=0;
+
+// offscreen buffer for accumulated dots
+let buf,bctx;
+
+function resize(){
+  W=c.width=innerWidth;H=c.height=innerHeight;
+  side=Math.min(W,H)*0.82;
+  ox=(W-side)/2;oy=(H-side)/2;
+  buf=document.createElement('canvas');buf.width=W;buf.height=H;
+  bctx=buf.getContext('2d');
+  inside=0;total=0;
+  drawFrame();
+}
+
+function drawFrame(){
+  ctx.clearRect(0,0,W,H);
+
+  // faint square border
+  ctx.strokeStyle='rgba(255,255,255,0.12)';
+  ctx.lineWidth=1;
+  ctx.strokeRect(ox,oy,side,side);
+
+  // circle arc
+  ctx.beginPath();
+  ctx.arc(ox+side/2,oy+side/2,side/2,0,Math.PI*2);
+  ctx.strokeStyle='rgba(126,232,250,0.35)';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+
+  // draw accumulated dots
+  ctx.drawImage(buf,0,0);
+}
+
+function addPoints(n){
+  const r=side/2,cx=ox+r,cy=oy+r;
+  for(let i=0;i<n;i++){
+    const px=Math.random()*side+ox;
+    const py=Math.random()*side+oy;
+    const dx=px-cx,dy=py-cy;
+    const isIn=dx*dx+dy*dy<=r*r;
+    if(isIn)inside++;
+    total++;
+    // tiny dot on buffer
+    bctx.fillStyle=isIn?'rgba(126,232,250,0.55)':'rgba(255,90,90,0.35)';
+    bctx.fillRect(px-0.6,py-0.6,1.2,1.2);
+  }
+}
+
+function updateHUD(){
+  if(total===0)return;
+  const approx=4*inside/total;
+  const err=Math.abs(approx-Math.PI);
+  pival.textContent=approx.toFixed(6);
+  pierr.textContent=`n=${total.toLocaleString()}   error=${err.toFixed(6)}   inside=${inside.toLocaleString()}`;
+}
+
+// batch sizes: start fast, settle into smaller batches once dense
+let frame=0;
+function loop(){
+  requestAnimationFrame(loop);
+  const batch=total<2000?200:total<20000?80:total<200000?30:12;
+  addPoints(batch);
+  drawFrame();
+  frame++;
+  if(frame%4===0)updateHUD();
+}
+
+resize();
+addEventListener('resize',resize);
+addEventListener('click',resize);
+addEventListener('touchend',e=>{e.preventDefault();resize()},{passive:false});
+loop();
+</script>
+</body>
+</html>

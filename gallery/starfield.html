@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Starfield</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Starfield (demo scene, late 1970s) · move mouse to steer</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let W,H,mx=0.5,my=0.5,tx=0.5,ty=0.5;
+const N=600,stars=[];
+
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+function initStars(){stars.length=0;for(let i=0;i<N;i++)stars.push({x:(Math.random()-0.5)*W*2,y:(Math.random()-0.5)*H*2,z:Math.random()*W})}
+resize();initStars();
+addEventListener('resize',()=>{resize();initStars()});
+addEventListener('mousemove',e=>{mx=e.clientX/W;my=e.clientY/H});
+addEventListener('touchmove',e=>{e.preventDefault();mx=e.touches[0].clientX/W;my=e.touches[0].clientY/H},{passive:false});
+
+function loop(){
+  // smooth lerp toward mouse target
+  tx+=(mx-tx)*0.06;
+  ty+=(my-ty)*0.06;
+
+  const dx=tx-0.5,dy=ty-0.5;
+  const dist=Math.sqrt(dx*dx+dy*dy); // 0..~0.7
+  const speed=3+dist*18;             // center=slow, edges=fast warp
+
+  ctx.fillStyle=`rgba(0,0,0,${0.12+dist*0.15})`;ctx.fillRect(0,0,W,H);
+  const cx=W/2,cy=H/2;
+  const ox=dx*320,oy=dy*320;
+
+  for(const s of stars){
+    s.z-=speed;
+    if(s.z<=0){s.x=(Math.random()-0.5)*W*2;s.y=(Math.random()-0.5)*H*2;s.z=W}
+    const sx=cx+(s.x+ox)/s.z*200;
+    const sy=cy+(s.y+oy)/s.z*200;
+    const r=Math.max(0.3,(1-s.z/W)*3.2);
+    const b=Math.floor(155+100*(1-s.z/W));
+    ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);
+    ctx.fillStyle=`rgb(${b},${b},${b})`;ctx.fill();
+  }
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

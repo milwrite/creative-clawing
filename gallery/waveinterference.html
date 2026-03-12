@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Interference</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#04060e;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(4,6,14,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#080d1a;border-top:1px solid #1a2235;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#7fa8d4}
+.panel .hint{color:#3d5470}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel label{display:flex;align-items:center;gap:0.35rem;color:#6a8fba}
+.panel input[type=range]{width:90px;height:30px;accent-color:#4a7fa0}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #2a3a50;color:#8ab0d4;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#c0d8f0;border-color:#4a6888}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}.panel input[type=range]{width:70px}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery/">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Wave Interference</span>
+    <span class="hint">drag sources · click empty space to add</span>
+  </div>
+  <div class="controls">
+    <label>λ <input type="range" id="wl" min="20" max="150" value="70"></label>
+    <label>speed <input type="range" id="spd" min="1" max="12" value="5"></label>
+    <button id="addBtn">+ source</button>
+    <button id="resetBtn">reset</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+
+// Lower-res offscreen canvas for the interference field
+const off=document.createElement('canvas');
+const octx=off.getContext('2d');
+
+const SCALE=3; // render at 1/SCALE resolution then stretch
+let W,H,rW,rH,imgData,data;
+
+let sources=[];
+let t=0;
+let dragging=null;
+
+function initSources(){
+  sources=[
+    {x:0.33,y:0.5},
+    {x:0.67,y:0.5},
+    {x:0.5, y:0.3}
+  ];
+}
+initSources();
+
+function resize(){
+  const nw=canvas.offsetWidth;
+  const nh=canvas.offsetHeight;
+  if(nw<1||nh<1) return;
+  if(nw===W&&nh===H) return;
+  W=nw; H=nh;
+  canvas.width=W;
+  canvas.height=H;
+  rW=Math.max(1,Math.ceil(W/SCALE));
+  rH=Math.max(1,Math.ceil(H/SCALE));
+  off.width=rW;
+  off.height=rH;
+  imgData=octx.createImageData(rW,rH);
+  data=imgData.data;
+}
+window.addEventListener('resize',resize);
+
+function getWL(){return +document.getElementById('wl').value;}
+function getSpd(){return +document.getElementById('spd').value;}
+
+function hslToRgb(h,s,l){
+  // h 0-360, s 0-1, l 0-1
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x;}else if(h<120){r=x;g=c;}
+  else if(h<180){g=c;b=x;}else if(h<240){g=x;b=c;}
+  else if(h<300){r=x;b=c;}else{r=c;b=x;}
+  return [Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)];
+}
+
+function render(){
+  const wl=getWL()/SCALE;
+  const n=sources.length;
+  const TAU=Math.PI*2;
+
+  for(let y=0;y<rH;y++){
+    for(let x=0;x<rW;x++){
+      let amp=0;
+      for(let s=0;s<n;s++){
+        const sx=sources[s].x*rW;
+        const sy=sources[s].y*rH;
+        const dx=x-sx,dy=y-sy;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        // Amplitude falls off with distance
+        const falloff=1/(1+dist*0.02);
+        amp+=falloff*Math.sin(TAU*dist/wl-t);
+      }
+      amp/=n;
+
+      // Map amp (-1..1) to a cyan-blue-violet palette
+      // Positive: cyan (180°) through blue (240°)
+      // Negative: blue (240°) through violet (280°)
+      const norm=(amp+1)*0.5; // 0..1
+      const hue=180+norm*100;  // 180=cyan ... 280=violet
+      const sat=0.8+norm*0.2;
+      const lit=0.08+Math.abs(amp)*0.55;
+
+      const [r,g,b]=hslToRgb(hue,sat,Math.min(lit,1));
+      const idx=(y*rW+x)*4;
+      data[idx]=r; data[idx+1]=g; data[idx+2]=b; data[idx+3]=255;
+    }
+  }
+
+  octx.putImageData(imgData,0,0);
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(off,0,0,W,H);
+
+  // Draw source markers (hidden in iframe via CSS on .back/.panel but we also skip here)
+  if(!document.documentElement.classList.contains('in-iframe')){
+    for(let s=0;s<sources.length;s++){
+      const sx=sources[s].x*W;
+      const sy=sources[s].y*H;
+      ctx.beginPath();
+      ctx.arc(sx,sy,10,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,255,255,0.5)';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(sx,sy,3,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,0.9)';
+      ctx.fill();
+    }
+  }
+}
+
+function loop(){
+  resize();
+  if(W<1||H<1||!data){requestAnimationFrame(loop);return;}
+  t+=getSpd()*0.04;
+  render();
+  requestAnimationFrame(loop);
+}
+// Defer start so flexbox layout has resolved offsetWidth/Height
+requestAnimationFrame(function(){requestAnimationFrame(loop);});
+
+// Pointer interaction
+function cpos(e){
+  const r=canvas.getBoundingClientRect();
+  const cx=((e.touches?e.touches[0].clientX:e.clientX)-r.left);
+  const cy=((e.touches?e.touches[0].clientY:e.clientY)-r.top);
+  return{x:cx/W,y:cy/H};
+}
+
+function nearSource(px,py){
+  const thr=24/Math.max(W,H);
+  for(let i=sources.length-1;i>=0;i--){
+    const dx=sources[i].x-px,dy=sources[i].y-py;
+    if(Math.sqrt(dx*dx+dy*dy)<thr) return i;
+  }
+  return -1;
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  const p=cpos(e);
+  const idx=nearSource(p.x,p.y);
+  if(idx>=0){dragging=idx;canvas.setPointerCapture(e.pointerId);}
+  else if(sources.length<8) sources.push({x:p.x,y:p.y});
+});
+canvas.addEventListener('pointermove',e=>{
+  if(dragging===null) return;
+  const p=cpos(e);
+  sources[dragging].x=Math.max(0,Math.min(1,p.x));
+  sources[dragging].y=Math.max(0,Math.min(1,p.y));
+});
+canvas.addEventListener('pointerup',()=>{dragging=null;});
+
+document.getElementById('addBtn').addEventListener('click',()=>{
+  if(sources.length<8) sources.push({x:0.25+Math.random()*0.5,y:0.25+Math.random()*0.5});
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{initSources();t=0;});
+</script>
+</body>
+</html>

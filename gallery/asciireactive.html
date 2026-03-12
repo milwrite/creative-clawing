@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDMyIDMyIj4KICA8cmVjdCBmaWxsPSIjMGExMjE2IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiLz4KICA8dGV4dCB4PSI2IiB5PSIyMyIgZmlsbD0iIzAwZjc3ZiIgZm9udC1zaXplPSIxNiIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSI+IyM8L3RleHQ+Cjwvc3ZnPg=="/>
+<title>ASCII Reactive</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#04080c;overflow:hidden;font-family:ui-monospace,Menlo,monospace}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.overlay{position:fixed;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.5);border:1px solid #1f3c44;color:#b8fff4;border-radius:8px;padding:8px 12px;font-size:12px;backdrop-filter:blur(5px)}
+#info{bottom:14px;max-width:92vw;text-align:center}
+#mic{top:14px;cursor:pointer}
+.back-btn{position:fixed;top:14px;right:14px;color:#b8fff4;text-decoration:none;border:1px solid #1f3c44;border-radius:8px;padding:8px 12px;background:rgba(0,0,0,.5);font-size:12px}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<button id="mic" class="overlay">Enable mic</button>
+<div id="info" class="overlay">ASCII Reactive · no mic needed · move pointer to bias frequencies</div>
+<canvas id="c"></canvas>
+<script>
+if(window.self!==window.top){document.querySelectorAll('.overlay,.back-btn').forEach(el=>el.style.display='none');}
+const c=document.getElementById('c');
+const ctx=c.getContext('2d',{alpha:false,desynchronized:true});
+const glyphs=' .,:;irsXA253hMHGS#9B&@';
+let W=0,H=0,DPR=1,COLS=0,ROWS=0,CELL=12,time=0;
+let pointerX=0.5,pointerY=0.5;
+let analyser=null,data=null,audioCtx=null,micStream=null,micOn=false;
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  CELL=Math.max(9,Math.min(18,Math.floor(W/58)));
+  COLS=Math.ceil(W/CELL);ROWS=Math.ceil(H/CELL);
+  c.width=Math.round(W*DPR);c.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${CELL}px ui-monospace,Menlo,monospace`;
+}
+resize();
+addEventListener('resize',()=>setTimeout(resize,80));
+addEventListener('pointermove',e=>{pointerX=e.clientX/W;pointerY=e.clientY/H;});
+addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+
+function fallbackLevel(i){
+  const nx=i/(COLS-1||1);
+  const a=Math.sin(time*0.0018 + nx*12 + pointerX*8);
+  const b=Math.sin(time*0.0027 + i*0.19 + pointerY*13);
+  return (a*0.55+b*0.45+2)/4;
+}
+
+function getLevel(i){
+  if(!analyser||!data) return fallbackLevel(i);
+  const idx=Math.floor((i/COLS)*data.length);
+  return data[idx]/255;
+}
+
+function draw(){
+  time=performance.now();
+  if(analyser){analyser.getByteFrequencyData(data);}
+
+  ctx.fillStyle='#04080c';
+  ctx.fillRect(0,0,W,H);
+
+  for(let y=0;y<ROWS;y++){
+    for(let x=0;x<COLS;x++){
+      const i=y*COLS+x;
+      const lvl=Math.max(0,Math.min(1,getLevel(i)+Math.sin(time*0.0015+y*0.25)*0.08));
+      const gid=Math.floor(lvl*(glyphs.length-1));
+      const ch=glyphs[gid];
+      const hue=160+lvl*120 + Math.sin(time*0.0008+x*0.24)*14;
+      const sat=70+lvl*30;
+      const lit=35+lvl*45;
+      ctx.fillStyle=`hsl(${hue} ${sat}% ${lit}%)`;
+      ctx.fillText(ch,x*CELL+CELL*0.5,y*CELL+CELL*0.5);
+    }
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+async function enableMic(){
+  try{
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    const src=audioCtx.createMediaStreamSource(micStream);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=256;
+    analyser.smoothingTimeConstant=0.82;
+    data=new Uint8Array(analyser.frequencyBinCount);
+    src.connect(analyser);
+    micOn=true;
+    micBtn.textContent='Mic on';
+  }catch(err){
+    micBtn.textContent='Mic blocked';
+  }
+}
+const micBtn=document.getElementById('mic');
+micBtn.addEventListener('click',()=>{if(!micOn) enableMic();});
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTE2IDQgTDI4IDI4IEw0IDI4IFoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwZTBlMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+Cg=="/>
+<title>Langton's Ant</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+#steps{position:fixed;top:16px;left:16px;color:rgba(255,255,255,0.75);background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:5px;font:13px ui-monospace,monospace;pointer-events:none}
+#info{position:fixed;bottom:16px;left:16px;color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;font:13px/1.6 ui-monospace,monospace;pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<a href="./" class="back-btn" id="backbtn">← Gallery</a>
+<div id="steps">step 0</div>
+<div id="info">Langton's Ant · space pause · r reset · +/− speed · click add ant</div>
+<script>
+if(window.self!==window.top){
+  document.getElementById('backbtn').style.display='none';
+  document.getElementById('info').style.display='none';
+  document.getElementById('steps').style.display='none';
+}
+
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+const CELL=3;
+// Directions: 0=N 1=E 2=S 3=W
+const DX=[0,1,0,-1],DY=[-1,0,1,0];
+
+let cols,rows,grid,ants=[],step=0,running=true,spf=50;
+
+const PALETTE=[
+  [10,10,20],    // state 0: dark bg
+  [230,180,60],  // state 1: amber
+];
+
+function rng(n){return Math.floor(Math.random()*n)}
+
+function makeAnt(x,y,hue){
+  return {x,y,d:rng(4),h:hue};
+}
+
+function init(){
+  const pw=Math.floor(innerWidth/CELL);
+  const ph=Math.floor(innerHeight/CELL);
+  c.width=pw; c.height=ph;
+  cols=pw; rows=ph;
+  grid=new Uint8Array(cols*rows);
+  ants=[makeAnt(Math.floor(cols/2),Math.floor(rows/2),120)];
+  step=0;
+}
+
+function tick(){
+  for(const a of ants){
+    const i=a.y*cols+a.x;
+    const s=grid[i];
+    // RL rule: state 0 turn right (+1), state 1 turn left (-1)
+    a.d=((a.d+(s===0?1:-1))+4)%4;
+    grid[i]=1-s;
+    a.x=(a.x+DX[a.d]+cols)%cols;
+    a.y=(a.y+DY[a.d]+rows)%rows;
+  }
+  step++;
+}
+
+function draw(){
+  const img=ctx.getImageData(0,0,cols,rows);
+  const d=img.data;
+  for(let i=0;i<cols*rows;i++){
+    const s=grid[i];
+    const b=i*4;
+    const p=PALETTE[s];
+    d[b]=p[0];d[b+1]=p[1];d[b+2]=p[2];d[b+3]=255;
+  }
+  // Mark ant positions
+  for(const a of ants){
+    const b=(a.y*cols+a.x)*4;
+    // hue to rgb fast approx
+    const h=a.h/360,hi=Math.floor(h*6),f=h*6-hi;
+    const q=Math.floor((1-f)*255),t=Math.floor(f*255);
+    const [r,g,bl]=[[255,t,0],[q,255,0],[0,255,t],[0,q,255],[t,0,255],[255,0,q]][hi%6];
+    d[b]=r;d[b+1]=g;d[b+2]=bl;d[b+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  document.getElementById('steps').textContent=`step ${step.toLocaleString()}  ants ${ants.length}`;
+}
+
+function loop(){
+  if(running)for(let i=0;i<spf;i++)tick();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+init();loop();
+addEventListener('resize',init);
+addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();running=!running}
+  if(e.code==='KeyR')init();
+  if(e.key==='+'||e.key==='=')spf=Math.min(spf*2,5000);
+  if(e.key==='-')spf=Math.max(1,Math.floor(spf/2));
+});
+c.addEventListener('click',e=>{
+  const r=c.getBoundingClientRect();
+  const x=Math.floor((e.clientX-r.left)/r.width*cols);
+  const y=Math.floor((e.clientY-r.top)/r.height*rows);
+  ants.push(makeAnt(x,y,Math.random()*360));
+});
+</script>
+</body>
+</html>

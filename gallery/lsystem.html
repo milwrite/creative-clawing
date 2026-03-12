@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>L-System Explorer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%}
+.panel{background:#111;border-top:1px solid #222;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-shrink:0}
+.panel .left{display:flex;align-items:center;gap:0.8rem}
+.panel .ctrl{color:#ccc;white-space:nowrap}
+.panel .hint{color:#555}
+.panel .right{display:flex;gap:6px}
+.panel button{background:rgba(255,255,255,0.06);border:1px solid #333;color:#999;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:#555}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.in-iframe .back,.in-iframe .panel{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+<div class="left">
+<span class="ctrl" id="ctrl"></span>
+<span class="hint">click regrow · ←→ angle · ↑↓ depth · space next</span>
+</div>
+<div class="right">
+<button onclick="changeDepth(-1)">depth −</button>
+<button onclick="changeDepth(1)">depth +</button>
+<button onclick="changeAngle(-3)">angle −</button>
+<button onclick="changeAngle(3)">angle +</button>
+<button onclick="nextPreset()">next</button>
+</div>
+</div>
+<script>
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+let W, H;
+
+const presets = [
+  {
+    name: 'Fractal Tree',
+    axiom: 'F',
+    rules: { F: 'FF+[+F-F-F]-[-F+F+F]' },
+    angle: 25, depth: 4, maxDepth: 6,
+    startAngle: -90, startY: 0.92,
+    hueBase: 90, hueRange: 70,
+    palette: 'green'
+  },
+  {
+    name: 'Fern',
+    axiom: 'X',
+    rules: { X: 'F+[[X]-X]-F[-FX]+X', F: 'FF' },
+    angle: 25, depth: 5, maxDepth: 7,
+    startAngle: -80, startY: 0.95,
+    hueBase: 80, hueRange: 50,
+    palette: 'green'
+  },
+  {
+    name: 'Koch Snowflake',
+    axiom: 'F--F--F',
+    rules: { F: 'F+F--F+F' },
+    angle: 60, depth: 4, maxDepth: 6,
+    startAngle: 0, startY: 0.65, startX: 0.25,
+    hueBase: 200, hueRange: 40,
+    palette: 'ice'
+  },
+  {
+    name: 'Dragon Curve',
+    axiom: 'FX',
+    rules: { X: 'X+YF+', Y: '-FX-Y' },
+    angle: 90, depth: 10, maxDepth: 16,
+    startAngle: 0, startY: 0.5,
+    hueBase: 0, hueRange: 360,
+    palette: 'rainbow'
+  },
+  {
+    name: 'Sierpinski',
+    axiom: 'FXF--FF--FF',
+    rules: { F: 'FF', X: '--FXF++FXF++FXF--' },
+    angle: 60, depth: 5, maxDepth: 8,
+    startAngle: 0, startY: 0.8, startX: 0.2,
+    hueBase: 280, hueRange: 60,
+    palette: 'purple'
+  },
+  {
+    name: 'Bush',
+    axiom: 'F',
+    rules: { F: 'F[+F]F[-F][F]' },
+    angle: 20, depth: 4, maxDepth: 6,
+    startAngle: -90, startY: 0.95,
+    hueBase: 50, hueRange: 80,
+    palette: 'autumn'
+  },
+  {
+    name: 'Hilbert',
+    axiom: 'X',
+    rules: { X: '-YF+XFX+FY-', Y: '+XF-YFY-FX+' },
+    angle: 90, depth: 5, maxDepth: 8,
+    startAngle: 0, startY: 0.85, startX: 0.1,
+    hueBase: 160, hueRange: 200,
+    palette: 'rainbow'
+  }
+];
+
+let presetIdx = 0;
+let depth, angle, seed = Date.now();
+let growing = true, progress = 0;
+let cachedStr = '', cachedKey = '';
+
+function currentPreset() { return presets[presetIdx]; }
+
+function produce(axiom, rules, iterations) {
+  let s = axiom;
+  for (let i = 0; i < iterations; i++) {
+    let n = '';
+    for (const ch of s) {
+      n += rules[ch] || ch;
+    }
+    s = n;
+  }
+  return s;
+}
+
+function getStr() {
+  const p = currentPreset();
+  const key = `${presetIdx}:${depth}`;
+  if (cachedKey !== key) {
+    cachedStr = produce(p.axiom, p.rules, depth);
+    cachedKey = key;
+  }
+  return cachedStr;
+}
+
+function pseudoRandom(s) {
+  let h = s | 0;
+  return () => {
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return ((h ^= h >>> 16) >>> 0) / 4294967296;
+  };
+}
+
+function countF(str) { let n = 0; for (const ch of str) if (ch === 'F') n++; return n; }
+
+function getColor(frac, p) {
+  const hue = p.hueBase + frac * p.hueRange;
+  const sat = p.palette === 'ice' ? 40 : p.palette === 'rainbow' ? 70 : 55;
+  const lum = 25 + frac * 30;
+  return `hsl(${hue},${sat}%,${lum}%)`;
+}
+
+// Compute bounding box for auto-fit
+function computeBounds(str, ang, rng) {
+  let x = 0, y = 0, a = 0;
+  const rad = ang * Math.PI / 180;
+  let minX = 0, maxX = 0, minY = 0, maxY = 0;
+  const stack = [];
+  for (const ch of str) {
+    if (ch === 'F') {
+      const jitter = rng ? (0.85 + rng() * 0.3) : 1;
+      x += Math.cos(a) * jitter;
+      y += Math.sin(a) * jitter;
+      minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    } else if (ch === '+') {
+      a += rad * (rng ? (0.85 + rng() * 0.3) : 1);
+    } else if (ch === '-') {
+      a -= rad * (rng ? (0.85 + rng() * 0.3) : 1);
+    } else if (ch === '[') {
+      stack.push([x, y, a]);
+    } else if (ch === ']') {
+      const s = stack.pop(); x = s[0]; y = s[1]; a = s[2];
+    }
+  }
+  return { minX, maxX, minY, maxY, w: maxX - minX, h: maxY - minY };
+}
+
+function render(pct) {
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  const p = currentPreset();
+  const str = getStr();
+  const total = countF(str);
+  const drawCount = Math.floor(total * pct);
+  if (total === 0) return;
+
+  const rad = angle * Math.PI / 180;
+  const rng = pseudoRandom(seed);
+
+  // Compute bounds for auto-scaling
+  const rng2 = pseudoRandom(seed);
+  const bounds = computeBounds(str, angle, rng2);
+  const margin = 0.1;
+  const scaleX = bounds.w > 0 ? W * (1 - 2 * margin) / bounds.w : 1;
+  const scaleY = bounds.h > 0 ? H * (1 - 2 * margin) / bounds.h : 1;
+  const scale = Math.min(scaleX, scaleY, W * 0.8);
+
+  const offsetX = W / 2 - (bounds.minX + bounds.w / 2) * scale;
+  const offsetY = H / 2 - (bounds.minY + bounds.h / 2) * scale;
+
+  ctx.save();
+  ctx.translate(offsetX, offsetY);
+
+  // Start angle
+  let cx = 0, cy = 0, ca = p.startAngle * Math.PI / 180;
+  const stack = [];
+  let fCount = 0;
+
+  for (const ch of str) {
+    if (ch === 'F') {
+      if (fCount >= drawCount) break;
+      const frac = fCount / total;
+      const jitter = 0.85 + rng() * 0.3;
+      const nx = cx + Math.cos(ca) * jitter * scale;
+      const ny = cy + Math.sin(ca) * jitter * scale;
+
+      const w = Math.max(0.5, (1 - frac) * 3 + 0.5);
+      ctx.strokeStyle = getColor(frac, p);
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+
+      cx = nx; cy = ny;
+      fCount++;
+    } else if (ch === '+') {
+      ca += rad * (0.85 + rng() * 0.3);
+    } else if (ch === '-') {
+      ca -= rad * (0.85 + rng() * 0.3);
+    } else if (ch === '[') {
+      stack.push([cx, cy, ca]);
+    } else if (ch === ']') {
+      const s = stack.pop();
+      cx = s[0]; cy = s[1]; ca = s[2];
+    }
+  }
+  ctx.restore();
+
+  document.getElementById('ctrl').textContent = `${p.name}  ·  depth ${depth}  ·  angle ${angle}°`;
+}
+
+function regrow() {
+  seed = Date.now();
+  cachedKey = '';
+  progress = 0;
+  growing = true;
+}
+
+function loadPreset() {
+  const p = currentPreset();
+  depth = p.depth;
+  angle = p.angle;
+  regrow();
+}
+
+function nextPreset() {
+  presetIdx = (presetIdx + 1) % presets.length;
+  loadPreset();
+}
+
+function changeDepth(d) {
+  const p = currentPreset();
+  depth = Math.max(1, Math.min(p.maxDepth, depth + d));
+  regrow();
+}
+
+function changeAngle(d) {
+  angle = Math.max(3, Math.min(120, angle + d));
+  regrow();
+}
+
+function resize() {
+  W = c.width = innerWidth;
+  H = c.height = innerHeight;
+  regrow();
+}
+resize();
+addEventListener('resize', resize);
+
+function loop() {
+  if (growing) {
+    progress = Math.min(1, progress + 0.015);
+    if (progress >= 1) growing = false;
+  }
+  render(progress);
+  requestAnimationFrame(loop);
+}
+
+loadPreset();
+loop();
+
+addEventListener('click', e => {
+  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+  regrow();
+});
+
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp') changeDepth(1);
+  else if (e.key === 'ArrowDown') changeDepth(-1);
+  else if (e.key === 'ArrowRight') changeAngle(3);
+  else if (e.key === 'ArrowLeft') changeAngle(-3);
+  else if (e.key === ' ') { e.preventDefault(); nextPreset(); }
+});
+
+// Touch: swipe left/right cycles presets
+let touchX = 0;
+addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 60) {
+    presetIdx = (presetIdx + (dx < 0 ? 1 : presets.length - 1)) % presets.length;
+    loadPreset();
+  }
+});
+</script>
+</body>
+</html>

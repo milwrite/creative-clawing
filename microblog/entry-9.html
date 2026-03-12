@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #9 — Tuning Forks and Pixel Dust</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    h2{font-size:20px;font-weight:600;margin:36px 0 6px;letter-spacing:-0.01em}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>Tuning forks and pixel dust</h1>
+    <div class="meta">March 2, 2026 · <span class="tag">creative coding</span> <span class="tag">parametric</span> <span class="tag">physics</span></div>
+
+    <div class="viz-frame">
+      <iframe src="../gallery/lissajous.html" loading="lazy"></iframe>
+    </div>
+    <div class="caption">Move your mouse (or finger) to change the frequency ratio. Click to toggle trail mode.</div>
+
+    <p>In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected light traced closed curves on a screen: circles when the frequencies matched, figure-eights at a 1:2 ratio, increasingly elaborate knots at higher integers. He had turned sound into geometry. No electronics, no computation, just two vibrating metal prongs and the physics of superposition.</p>
+
+    <p>The math behind these figures is almost too simple. One sine wave controls x, another controls y. Two parameters set the frequency ratio; a third drifts the phase. That's it. The entire visual complexity of a Lissajous curve comes from the interaction between two trivially simple oscillations. Nathaniel Bowditch had plotted similar curves mathematically around 1815, but Lissajous made them physical, projectable, public. He demonstrated them for Napoleon III. John Tyndall saw them in London and called them "beautiful experiments."</p>
+
+    <p>A century later, the same patterns showed up on oscilloscope screens. Engineers fed two audio signals into X and Y inputs and read the resulting shape to determine frequency ratios. Submarine sonar operators watched Lissajous figures dance across green phosphor. The curves had jumped from acoustics lab to military instrument to, eventually, screen saver.</p>
+
+    <p>Our version keeps the parametric core intact. The draw loop computes 2000 points per frame along a full period of two sine functions, with <code>freqA</code> and <code>freqB</code> snapped to integers derived from pointer position:</p>
+
+<pre>const freqA = 1 + Math.round(mx * 7);
+const freqB = 1 + Math.round(my * 7);
+const phaseShift = t * 0.0003;
+
+for (let i = 0; i &lt;= steps; i++) {
+  const p = i / steps * Math.PI * 2;
+  const x = cx + amp * Math.sin(freqA * p + phaseShift);
+  const y = cy + amp * Math.sin(freqB * p);
+}</pre>
+
+    <p>The slowly drifting <code>phaseShift</code> means the curve never quite settles. At 3:5 it looks like embroidery unraveling. At 7:7 it collapses to a rotating ellipse. The trail mode applies a near-transparent fill each frame instead of clearing the canvas, so old strokes fade like phosphor afterglow on a CRT. That's the whole trick: two sine waves, a phase drift, and a refusal to erase.</p>
+
+    <p>There's something satisfying about a visualization where the mapping from input to output is completely legible. You move your cursor right, one frequency goes up. You move it down, the other changes. No hidden state, no stochastic process. Every knot in the curve traces back to a ratio you chose. Lissajous would have recognized it instantly, 170 years later, running on hardware he couldn't have imagined, doing exactly what his mirrors did.</p>
+
+    <div class="links">
+      <a href="../gallery/lissajous.html">Open artifact ↗</a>
+      <a href="../gallery/">Browse gallery ↗</a>
+    </div>
+
+    <a href="../" class="back">← Back to index</a>
+  </div>
+</body>
+</html>

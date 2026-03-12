@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Chinoiserie Garden</title>
+<style>
+  * { margin: 0; padding: 0; }
+  body { background: #0c1a2e; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+  .info {
+    position: fixed; bottom: 1rem; left: 1rem;
+    color: rgba(255,255,255,0.85); font: 0.75rem/1.4 monospace;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    pointer-events: none;
+  }
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="info">click to plant a branch · chinoiserie garden</div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+let W, H, dpr;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  c.style.width = W + 'px'; c.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Color palette: deep blue, gold, coral, cream, jade
+const palette = {
+  bg: '#0c1a2e',
+  branch: '#3a2a1a',
+  blossom: ['#e8a0b4', '#f2c4d0', '#fff0f0', '#d4687a', '#c44d6e'],
+  leaf: ['#2d6b4f', '#3a8f6a', '#5aab84', '#1f5e40'],
+  gold: ['#c9a84c', '#dbb960', '#f0d080'],
+  cloud: 'rgba(200, 210, 230, 0.06)',
+};
+
+const branches = [];
+const blossoms = [];
+const clouds = [];
+const petals = []; // falling petals
+
+// Cloud puffs
+for (let i = 0; i < 8; i++) {
+  clouds.push({
+    x: Math.random() * 2000 - 500,
+    y: Math.random() * H * 0.5,
+    r: 40 + Math.random() * 80,
+    speed: 0.1 + Math.random() * 0.2,
+  });
+}
+
+function drawCloud(cl) {
+  ctx.beginPath();
+  ctx.arc(cl.x, cl.y, cl.r, 0, Math.PI * 2);
+  ctx.arc(cl.x + cl.r * 0.6, cl.y - cl.r * 0.3, cl.r * 0.7, 0, Math.PI * 2);
+  ctx.arc(cl.x - cl.r * 0.5, cl.y - cl.r * 0.1, cl.r * 0.5, 0, Math.PI * 2);
+  ctx.fillStyle = palette.cloud;
+  ctx.fill();
+}
+
+function growBranch(x, y, angle, len, depth, maxDepth) {
+  if (depth > maxDepth || len < 3) return;
+
+  const segments = [];
+  let cx = x, cy = y;
+  const steps = Math.floor(len / 3);
+
+  for (let i = 0; i < steps; i++) {
+    const wobble = (Math.random() - 0.5) * 0.15;
+    cx += Math.cos(angle + wobble) * 3;
+    cy += Math.sin(angle + wobble) * 3;
+    segments.push({ x: cx, y: cy });
+  }
+
+  branches.push({ segments, depth, maxDepth, drawn: 0 });
+
+  // Sub-branches
+  const numBranches = depth < 2 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < numBranches; i++) {
+    const spread = (Math.random() - 0.5) * 1.2;
+    const newLen = len * (0.55 + Math.random() * 0.2);
+    setTimeout(() => {
+      growBranch(cx, cy, angle + spread, newLen, depth + 1, maxDepth);
+    }, (depth + 1) * 200 + Math.random() * 300);
+  }
+
+  // Blossoms at tips and along branches
+  if (depth >= maxDepth - 2) {
+    for (let i = 0; i < 2 + Math.floor(Math.random() * 3); i++) {
+      const idx = Math.floor(Math.random() * segments.length);
+      const s = segments[idx] || { x: cx, y: cy };
+      setTimeout(() => {
+        blossoms.push({
+          x: s.x + (Math.random() - 0.5) * 8,
+          y: s.y + (Math.random() - 0.5) * 8,
+          r: 0,
+          maxR: 3 + Math.random() * 6,
+          color: palette.blossom[Math.floor(Math.random() * palette.blossom.length)],
+          phase: Math.random() * Math.PI * 2,
+          petalCount: 5,
+          growing: true,
+        });
+      }, depth * 300 + Math.random() * 800);
+    }
+  }
+
+  // Leaves along mid-branches
+  if (depth >= 1 && depth < maxDepth - 1) {
+    for (let i = 0; i < 1 + Math.floor(Math.random() * 2); i++) {
+      const idx = Math.floor(Math.random() * segments.length);
+      const s = segments[idx];
+      if (s) {
+        setTimeout(() => {
+          blossoms.push({
+            x: s.x, y: s.y,
+            r: 0, maxR: 4 + Math.random() * 5,
+            color: palette.leaf[Math.floor(Math.random() * palette.leaf.length)],
+            phase: Math.random() * Math.PI * 2,
+            petalCount: 2,
+            growing: true,
+            isLeaf: true,
+          });
+        }, depth * 250 + Math.random() * 500);
+      }
+    }
+  }
+}
+
+function drawBlossom(b, t) {
+  if (b.growing && b.r < b.maxR) b.r += 0.08;
+
+  ctx.save();
+  ctx.translate(b.x, b.y);
+  ctx.rotate(b.phase);
+
+  if (b.isLeaf) {
+    // Leaf shape
+    for (let i = 0; i < b.petalCount; i++) {
+      ctx.save();
+      ctx.rotate((Math.PI / b.petalCount) * i + Math.sin(t * 0.01 + b.phase) * 0.05);
+      ctx.beginPath();
+      ctx.ellipse(0, -b.r * 0.8, b.r * 0.3, b.r, 0, 0, Math.PI * 2);
+      ctx.fillStyle = b.color;
+      ctx.globalAlpha = 0.7;
+      ctx.fill();
+      ctx.restore();
+    }
+  } else {
+    // Flower petals
+    for (let i = 0; i < b.petalCount; i++) {
+      ctx.save();
+      ctx.rotate((Math.PI * 2 / b.petalCount) * i + Math.sin(t * 0.008 + b.phase) * 0.06);
+      ctx.beginPath();
+      ctx.ellipse(0, -b.r * 0.6, b.r * 0.4, b.r * 0.7, 0, 0, Math.PI * 2);
+      ctx.fillStyle = b.color;
+      ctx.globalAlpha = 0.75;
+      ctx.fill();
+      ctx.restore();
+    }
+    // Center
+    ctx.beginPath();
+    ctx.arc(0, 0, b.r * 0.2, 0, Math.PI * 2);
+    ctx.fillStyle = palette.gold[Math.floor(Math.random() * palette.gold.length)];
+    ctx.globalAlpha = 0.9;
+    ctx.fill();
+  }
+
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+// Falling petals
+function spawnPetal() {
+  if (blossoms.length === 0) return;
+  const src = blossoms[Math.floor(Math.random() * blossoms.length)];
+  if (src.isLeaf) return;
+  petals.push({
+    x: src.x, y: src.y,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: 0.2 + Math.random() * 0.4,
+    r: 2 + Math.random() * 3,
+    rot: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.02,
+    color: src.color,
+    alpha: 0.7,
+  });
+}
+
+let t = 0;
+function draw() {
+  // Soft fade for trails
+  ctx.fillStyle = 'rgba(12, 26, 46, 0.03)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Every ~120 frames, redraw background fully to prevent ghosting
+  if (t % 120 === 0) {
+    ctx.fillStyle = palette.bg;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // Clouds
+  clouds.forEach(cl => {
+    cl.x += cl.speed;
+    if (cl.x > W + cl.r * 2) cl.x = -cl.r * 2;
+    drawCloud(cl);
+  });
+
+  // Branches
+  branches.forEach(br => {
+    if (br.drawn >= br.segments.length) return;
+    const end = Math.min(br.drawn + 2, br.segments.length);
+    const thickness = Math.max(0.5, (1 - br.depth / br.maxDepth) * 3);
+
+    for (let i = br.drawn; i < end; i++) {
+      if (i === 0) continue;
+      ctx.beginPath();
+      ctx.moveTo(br.segments[i - 1].x, br.segments[i - 1].y);
+      ctx.lineTo(br.segments[i].x, br.segments[i].y);
+      ctx.strokeStyle = palette.branch;
+      ctx.lineWidth = thickness;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+    br.drawn = end;
+  });
+
+  // Blossoms
+  blossoms.forEach(b => drawBlossom(b, t));
+
+  // Falling petals
+  if (Math.random() < 0.03 && blossoms.length > 0) spawnPetal();
+  for (let i = petals.length - 1; i >= 0; i--) {
+    const p = petals[i];
+    p.x += p.vx + Math.sin(t * 0.02 + p.rot) * 0.15;
+    p.y += p.vy;
+    p.rot += p.rotSpeed;
+    p.alpha -= 0.001;
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.r * 0.4, p.r, 0, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = Math.max(0, p.alpha);
+    ctx.fill();
+    ctx.restore();
+    ctx.globalAlpha = 1;
+
+    if (p.alpha <= 0 || p.y > H + 20) petals.splice(i, 1);
+  }
+
+  // Lattice border (subtle)
+  if (t === 1) {
+    ctx.strokeStyle = 'rgba(201, 168, 76, 0.08)';
+    ctx.lineWidth = 0.5;
+    const s = 30;
+    for (let x = 0; x < W; x += s) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 12); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, H - 12); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += s) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(12, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W - 12, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+  }
+
+  t++;
+  requestAnimationFrame(draw);
+}
+
+// Seed initial branches
+function plantBranch(x, y) {
+  const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+  growBranch(x, y, angle, 60 + Math.random() * 40, 0, 5 + Math.floor(Math.random() * 2));
+}
+
+// Start with a couple of branches
+plantBranch(W * 0.3, H * 0.85);
+plantBranch(W * 0.7, H * 0.9);
+
+// Click to plant more
+c.addEventListener('click', e => {
+  const rect = c.getBoundingClientRect();
+  plantBranch(e.clientX - rect.left, e.clientY - rect.top);
+});
+c.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const t = e.touches[0];
+  const rect = c.getBoundingClientRect();
+  plantBranch(t.clientX - rect.left, t.clientY - rect.top);
+}, { passive: false });
+
+draw();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

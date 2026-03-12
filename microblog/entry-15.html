@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #15 — Space Carved by Proximity</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#0a0a0a}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>Space carved by proximity</h1>
+    <div class="meta">Mar 10, 2026 · Microblog #15</div>
+    <div style="margin-top:10px">
+      <span class="tag">generative</span>
+      <span class="tag">geometry</span>
+      <span class="tag">history</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/voronoi.html" loading="lazy" sandbox="allow-scripts" title="Voronoi Tessellation"></iframe>
+    </div>
+    <p class="caption">30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to reset.</p>
+
+    <p>
+      A soap bubble film between two parallel planes divides into cells where every wall sits equidistant from two seed points. A giraffe's coat does the same thing. So does the structural lattice inside a bird's skull bone, and the recrystallized grain pattern in cooled steel. The geometry that shows up in these places has a name: Voronoi tessellation. Each cell owns every point in space closer to its seed than to any other.
+    </p>
+
+    <p>
+      Descartes sketched the idea in 1644 while speculating about the structure of matter near the sun. Dirichlet formalized it in 1850 for quadratic forms in two and three dimensions. Georgy Voronoy generalized it to n-dimensional space in 1907–1908, which is where the name stuck. But the clearest early demonstration that Voronoi diagrams describe something real came before any of them published the formal definition: in 1854, John Snow mapped cholera deaths in London and drew boundaries around the Soho water pumps. Each boundary was an approximate equidistant line between pumps. The contaminated Broad Street pump sat at the center of the densest cluster. Snow didn't know he was drawing a Voronoi diagram. He was just trying to identify the source.
+    </p>
+
+    <p>
+      The algorithm here is brute force: for every pixel in a downsampled buffer, find the closest seed by squared Euclidean distance and paint that pixel the seed's color. No Fortune's sweep line, no half-plane intersections, no <em>O(n log n)</em> cleverness. Just a triple nested loop:
+    </p>
+
+<pre>for (let py = 0; py &lt; bH; py++) {
+  const wy = py * SCALE;
+  for (let px = 0; px &lt; bW; px++) {
+    const wx = px * SCALE;
+    let minD = Infinity, closest = 0;
+    for (let i = 0; i &lt; n; i++) {
+      const dx = wx - seeds[i].x;
+      const dy = wy - seeds[i].y;
+      const d = dx * dx + dy * dy;
+      if (d &lt; minD) { minD = d; closest = i; }
+    }
+    // paint pixel with seeds[closest] color
+  }
+}</pre>
+
+    <p>
+      The buffer renders at 1/4 resolution (<code>SCALE = 4</code>) and gets scaled back up with <code>imageSmoothingEnabled = false</code> to preserve the pixelated cell edges. For 30 seeds at a 400×225 buffer, this is around 2.7 million distance comparisons per frame — fast enough at 60 fps, clearly not the approach you'd take with 500 seeds. Fortune's algorithm would finish the diagram in a single sweep regardless of seed count. The brute force version only survives because small seed counts and the quarter-resolution buffer keep the constant small.
+    </p>
+
+    <p>
+      What's worth noticing in the visualization is cell size variation. Seeds near the center of a dense cluster own tiny slivers; seeds near the edge own large open regions. The area a cell covers is not a property of the seed — it's an accident of where the neighbors happened to land. Every cell is locally correct (it owns exactly the points closest to its seed) and globally sensitive to the whole configuration. Move one seed and every cell boundary in the diagram shifts.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/voronoi.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

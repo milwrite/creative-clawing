@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crystal Dendrite</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #020408; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+  canvas { display: block; image-rendering: pixelated; }
+  #ui {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.75rem; align-items: center; z-index: 10;
+  }
+  button {
+    background: #0a0f1a; color: #8ab4d4; border: 1px solid #1a3048;
+    padding: 0.35rem 0.9rem; border-radius: 4px; cursor: pointer;
+    font-size: 0.78rem; letter-spacing: 0.04em;
+    transition: background 0.15s;
+  }
+  button:hover { background: #0f1f30; color: #aad4f0; }
+  #label { font-size: 0.72rem; color: #1e3a52; font-family: monospace; letter-spacing: 0.08em; }
+  #count { font-size: 0.72rem; color: #1e4060; font-family: monospace; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <a href="index.html"><button>← gallery</button></a>
+  <span id="label">CRYSTAL DENDRITE</span>
+  <button id="resetBtn">reset</button>
+  <span id="count">0 particles</span>
+</div>
+<script>
+// ── hide UI in iframes ────────────────────────────────────
+if (window.self !== window.top) {
+  document.getElementById('ui').style.display = 'none';
+}
+
+// ── simulation grid ───────────────────────────────────────
+const GSIZE = 401;       // grid side length (odd so center is exact)
+const CX    = 200;       // grid center x
+const CY    = 200;       // grid center y
+const MAX_R = 185;       // stop growing when crystal reaches this radius
+
+const grid  = new Uint8Array(GSIZE * GSIZE);  // 0=empty, 1=crystal
+const dist  = new Float32Array(GSIZE * GSIZE); // distance from center (for coloring)
+
+let crystalR  = 0;   // current bounding radius of crystal
+let particles = 0;
+let running   = true;
+let autoReset = true;  // auto-restart when full
+
+// ── display canvas ────────────────────────────────────────
+const canvas  = document.getElementById('c');
+const ctx     = canvas.getContext('2d');
+const offscr  = document.createElement('canvas');
+offscr.width  = GSIZE;
+offscr.height = GSIZE;
+const offCtx  = offscr.getContext('2d');
+const imgData = offCtx.createImageData(GSIZE, GSIZE);
+
+function resize() {
+  const s = Math.min(window.innerWidth, window.innerHeight);
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── 12-fold snowflake symmetry ─────────────────────────────
+// dihedral group D6: 6 rotations × 1 mirror = 12 transforms
+const SYM = [];
+(function buildSymmetry() {
+  for (let k = 0; k < 6; k++) {
+    const a = k * Math.PI / 3;
+    const ca = Math.cos(a), sa = Math.sin(a);
+    // rotation
+    SYM.push({ ca, sa, mx: 1 });
+    // rotation + mirror across the x-axis (negate y before rotating)
+    SYM.push({ ca, sa, mx: -1 });
+  }
+})();
+
+function freezePoint(x, y, d) {
+  const dx = x - CX, dy = y - CY;
+  for (const { ca, sa, mx } of SYM) {
+    const fdx = dx;
+    const fdy = dy * mx;
+    const rx = Math.round(CX + fdx * ca - fdy * sa);
+    const ry = Math.round(CY + fdx * sa + fdy * ca);
+    if (rx < 0 || rx >= GSIZE || ry < 0 || ry >= GSIZE) continue;
+    const idx = ry * GSIZE + rx;
+    if (!grid[idx]) {
+      grid[idx] = 1;
+      dist[idx] = d;
+      const dr = Math.hypot(rx - CX, ry - CY);
+      if (dr > crystalR) crystalR = dr;
+    }
+  }
+  particles++;
+}
+
+// ── seed ──────────────────────────────────────────────────
+function seed() {
+  grid.fill(0);
+  dist.fill(0);
+  crystalR  = 2;
+  particles = 0;
+  // seed 3x3 center
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      const idx = (CY + dy) * GSIZE + (CX + dx);
+      grid[idx] = 1;
+      dist[idx] = 0;
+    }
+  }
+}
+seed();
+
+// ── check if (x,y) is adjacent to crystal ─────────────────
+const DX = [1,-1,0,0,1,-1, 1,-1];
+const DY = [0, 0,1,-1,1,-1,-1, 1];
+
+function hasNeighbor(x, y) {
+  let n = 0;
+  for (let k = 0; k < 8; k++) {
+    const nx = x + DX[k], ny = y + DY[k];
+    if (nx < 0 || nx >= GSIZE || ny < 0 || ny >= GSIZE) continue;
+    if (grid[ny * GSIZE + nx]) n++;
+  }
+  return n;
+}
+
+// ── single DLA walker step ─────────────────────────────────
+// Returns number of new frozen points, or 0 if walker escaped
+function walkOnce() {
+  const launchR = Math.min(crystalR + 8, MAX_R - 1);
+  const angle   = Math.random() * 6.2832;
+  let x = Math.round(CX + launchR * Math.cos(angle));
+  let y = Math.round(CY + launchR * Math.sin(angle));
+  const killR = launchR + 16;
+
+  for (let step = 0; step < 8000; step++) {
+    const d  = (Math.random() * 8) | 0;
+    const nx = x + DX[d], ny = y + DY[d];
+
+    if (nx < 1 || nx >= GSIZE - 1 || ny < 1 || ny >= GSIZE - 1) return 0;
+    if (Math.hypot(nx - CX, ny - CY) > killR) return 0;
+
+    if (grid[ny * GSIZE + nx]) {
+      // bumped into frozen cell — current pos (x,y) is adjacent, try to stick
+      const n = hasNeighbor(x, y);
+      if (n > 0) {
+        const stick = 0.3 + 0.14 * n;
+        if (Math.random() < stick) {
+          freezePoint(x, y, Math.hypot(x - CX, y - CY) / MAX_R);
+          return 12;
+        }
+      }
+      continue; // blocked — try different direction next step
+    }
+
+    // move to empty cell
+    x = nx; y = ny;
+
+    // check adjacency at new position
+    const n = hasNeighbor(x, y);
+    if (n > 0) {
+      const stick = 0.3 + 0.14 * n;
+      if (Math.random() < stick) {
+        freezePoint(x, y, Math.hypot(x - CX, y - CY) / MAX_R);
+        return 12;
+      }
+    }
+  }
+  return 0;
+}
+
+// ── color mapping ─────────────────────────────────────────
+// distance 0=center(white), 1=tip(deep blue/cyan)
+function colorForDist(d) {
+  // ramp from white-blue core → cyan mid → deep blue tips
+  if (d < 0.15) {
+    // white core
+    const t = d / 0.15;
+    const r = (220 + (0  - 220) * t) | 0;
+    const g = (230 + (180 - 230) * t) | 0;
+    const b = (255);
+    return [r, g, b];
+  } else if (d < 0.6) {
+    // cyan mid
+    const t = (d - 0.15) / 0.45;
+    const r = (0);
+    const g = (180 + (80 - 180) * t) | 0;
+    const b = (255 + (200 - 255) * t) | 0;
+    return [r, g, b];
+  } else {
+    // deep blue/violet tips
+    const t = (d - 0.6) / 0.4;
+    const r = (0  + 60 * t) | 0;
+    const g = (80 + (20 - 80) * t) | 0;
+    const b = (200 + (100 - 200) * t) | 0;
+    return [r, g, b];
+  }
+}
+
+// ── update ImageData ──────────────────────────────────────
+function updateImage() {
+  const data = imgData.data;
+  for (let i = 0; i < GSIZE * GSIZE; i++) {
+    const p = i << 2;
+    if (grid[i]) {
+      const [r, g, b] = colorForDist(dist[i]);
+      data[p]   = r;
+      data[p+1] = g;
+      data[p+2] = b;
+      data[p+3] = 255;
+    } else {
+      data[p]   = 2;
+      data[p+1] = 4;
+      data[p+2] = 8;
+      data[p+3] = 255;
+    }
+  }
+  offCtx.putImageData(imgData, 0, 0);
+}
+
+// ── draw to display canvas ────────────────────────────────
+function drawDisplay() {
+  const s = Math.min(canvas.width, canvas.height);
+  const ox = (canvas.width  - s) / 2;
+  const oy = (canvas.height - s) / 2;
+  ctx.fillStyle = '#020408';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(offscr, ox, oy, s, s);
+}
+
+// ── main loop ─────────────────────────────────────────────
+const WALKERS_PER_FRAME = 60;  // more = faster growth
+let frameCount = 0;
+const countEl = document.getElementById('count');
+
+function loop() {
+  if (running) {
+    for (let i = 0; i < WALKERS_PER_FRAME; i++) {
+      walkOnce();
+    }
+
+    frameCount++;
+    if (frameCount % 4 === 0) {
+      updateImage();
+      drawDisplay();
+      if (countEl) countEl.textContent = particles.toLocaleString() + ' particles';
+    }
+
+    if (crystalR >= MAX_R) {
+      if (autoReset) {
+        // pause briefly then restart
+        running = false;
+        setTimeout(() => { seed(); running = true; }, 3000);
+      } else {
+        running = false;
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+// ── controls ──────────────────────────────────────────────
+const resetBtn = document.getElementById('resetBtn');
+if (resetBtn) {
+  resetBtn.addEventListener('click', () => {
+    seed();
+    running = true;
+  });
+}
+
+// initial draw
+updateImage();
+drawDisplay();
+loop();
+</script>
+</body>
+</html>

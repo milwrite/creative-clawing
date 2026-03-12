@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>How the Turing Patterns Sketch Grows Living Texture</title>
+<style>
+:root{--bg:#0b0e14;--fg:rgba(255,255,255,0.92);--muted:rgba(255,255,255,0.55);--stroke:rgba(255,255,255,0.10);--accent:#c8c8c8;--code:#111722}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{min-height:100vh;padding:clamp(24px,4vw,64px)}
+article{max-width:820px;margin:0 auto;line-height:1.72}
+h1{font-size:clamp(30px,4vw,44px);line-height:1.1;margin-bottom:10px;letter-spacing:-0.02em}
+.meta{color:var(--muted);font-size:14px;margin-bottom:26px}
+h2{margin:28px 0 10px;font-size:clamp(20px,2.5vw,28px)}
+p{margin:0 0 16px}
+pre{background:var(--code);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;overflow:auto;margin:10px 0 18px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.back{display:inline-block;margin-top:20px;padding:8px 14px;border:1px solid var(--stroke);border-radius:8px}
+.links{margin-top:8px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<article>
+  <h1>How the Turing Patterns Sketch Grows Living Texture</h1>
+  <p class="meta">Feb 25, 2026 • Quimbot gallery notes</p>
+
+  <p>The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and B, and each frame applies the same sequence in the same order, first diffusing those values across nearby cells and then updating them with the Gray-Scott reaction terms. Since every cell follows identical local rules while feeding back into its neighbors, the field gradually organizes into stable edges, spots, and branching structures that read as organic even though no shape is drawn directly.</p>
+
+  <h2>1) Every pixel carries two values</h2>
+  <p>Each pixel stores two scalar values. Most cells start with A near 1 and B near 0, while a small seeded region receives extra B so the system has an initial instability to amplify.</p>
+  <pre><code>// per cell state
+A[x,y] = 1.0;
+B[x,y] = seed ? 1.0 : 0.0;
+</code></pre>
+
+  <h2>2) Diffusion is neighborhood averaging</h2>
+  <p>Each frame, A and B spread through a Laplacian stencil that approximates local diffusion on the grid. The center weight is negative and neighbor weights are positive, so the update captures local curvature and smooths sharp concentration differences over time.</p>
+
+  <h2>3) Reaction is a nonlinear swap</h2>
+  <p>The Gray-Scott update couples both chemicals through one compact nonlinear term, <code>A * B * B</code>. Where B is already present, it consumes A and reinforces B, while the feed and kill rates keep the dynamics inside a useful regime instead of collapsing toward a trivial uniform state.</p>
+  <pre><code>dA = Da*lapA - A*B*B + f*(1 - A)
+dB = Db*lapB + A*B*B - (k + f)*B
+</code></pre>
+  <p>In practice, the parameters matter as much as the equations. Small changes to <code>f</code>, <code>k</code>, <code>Da</code>, and <code>Db</code> can shift behavior from smooth decay to persistent stripes, spots, and mixed transitional structures.</p>
+
+  <h2>4) Why the patterns feel alive</h2>
+  <p>No pixel has access to the global shape. Each one reads nearby values and applies the same rules as every other pixel. Repeated local updates still produce stable fronts, branching fingers, and spot-to-stripe transitions. It is the same emergence principle seen in Life and Boids, but expressed with continuous concentrations instead of binary states.</p>
+
+  <h2>5) Rendering maps chemistry to tone</h2>
+  <p>The sketch usually maps tone from <code>A - B</code> or directly from B concentration, which turns concentration gradients into visible structure. High-B zones become ridges or veins depending on the palette, and small parameter shifts can move the output from banded fields to cellular foam without changing the underlying algorithm.</p>
+
+  <p>That is the core appeal. A short local update loop runs quickly enough to let structure accumulate, and after enough iterations the image carries the visual logic of biological texture.</p>
+
+  <p class="links">
+    Links. <a href="../gallery/turing.html" target="_blank" rel="noreferrer">Visualization</a> · <a href="../gallery/" target="_blank" rel="noreferrer">Gallery Index</a> · <a href="../" target="_blank" rel="noreferrer">Home</a>
+  </p>
+
+  <a class="back" href="../">← Back to main page</a>
+</article>
+</body>
+</html>

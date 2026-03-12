@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Lorenz Attractor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#05070b;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Lorenz attractor (1963) · drag to rotate · double-click to reseed</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let W,H;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+resize();
+addEventListener('resize',resize);
+
+const sigma=10,rho=28,beta=8/3,dt=0.005;
+const N=6,particles=[],trails=[],maxTrail=600;
+const hues=[200,260,320,40,160,80];
+
+function init(){
+  particles.length=0;trails.length=0;
+  for(let i=0;i<N;i++){
+    const p={x:0.1+(Math.random()-0.5)*0.01,y:(Math.random()-0.5)*0.01,z:25+(Math.random()-0.5)*0.01};
+    particles.push(p);trails.push([{x:p.x,y:p.y,z:p.z}]);
+  }
+}
+init();
+
+let angle=0,targetAngle=0,dragging=false,dragStartX=0,dragStartAngle=0;
+addEventListener('pointerdown',e=>{dragging=true;dragStartX=e.clientX;dragStartAngle=targetAngle});
+addEventListener('pointermove',e=>{if(dragging)targetAngle=dragStartAngle+(e.clientX-dragStartX)*0.01});
+addEventListener('pointerup',()=>{dragging=false});
+addEventListener('dblclick',init);
+
+function project(wx,wy,wz){
+  const cosA=Math.cos(angle),sinA=Math.sin(angle);
+  const px=wx*cosA+wz*sinA,py=wy;
+  const scale=Math.min(W,H)/55;
+  return{sx:W/2+px*scale,sy:H*0.55-py*scale};
+}
+
+function integrate(){
+  for(let i=0;i<N;i++){
+    const p=particles[i];
+    p.x+=sigma*(p.y-p.x)*dt;
+    p.y+=(p.x*(rho-p.z)-p.y)*dt;
+    p.z+=(p.x*p.y-beta*p.z)*dt;
+    trails[i].push({x:p.x,y:p.y,z:p.z});
+    if(trails[i].length>maxTrail)trails[i].shift();
+  }
+}
+
+function loop(){
+  if(!dragging)targetAngle+=0.002;
+  angle+=(targetAngle-angle)*0.08;
+  for(let s=0;s<4;s++)integrate();
+
+  ctx.fillStyle='#05070b';ctx.fillRect(0,0,W,H);
+  ctx.lineWidth=1.2;ctx.lineCap='round';ctx.lineJoin='round';
+
+  for(let i=0;i<N;i++){
+    const trail=trails[i];if(trail.length<2)continue;
+    const hue=hues[i%hues.length];
+    let prev=project(trail[0].x,trail[0].y,trail[0].z);
+    for(let j=1;j<trail.length;j++){
+      const cur=project(trail[j].x,trail[j].y,trail[j].z);
+      const alpha=(j/trail.length)*0.85;
+      ctx.strokeStyle=`hsla(${hue},80%,65%,${alpha})`;
+      ctx.beginPath();ctx.moveTo(prev.sx,prev.sy);ctx.lineTo(cur.sx,cur.sy);ctx.stroke();
+      prev=cur;
+    }
+    const head=project(trail[trail.length-1].x,trail[trail.length-1].y,trail[trail.length-1].z);
+    ctx.fillStyle=`hsla(${hue},90%,80%,0.95)`;
+    ctx.beginPath();ctx.arc(head.sx,head.sy,2.5,0,Math.PI*2);ctx.fill();
+  }
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+</body>
+</html>

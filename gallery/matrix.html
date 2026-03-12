@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Matrix Rain</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; overflow: hidden; }
+canvas { display: block; width: 100vw; height: 100vh; }
+.controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(0,0,0,0.8);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-family: monospace;
+  color: #0f0;
+  font-size: 13px;
+  border: 1px solid #0a0;
+}
+button {
+  background: #001100;
+  color: #0f0;
+  border: 1px solid #0a0;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 13px;
+}
+button:hover { background: #002200; }
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="controls">
+  <button onclick="reset()">Reset</button>
+  <button onclick="toggleSpeed()">Speed</button>
+  <span id="mode">Normal</span>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let width, height, cols, drops = [], fontSize = 16, speed = 1;
+
+// Katakana + numbers + symbols
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789@#$%^&*()';
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  cols = Math.floor(width / fontSize);
+  drops = Array(cols).fill(1);
+}
+
+function draw() {
+  // Semi-transparent black for trail effect
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  ctx.fillRect(0, 0, width, height);
+  
+  ctx.fillStyle = '#0f0';
+  ctx.font = `${fontSize}px monospace`;
+  
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const x = i * fontSize;
+    const y = drops[i] * fontSize;
+    
+    // Brighter head
+    if (Math.random() > 0.975) {
+      ctx.fillStyle = '#fff';
+    } else {
+      ctx.fillStyle = '#0f0';
+    }
+    
+    ctx.fillText(char, x, y);
+    
+    // Reset drop to top randomly
+    if (y > height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    
+    drops[i] += speed;
+  }
+}
+
+function reset() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, width, height);
+  drops = Array(cols).fill(1);
+}
+
+function toggleSpeed() {
+  if (speed === 1) {
+    speed = 0.5;
+    document.getElementById('mode').textContent = 'Slow';
+  } else if (speed === 0.5) {
+    speed = 2;
+    document.getElementById('mode').textContent = 'Fast';
+  } else {
+    speed = 1;
+    document.getElementById('mode').textContent = 'Normal';
+  }
+}
+
+resize();
+window.addEventListener('resize', resize);
+setInterval(draw, 33);
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

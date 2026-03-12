@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendulum Wave</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; overflow: hidden; }
+  canvas { display: block; }
+  #back { position: fixed; top: 1rem; left: 1rem; background: #222; color: #ccc; border: 1px solid #444; padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.8rem; z-index: 10; text-decoration: none; }
+  #back:hover { background: #333; }
+</style>
+</head>
+<body>
+<a id="back" href="index.html">← gallery</a>
+<canvas id="c"></canvas>
+<script>
+if (window.self !== window.top) { document.getElementById('back').style.display = 'none'; }
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+const N = 24;
+const baseFreq = 0.8;
+const freqStep = 0.032;
+const trailLen = 60;
+
+class Pendulum {
+  constructor(i) {
+    this.i = i;
+    this.freq = baseFreq + i * freqStep;
+    this.hue = (i / N) * 280 + 180;
+    this.trail = [];
+  }
+
+  getAngle(t) {
+    return Math.sin(this.freq * t) * 0.85;
+  }
+
+  update(t) {
+    const angle = this.getAngle(t);
+    const pivotX = W * 0.1 + (this.i / (N - 1)) * W * 0.8;
+    const pivotY = H * 0.08;
+    const len = H * 0.55;
+    const bx = pivotX + Math.sin(angle) * len;
+    const by = pivotY + Math.cos(angle) * len;
+    this.pivotX = pivotX;
+    this.pivotY = pivotY;
+    this.bx = bx;
+    this.by = by;
+    this.trail.push({ x: bx, y: by });
+    if (this.trail.length > trailLen) this.trail.shift();
+  }
+
+  draw() {
+    // String
+    ctx.beginPath();
+    ctx.moveTo(this.pivotX, this.pivotY);
+    ctx.lineTo(this.bx, this.by);
+    ctx.strokeStyle = `hsla(${this.hue}, 40%, 40%, 0.4)`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Trail
+    for (let j = 1; j < this.trail.length; j++) {
+      const alpha = (j / this.trail.length) * 0.5;
+      const r = 3 + (j / this.trail.length) * 3;
+      ctx.beginPath();
+      ctx.arc(this.trail[j].x, this.trail[j].y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue}, 70%, 55%, ${alpha})`;
+      ctx.fill();
+    }
+
+    // Bob
+    const grd = ctx.createRadialGradient(this.bx - 3, this.by - 3, 2, this.bx, this.by, 12);
+    grd.addColorStop(0, `hsla(${this.hue}, 80%, 70%, 1)`);
+    grd.addColorStop(1, `hsla(${this.hue}, 70%, 35%, 1)`);
+    ctx.beginPath();
+    ctx.arc(this.bx, this.by, 10, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // Pivot
+    ctx.beginPath();
+    ctx.arc(this.pivotX, this.pivotY, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#444';
+    ctx.fill();
+  }
+}
+
+const pendulums = Array.from({ length: N }, (_, i) => new Pendulum(i));
+let t = 0;
+
+function frame() {
+  ctx.fillStyle = 'rgba(10, 10, 10, 0.25)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Top bar
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(W * 0.08, H * 0.07, W * 0.84, 4);
+
+  t += 0.05;
+  for (const p of pendulums) p.update(t);
+
+  // Draw connections between adjacent bobs
+  ctx.beginPath();
+  for (let i = 0; i < pendulums.length; i++) {
+    const p = pendulums[i];
+    if (i === 0) ctx.moveTo(p.bx, p.by);
+    else ctx.lineTo(p.bx, p.by);
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  for (const p of pendulums) p.draw();
+
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>

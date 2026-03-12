@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Walk-Through Raster — after Frieder Nake (1965)</title>
+<style>
+  *{margin:0;padding:0}
+  body{background:#f0ece4;overflow:hidden}
+  canvas{display:block;width:100vw;height:100vh}
+  #info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(0,0,0,0.85);background:rgba(240,236,228,0.85);padding:6px 14px;border-radius:6px;font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;border:1px solid rgba(0,0,0,0.1)}
+  #seed{position:fixed;top:16px;left:16px;color:rgba(0,0,0,0.55);background:rgba(240,236,228,0.8);padding:4px 10px;border-radius:5px;font:12px ui-monospace,monospace;pointer-events:none}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+.in-iframe .back-btn,.in-iframe #info,.in-iframe #params,.in-iframe #seed,.in-iframe #epoch{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add("in-iframe");</script>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">click to regenerate · after Frieder Nake, 1965</div>
+<div id="seed"></div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+const seedEl = document.getElementById('seed');
+let W, H, dpr;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  c.style.width = W + 'px'; c.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// Seeded PRNG (mulberry32)
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+// Bauhaus-inspired palette (Nake was influenced by constructivism)
+const palette = [
+  '#c23b22', // red
+  '#2d5da1', // blue
+  '#f0c75e', // yellow
+  '#1a1a1a', // black
+  '#e8e0d0', // cream (empty)
+  '#d35400', // orange
+  '#2e7d32', // green
+  '#5c3d2e', // brown
+];
+
+function generate() {
+  resize();
+  const seed = Date.now() & 0xFFFFFF;
+  const rand = mulberry32(seed);
+  seedEl.textContent = `seed: ${seed.toString(16)}`;
+
+  // Parchment background
+  ctx.fillStyle = '#f0ece4';
+  ctx.fillRect(0, 0, W, H);
+
+  const margin = Math.min(W, H) * 0.08;
+  const drawW = W - margin * 2;
+  const drawH = H - margin * 2;
+
+  // Grid base
+  const cols = 6 + Math.floor(rand() * 5);
+  const rows = 5 + Math.floor(rand() * 4);
+  const cellW = drawW / cols;
+  const cellH = drawH / rows;
+
+  // Recursive subdivision function
+  function subdivide(x, y, w, h, depth) {
+    if (depth <= 0 || w < 15 || h < 15) {
+      drawCell(x, y, w, h);
+      return;
+    }
+
+    // Random choice: subdivide horizontally, vertically, or stop
+    const r = rand();
+    if (r < 0.4) {
+      // Vertical split
+      const split = 0.3 + rand() * 0.4;
+      const splitX = x + w * split;
+      subdivide(x, y, w * split, h, depth - 1);
+      subdivide(splitX, y, w * (1 - split), h, depth - 1);
+    } else if (r < 0.8) {
+      // Horizontal split
+      const split = 0.3 + rand() * 0.4;
+      const splitY = y + h * split;
+      subdivide(x, y, w, h * split, depth - 1);
+      subdivide(x, splitY, w, h * (1 - split), depth - 1);
+    } else {
+      drawCell(x, y, w, h);
+    }
+  }
+
+  function drawCell(x, y, w, h) {
+    const r = rand();
+
+    // Conditional fill based on position + randomness (Nake's approach)
+    const posWeight = (x - margin) / drawW + (y - margin) / drawH;
+
+    if (r < 0.35) {
+      // Solid color fill
+      const colorIdx = Math.floor(rand() * palette.length);
+      ctx.fillStyle = palette[colorIdx];
+      ctx.globalAlpha = 0.6 + rand() * 0.35;
+      ctx.fillRect(x + 1, y + 1, w - 2, h - 2);
+      ctx.globalAlpha = 1;
+    } else if (r < 0.55) {
+      // Hatching (horizontal lines)
+      const spacing = 3 + Math.floor(rand() * 5);
+      ctx.strokeStyle = 'rgba(30, 25, 20, 0.4)';
+      ctx.lineWidth = 0.5;
+      for (let ly = y + spacing; ly < y + h; ly += spacing) {
+        ctx.beginPath();
+        ctx.moveTo(x + 2, ly);
+        ctx.lineTo(x + w - 2, ly);
+        ctx.stroke();
+      }
+    } else if (r < 0.7) {
+      // Diagonal hatching
+      const spacing = 4 + Math.floor(rand() * 4);
+      ctx.strokeStyle = 'rgba(30, 25, 20, 0.3)';
+      ctx.lineWidth = 0.5;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, w, h);
+      ctx.clip();
+      const dir = rand() > 0.5 ? 1 : -1;
+      for (let d = -Math.max(w, h); d < Math.max(w, h) * 2; d += spacing) {
+        ctx.beginPath();
+        ctx.moveTo(x + d, y);
+        ctx.lineTo(x + d + h * dir, y + h);
+        ctx.stroke();
+      }
+      ctx.restore();
+    } else if (r < 0.82) {
+      // Circle
+      const radius = Math.min(w, h) * 0.35 * (0.5 + rand() * 0.5);
+      const colorIdx = Math.floor(rand() * palette.length);
+      ctx.beginPath();
+      ctx.arc(x + w / 2, y + h / 2, radius, 0, Math.PI * 2);
+      ctx.fillStyle = palette[colorIdx];
+      ctx.globalAlpha = 0.5 + rand() * 0.3;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    // else: leave empty (cream background shows through)
+
+    // Cell outline
+    ctx.strokeStyle = 'rgba(30, 25, 20, 0.25)';
+    ctx.lineWidth = 0.5;
+    ctx.strokeRect(x, y, w, h);
+  }
+
+  // Generate the grid with recursive subdivision
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const x = margin + col * cellW;
+      const y = margin + row * cellH;
+      const maxDepth = Math.floor(rand() * 3);
+      subdivide(x, y, cellW, cellH, maxDepth);
+    }
+  }
+
+  // Outer frame
+  ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(margin, margin, drawW, drawH);
+}
+
+generate();
+
+c.addEventListener('click', generate);
+c.addEventListener('touchstart', e => { e.preventDefault(); generate(); }, { passive: false });
+window.addEventListener('resize', generate);
+</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

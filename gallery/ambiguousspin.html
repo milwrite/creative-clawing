@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Ambiguous Rotation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; overflow: hidden; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  canvas { display: block; cursor: pointer; touch-action: none; }
+  #ui {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    color: #555; font-size: 11px; text-align: center; pointer-events: none;
+    line-height: 1.8; white-space: nowrap;
+  }
+  #label {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) translateY(180px);
+    color: #333; font-size: 10px; text-align: center;
+    pointer-events: none; letter-spacing: 0.08em;
+    text-transform: uppercase; transition: color 0.4s;
+  }
+  #back {
+    position: fixed; top: 14px; left: 14px;
+    color: #666; text-decoration: none; font-size: 11px;
+    border: 1px solid #2a2a2a; padding: 5px 11px; border-radius: 5px;
+    min-height: 44px; display: flex; align-items: center;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #back:hover { color: #ccc; border-color: #555; }
+  @media (max-width: 500px) {
+    #ui { font-size: 10px; bottom: 14px; }
+    #label { transform: translate(-50%, -50%) translateY(140px); font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">tap to nudge direction · your brain may flip on its own</div>
+<div id="label" id="label">ambiguous</div>
+<a href="../" id="back">← gallery</a>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const label = document.getElementById('label');
+const isIframe = window.self !== window.top;
+
+if (isIframe) {
+  document.getElementById('ui').style.display = 'none';
+  document.getElementById('back').style.display = 'none';
+  label.style.display = 'none';
+}
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── parameters ─────────────────────────────────────────────
+const N_RINGS = 3;      // concentric rings
+const N_DOTS = 24;      // dots per ring
+const SPEED = 0.008;    // base rotation speed
+
+// Nudge system: clicking adds a temporary depth cue bias
+let nudgeDir = 0;   // -1, 0, +1
+let nudgeAlpha = 0; // fades out 0..1
+let cumulativeAngle = 0;
+
+function applyNudge(dir) {
+  nudgeDir = dir;
+  nudgeAlpha = 1.0;
+}
+
+canvas.addEventListener('click', () => { applyNudge(nudgeDir <= 0 ? 1 : -1); });
+canvas.addEventListener('touchend', (e) => { e.preventDefault(); applyNudge(nudgeDir <= 0 ? 1 : -1); }, { passive: false });
+
+// ── projection ─────────────────────────────────────────────
+// Orthographic projection of a 3D point with a slight tilt
+// The ring rotates around the Z axis, tilted by TILT around X
+const TILT = 0.38; // radians — slight viewing angle
+
+function project(x3, y3, z3) {
+  // Rotate around X axis by TILT
+  const yr = y3 * Math.cos(TILT) - z3 * Math.sin(TILT);
+  const zr = y3 * Math.sin(TILT) + z3 * Math.cos(TILT);
+  return { x: x3, y: yr, depth: zr };
+}
+
+// ── draw ────────────────────────────────────────────────────
+let t = 0;
+
+function draw() {
+  t += SPEED;
+  cumulativeAngle += SPEED;
+
+  // Fade nudge over ~3 seconds
+  if (nudgeAlpha > 0) nudgeAlpha = Math.max(0, nudgeAlpha - 0.003);
+  if (nudgeAlpha < 0.01) nudgeDir = 0;
+
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+
+  const cx = W / 2;
+  const cy = H / 2;
+  const maxR = Math.min(W, H) * 0.38;
+
+  // Build all dots across rings
+  const allDots = [];
+
+  for (let ri = 0; ri < N_RINGS; ri++) {
+    const radius = maxR * (0.45 + 0.55 * ri / (N_RINGS - 1));
+    const nDots = N_DOTS + ri * 8;
+    const phaseOffset = (ri / N_RINGS) * Math.PI;
+
+    for (let i = 0; i < nDots; i++) {
+      const phi = (i / nDots) * Math.PI * 2 + t + phaseOffset;
+      const x3 = Math.cos(phi) * radius;
+      const y3 = 0;
+      const z3 = Math.sin(phi) * radius;
+      const p = project(x3, y3, z3);
+
+      // Depth in [-1, 1] range (normalized to ring radius)
+      const depthNorm = p.depth / radius; // -1..1
+
+      // Size: base + depth bias when nudge active
+      const baseSize = 3.5 + (N_RINGS - ri) * 0.8;
+      const depthBias = nudgeDir * nudgeAlpha * depthNorm;
+      const size = Math.max(1.5, baseSize + depthBias * 4);
+
+      // Brightness: flat grey by default; slight bias when nudge active
+      const baseBright = 180 - ri * 20;
+      const brightBias = nudgeDir * nudgeAlpha * depthNorm * 80;
+      const b = Math.max(30, Math.min(255, Math.round(baseBright + brightBias)));
+
+      allDots.push({ sx: cx + p.x, sy: cy + p.y, depth: p.depth, size, b, ri });
+    }
+  }
+
+  // When nudge is active, sort by depth so closer dots render on top
+  if (nudgeAlpha > 0.05 && nudgeDir !== 0) {
+    allDots.sort((a, b) => a.depth * nudgeDir - b.depth * nudgeDir);
+  }
+
+  // Draw connecting arcs (thin ring outline) per ring — no depth cue version
+  for (let ri = 0; ri < N_RINGS; ri++) {
+    const radius = maxR * (0.45 + 0.55 * ri / (N_RINGS - 1));
+    ctx.beginPath();
+    // Project the ring as an ellipse (orthographic projection of a tilted circle)
+    const aX = radius;
+    const aY = radius * Math.cos(TILT);
+    ctx.ellipse(cx, cy, aX, aY, 0, 0, Math.PI * 2);
+    const ringBright = 22 - ri * 4;
+    ctx.strokeStyle = `rgb(${ringBright},${ringBright},${ringBright + 4})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+
+  // Draw dots
+  allDots.forEach(d => {
+    ctx.beginPath();
+    ctx.arc(d.sx, d.sy, d.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgb(${d.b},${d.b},${d.b + 10})`;
+    ctx.fill();
+  });
+
+  // Subtle centre point
+  ctx.beginPath();
+  ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+  ctx.fillStyle = '#444';
+  ctx.fill();
+
+  // Update label
+  if (!isIframe) {
+    if (nudgeAlpha < 0.1) {
+      label.textContent = 'ambiguous';
+      label.style.color = '#2a2a2a';
+    } else {
+      const dir = nudgeDir > 0 ? '→ clockwise bias' : '← counterclockwise bias';
+      label.textContent = dir;
+      label.style.color = `rgba(100,100,120,${nudgeAlpha * 0.8})`;
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Perlin Flow Field</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; overflow: hidden; }
+canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+.controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(0,0,0,0.7);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-family: monospace;
+  color: #fff;
+  font-size: 13px;
+}
+button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 13px;
+}
+button:hover { background: #333; }
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="controls">
+  <button onclick="reset()">Reset</button>
+  <button onclick="togglePause()">Pause/Resume</button>
+  <span id="info">3000 particles</span>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let width, height, particles = [], time = 0, paused = false;
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+
+// Perlin noise
+class Perlin {
+  constructor() {
+    this.p = [];
+    for (let i = 0; i < 512; i++) this.p[i] = Math.floor(Math.random() * 256);
+  }
+  fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+  lerp(t, a, b) { return a + t * (b - a); }
+  grad(hash, x, y) {
+    const h = hash & 15;
+    const u = h < 8 ? x : y;
+    const v = h < 4 ? y : x;
+    return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+  }
+  noise(x, y) {
+    const X = Math.floor(x) & 255;
+    const Y = Math.floor(y) & 255;
+    x -= Math.floor(x);
+    y -= Math.floor(y);
+    const u = this.fade(x);
+    const v = this.fade(y);
+    const a = this.p[X] + Y;
+    const b = this.p[X + 1] + Y;
+    return this.lerp(v,
+      this.lerp(u, this.grad(this.p[a], x, y), this.grad(this.p[b], x - 1, y)),
+      this.lerp(u, this.grad(this.p[a + 1], x, y - 1), this.grad(this.p[b + 1], x - 1, y - 1))
+    );
+  }
+}
+
+const perlin = new Perlin();
+const scale = 0.003;
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = 0;
+    this.vy = 0;
+    this.alpha = Math.random() * 0.5 + 0.3;
+    this.maxSpeed = 2;
+    this.hue = Math.random() * 60 + 180;
+  }
+  update() {
+    const angle = perlin.noise(this.x * scale, this.y * scale + time * 0.0001) * Math.PI * 4;
+    this.vx += Math.cos(angle) * 0.1;
+    this.vy += Math.sin(angle) * 0.1;
+    const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+    if (speed > this.maxSpeed) {
+      this.vx = (this.vx / speed) * this.maxSpeed;
+      this.vy = (this.vy / speed) * this.maxSpeed;
+    }
+    this.x += this.vx;
+    this.y += this.vy;
+    this.vx *= 0.95;
+    this.vy *= 0.95;
+    if (this.x < 0) this.x = width;
+    if (this.x > width) this.x = 0;
+    if (this.y < 0) this.y = height;
+    if (this.y > height) this.y = 0;
+  }
+  draw() {
+    ctx.fillStyle = `hsla(${this.hue}, 70%, 60%, ${this.alpha})`;
+    ctx.fillRect(this.x, this.y, 2, 2);
+  }
+}
+
+function init() {
+  particles = [];
+  for (let i = 0; i < 3000; i++) particles.push(new Particle());
+}
+
+function animate() {
+  if (!paused) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, width, height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    time++;
+  }
+  requestAnimationFrame(animate);
+}
+
+function reset() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, width, height);
+  init();
+  time = 0;
+}
+
+function togglePause() { paused = !paused; }
+
+resize();
+window.addEventListener('resize', () => { resize(); reset(); });
+ctx.fillStyle = '#000';
+ctx.fillRect(0, 0, width, height);
+init();
+animate();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turing Patterns</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;image-rendering:pixelated;touch-action:none}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#111;border-top:1px solid #222;padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-shrink:0}
+.panel .info{color:#ccc;white-space:nowrap}
+.panel .hint{color:#555}
+.panel .right{display:flex;gap:6px}
+.panel button{background:rgba(255,255,255,0.06);border:1px solid #333;color:#999;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:5px 10px;border-radius:4px;cursor:pointer;transition:all 0.2s}
+.panel button:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:#555}
+.in-iframe .back,.in-iframe .panel{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+<div>
+<span class="info" id="info">coral · frame 0</span>
+<span class="hint"> · tap to seed · swipe ↔ preset</span>
+</div>
+<div class="right">
+<button onclick="resetSim()">reset</button>
+<button onclick="cyclePreset()">preset</button>
+</div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Simulation runs at fixed grid, rendered to fill canvas
+const S = 256;
+canvas.width = S;
+canvas.height = S;
+
+let u = new Float32Array(S * S);
+let v = new Float32Array(S * S);
+let u2 = new Float32Array(S * S);
+let v2 = new Float32Array(S * S);
+
+// Presets: {name, f, k, color}
+const presets = [
+  { name: 'coral',    f: 0.037, k: 0.06,  palette: 'ocean' },
+  { name: 'mitosis',  f: 0.028, k: 0.062, palette: 'warm' },
+  { name: 'worms',    f: 0.078, k: 0.061, palette: 'green' },
+  { name: 'spots',    f: 0.012, k: 0.05,  palette: 'purple' },
+  { name: 'waves',    f: 0.014, k: 0.054, palette: 'blue' },
+];
+let presetIdx = 0;
+let p = presets[0];
+
+const Du = 0.21, Dv = 0.105, dt = 1.0;
+
+function initSim() {
+  u.fill(1);
+  v.fill(0);
+  for (let i = 0; i < 8; i++) {
+    seed(30 + Math.random() * (S - 60), 30 + Math.random() * (S - 60), 4 + Math.random() * 6);
+  }
+}
+
+function seed(cx, cy, r) {
+  for (let y = cy - r; y <= cy + r; y++)
+    for (let x = cx - r; x <= cx + r; x++)
+      if (x >= 0 && x < S && y >= 0 && y < S && (x-cx)**2 + (y-cy)**2 < r*r) {
+        const i = y * S + x;
+        u[i] = 0.5 + Math.random() * 0.1;
+        v[i] = 0.25 + Math.random() * 0.1;
+      }
+}
+
+function seedFromEvent(e) {
+  const rect = canvas.getBoundingClientRect();
+  const cx = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+  const cy = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+  if (cx == null) return;
+  const x = Math.floor((cx - rect.left) / rect.width * S);
+  const y = Math.floor((cy - rect.top) / rect.height * S);
+  seed(x, y, 8);
+}
+
+function resetSim() { initSim(); frame = 0; }
+function cyclePreset() { presetIdx = (presetIdx + 1) % presets.length; p = presets[presetIdx]; resetSim(); }
+
+function step() {
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const i = y * S + x;
+      const l = x > 0 ? i - 1 : i + S - 1;
+      const r = x < S - 1 ? i + 1 : i - S + 1;
+      const t = y > 0 ? i - S : i + S * (S - 1);
+      const b = y < S - 1 ? i + S : i - S * (S - 1);
+      const lu = u[l] + u[r] + u[t] + u[b] - 4 * u[i];
+      const lv = v[l] + v[r] + v[t] + v[b] - 4 * v[i];
+      const uv2 = u[i] * v[i] * v[i];
+      u2[i] = Math.max(0, Math.min(1, u[i] + (Du * lu - uv2 + p.f * (1 - u[i])) * dt));
+      v2[i] = Math.max(0, Math.min(1, v[i] + (Dv * lv + uv2 - (p.f + p.k) * v[i]) * dt));
+    }
+  }
+  [u, u2] = [u2, u];
+  [v, v2] = [v2, v];
+}
+
+const imgData = ctx.createImageData(S, S);
+
+function colorMap(t) {
+  let r, g, b;
+  switch (p.palette) {
+    case 'ocean':
+      if (t < 0.1) { r=10; g=15+t*400; b=40+t*600; }
+      else if (t < 0.25) { const s=(t-0.1)/0.15; r=10+s*180; g=55+s*50; b=100-s*30; }
+      else { const s=Math.min(1,(t-0.25)/0.25); r=190+s*65; g=105-s*50; b=70-s*40; }
+      break;
+    case 'warm':
+      r = Math.floor(40 + t * 215); g = Math.floor(20 + t * 100); b = Math.floor(30 + t * 40);
+      break;
+    case 'green':
+      r = Math.floor(10 + t * 60); g = Math.floor(30 + t * 200); b = Math.floor(20 + t * 80);
+      break;
+    case 'purple':
+      r = Math.floor(30 + t * 180); g = Math.floor(10 + t * 40); b = Math.floor(50 + t * 200);
+      break;
+    case 'blue':
+      r = Math.floor(10 + t * 40); g = Math.floor(20 + t * 120); b = Math.floor(60 + t * 195);
+      break;
+    default:
+      r = g = b = Math.floor(t * 255);
+  }
+  return [r, g, b];
+}
+
+let frame = 0;
+function draw() {
+  for (let i = 0; i < 8; i++) step();
+  for (let i = 0; i < S * S; i++) {
+    const [r, g, b] = colorMap(v[i]);
+    const j = i * 4;
+    imgData.data[j] = r; imgData.data[j+1] = g; imgData.data[j+2] = b; imgData.data[j+3] = 255;
+  }
+  ctx.putImageData(imgData, 0, 0);
+  frame++;
+  if (frame % 10 === 0) document.getElementById('info').textContent = `${p.name} · frame ${frame}`;
+  requestAnimationFrame(draw);
+}
+
+// Events
+canvas.addEventListener('pointerdown', seedFromEvent);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); seedFromEvent(e); }, { passive: false });
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'r' || e.key === 'R') { e.preventDefault(); resetSim(); }
+  else if (e.key === ' ') { e.preventDefault(); cyclePreset(); }
+});
+
+// Touch: swipe to cycle presets
+let tx = 0;
+canvas.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+canvas.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) cyclePreset();
+}, { passive: true });
+
+// Handle resize/orientation — simulation grid stays fixed, CSS handles scaling
+function handleResize() {
+  // Force layout recalc so flex:1 canvas fills correctly after orientation change
+  canvas.style.width = '100%';
+}
+window.addEventListener('resize', handleResize);
+window.addEventListener('orientationchange', handleResize);
+
+initSim();
+
+// In iframe: pre-seed heavily and run simulation to show developed patterns immediately
+if (window.self !== window.top) {
+  for (let i = 0; i < 12; i++) {
+    seed(Math.random() * S, Math.random() * S, 6 + Math.random() * 8);
+  }
+  for (let i = 0; i < 500; i++) step();
+}
+
+draw();
+</script>
+</body>
+</html>

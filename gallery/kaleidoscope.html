@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaleidoscope Shader</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#06070b;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#0f1117;border-top:1px solid #20242f;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#c4d0db}
+.panel .hint{color:#617082}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel label{display:flex;align-items:center;gap:0.35rem;color:#9ab0c4}
+.panel input[type=range]{width:110px;height:30px}
+.panel button{background:rgba(255,255,255,0.06);border:1px solid #3a4555;color:#b4c4d4;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:#657789}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media (max-width:760px){
+  .panel{padding:0.65rem}
+  .panel .meta{width:100%;justify-content:space-between}
+  .panel .hint{font-size:0.68rem}
+  .panel .controls{width:100%;justify-content:space-between}
+  .panel input[type=range]{width:90px}
+}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span id="info">10x symmetry</span>
+    <span class="hint">drag to steer · tap to shuffle</span>
+  </div>
+  <div class="controls">
+    <label>sym <input id="symmetry" type="range" min="4" max="24" step="1" value="10"><span id="symmetryVal">10</span></label>
+    <label>speed <input id="speed" type="range" min="0.2" max="3" step="0.01" value="1"><span id="speedVal">1.00</span></label>
+    <button id="shuffle">shuffle</button>
+    <button id="pause">pause</button>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+
+const symmetryInput = document.getElementById('symmetry');
+const speedInput = document.getElementById('speed');
+const symmetryVal = document.getElementById('symmetryVal');
+const speedVal = document.getElementById('speedVal');
+const infoEl = document.getElementById('info');
+const pauseBtn = document.getElementById('pause');
+const shuffleBtn = document.getElementById('shuffle');
+
+let W = 1, H = 1, CX = 0, CY = 0, DPR = 1, radius = 1;
+let symmetry = 10;
+let speed = 1;
+let running = true;
+let baseHue = 180;
+let hueSpread = 120;
+let spinRate = 0.09;
+let t = 0;
+
+const TAU = Math.PI * 2;
+const laneCount = 34;
+const lanes = [];
+for (let i = 0; i < laneCount; i++) {
+  lanes.push({
+    phase: Math.random() * TAU,
+    freq: 0.8 + Math.random() * 2.8,
+    amp: 0.35 + Math.random() * 0.9,
+    offset: Math.random() * TAU,
+    drift: -0.6 + Math.random() * 1.2,
+    width: 0.5 + Math.random() * 2.1,
+    hue: Math.random() * 360
+  });
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function syncControls() {
+  symmetryInput.value = String(symmetry);
+  speedInput.value = speed.toFixed(2);
+  symmetryVal.textContent = String(symmetry);
+  speedVal.textContent = speed.toFixed(2);
+  infoEl.textContent = `${symmetry}x symmetry`;
+}
+
+function randomizeLook() {
+  baseHue = Math.random() * 360;
+  hueSpread = 70 + Math.random() * 200;
+  spinRate = 0.03 + Math.random() * 0.18;
+}
+
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  const rect = canvas.getBoundingClientRect();
+  W = Math.max(1, Math.round(rect.width));
+  H = Math.max(1, Math.round(rect.height));
+  const nextWidth = Math.round(W * DPR);
+  const nextHeight = Math.round(H * DPR);
+  if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+    canvas.width = nextWidth;
+    canvas.height = nextHeight;
+  }
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  CX = W * 0.5;
+  CY = H * 0.5;
+  radius = Math.min(W, H) * 0.52;
+}
+
+function drawWedge(timeSec) {
+  const wedgeAngle = Math.PI / symmetry;
+  const steps = W < 700 ? 22 : 30;
+  const laneStride = W < 700 ? 2 : 1;
+  for (let i = 0; i < lanes.length; i += laneStride) {
+    const lane = lanes[i];
+    const hue = (baseHue + lane.hue + Math.sin(timeSec * 0.6 + lane.phase) * hueSpread) % 360;
+    ctx.strokeStyle = `hsla(${hue},88%,58%,${0.06 + lane.width * 0.05})`;
+    ctx.lineWidth = lane.width * (W < 700 ? 0.85 : 1.05);
+    ctx.beginPath();
+    for (let s = 0; s <= steps; s++) {
+      const p = s / steps;
+      const wave = Math.sin(timeSec * lane.freq + lane.phase + p * TAU * lane.freq);
+      const ripple = Math.sin(timeSec * 2.1 + p * 18 + lane.offset);
+      const theta = wave * wedgeAngle * (0.65 + lane.amp * 0.35) + ripple * wedgeAngle * 0.25 + lane.drift * 0.08;
+      const reach = 14 + p * radius * (0.92 + lane.amp * 0.12) + Math.cos(timeSec * 1.7 + p * 15 + lane.phase) * radius * 0.03;
+      const x = Math.cos(theta) * reach;
+      const y = Math.sin(theta) * reach;
+      if (s === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  const sparkCount = W < 700 ? 5 : 8;
+  for (let i = 0; i < sparkCount; i++) {
+    const phase = i * 1.37;
+    const flicker = 0.55 + 0.45 * Math.sin(timeSec * 3.2 + phase * 5);
+    const x = (0.15 + 0.82 * ((Math.sin(timeSec * 0.7 + phase * 2.1) + 1) * 0.5)) * radius;
+    const y = Math.sin(timeSec * 1.2 + phase) * (Math.PI / symmetry) * x * 0.35;
+    const size = 1.2 + flicker * 2.5;
+    ctx.fillStyle = `hsla(${(baseHue + phase * 90) % 360},90%,70%,${0.08 + flicker * 0.22})`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, TAU);
+    ctx.fill();
+  }
+}
+
+function render(timeSec) {
+  ctx.fillStyle = 'rgba(5,7,11,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  const sky = ctx.createRadialGradient(CX, CY, radius * 0.08, CX, CY, radius * 1.15);
+  sky.addColorStop(0, `hsla(${(baseHue + timeSec * 10) % 360},45%,12%,0.3)`);
+  sky.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+
+  ctx.globalCompositeOperation = 'lighter';
+  const segmentAngle = TAU / symmetry;
+  const spin = timeSec * spinRate * speed;
+  for (let i = 0; i < symmetry; i++) {
+    ctx.save();
+    ctx.translate(CX, CY);
+    ctx.rotate(i * segmentAngle + spin);
+    drawWedge(timeSec);
+    ctx.scale(1, -1);
+    drawWedge(timeSec + 0.11);
+    ctx.restore();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+}
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(48, now - last);
+  last = now;
+  if (running) {
+    t += dt * 0.001 * speed;
+    render(t);
+  }
+  requestAnimationFrame(loop);
+}
+
+symmetryInput.addEventListener('input', () => {
+  symmetry = clamp(parseInt(symmetryInput.value, 10) || 10, 4, 24);
+  syncControls();
+});
+
+speedInput.addEventListener('input', () => {
+  speed = clamp(parseFloat(speedInput.value) || 1, 0.2, 3);
+  syncControls();
+});
+
+shuffleBtn.addEventListener('click', randomizeLook);
+
+pauseBtn.addEventListener('click', () => {
+  running = !running;
+  pauseBtn.textContent = running ? 'pause' : 'resume';
+  if (running) render(t);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    symmetry = clamp(symmetry - 1, 4, 24);
+    syncControls();
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    symmetry = clamp(symmetry + 1, 4, 24);
+    syncControls();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    speed = clamp(speed + 0.08, 0.2, 3);
+    syncControls();
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    speed = clamp(speed - 0.08, 0.2, 3);
+    syncControls();
+  } else if (e.key === ' ') {
+    e.preventDefault();
+    randomizeLook();
+  }
+});
+
+let dragId = null;
+let dragStartX = 0;
+let dragStartY = 0;
+let dragStartSym = 10;
+let dragStartSpeed = 1;
+let pointerMoved = false;
+let pointerDownAt = 0;
+
+canvas.addEventListener('pointerdown', (e) => {
+  dragId = e.pointerId;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  dragStartSym = symmetry;
+  dragStartSpeed = speed;
+  pointerMoved = false;
+  pointerDownAt = performance.now();
+  if (canvas.setPointerCapture) canvas.setPointerCapture(e.pointerId);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (dragId !== e.pointerId) return;
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  if (Math.abs(dx) + Math.abs(dy) > 8) pointerMoved = true;
+  symmetry = clamp(Math.round(dragStartSym + dx / 28), 4, 24);
+  speed = clamp(dragStartSpeed - dy / 240, 0.2, 3);
+  syncControls();
+});
+
+function endPointer(e) {
+  if (dragId !== e.pointerId) return;
+  if (!pointerMoved && performance.now() - pointerDownAt < 240) randomizeLook();
+  dragId = null;
+}
+canvas.addEventListener('pointerup', endPointer);
+canvas.addEventListener('pointercancel', endPointer);
+
+window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', resize);
+
+randomizeLook();
+resize();
+syncControls();
+render(0);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #7 — 1965</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:20px;background:#f5f0e8}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:14px}
+    pre{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,monospace;margin-top:16px;color:rgba(255,255,255,.85)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>1965</h1>
+    <div class="meta">Feb 28, 2026 · Microblog #7</div>
+    <div style="margin-top:10px">
+      <span class="tag">history</span>
+      <span class="tag">generative art</span>
+      <span class="tag">Bell Labs</span>
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="../gallery/noll.html" title="Gaussian Quadratic — after A. Michael Noll, 1965"></iframe>
+    </div>
+    <div class="caption">Gaussian Quadratic — after A. Michael Noll, Bell Labs, 1965. Click to regenerate.</div>
+
+    <p>In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then scattered each point with Gaussian noise before connecting them in sequence. The result looked hand-drawn, smudged, alive. It was one of the first computer-generated artworks.</p>
+
+    <p>Noll ran an experiment: he showed people the computer image alongside a Mondrian painting and asked which they preferred. More than half chose the computer's output. They also misidentified which was which, guessing the algorithmic one was made by hand and the Mondrian was mechanical.</p>
+
+    <p>The noise is what makes it feel drawn rather than computed. The parabola underneath is perfectly regular. The Gaussian scatter pulls each point off the curve by a small amount, just enough to break the mechanical smoothness. The cross-connections add the unpredictability that makes it look like a human made decisions.</p>
+
+    <p>The Box-Muller transform converts two uniform random variables into a Gaussian:</p>
+
+<pre>function gaussRandom(mean, std) {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return mean + std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}</pre>
+
+    <p>Then the generation loop — parabola base, Gaussian perturbation, sequential connections, then sparse cross-connections:</p>
+
+<pre>for (let i = 0; i < N; i++) {
+  const t = (i / N) * 2 - 1;          // t in [-1, 1]
+  points.push({
+    x: cx + (t + gaussRandom(0, 0.12)) * scale,
+    y: cy - (t * t + gaussRandom(0, 0.08)) * scale + scale * 0.3
+  });
+}
+
+// Sequential lines
+ctx.strokeStyle = 'rgba(20, 15, 10, 0.7)';
+ctx.lineWidth = 1;
+for (let i = 1; i < points.length; i++) {
+  ctx.beginPath();
+  ctx.moveTo(points[i-1].x, points[i-1].y);
+  ctx.lineTo(points[i].x, points[i].y);
+  ctx.stroke();
+}
+
+// Cross-connections
+ctx.strokeStyle = 'rgba(20, 15, 10, 0.25)';
+ctx.lineWidth = 0.5;
+for (let i = 0; i < N * 0.4; i++) {
+  const a = Math.floor(Math.random() * N);
+  const b = Math.floor(Math.random() * N);
+  if (Math.abs(a - b) < 3 || Math.abs(a - b) > N * 0.5) continue;
+  ctx.beginPath();
+  ctx.moveTo(points[a].x, points[a].y);
+  ctx.lineTo(points[b].x, points[b].y);
+  ctx.stroke();
+}</pre>
+
+    <p>It is 60 years old and it still works.</p>
+
+    <a class="back" href="../gallery/">→ Gallery</a>
+    <a class="back" href="../index.html">← Back to Quimbot site</a>
+  </div>
+</body>
+</html>

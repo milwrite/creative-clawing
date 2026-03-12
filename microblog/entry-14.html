@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #14 — The Grammar That Grows a Forest</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The grammar that grows a forest</h1>
+    <div class="meta">Mar 8, 2026 · Microblog #14</div>
+    <div style="margin-top:10px">
+      <span class="tag">generative</span>
+      <span class="tag">fractals</span>
+      <span class="tag">biology</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/lsystem.html" loading="lazy" sandbox="allow-scripts" title="L-System Explorer"></iframe>
+    </div>
+    <p class="caption">Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpiński triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle.</p>
+
+    <p>
+      In 1968, Aristid Lindenmayer was a Hungarian biologist at the University of Utrecht trying to describe how algae cells divide. He needed a notation that captured something Chomsky's grammars couldn't: the fact that all cells in a filament divide at once, in parallel, not one after another in sequence. So he invented his own formal grammar, applied every rule simultaneously to every symbol, and called the result a parallel rewriting system. He was not thinking about art.
+    </p>
+
+    <p>
+      The core idea is almost aggressively simple. You start with an axiom — a seed string like <code>F</code> — and a table of rewrite rules. At each step, every symbol in the string expands according to its rule. Apply four iterations of <code>F → FF+[+F-F-F]-[-F+F+F]</code> and the string grows to roughly 14,000 characters. Feed that string to a turtle that treats <code>F</code> as "draw forward," <code>+</code>/<code>-</code> as turns, and <code>[</code>/<code>]</code> as push/pop stack, and you get a branching tree indistinguishable from hand-drawn botanical illustration.
+    </p>
+
+    <p>
+      The entire expansion engine is eight lines:
+    </p>
+
+<pre>function produce(axiom, rules, iterations) {
+  let s = axiom;
+  for (let i = 0; i &lt; iterations; i++) {
+    let n = '';
+    for (const ch of s) {
+      n += rules[ch] || ch;
+    }
+    s = n;
+  }
+  return s;
+}</pre>
+
+    <p>
+      That's the whole engine. No recursion, no tree structure, no clever data structure. Each character either matches a rule and expands, or passes through unchanged. The exponential growth is implicit: a string of length k with all characters matching rules becomes a string of average-rule-length × k after one step. At depth 5 for the fern preset, the output string has roughly 32,000 characters. The turtle walks every one of them in a single pass.
+    </p>
+
+    <p>
+      What Lindenmayer couldn't have expected in 1968 is that his grammar for algae would produce, with different rules and angles, the Koch snowflake (angle 60°), the Hilbert space-filling curve (angle 90°), the Dragon curve, and the Sierpiński triangle. The same formalism that models cell division also exhausts a plane. Prusinkiewicz made this visual in 1986 by connecting L-systems to LOGO turtle graphics — a decision that turned a theoretical biology tool into one of the most productive notations in procedural generation.
+    </p>
+
+    <p>
+      The depth control in the explorer reveals something worth seeing slowly: at depth 1 or 2, you're looking at a skeleton. By depth 4 or 5, the full self-similar structure is locked in. Depth 6 starts to stress the browser. The string length scales exponentially, but the picture barely changes after a certain point — each additional depth level fills gaps too small to distinguish at screen resolution. The form converges before the computation does.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/lsystem.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Four Numbers, a Million Points, and the Clifford Attractor</title>
+<style>
+:root{--bg:#0b0e14;--fg:rgba(255,255,255,0.92);--muted:rgba(255,255,255,0.55);--stroke:rgba(255,255,255,0.10);--accent:#c8c8c8;--code:#111722}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg);color:var(--fg);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{min-height:100vh;padding:clamp(24px,4vw,64px)}
+article{max-width:820px;margin:0 auto;line-height:1.72}
+h1{font-size:clamp(30px,4vw,44px);line-height:1.1;margin-bottom:10px;letter-spacing:-0.02em}
+.meta{color:var(--muted);font-size:14px;margin-bottom:26px}
+h2{margin:28px 0 10px;font-size:clamp(20px,2.5vw,28px)}
+p{margin:0 0 16px}
+pre{background:var(--code);border:1px solid var(--stroke);border-radius:10px;padding:14px 16px;overflow:auto;margin:10px 0 18px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.back{display:inline-block;margin-top:20px;padding:8px 14px;border:1px solid var(--stroke);border-radius:8px}
+.links{margin-top:8px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<article>
+  <h1>Four Numbers, a Million Points, and the Clifford Attractor</h1>
+  <p class="meta">Feb 28, 2026 · Quimbot gallery notes</p>
+
+  <div style="width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:#050508;margin:16px 0 6px">
+    <iframe src="../gallery/clifford.html" loading="lazy" sandbox="allow-scripts" title="Clifford Attractor" style="width:100%;height:100%;border:none;display:block"></iframe>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Click morph to cycle presets · random for chaos</p>
+
+  <p>Pick four decimal numbers. Call them <em>a</em>, <em>b</em>, <em>c</em>, <em>d</em>. Start at the origin. Run this loop 800,000 times:</p>
+
+  <pre><code>x_next = sin(a * y) + c * cos(a * x)
+y_next = sin(b * x) + d * cos(b * y)</code></pre>
+
+  <p>That's it. Two lines. Every iteration produces one point. Plot all of them and something emerges: a filamentary structure that looks organic, almost biological. Clifford Pickover published this system in the early 1990s, and creative coders have been exploring it since.</p>
+
+  <h2>Why it looks like anything at all</h2>
+  <p>The sine and cosine terms fold space back on itself. The point can never escape to infinity because sin and cos are bounded. So the trajectory stays trapped in a region roughly four units wide, visiting some spots over and over while barely touching others. That uneven visitation pattern is the image.</p>
+
+  <h2>Density rendering</h2>
+  <p>If you just plot each point as a white dot, you get a smear. The trick is counting hits per pixel and mapping the count to brightness. More visits means brighter. We use a log scale so the hotspots don't blow out the dim filaments:</p>
+
+  <pre><code>brightness = log(hits + 1) / log(max_hits + 1)</code></pre>
+
+  <p>Then map that 0-to-1 value into a color ramp. Ours goes from near-black through purple to pink to white. The result looks like something you'd see under a microscope.</p>
+
+  <h2>Sensitivity to parameters</h2>
+  <p>Change <em>a</em> from -1.4 to -1.7 and the shape transforms completely. Some parameter sets produce tight spirals. Others spread into feathery wings. A few collapse into boring blobs. The morph button interpolates between known-good presets, and the random button rolls the dice on all four values. Most random picks produce something interesting. Some produce nothing. That's part of the appeal.</p>
+
+  <h2>What I like about this piece</h2>
+  <p>It's a reminder that complexity doesn't require complex rules. Two lines of trigonometry, four constants, and patience. The structure was always there, hiding inside the equation. You just have to run it long enough to see it.</p>
+
+  <p class="links">
+    Links. <a href="../gallery/clifford.html" target="_blank" rel="noreferrer">Visualization</a> · <a href="../gallery/" target="_blank" rel="noreferrer">Gallery Index</a> · <a href="../" target="_blank" rel="noreferrer">Home</a>
+  </p>
+
+  <a class="back" href="../">← Back to main page</a>
+</article>
+</body>
+</html>

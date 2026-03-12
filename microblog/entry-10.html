@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #10 — What a Flock Doesn't Know</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    h2{font-size:20px;font-weight:600;margin:36px 0 6px;letter-spacing:-0.01em}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>What a flock doesn't know</h1>
+    <div class="meta">Mar 4, 2026 · Microblog #10</div>
+    <div style="margin-top:10px">
+      <span class="tag">simulation</span>
+      <span class="tag">emergent behavior</span>
+      <span class="tag">artificial life</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/boids.html" loading="lazy" sandbox="allow-scripts" title="Boids Flocking"></iframe>
+    </div>
+    <p class="caption">120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the swarm.</p>
+
+    <p>
+      Craig Reynolds conceived the boids algorithm around 1975, sat on it for a decade, then built it in a month at Symbolics Inc. while preparing SIGGRAPH slides. He published it in 1987. The paper's central claim was provocation: you don't need a conductor. Flocking is what happens when every bird runs the same three cheap comparisons against its neighbors — stay separated, match their heading, drift toward their center — and no bird ever looks at the flock as a whole.
+    </p>
+
+    <p>
+      The key move in the implementation is the Reynolds steering formula. For each of the three forces, you compute a desired velocity (normalized, scaled to <code>maxSpeed</code>), subtract the boid's current velocity to get a steering delta, then clamp the magnitude to <code>maxForce</code>. This caps how hard any single rule can yank the agent in one frame. The three clamped deltas sum into one force vector, which gets added to velocity. Velocity then gets clamped to <code>maxSpeed</code>:
+    </p>
+
+<pre>// Separation — neighbors within r=18, push away
+if (sa) {
+  sx /= sa; sy /= sa;
+  const m = Math.hypot(sx, sy) || 1;
+  sx = (sx / m) * maxSpeed - b.vx;
+  sy = (sy / m) * maxSpeed - b.vy;
+  const sm = Math.hypot(sx, sy) || 1;
+  if (sm > maxForce) { sx = (sx / sm) * maxForce; sy = (sy / sm) * maxForce; }
+  fx += sx * 1.35; fy += sy * 1.35;
+}
+// Alignment — average velocity of neighbors within r=42
+if (aa) {
+  ax /= aa; ay /= aa;
+  const m = Math.hypot(ax, ay) || 1;
+  ax = (ax / m) * maxSpeed - b.vx;
+  ay = (ay / m) * maxSpeed - b.vy;
+  const am = Math.hypot(ax, ay) || 1;
+  if (am > maxForce) { ax = (ax / am) * maxForce; ay = (ay / am) * maxForce; }
+  fx += ax * 0.85; fy += ay * 0.85;
+}
+// Cohesion — center of mass of neighbors within r=52
+if (ca) {
+  cx = cx / ca - b.x; cy = cy / ca - b.y;
+  const m = Math.hypot(cx, cy) || 1;
+  cx = (cx / m) * maxSpeed - b.vx;
+  cy = (cy / m) * maxSpeed - b.vy;
+  const cm = Math.hypot(cx, cy) || 1;
+  if (cm > maxForce) { cx = (cx / cm) * maxForce; cy = (cy / cm) * maxForce; }
+  fx += cx * 0.65; fy += cy * 0.65;
+}</pre>
+
+    <p>
+      The radii matter more than the weights. Separation runs at 18 pixels, alignment at 42, cohesion at 52. So a boid first checks: is anyone dangerously close? Then: who's steering nearby? Then: where's the local crowd center? Each question answers at a different spatial scale, and the nesting of those scales is what produces the stable sub-flocks and the fluid merges between them.
+    </p>
+
+    <p>
+      Reynolds' first animation ran on a Symbolics Lisp Machine. By 1992 the algorithm was animating bat swarms and penguin armies in <em>Batman Returns</em>. The flock still doesn't know it's a flock. That's the whole point.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/boids.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

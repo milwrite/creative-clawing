@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGNpcmNsZSBjeD0iMTAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzYwNDBmZiIgb3BhY2l0eT0iMC45Ii8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxNiIgcj0iNiIgZmlsbD0iI2ZmNDA5MCIgb3BhY2l0eT0iMC45Ii8+Cjwvc3ZnPgo="/>
+<title>Metaballs</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#06070f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.75);background:rgba(0,0,0,0.55);padding:6px 14px;border-radius:6px;font:12px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Metaballs · move mouse to interact</div>
+<script>
+if (window.self !== window.top) {
+  document.querySelectorAll('.back-btn,#info').forEach(e => e.style.display = 'none');
+}
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Low-res simulation canvas (scales up for performance)
+const SIM_W = 200, SIM_H = 140;
+const sim = document.createElement('canvas');
+sim.width = SIM_W; sim.height = SIM_H;
+const sc = sim.getContext('2d');
+const imgData = sc.createImageData(SIM_W, SIM_H);
+const px = imgData.data;
+
+let W = window.innerWidth, H = window.innerHeight;
+let t = 0;
+let mx = -1, my = -1; // normalized [0,1]
+
+// Balls: positions/velocities in normalized [0,1] space
+const BALLS = 9;
+const balls = [];
+for (let i = 0; i < BALLS; i++) {
+  const spd = 0.0025 + Math.random() * 0.004;
+  const angle = Math.random() * Math.PI * 2;
+  balls.push({
+    x: 0.15 + Math.random() * 0.7,
+    y: 0.15 + Math.random() * 0.7,
+    vx: Math.cos(angle) * spd,
+    vy: Math.sin(angle) * spd,
+    r: 0.055 + Math.random() * 0.07,
+    hue: (i * 40 + Math.random() * 20) % 360
+  });
+}
+
+// Convert HSL to RGB (returns [r, g, b] 0-255)
+function hsl(h, s, l) {
+  s /= 100; l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    return l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+  };
+  return [f(0) * 255 | 0, f(8) * 255 | 0, f(4) * 255 | 0];
+}
+
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function update() {
+  t += 0.01;
+  const asp = W / H;
+  for (const b of balls) {
+    b.x += b.vx;
+    b.y += b.vy * asp;
+    if (b.x < 0 || b.x > 1) { b.vx *= -1; b.x = Math.max(0, Math.min(1, b.x)); }
+    if (b.y < 0 || b.y > 1) { b.vy *= -1; b.y = Math.max(0, Math.min(1, b.y)); }
+  }
+}
+
+function render() {
+  const asp = W / H;
+
+  for (let yi = 0; yi < SIM_H; yi++) {
+    const fy = yi / SIM_H;
+    for (let xi = 0; xi < SIM_W; xi++) {
+      const fx = xi / SIM_W;
+
+      let sum = 0;
+      let maxW = 0, domH = 0, domH2 = 0, secW = 0;
+
+      for (const b of balls) {
+        const dx = (fx - b.x) * asp;
+        const dy = fy - b.y;
+        const w = b.r * b.r / (dx * dx + dy * dy + 1e-6);
+        sum += w;
+        if (w > maxW) { secW = maxW; domH2 = domH; maxW = w; domH = b.hue; }
+        else if (w > secW) { secW = w; domH2 = b.hue; }
+      }
+
+      // Mouse void (if active)
+      if (mx >= 0) {
+        const dx2 = (fx - mx) * asp, dy2 = fy - my;
+        const mw = 0.004 / (dx2 * dx2 + dy2 * dy2 + 1e-5);
+        sum -= mw;
+      }
+
+      const base = (yi * SIM_W + xi) * 4;
+      if (sum >= 1.0) {
+        // Interior: blend between dominant and secondary ball hues
+        const blend = Math.min(secW / (maxW + 1e-9), 0.6);
+        const h = domH + blend * ((domH2 - domH + 540) % 360 - 180);
+        const lum = 42 + Math.min(sum - 1, 0.8) * 15;
+        const [r, g, b2] = hsl((h + t * 12) % 360, 75, lum);
+        px[base] = r; px[base + 1] = g; px[base + 2] = b2; px[base + 3] = 255;
+      } else if (sum >= 0.82) {
+        // Rim glow
+        const edge = (sum - 0.82) / 0.18;
+        const [r, g, b2] = hsl((domH + t * 12) % 360, 90, 60);
+        const alpha = (edge * edge) * 200 | 0;
+        px[base] = r; px[base + 1] = g; px[base + 2] = b2; px[base + 3] = alpha;
+      } else {
+        // Background
+        px[base] = 6; px[base + 1] = 7; px[base + 2] = 15; px[base + 3] = 255;
+      }
+    }
+  }
+
+  sc.putImageData(imgData, 0, 0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'medium';
+  ctx.drawImage(sim, 0, 0, W, H);
+}
+
+canvas.addEventListener('mousemove', e => {
+  mx = e.clientX / W; my = e.clientY / H;
+});
+canvas.addEventListener('mouseleave', () => { mx = -1; my = -1; });
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  mx = e.touches[0].clientX / W;
+  my = e.touches[0].clientY / H;
+}, { passive: false });
+canvas.addEventListener('touchend', () => { mx = -1; my = -1; });
+
+window.addEventListener('resize', resize);
+resize();
+
+function frame() {
+  update();
+  render();
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>

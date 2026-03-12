@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truchet Tiles</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0a0a0a;overflow:hidden;cursor:pointer}
+  canvas{display:block}
+  .back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+  .back:hover{border-color:#666;color:#fff}
+  .label{position:fixed;bottom:1rem;left:1rem;font:0.75rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#888;background:rgba(10,10,10,0.85);padding:0.4rem 0.7rem;border-radius:4px;pointer-events:none}
+  .mode{position:fixed;top:1rem;right:1rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;border:1px solid #333;cursor:pointer;z-index:10;transition:border-color 0.2s}
+  .mode:hover{border-color:#666;color:#fff}
+  .in-iframe .back,.in-iframe .label,.in-iframe .mode{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
+<a class="back" href="index.html">← Gallery</a>
+<button class="mode" id="modeBtn">style: arcs</button>
+<canvas id="c"></canvas>
+<div class="label">click to regenerate · M to cycle styles</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const modeBtn = document.getElementById('modeBtn');
+let W, H, tileSize;
+let mode = 0; // 0=arcs, 1=triangles, 2=diagonal
+const modeNames = ['arcs', 'triangles', 'diagonal'];
+const palettes = [
+  ['#e8e8e8', '#1a1a2e'],           // classic monochrome
+  ['#264653', '#2a9d8f', '#e9c46a'], // earth tones
+  ['#f72585', '#7209b7', '#3a0ca3'], // neon purple
+  ['#606c38', '#283618', '#dda15e'], // forest
+  ['#0077b6', '#00b4d8', '#90e0ef'], // ocean
+];
+let palette;
+
+function pickPalette() {
+  palette = palettes[Math.floor(Math.random() * palettes.length)];
+}
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  tileSize = Math.max(30, Math.min(60, Math.floor(Math.min(W, H) / 14)));
+}
+
+function drawArcTile(x, y, s, flip) {
+  ctx.lineWidth = s * 0.12;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = palette[0];
+  if (flip) {
+    // arcs from top-right and bottom-left
+    ctx.beginPath();
+    ctx.arc(x + s, y, s / 2, Math.PI * 0.5, Math.PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y + s, s / 2, -Math.PI * 0.5, 0);
+    ctx.stroke();
+  } else {
+    // arcs from top-left and bottom-right
+    ctx.beginPath();
+    ctx.arc(x, y, s / 2, 0, Math.PI * 0.5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x + s, y + s, s / 2, Math.PI, Math.PI * 1.5);
+    ctx.stroke();
+  }
+}
+
+function drawTriTile(x, y, s, flip) {
+  const c1 = palette[0];
+  const c2 = palette.length > 2 ? palette[1] : palette[0];
+  if (flip) {
+    ctx.fillStyle = c1;
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = c2;
+    ctx.beginPath();
+    ctx.moveTo(x + s, y); ctx.lineTo(x + s, y + s); ctx.lineTo(x, y + s); ctx.closePath();
+    ctx.fill();
+  } else {
+    ctx.fillStyle = c1;
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x + s, y); ctx.lineTo(x + s, y + s); ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = c2;
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x + s, y + s); ctx.lineTo(x, y + s); ctx.closePath();
+    ctx.fill();
+  }
+}
+
+function drawDiagTile(x, y, s, flip) {
+  ctx.lineWidth = s * 0.08;
+  ctx.lineCap = 'round';
+  const colors = palette.length > 2 ? palette : [palette[0], palette[0]];
+  const nLines = 5;
+  for (let i = 0; i <= nLines; i++) {
+    const t = i / nLines;
+    ctx.strokeStyle = colors[i % colors.length];
+    ctx.globalAlpha = 0.5 + t * 0.5;
+    ctx.beginPath();
+    if (flip) {
+      ctx.moveTo(x + s * t, y);
+      ctx.lineTo(x, y + s * t);
+      if (i > 0) {
+        ctx.moveTo(x + s, y + s * (1 - t));
+        ctx.lineTo(x + s * (1 - t), y + s);
+      }
+    } else {
+      ctx.moveTo(x + s * (1 - t), y);
+      ctx.lineTo(x + s, y + s * t);
+      if (i > 0) {
+        ctx.moveTo(x, y + s * (1 - t));
+        ctx.lineTo(x + s * t, y + s);
+      }
+    }
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+}
+
+const drawFns = [drawArcTile, drawTriTile, drawDiagTile];
+
+let grid = [];
+
+function generate() {
+  pickPalette();
+  const cols = Math.ceil(W / tileSize) + 1;
+  const rows = Math.ceil(H / tileSize) + 1;
+  grid = [];
+  for (let r = 0; r < rows; r++) {
+    const row = [];
+    for (let c = 0; c < cols; c++) {
+      row.push(Math.random() < 0.5 ? 0 : 1);
+    }
+    grid.push(row);
+  }
+  draw();
+}
+
+function draw() {
+  ctx.fillStyle = palette.length > 2 ? palette[2] : '#0a0a0a';
+  ctx.fillRect(0, 0, W, H);
+  const fn = drawFns[mode];
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      fn(c * tileSize, r * tileSize, tileSize, grid[r][c] === 1);
+    }
+  }
+}
+
+// Animate: slowly flip random tiles
+let animating = true;
+let lastFlip = 0;
+function animate(t) {
+  if (t - lastFlip > 120 && grid.length > 0) {
+    const r = Math.floor(Math.random() * grid.length);
+    const c = Math.floor(Math.random() * grid[0].length);
+    grid[r][c] = 1 - grid[r][c];
+    draw();
+    lastFlip = t;
+  }
+  requestAnimationFrame(animate);
+}
+
+resize();
+generate();
+requestAnimationFrame(animate);
+
+window.addEventListener('resize', () => { resize(); generate(); });
+
+canvas.addEventListener('click', () => generate());
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  generate();
+}, { passive: false });
+
+function cycleMode() {
+  mode = (mode + 1) % modeNames.length;
+  modeBtn.textContent = 'style: ' + modeNames[mode];
+  draw();
+}
+
+modeBtn.addEventListener('click', e => { e.stopPropagation(); cycleMode(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'm' || e.key === 'M') cycleMode();
+});
+</script>
+</body>
+</html>

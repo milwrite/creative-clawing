@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #11 — The Angle That Doesn't Repeat</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The angle that doesn't repeat</h1>
+    <div class="meta">Mar 6, 2026 · Microblog #11</div>
+    <div style="margin-top:10px">
+      <span class="tag">math</span>
+      <span class="tag">biology</span>
+      <span class="tag">generative</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/phyllotaxis.html" loading="lazy" sandbox="allow-scripts" title="Phyllotaxis"></iframe>
+    </div>
+    <p class="caption">1,400 dots placed at 137.5° increments, radius scaling as √index. Click to pulse. Move mouse to slow the rotation.</p>
+
+    <p>
+      A sunflower head packs hundreds of seeds in tight spiral rows. Count the spirals going clockwise: usually 34. Counterclockwise: usually 55. Both Fibonacci numbers. The ratio of consecutive Fibonacci numbers converges to φ ≈ 1.618. The spirals are a direct consequence of a plant following one simple rule for a specific reason.
+    </p>
+
+    <p>
+      The rule is Hofmeister's, from 1868: each new leaf primordium appears at the position around the growing tip furthest from the nearest existing primordium. One local measurement, repeated at every step. The angle that satisfies this rule in the limit is 137.5°, the golden angle, equal to 360° × (2 − φ). At this angle, sequential dots never align into a row. Each rotation drops the new dot into the largest available gap, and no gap exactly repeats, because 137.5° is maximally irrational: its continued fraction is [1; 1, 1, 1, 1, ...], the slowest possible convergence toward any rational number. The denominators of its best rational approximations are Fibonacci numbers. That's why sunflowers count in Fibonacci.
+    </p>
+
+    <p>
+      The code that places 1,400 dots on a canvas reduces to two lines:
+    </p>
+
+<pre>const PHI          = (1 + Math.sqrt(5)) / 2;
+const GOLDEN_ANGLE = Math.PI * 2 * (2 - PHI); // ≈ 137.508°
+
+// inside the draw loop, for each dot i:
+const theta = i * GOLDEN_ANGLE + t * 0.08;
+const r     = maxR * Math.sqrt(frac);        // frac = i / N</pre>
+
+    <p>
+      The <code>sqrt(frac)</code> term handles the second constraint. Uniform packing requires uniform area density, and uniform area density requires r ∝ √index. Dropping the square root (using r ∝ index) packs dots at the center and thins them at the edge. The square root corrects for circle geometry.
+    </p>
+
+    <p>
+      Every visible spiral arm emerges from these two constants with no explicit spiral geometry anywhere in the code. The plant runs the same computation. It places each new primordium where there is the most room. The spirals appear afterward, in the counting.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/phyllotaxis.html">→ Open visualization</a>
+      <a href="../gallery/">→ Gallery index</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

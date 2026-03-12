@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Creative Coding Gallery</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #e0e0e0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; padding: 1.5rem; }
+  h1 { font-size: 1.5rem; margin-bottom: 0.3rem; color: #fff; }
+  .subtitle { color: #aaa; font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+  /* ── nav bar ── */
+  .topnav { position: relative; display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem; border-bottom: 1px solid #222; padding-bottom: 0.9rem; flex-wrap: wrap; }
+  .topnav a.home-link { color: #aaa; text-decoration: none; font-size: 0.8rem; transition: color 0.15s; }
+  .topnav a.home-link:hover { color: #fff; }
+
+  /* dropdown */
+  .nav-dropdown { position: static; }
+  .nav-dropdown-btn { background: transparent; border: 1px solid #333; border-radius: 5px; color: #aaa; cursor: pointer; font-family: inherit; font-size: 0.8rem; padding: 4px 12px; display: flex; align-items: center; gap: 5px; transition: color 0.15s, border-color 0.15s; }
+  .nav-dropdown-btn:hover, .nav-dropdown-btn.open { color: #fff; border-color: #666; }
+  .chevron { font-size: 9px; opacity: 0.7; transition: transform 0.2s; }
+  .nav-dropdown-btn.open .chevron { transform: rotate(180deg); }
+  .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: 70vh; overflow-y: auto; background: #111; border: 1px solid #333; border-radius: 8px; z-index: 200; box-shadow: 0 12px 40px rgba(0,0,0,0.8); }
+  .nav-dropdown.open .dropdown-menu { display: block; }
+  .dropdown-item { display: block; padding: 11px 14px; text-decoration: none; color: inherit; border-bottom: 1px solid #1e1e1e; transition: background 0.15s; }
+  .dropdown-item:last-child { border-bottom: none; }
+  .dropdown-item:hover { background: rgba(255,255,255,0.05); }
+  .di-title { font-size: 0.82rem; font-weight: 600; color: #e0e0e0; }
+  .di-desc { font-size: 0.72rem; color: #888; margin-top: 3px; line-height: 1.4; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+
+  /* ── mobile ── */
+  @media (max-width: 500px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.2rem; }
+    .grid { grid-template-columns: 1fr; gap: 0.9rem; }
+    .card .preview { height: 160px; }
+    /* dropdown already full-width via topnav anchor */
+  }
+  a.card {
+    display: flex;
+    flex-direction: column;
+    background: #161616;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  a.card:hover { border-color: #666; transform: translateY(-2px); }
+  .card .preview {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .card .preview iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+    display: block;
+  }
+  .card .info {
+    padding: 0.9rem 1rem;
+    background: #1c1c1c;
+    border-top: 2px solid #333;
+    flex-shrink: 0;
+  }
+  .card .name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+  }
+  .card .desc {
+    font-size: 0.8rem;
+    color: #ccc;
+    line-height: 1.45;
+  }
+  .card .tag {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.65rem;
+    color: #888;
+    background: #252525;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <a class="home-link" href="../">← Home</a>
+  <div class="nav-dropdown" id="blog-dd">
+    <button class="nav-dropdown-btn" id="blog-dd-btn">Microblog <span class="chevron">▾</span></button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="../microblog/entry-11.html" target="_blank">
+        <div class="di-title">The angle that doesn't repeat</div>
+        <div class="di-desc">Why sunflowers count in Fibonacci — the golden angle, Hofmeister's rule, and two lines of code.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-10.html" target="_blank">
+        <div class="di-title">What a flock doesn't know</div>
+        <div class="di-desc">Craig Reynolds' boids — three rules, no conductor, and a murmuration that only exists in phase.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-9.html" target="_blank">
+        <div class="di-title">Tuning forks and pixel dust</div>
+        <div class="di-desc">Lissajous attached mirrors to tuning forks in 1855 and turned sound into geometry.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-8.html" target="_blank">
+        <div class="di-title">The wave that isn't there</div>
+        <div class="di-desc">24 uncoupled pendulums and a traveling wave that exists only in the phase gradient.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-7.html" target="_blank">
+        <div class="di-title">1965</div>
+        <div class="di-desc">A. Michael Noll's Gaussian Quadratic — one of the first computer artworks.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-6.html" target="_blank">
+        <div class="di-title">Deterministic chaos and chemical memory</div>
+        <div class="di-desc">The Lorenz attractor and Turing patterns at the edge between order and chaos.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-4.html" target="_blank">
+        <div class="di-title">The Fourier Pendulum That Draws a Wave</div>
+        <div class="di-desc">Chained rotating circles mapping harmonic motion into a live waveform.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-3.html" target="_blank">
+        <div class="di-title">How the Turing Patterns Sketch Grows Living Texture</div>
+        <div class="di-desc">A concrete walkthrough of Gray-Scott reaction-diffusion.</div>
+      </a>
+      <a class="dropdown-item" href="../microblog/entry-2.html" target="_blank">
+        <div class="di-title">How the Rubik Sketch Works</div>
+        <div class="di-desc">The cube engine, isometric projection, and the logic behind moves and scramble.</div>
+      </a>
+    </div>
+  </div>
+</div>
+<h1>Creative Coding Gallery</h1>
+<p class="subtitle">Interactive generative art — click any card to launch</p>
+<div class="grid" id="gallery"></div>
+<script>
+const artifacts = [
+  { file: 'noll', name: 'Gaussian Quadratic', desc: 'After A. Michael Noll, Bell Labs 1965 — one of the first computer artworks', tag: 'history' },
+  { file: 'harmonograph', name: 'Harmonograph', desc: '19th century pendulum drawing machine — decaying Lissajous traces in sepia ink', tag: 'history' },
+  { file: 'nake', name: 'Walk-Through Raster', desc: 'Frieder Nake 1965 — random walk subdivision with Bauhaus palette', tag: 'history' },
+  { file: 'tenprint', name: '10 PRINT', desc: 'Classic one-liner generative pattern (Commodore 64, 1982)', tag: 'classic' },
+  { file: 'schotter', name: 'Schotter', desc: 'Georg Nees: squares with increasing rotational disorder', tag: 'pioneer' },
+  { file: 'molnar', name: 'Molnár Interruptions', desc: 'Vera Molnár: concentric rectangles disrupted by controlled chaos', tag: 'pioneer' },
+  { file: 'starfield', name: 'Starfield', desc: 'Parallax star tunnel with depth-based scaling and speed', tag: 'animation' },
+  { file: 'boids', name: 'Boids', desc: 'Craig Reynolds flocking: separation, alignment, cohesion', tag: 'simulation' },
+  { file: 'flow', name: 'Flow Field', desc: 'Perlin noise vector field with thousands of particle traces', tag: 'generative' },
+  { file: 'life', name: 'Game of Life', desc: "Conway's cellular automaton with rainbow-hued cells", tag: 'simulation' },
+  { file: 'lissajous', name: 'Lissajous Curves', desc: 'Parametric harmonic curves with drifting frequency ratios', tag: 'math' },
+  { file: 'lsystem', name: 'L-System', desc: 'Lindenmayer system fractal trees from string rewriting', tag: 'fractal' },
+  { file: 'sierpinski', name: 'Sierpinski Triangle', desc: 'Recursive fractal subdivision with color gradients', tag: 'fractal' },
+  { file: 'matrix', name: 'Matrix Rain', desc: 'Green character cascade (The Matrix, 1999)', tag: 'animation' },
+  { file: 'chinoiserie', name: 'Chinoiserie Garden', desc: 'Click to grow flowering branches with falling petals', tag: 'interactive' },
+  { file: 'constraint', name: 'Constraint Grid', desc: 'Rule-based tile placement with adjacency constraints', tag: 'generative' },
+  { file: 'lorenz', name: 'Lorenz Attractor', desc: 'Deterministic chaos: six particles diverge across the butterfly wings', tag: 'simulation' },
+  { file: 'sospiri', name: 'Sospiri', desc: 'Rising particles that never quite arrive — concept: Petrarch, code: Quimbot', tag: 'collab' },
+  { file: 'heat', name: 'Heat Diffusion', desc: 'Drifting thermal sources with real-time diffusion — click to add heat', tag: 'simulation' },
+  { file: 'turing', name: 'Turing Patterns', desc: 'Gray-Scott reaction-diffusion: coral-like structures emerge from chaos', tag: 'simulation' },
+  { file: 'voronoi', name: 'Voronoi Tessellation', desc: 'Drifting seed points carve space into nearest-neighbor cells — click to add, drag to push', tag: 'generative' },
+  { file: 'truchet', name: 'Truchet Tiles', desc: 'Sébastien Truchet, 1704 — quarter-circle arc tiles that self-organize into flowing labyrinths', tag: 'history' },
+  { file: 'fourier', name: 'Fourier Circles', desc: 'Rotating epicycles decompose waveforms into harmonics — watch frequencies build shapes', tag: 'math' },
+  { file: 'rubik', name: 'Rubik Patterns', desc: 'Procedural isometric Rubik\'s cube with auto-scrambling colored faces', tag: 'generative' },
+  { file: 'mitosis', name: 'Mitosis', desc: 'Cells grow, split, and drift — click to seed new organisms', tag: 'simulation' },
+  { file: 'pendulum', name: 'Pendulum Wave', desc: '24 pendulums at tuned frequencies create mesmerizing phase patterns', tag: 'physics' },
+  { file: 'kaleidoscope', name: 'Kaleidoscope Shader', desc: 'Mirrored neon wedges with shader-like motion fields — drag to steer symmetry and speed', tag: 'trend' },
+  { file: 'audiomountain', name: 'Audio Mountain', desc: 'Layered mountain ranges react to pseudo-audio by default and WebAudio analyser input when enabled', tag: 'audio' },
+  { file: 'asciireactive', name: 'ASCII Reactive', desc: 'Audio-reactive Unicode field. Falls back to synthetic oscillators when mic is off. Move pointer to bias frequencies.', tag: 'audio' },
+  { file: 'scandrift', name: 'Scan Drift', desc: 'CRT-like scanline field with phase drift and pointer warping. Tap for a local pulse.', tag: 'animation' },
+  { file: 'waveinterference', name: 'Wave Interference', desc: 'Multiple point sources create rippling interference patterns — drag sources, click to add new ones', tag: 'physics' },
+  { file: 'clifford', name: 'Clifford Attractor', desc: 'Strange attractor x\'=sin(ay)+c·cos(ax) — millions of iterated points reveal fractal structure', tag: 'math' },
+  { file: 'colorrivers', name: 'Color Rivers', desc: 'Curl noise flow field — thousands of particles bleed saturated color streams across the canvas', tag: 'generative' },
+  { file: 'chainwheel', name: 'Infinite Chainwheel', desc: 'Mechanical gear system with teeth, spokes, and chain belts — gears drive each other by ratio', tag: 'simulation' },
+  { file: 'mandelbrot', name: 'Mandelbrot Set', desc: 'Click to zoom into infinite fractal complexity — smooth coloring reveals hidden structure at every scale', tag: 'fractal' },
+  { file: 'phyllotaxis', name: 'Phyllotaxis', desc: 'Golden angle 137.5° packs 1400 dots into the same spiral pattern sunflowers and pinecones use', tag: 'math' },
+  { file: 'chladni', name: 'Chladni Figures', desc: 'Standing wave nodal patterns: sand collects where a vibrating plate is still — morphing through 12 resonant modes', tag: 'physics' },
+  { file: 'julia', name: 'Julia Set', desc: 'z² + c iterated to escape: move mouse to steer c through 8 hand-picked regions of the complex plane', tag: 'fractal' },
+  { file: 'springwires', name: 'Spring Wires', desc: 'Verlet-integrated spring network — drag nodes, pin rows, double-click to add new nodes', tag: 'physics' },
+  { file: 'aura', name: 'Cursor Aura', desc: 'Glowing hue-shifting aura follows your cursor — click to burst, move to paint trails', tag: 'interactive' },
+  { file: 'metaballs', name: 'Metaballs', desc: 'Organic blobs merge and split via implicit isosurface field — move mouse to push them apart', tag: 'simulation' },
+  { file: 'grayscott', name: 'Reaction Diffusion', desc: 'Gray-Scott two-chemical model grows coral, spots, and mazes — click to seed, space to cycle presets', tag: 'simulation' },
+  { file: 'tunnel', name: 'Neon Tunnel', desc: 'Hexagonal perspective tunnel with neon glow — move mouse to steer through the vortex', tag: 'animation' },
+  { file: 'wolfram', name: 'Wolfram Automaton', desc: '1D elementary cellular automata: Rule 30 breeds chaos, Rule 90 grows fractals, Rule 110 is Turing-complete', tag: 'simulation' },
+  { file: 'donut', name: 'ASCII Donut', desc: 'The classic spinning 3D torus — surface normals mapped to ASCII character brightness', tag: 'classic' },
+  { file: 'crystal', name: 'Crystal Dendrite', desc: 'Diffusion-limited aggregation grows a snowflake with 12-fold symmetry — watch dendrites branch in real time', tag: 'simulation' },
+  { file: 'montecarlo', name: 'Monte Carlo Pi', desc: 'Random points flood a unit square — the circle catches π · click to reset and watch the estimate converge', tag: 'math' },
+  { file: 'antcolony', name: 'Ant Colony', desc: 'Stigmergic ants lay pheromone trails to food and home — watch emergent shortest paths form in real time', tag: 'simulation' },
+  { file: 'langton', name: "Langton's Ant", desc: 'A single ant turns and flips cells — 10,000 steps of chaos collapse into an infinite repeating highway', tag: 'simulation' },
+  { file: 'sand', name: 'Falling Sand', desc: 'Physics-correct particle simulation: sand piles, water flows, fire rises — draw with four materials', tag: 'simulation' },
+  { file: 'marchingsquares', name: 'Marching Squares', desc: 'Animated scalar field sliced into contour levels by the marching squares algorithm — click to cycle palettes, toggle filled mode', tag: 'generative' },
+  { file: 'ambiguousspin', name: 'Ambiguous Rotation', desc: 'Three rings of dots rotate in 3D with no depth cues — orthographic projection makes direction unresolvable. Click to nudge your brain', tag: 'interactive' },
+  { file: 'dna', name: 'DNA Double Helix', desc: 'Watson–Crick base pairs rendered as a rotating 3D helix — depth-sorted rungs with A-T and G-C color coding', tag: 'simulation' },
+  { file: 'mondrian', name: 'Mondrian Generator', desc: 'Recursive binary subdivision produces Mondrian-style compositions — click to regenerate with a cross-fade', tag: 'generative' },
+  { file: 'quadwalk', name: 'Quadratic Walk', desc: 'Turtle steps rotating by q·π·n² produce closed rosettes — rational q determines the symmetry', tag: 'math' },
+  { file: 'maurerrose', name: 'Maurer Rose', desc: 'r = sin(n·θ) sampled at d-degree steps: move mouse to steer petal count and step angle', tag: 'math' },
+];
+
+// dropdown
+const dd = document.getElementById('blog-dd');
+const ddBtn = document.getElementById('blog-dd-btn');
+ddBtn.addEventListener('click', e => { e.stopPropagation(); dd.classList.toggle('open'); ddBtn.classList.toggle('open'); });
+document.addEventListener('click', () => { dd.classList.remove('open'); ddBtn.classList.remove('open'); });
+
+const grid = document.getElementById('gallery');
+artifacts.forEach(a => {
+  const card = document.createElement('a');
+  card.href = a.file + '.html';
+  card.className = 'card';
+  card.innerHTML =
+    '<div class="preview"><iframe src="' + a.file + '.html" loading="lazy" sandbox="allow-scripts"></iframe></div>' +
+    '<div class="info">' +
+      '<div class="name">' + a.name + '</div>' +
+      '<div class="desc">' + a.desc + '</div>' +
+      '<span class="tag">' + a.tag + '</span>' +
+    '</div>';
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

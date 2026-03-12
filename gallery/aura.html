@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Cursor Aura</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#03030a;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+@media (pointer:fine){ html,body{cursor:none} .back-btn{cursor:none} }
+#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.5);padding:6px 14px;border-radius:6px;font:12px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap;max-width:92vw}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Cursor Aura · move or drag · tap to burst · hold to paint</div>
+<script>
+if(window.self!==window.top){
+  document.querySelectorAll('.back-btn,#info').forEach(e=>e.style.display='none');
+}
+
+const isTouchDevice=matchMedia('(pointer: coarse)').matches;
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
+let W=0,H=0,DPR=1;
+
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,isTouchDevice?1.5:2);
+  W=window.innerWidth;
+  H=window.innerHeight;
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+resize();
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(resize,120);
+});
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+
+let mx=W/2,my=H/2,smx=W/2,smy=H/2;
+let hue=0,clicking=false,lastMx=W/2,lastMy=H/2;
+const particles=[];
+const trails=[];
+const MAX_PARTICLES=isTouchDevice?260:420;
+const MAX_TRAILS=isTouchDevice?120:180;
+
+class Particle{
+  constructor(x,y,burst){
+    this.x=x;this.y=y;
+    const angle=Math.random()*Math.PI*2;
+    const spd=burst?(2+Math.random()*6):(0.3+Math.random()*1.8);
+    this.vx=Math.cos(angle)*spd;
+    this.vy=Math.sin(angle)*spd-(burst?1:0.2);
+    this.life=1;
+    this.decay=burst?(0.012+Math.random()*0.018):(0.007+Math.random()*0.012);
+    this.r=burst?(4+Math.random()*8):(2+Math.random()*5);
+    this.hue=(hue+Math.random()*60-30+360)%360;
+    this.sat=70+Math.random()*30;
+    this.lit=55+Math.random()*25;
+  }
+  update(){
+    this.x+=this.vx; this.y+=this.vy;
+    this.vy+=0.04;
+    this.vx*=0.97; this.vy*=0.97;
+    this.life-=this.decay;
+    this.r*=0.995;
+  }
+  draw(){
+    const a=Math.max(0,this.life);
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${this.hue},${this.sat}%,${this.lit}%,${a})`;
+    ctx.shadowColor=`hsla(${this.hue},100%,65%,${a*0.5})`;
+    ctx.shadowBlur=10;
+    ctx.fill();
+  }
+}
+
+class TrailPoint{
+  constructor(x,y,h){ this.x=x;this.y=y;this.hue=h;this.life=0.9+Math.random()*0.1;this.r=18+Math.random()*12;this.decay=0.018+Math.random()*0.012; }
+  update(){ this.life-=this.decay; this.r+=0.3; }
+  dead(){ return this.life<=0; }
+}
+
+function drawCursor(x,y){
+  const g=ctx.createRadialGradient(x,y,0,x,y,80);
+  g.addColorStop(0,`hsla(${hue},100%,70%,0.18)`);
+  g.addColorStop(0.4,`hsla(${(hue+40)%360},90%,60%,0.08)`);
+  g.addColorStop(1,`hsla(${(hue+80)%360},80%,50%,0)`);
+  ctx.beginPath(); ctx.arc(x,y,80,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+
+  const g2=ctx.createRadialGradient(x,y,5,x,y,28);
+  g2.addColorStop(0,`hsla(${hue},100%,85%,0.6)`);
+  g2.addColorStop(0.5,`hsla(${(hue+30)%360},100%,65%,0.35)`);
+  g2.addColorStop(1,`hsla(${(hue+60)%360},90%,50%,0)`);
+  ctx.beginPath(); ctx.arc(x,y,28,0,Math.PI*2); ctx.fillStyle=g2; ctx.fill();
+
+  ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+  ctx.fillStyle=`hsla(${hue},100%,90%,0.95)`;
+  ctx.shadowColor=`hsla(${hue},100%,70%,0.8)`;
+  ctx.shadowBlur=16;
+  ctx.fill();
+  ctx.shadowBlur=0;
+}
+
+function emit(burst){
+  const count=burst?30:(clicking?3:1);
+  for(let i=0;i<count;i++){
+    if(particles.length>=MAX_PARTICLES) particles.shift();
+    particles.push(new Particle(smx+Math.random()*4-2,smy+Math.random()*4-2,burst));
+  }
+}
+
+let lastTrail=0;
+function loop(t){
+  ctx.fillStyle='rgba(3,3,10,0.18)';
+  ctx.fillRect(0,0,W,H);
+
+  smx+=(mx-smx)*0.12;
+  smy+=(my-smy)*0.12;
+  hue=(hue+0.6)%360;
+
+  const speed=Math.hypot(mx-lastMx,my-lastMy);
+  if(t-lastTrail>16){
+    if(trails.length>=MAX_TRAILS) trails.shift();
+    trails.push(new TrailPoint(smx,smy,hue));
+    lastTrail=t;
+    emit(false);
+    if(clicking&&speed>2) emit(false);
+  }
+  lastMx=mx; lastMy=my;
+
+  for(const tp of trails){
+    tp.update();
+    const a=Math.max(0,tp.life)*0.22;
+    const g=ctx.createRadialGradient(tp.x,tp.y,0,tp.x,tp.y,tp.r);
+    g.addColorStop(0,`hsla(${tp.hue},80%,65%,${a})`);
+    g.addColorStop(1,`hsla(${tp.hue},60%,40%,0)`);
+    ctx.beginPath(); ctx.arc(tp.x,tp.y,tp.r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+  }
+  for(let i=trails.length-1;i>=0;i--){ if(trails[i].dead()) trails.splice(i,1); }
+
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i]; p.update();
+    if(p.life<=0){ particles.splice(i,1); continue; }
+    p.draw();
+  }
+  ctx.shadowBlur=0;
+
+  drawCursor(smx,smy);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+window.addEventListener('pointermove',e=>{ mx=e.clientX; my=e.clientY; });
+window.addEventListener('pointerdown',e=>{ clicking=true; mx=e.clientX; my=e.clientY; emit(true); });
+window.addEventListener('pointerup',()=>{ clicking=false; });
+window.addEventListener('pointercancel',()=>{ clicking=false; });
+
+window.addEventListener('touchstart',e=>{ e.preventDefault(); },{passive:false});
+window.addEventListener('touchmove',e=>{ e.preventDefault(); },{passive:false});
+</script>
+</body>
+</html>

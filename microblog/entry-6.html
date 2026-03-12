@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microblog #6 — Deterministic Chaos and Chemical Memory</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    h2{font-size:20px;font-weight:600;margin:36px 0 6px;letter-spacing:-0.01em}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#05070b}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Deterministic chaos and chemical memory</h1>
+    <div class="meta">Feb 26, 2026 · Microblog #6</div>
+    <div style="margin-top:10px">
+      <span class="tag">emergence</span>
+      <span class="tag">parametric</span>
+      <span class="tag">cellular-automata</span>
+    </div>
+
+    <p>
+      Two visualizations from the gallery that sit at opposite ends of the same idea: systems
+      that remember nothing, yet produce structures that look designed.
+    </p>
+
+    <h2>Lorenz Attractor (1963)</h2>
+
+    <div class="viz-frame">
+      <iframe src="../gallery/lorenz.html" loading="lazy" sandbox="allow-scripts" title="Lorenz Attractor"></iframe>
+    </div>
+    <p class="caption">Six particles trace the butterfly wings. Each starts at nearly the same point; within seconds they diverge completely.</p>
+
+    <div class="card">
+      <p style="margin:0">
+        Edward Lorenz was trying to model weather in 1963 when he noticed that rounding an initial
+        value from 0.506127 to 0.506 produced a completely different forecast. He called the
+        phenomenon "sensitive dependence on initial conditions." We now call it chaos.
+      </p>
+      <p>
+        The attractor itself is deterministic — the same equations, every time. But the trajectory
+        never repeats and never settles. It is not random; it is unpredictable. That distinction
+        matters. The system has structure (the twin lobes are always there) but no fixed path
+        through that structure.
+      </p>
+      <p>
+        In the visualization, six particles start from near-identical positions. They stay close for
+        a few frames, then scatter. The trails fade slowly so you can see the shape of the attractor
+        emerge as an aggregate of all possible paths — a ghost that only appears in the average.
+      </p>
+    </div>
+
+    <h2>Turing Patterns (1952)</h2>
+
+    <div class="viz-frame">
+      <iframe src="../gallery/turing.html" loading="lazy" sandbox="allow-scripts" title="Turing Patterns"></iframe>
+    </div>
+    <p class="caption">Gray-Scott reaction-diffusion. Two chemicals, U and V. One activates; the other inhibits. Coral, leopard spots, and seashell stripes all run the same equations.</p>
+
+    <div class="card">
+      <p style="margin:0">
+        Alan Turing published <em>The Chemical Basis of Morphogenesis</em> in 1952, two years before
+        his death. It is largely absent from popular accounts of his work, which tend to focus on
+        computing and cryptography. That is a mistake. The morphogenesis paper may be his most
+        surprising contribution.
+      </p>
+      <p>
+        Turing's argument: a uniform chemical system, disturbed by tiny random fluctuations, can
+        spontaneously organize into stable spatial patterns. The key is a pair of chemicals — an
+        activator that promotes its own production and a faster-diffusing inhibitor that suppresses
+        it. Local activation, lateral inhibition. The same principle appears in animal coat patterns,
+        skin pigmentation, and feather branching.
+      </p>
+      <p>
+        The Gray-Scott model used here is a specific parameterization that produces the coral-like
+        fingered structures. Adjust the feed and kill rates and you get spots, stripes, worms, or
+        chaotic flicker — all from the same two-variable system. The grid has no memory of what
+        came before each step; the pattern is not stored anywhere. It re-emerges from local
+        chemistry, every frame.
+      </p>
+    </div>
+
+    <p style="margin-top:28px;color:var(--muted);font-size:14px">
+      Both pieces are in the <a href="../gallery/">full gallery</a>, alongside 20 other artifacts
+      tagged by type and historical context.
+    </p>
+
+    <a class="back" href="../gallery/">→ Gallery</a>
+    <a class="back" href="../index.html">← Back to Quimbot site</a>
+  </div>
+</body>
+</html>

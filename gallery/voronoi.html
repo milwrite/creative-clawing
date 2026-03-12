@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voronoi Tessellation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; overflow: hidden; cursor: crosshair; touch-action: none; }
+  canvas { display: block; }
+  .label {
+    position: fixed; bottom: 1rem; left: 1rem;
+    font: 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #888; background: rgba(10,10,10,0.85);
+    padding: 0.4rem 0.7rem; border-radius: 4px;
+    pointer-events: none;
+  }
+  .back {
+    position: fixed; top: 1rem; left: 1rem;
+    font: 0.8rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #aaa; background: rgba(10,10,10,0.85);
+    padding: 0.5rem 0.8rem; border-radius: 4px;
+    text-decoration: none; border: 1px solid #333;
+    transition: border-color 0.2s;
+    z-index: 10;
+  }
+  .back:hover { border-color: #666; color: #fff; }
+  .in-iframe .back, .in-iframe .label { display: none; }
+</style>
+</head>
+<body>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="label">click to add seeds · drag to push · R to reset</div>
+<script>if (window.self !== window.top) document.body.classList.add('in-iframe');</script>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+let seeds = [];
+let colors = [];
+const palette = [
+  '#264653','#2a9d8f','#e9c46a','#f4a261','#e76f51',
+  '#606c38','#283618','#dda15e','#bc6c25','#6d6875',
+  '#b5838d','#e5989b','#ffb4a2','#ffcdb2','#457b9d',
+  '#1d3557','#a8dadc','#f1faee','#e63946','#6a994e'
+];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function randomColor() {
+  return palette[Math.floor(Math.random() * palette.length)];
+}
+
+function init(n) {
+  seeds = [];
+  colors = [];
+  for (let i = 0; i < n; i++) {
+    seeds.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4 });
+    colors.push(randomColor());
+  }
+}
+
+function addSeed(x, y) {
+  seeds.push({ x, y, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4 });
+  colors.push(randomColor());
+}
+
+// Brute-force Voronoi via pixel buffer (scaled down for perf)
+const SCALE = 4;
+let buf, bW, bH;
+
+function renderVoronoi() {
+  bW = Math.ceil(W / SCALE);
+  bH = Math.ceil(H / SCALE);
+  if (!buf || buf.width !== bW || buf.height !== bH) {
+    buf = document.createElement('canvas');
+    buf.width = bW; buf.height = bH;
+  }
+  const bctx = buf.getContext('2d');
+  const imgData = bctx.createImageData(bW, bH);
+  const data = imgData.data;
+  const n = seeds.length;
+
+  // Pre-parse colors to RGB
+  const rgb = colors.map(c => {
+    const v = parseInt(c.slice(1), 16);
+    return [(v >> 16) & 0xff, (v >> 8) & 0xff, v & 0xff];
+  });
+
+  for (let py = 0; py < bH; py++) {
+    const wy = py * SCALE;
+    for (let px = 0; px < bW; px++) {
+      const wx = px * SCALE;
+      let minD = Infinity, closest = 0;
+      for (let i = 0; i < n; i++) {
+        const dx = wx - seeds[i].x;
+        const dy = wy - seeds[i].y;
+        const d = dx * dx + dy * dy;
+        if (d < minD) { minD = d; closest = i; }
+      }
+      const idx = (py * bW + px) * 4;
+      const col = rgb[closest];
+      data[idx] = col[0];
+      data[idx + 1] = col[1];
+      data[idx + 2] = col[2];
+      data[idx + 3] = 255;
+    }
+  }
+  bctx.putImageData(imgData, 0, 0);
+
+  // Draw scaled up
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(buf, 0, 0, W, H);
+
+  // Draw seed dots
+  ctx.fillStyle = '#fff';
+  for (let i = 0; i < n; i++) {
+    ctx.beginPath();
+    ctx.arc(seeds[i].x, seeds[i].y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Draw edges by detecting neighbor changes
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  // We skip edge drawing for perf on large counts; the pixelated look gives natural edges
+}
+
+function update() {
+  for (let i = 0; i < seeds.length; i++) {
+    const s = seeds[i];
+    s.x += s.vx;
+    s.y += s.vy;
+    if (s.x < 0 || s.x > W) s.vx *= -1;
+    if (s.y < 0 || s.y > H) s.vy *= -1;
+    s.x = Math.max(0, Math.min(W, s.x));
+    s.y = Math.max(0, Math.min(H, s.y));
+  }
+}
+
+function frame() {
+  update();
+  renderVoronoi();
+  requestAnimationFrame(frame);
+}
+
+resize();
+init(30);
+window.addEventListener('resize', () => { resize(); });
+requestAnimationFrame(frame);
+
+// Interaction
+let dragging = false;
+canvas.addEventListener('click', e => {
+  if (!dragging) addSeed(e.clientX, e.clientY);
+});
+
+let dragIdx = -1;
+canvas.addEventListener('mousedown', e => {
+  // Find closest seed
+  let minD = Infinity;
+  for (let i = 0; i < seeds.length; i++) {
+    const dx = e.clientX - seeds[i].x;
+    const dy = e.clientY - seeds[i].y;
+    const d = dx * dx + dy * dy;
+    if (d < minD && d < 900) { minD = d; dragIdx = i; }
+  }
+  if (dragIdx >= 0) dragging = true;
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (dragging && dragIdx >= 0) {
+    seeds[dragIdx].x = e.clientX;
+    seeds[dragIdx].y = e.clientY;
+    seeds[dragIdx].vx = 0;
+    seeds[dragIdx].vy = 0;
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  if (!dragging && dragIdx < 0) return;
+  setTimeout(() => { dragging = false; dragIdx = -1; }, 50);
+});
+
+// Touch support
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const t = e.touches[0];
+  let minD = Infinity;
+  for (let i = 0; i < seeds.length; i++) {
+    const dx = t.clientX - seeds[i].x;
+    const dy = t.clientY - seeds[i].y;
+    const d = dx * dx + dy * dy;
+    if (d < minD && d < 900) { minD = d; dragIdx = i; }
+  }
+  if (dragIdx >= 0) { dragging = true; }
+  else { addSeed(t.clientX, t.clientY); }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (dragging && dragIdx >= 0) {
+    const t = e.touches[0];
+    seeds[dragIdx].x = t.clientX;
+    seeds[dragIdx].y = t.clientY;
+    seeds[dragIdx].vx = 0;
+    seeds[dragIdx].vy = 0;
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', () => {
+  setTimeout(() => { dragging = false; dragIdx = -1; }, 50);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'r' || e.key === 'R') { init(30); }
+});
+</script>
+</body>
+</html>

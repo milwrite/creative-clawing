@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heat Diffusion</title>
+<style>
+  * { margin: 0; padding: 0; }
+  body { background: #000; overflow: hidden; }
+  canvas { display: block; touch-action: none; }
+  .back{position:fixed;top:calc(0.8rem + env(safe-area-inset-top));left:calc(0.8rem + env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+  .back:hover{border-color:#666;color:#fff}
+  .label{position:fixed;bottom:calc(0.8rem + env(safe-area-inset-bottom));left:calc(0.8rem + env(safe-area-inset-left));font:0.75rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#888;background:rgba(10,10,10,0.85);padding:0.4rem 0.7rem;border-radius:4px;pointer-events:none}
+  .in-iframe .back,.in-iframe .label{display:none}
+</style>
+</head>
+<body>
+<script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
+<a class="back" href="index.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="label">click or drag to add heat sources</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H, cols, rows, grid, next, cellSize = 4;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cols = Math.ceil(W / cellSize);
+  rows = Math.ceil(H / cellSize);
+  grid = new Float32Array(cols * rows);
+  next = new Float32Array(cols * rows);
+}
+resize();
+window.addEventListener('resize', resize);
+
+function heatColor(t) {
+  // black -> deep red -> orange -> yellow -> white
+  t = Math.max(0, Math.min(1, t));
+  let r, g, b;
+  if (t < 0.33) {
+    const s = t / 0.33;
+    r = Math.floor(s * 200);
+    g = 0;
+    b = Math.floor(s * 40);
+  } else if (t < 0.66) {
+    const s = (t - 0.33) / 0.33;
+    r = 200 + Math.floor(s * 55);
+    g = Math.floor(s * 180);
+    b = 40 - Math.floor(s * 40);
+  } else {
+    const s = (t - 0.66) / 0.34;
+    r = 255;
+    g = 180 + Math.floor(s * 75);
+    b = Math.floor(s * 255);
+  }
+  return `rgb(${r},${g},${b})`;
+}
+
+// Heat sources that drift
+let sources = [];
+function addSource(x, y) {
+  sources.push({ x: x / cellSize, y: y / cellSize, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, life: 300 + Math.random() * 400 });
+}
+// Initial sources
+for (let i = 0; i < 5; i++) addSource(Math.random() * W, Math.random() * H);
+
+canvas.addEventListener('pointerdown', e => addSource(e.clientX, e.clientY));
+canvas.addEventListener('pointermove', e => { if (e.buttons) addSource(e.clientX, e.clientY); });
+
+const diffusion = 0.2;
+const cooling = 0.998;
+
+function step() {
+  // Apply sources
+  for (let i = sources.length - 1; i >= 0; i--) {
+    const s = sources[i];
+    const cx = Math.floor(s.x), cy = Math.floor(s.y);
+    for (let dy = -2; dy <= 2; dy++) {
+      for (let dx = -2; dx <= 2; dx++) {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          grid[ny * cols + nx] = Math.min(1, grid[ny * cols + nx] + Math.max(0, 0.4 * (1 - dist / 3)));
+        }
+      }
+    }
+    s.x += s.vx; s.y += s.vy;
+    s.vx += (Math.random() - 0.5) * 0.05;
+    s.vy += (Math.random() - 0.5) * 0.05;
+    s.life--;
+    if (s.life <= 0 || s.x < 0 || s.x >= cols || s.y < 0 || s.y >= rows) {
+      sources.splice(i, 1);
+      addSource(Math.random() * W, Math.random() * H);
+    }
+  }
+
+  // Diffuse
+  for (let y = 1; y < rows - 1; y++) {
+    for (let x = 1; x < cols - 1; x++) {
+      const i = y * cols + x;
+      const avg = (grid[i - 1] + grid[i + 1] + grid[i - cols] + grid[i + cols]) * 0.25;
+      next[i] = (grid[i] + diffusion * (avg - grid[i])) * cooling;
+    }
+  }
+  [grid, next] = [next, grid];
+}
+
+const imgData = ctx.createImageData(W, H);
+function draw() {
+  step();
+  // Recreate imagedata if size changed
+  const id = ctx.createImageData(cols, rows);
+  for (let i = 0; i < cols * rows; i++) {
+    const t = Math.max(0, Math.min(1, grid[i]));
+    let r, g, b;
+    if (t < 0.33) {
+      const s = t / 0.33;
+      r = s * 200; g = 0; b = s * 40;
+    } else if (t < 0.66) {
+      const s = (t - 0.33) / 0.33;
+      r = 200 + s * 55; g = s * 180; b = 40 - s * 40;
+    } else {
+      const s = (t - 0.66) / 0.34;
+      r = 255; g = 180 + s * 75; b = s * 255;
+    }
+    const j = i * 4;
+    id.data[j] = r; id.data[j + 1] = g; id.data[j + 2] = b; id.data[j + 3] = 255;
+  }
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  ctx.scale(cellSize, cellSize);
+  ctx.putImageData(id, 0, 0);
+  ctx.restore();
+  // Scale up
+  ctx.drawImage(canvas, 0, 0, cols, rows, 0, 0, W, H);
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

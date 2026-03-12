@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Lissajous Curves</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#info{position:fixed;bottom:16px;left:16px;color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none}
+.back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Lissajous · move mouse to change frequency ratio · click to toggle trail</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let W,H,mx=0.5,my=0.5,t=0,trail=true,pts=[];
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;pts=[]}
+resize();addEventListener('resize',resize);
+addEventListener('mousemove',e=>{mx=e.clientX/W;my=e.clientY/H});
+addEventListener('touchmove',e=>{mx=e.touches[0].clientX/W;my=e.touches[0].clientY/H},{passive:true});
+addEventListener('click',()=>{trail=!trail;if(!trail)pts=[]});
+
+function hsl(h,s,l){return`hsl(${h},${s}%,${l}%)`}
+
+function draw(){
+  const freqA=1+Math.round(mx*7);
+  const freqB=1+Math.round(my*7);
+  const phaseShift=t*0.0003;
+  const amp=Math.min(W,H)*0.38;
+  const cx=W/2,cy=H/2;
+
+  if(trail){
+    ctx.fillStyle='rgba(10,10,15,0.04)';
+    ctx.fillRect(0,0,W,H);
+  }else{
+    ctx.fillStyle='#0a0a0f';
+    ctx.fillRect(0,0,W,H);
+  }
+
+  // draw the current curve
+  ctx.beginPath();
+  const steps=2000;
+  for(let i=0;i<=steps;i++){
+    const p=i/steps*Math.PI*2;
+    const x=cx+amp*Math.sin(freqA*p+phaseShift);
+    const y=cy+amp*Math.sin(freqB*p);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  }
+  const hue=(t*0.02)%360;
+  ctx.strokeStyle=hsl(hue,70,65);
+  ctx.lineWidth=1.2;
+  ctx.globalAlpha=0.8;
+  ctx.stroke();
+  ctx.globalAlpha=1;
+
+  // bright dot at current phase
+  const dotX=cx+amp*Math.sin(freqA*((t*0.002)%(Math.PI*2))+phaseShift);
+  const dotY=cy+amp*Math.sin(freqB*((t*0.002)%(Math.PI*2)));
+  ctx.beginPath();
+  ctx.arc(dotX,dotY,4,0,Math.PI*2);
+  ctx.fillStyle=hsl(hue,90,80);
+  ctx.fill();
+
+  // ratio label
+  ctx.fillStyle='rgba(255,255,255,0.25)';
+  ctx.font='14px ui-monospace,monospace';
+  ctx.fillText(`${freqA}:${freqB}`,16,24);
+
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
+<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+</body>
+</html>
