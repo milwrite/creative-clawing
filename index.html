@@ -3,336 +3,240 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>creative clawing gallery</title>
-  <meta name="description" content="creative clawing: a curated gallery of generative art and creative coding experiments" />
+  <title>creative clawing</title>
+  <meta name="description" content="creative clawing gallery" />
   <style>
     :root {
       --bg: #090b10;
-      --panel: #111520;
-      --panel-2: #171c2a;
-      --text: #eef2ff;
-      --muted: #a8b1c7;
-      --line: #2a3247;
-      --accent: #75b8ff;
-      --accent-2: #8a8dff;
-      --radius: 14px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --text: #eaf0ff;
+      --muted: #9ba8c5;
+      --line: rgba(142, 171, 255, 0.12);
+      --line-strong: rgba(142, 171, 255, 0.2);
+      --accent: #a9c8ff;
     }
 
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 80% -10%, #1b2340 0%, transparent 60%), var(--bg);
-      color: var(--text);
       min-height: 100vh;
-      line-height: 1.5;
-    }
-
-    .wrap {
-      width: min(1120px, 92vw);
-      margin: 0 auto;
-      padding: 28px 0 56px;
-    }
-
-    .topbar {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(1.25rem, 2.3vw, 2rem);
-      letter-spacing: .02em;
-    }
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: .95rem;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, #1a2031 0%, #151b2a 100%);
       color: var(--text);
-      border-radius: 10px;
-      padding: 10px 14px;
-      text-decoration: none;
-      font-size: .9rem;
-      transition: .18s ease;
-    }
-    .btn:hover { border-color: #4b5d88; transform: translateY(-1px); }
-
-    .hero {
-      border: 1px solid var(--line);
-      background: linear-gradient(165deg, rgba(138,141,255,.14), rgba(117,184,255,.08) 55%, rgba(255,255,255,.02));
-      border-radius: var(--radius);
-      padding: clamp(18px, 3vw, 30px);
-      margin-bottom: 18px;
-      box-shadow: var(--shadow);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 32px 32px,
+        radial-gradient(circle at 20% 12%, rgba(143, 116, 255, 0.12), transparent 36%),
+        radial-gradient(circle at 80% 84%, rgba(87, 167, 255, 0.12), transparent 40%),
+        var(--bg);
+      letter-spacing: 0.01em;
     }
 
-    .hero h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.25rem, 2.8vw, 2.2rem);
-      line-height: 1.2;
+    main {
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 52px 0 64px;
     }
 
-    .hero p {
+    h1 {
       margin: 0;
-      max-width: 75ch;
-      color: #d6def5;
+      font-weight: 560;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
     }
 
-    .meta {
+    .sub {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .top {
       display: flex;
-      gap: 12px;
-      margin-top: 14px;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
       flex-wrap: wrap;
+      margin-bottom: 30px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line-strong);
     }
 
-    .pill {
-      font-size: .8rem;
-      color: #dce6ff;
-      border: 1px solid #3a4a6f;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: rgba(17,24,42,.7);
+    .top a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
     }
 
-    .toolbar {
-      margin: 18px 0 20px;
+    .controls {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .search {
+    input[type="search"] {
       width: 100%;
-      border: 1px solid var(--line);
-      background: var(--panel);
+      border: 0;
+      border-bottom: 1px solid var(--line-strong);
+      background: transparent;
       color: var(--text);
-      border-radius: 10px;
-      padding: 11px 12px;
-      font-size: .95rem;
+      padding: 8px 0;
+      font-size: 0.95rem;
       outline: none;
     }
-    .search:focus { border-color: #4b5d88; }
 
-    .filters {
+    .chips {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
       justify-content: flex-end;
     }
 
     .chip {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: #c8d2ec;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: .82rem;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 0;
+      font-size: 0.82rem;
       cursor: pointer;
+      border-bottom: 1px solid transparent;
     }
+
     .chip.active {
-      color: #0f1730;
-      background: linear-gradient(180deg, #a9d4ff, #8cbcff);
-      border-color: #8cbcff;
+      color: var(--text);
+      border-bottom-color: var(--line-strong);
     }
 
-    .grid {
+    .list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px 26px;
     }
 
-    .card {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      min-height: 220px;
-    }
-
-    .thumb {
-      height: 110px;
-      border-bottom: 1px solid var(--line);
+    article {
       display: grid;
-      place-items: center;
-      font-size: 1.8rem;
-      color: #d4e2ff;
-      background: radial-gradient(circle at 24% 18%, rgba(138,141,255,.3), transparent 44%),
-                  radial-gradient(circle at 84% 74%, rgba(117,184,255,.35), transparent 48%),
-                  #0f1423;
+      gap: 6px;
+      align-content: start;
     }
 
-    .card-body {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      height: 100%;
-    }
-
-    .card h3 {
+    h2 {
       margin: 0;
       font-size: 1rem;
-      line-height: 1.25;
+      font-weight: 520;
     }
 
-    .card p {
+    p {
       margin: 0;
       color: var(--muted);
-      font-size: .87rem;
-      flex: 1;
+      font-size: 0.85rem;
+      line-height: 1.4;
     }
 
-    .tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+    .meta {
+      font-size: 0.75rem;
+      color: #c5d3f3;
+      opacity: 0.8;
     }
 
-    .tag {
-      font-size: .72rem;
-      color: #d4def7;
-      border: 1px solid #394765;
-      border-radius: 999px;
-      padding: 3px 7px;
-      background: #121a2b;
-    }
-
-    .card a {
+    article a {
+      color: var(--accent);
       text-decoration: none;
-      color: #beddff;
-      font-size: .84rem;
-      margin-top: 2px;
+      font-size: 0.84rem;
     }
 
-    .foot {
-      margin-top: 22px;
-      color: #93a0bf;
-      font-size: .82rem;
-      text-align: center;
+    .empty {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 28px;
+      border-top: 1px solid var(--line-strong);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
     }
 
     @media (max-width: 700px) {
-      .toolbar { grid-template-columns: 1fr; }
-      .filters { justify-content: flex-start; }
-      .grid { grid-template-columns: 1fr; }
+      .controls { grid-template-columns: 1fr; }
+      .chips { justify-content: flex-start; }
+      .list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="topbar">
-      <div class="brand">
+  <main>
+    <section class="top">
+      <div>
         <h1>creative clawing</h1>
-        <p>generative sketches, simulations, and math art</p>
+        <p class="sub">generative sketches and experiments</p>
       </div>
-      <div class="actions">
-        <a class="btn" href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">repo</a>
-        <a class="btn" href="https://milwrite.github.io/quimbot/gallery/" target="_blank" rel="noopener">full gallery</a>
-      </div>
-    </header>
-
-    <section class="hero">
-      <h2>a cleaner gallery with better browsing</h2>
-      <p>this redesign puts artifact presentation first. search by name, filter by style, and jump straight into each piece with less clutter.</p>
-      <div class="meta">
-        <span class="pill">responsive layout</span>
-        <span class="pill">filterable cards</span>
-        <span class="pill">artifact-first navigation</span>
-      </div>
+      <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">github</a>
     </section>
 
-    <section class="toolbar">
-      <input id="search" class="search" type="search" placeholder="search artifacts" />
-      <div class="filters" id="filters"></div>
+    <section class="controls">
+      <input id="search" type="search" placeholder="search" />
+      <div class="chips" id="chips"></div>
     </section>
 
-    <section class="grid" id="grid"></section>
+    <section class="list" id="list"></section>
+    <p id="empty" class="empty" style="display:none;">no matches</p>
 
-    <p class="foot">built with openclaw + github pages</p>
-  </div>
+    <footer>live artifacts link to milwrite.github.io/quimbot/gallery</footer>
+  </main>
 
   <script>
     const items = [
-      {name:'dna double helix', icon:'🧬', type:'simulation', desc:'depth-sorted helical backbone with interactive tilt and zoom.', url:'https://milwrite.github.io/quimbot/gallery/dna.html'},
-      {name:'mondrian generator', icon:'🟥', type:'geometry', desc:'recursive subdivision with animated color transitions.', url:'https://milwrite.github.io/quimbot/gallery/mondrian.html'},
-      {name:'gray-scott', icon:'🧫', type:'simulation', desc:'reaction-diffusion field with rich emergent patterning.', url:'https://milwrite.github.io/quimbot/gallery/grayscott.html'},
-      {name:'voronoi', icon:'🔷', type:'geometry', desc:'distance-field partitions and dynamic cell boundaries.', url:'https://milwrite.github.io/quimbot/gallery/voronoi.html'},
-      {name:'chladni', icon:'🎵', type:'wave', desc:'nodal patterns from standing wave interference.', url:'https://milwrite.github.io/quimbot/gallery/chladni.html'},
-      {name:'lorenz attractor', icon:'🌀', type:'chaos', desc:'classic strange attractor in continuous phase space.', url:'https://milwrite.github.io/quimbot/gallery/lorenz.html'},
-      {name:'boids', icon:'🐦', type:'simulation', desc:'flocking behavior from local steering rules.', url:'https://milwrite.github.io/quimbot/gallery/boids.html'},
-      {name:'wolfram automaton', icon:'⬛', type:'automata', desc:'one-dimensional cellular automata with rule cycling.', url:'https://milwrite.github.io/quimbot/gallery/wolfram.html'},
-      {name:'marching squares', icon:'🗺️', type:'field', desc:'contour extraction from scalar fields in real time.', url:'https://milwrite.github.io/quimbot/gallery/marchingsquares.html'},
-      {name:'maurer rose', icon:'🌹', type:'geometry', desc:'sampled polar roses that fold into star-like paths.', url:'https://milwrite.github.io/quimbot/gallery/maurerrose.html'},
-      {name:'scan drift', icon:'📺', type:'signal', desc:'pointer-warped scanline interference and pulse bloom.', url:'https://milwrite.github.io/quimbot/gallery/scandrift.html'},
-      {name:'ascii reactive', icon:'🔤', type:'audio', desc:'frequency-reactive unicode field with fallback synth mode.', url:'https://milwrite.github.io/quimbot/gallery/asciireactive.html'}
+      {name:'dna double helix', type:'simulation', desc:'depth-sorted backbone with tilt and zoom', url:'https://milwrite.github.io/quimbot/gallery/dna.html'},
+      {name:'mondrian generator', type:'geometry', desc:'recursive subdivision with animated color transitions', url:'https://milwrite.github.io/quimbot/gallery/mondrian.html'},
+      {name:'gray-scott', type:'simulation', desc:'reaction diffusion and emergent patterning', url:'https://milwrite.github.io/quimbot/gallery/grayscott.html'},
+      {name:'voronoi', type:'geometry', desc:'distance partitions and moving cell boundaries', url:'https://milwrite.github.io/quimbot/gallery/voronoi.html'},
+      {name:'chladni', type:'wave', desc:'standing-wave nodal patterns', url:'https://milwrite.github.io/quimbot/gallery/chladni.html'},
+      {name:'lorenz attractor', type:'chaos', desc:'phase-space strange attractor', url:'https://milwrite.github.io/quimbot/gallery/lorenz.html'},
+      {name:'boids', type:'simulation', desc:'flocking from local steering rules', url:'https://milwrite.github.io/quimbot/gallery/boids.html'},
+      {name:'wolfram automaton', type:'automata', desc:'1d cellular automata with rule cycling', url:'https://milwrite.github.io/quimbot/gallery/wolfram.html'},
+      {name:'marching squares', type:'field', desc:'real-time contour extraction', url:'https://milwrite.github.io/quimbot/gallery/marchingsquares.html'},
+      {name:'maurer rose', type:'geometry', desc:'sampled polar rose star paths', url:'https://milwrite.github.io/quimbot/gallery/maurerrose.html'},
+      {name:'scan drift', type:'signal', desc:'pointer-warped scanline interference', url:'https://milwrite.github.io/quimbot/gallery/scandrift.html'},
+      {name:'ascii reactive', type:'audio', desc:'frequency-reactive unicode field', url:'https://milwrite.github.io/quimbot/gallery/asciireactive.html'}
     ];
 
-    const tags = ['all', ...new Set(items.map(i => i.type))];
+    const tags = ['all', ...new Set(items.map(x => x.type))];
     let active = 'all';
 
-    const grid = document.getElementById('grid');
+    const chips = document.getElementById('chips');
+    const list = document.getElementById('list');
+    const empty = document.getElementById('empty');
     const search = document.getElementById('search');
-    const filters = document.getElementById('filters');
 
-    function card(item) {
-      return `
-        <article class="card" data-name="${item.name}" data-type="${item.type}">
-          <div class="thumb">${item.icon}</div>
-          <div class="card-body">
-            <h3>${item.name}</h3>
-            <p>${item.desc}</p>
-            <div class="tags"><span class="tag">${item.type}</span></div>
-            <a href="${item.url}" target="_blank" rel="noopener">open artifact ↗</a>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderFilters() {
-      filters.innerHTML = tags.map(t => `<button class="chip ${t===active?'active':''}" data-tag="${t}">${t}</button>`).join('');
-      [...filters.querySelectorAll('.chip')].forEach(btn => {
-        btn.addEventListener('click', () => {
-          active = btn.dataset.tag;
-          renderFilters();
-          render();
-        });
+    function renderChips() {
+      chips.innerHTML = tags.map(t => `<button class="chip ${t===active?'active':''}" data-t="${t}">${t}</button>`).join('');
+      [...chips.querySelectorAll('.chip')].forEach(btn => {
+        btn.onclick = () => { active = btn.dataset.t; renderChips(); render(); };
       });
     }
 
     function render() {
       const q = search.value.trim().toLowerCase();
-      const filtered = items.filter(i => {
-        const tagOk = active === 'all' || i.type === active;
-        const textOk = !q || (i.name + ' ' + i.desc + ' ' + i.type).toLowerCase().includes(q);
-        return tagOk && textOk;
+      const out = items.filter(i => {
+        const t = active === 'all' || i.type === active;
+        const m = !q || `${i.name} ${i.type} ${i.desc}`.toLowerCase().includes(q);
+        return t && m;
       });
-      grid.innerHTML = filtered.map(card).join('');
-      if (!filtered.length) {
-        grid.innerHTML = '<p style="color:#a8b1c7">no artifacts match that search.</p>';
-      }
+
+      list.innerHTML = out.map(i => `
+        <article>
+          <h2>${i.name}</h2>
+          <p>${i.desc}</p>
+          <div class="meta">${i.type}</div>
+          <a href="${i.url}" target="_blank" rel="noopener">open artifact ↗</a>
+        </article>
+      `).join('');
+
+      empty.style.display = out.length ? 'none' : 'block';
     }
 
     search.addEventListener('input', render);
-    renderFilters();
+    renderChips();
     render();
   </script>
 </body>
