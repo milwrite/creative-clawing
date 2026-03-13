@@ -400,6 +400,33 @@
       border-color: rgba(255,255,255,.35);
     }
 
+    @media (max-width: 840px) {
+      .menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+      .menu > a,
+      .menu > details,
+      .menu-group {
+        width: 100%;
+      }
+      .menu a,
+      .menu summary {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .menu-group[open] {
+        grid-column: 1 / -1;
+      }
+      .submenu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        margin-top: 6px;
+      }
+    }
+
     @media (max-width: 700px) {
       .nav-inner {
         gap: 8px;
@@ -412,12 +439,6 @@
         font-size: .68rem;
         padding: 5px 8px;
         min-height: 38px;
-      }
-      .submenu {
-        position: static;
-        min-width: 0;
-        width: 100%;
-        margin-top: 6px;
       }
       section { scroll-margin-top: 120px; }
     }
@@ -686,7 +707,7 @@
   document.getElementById('blog-stack-wrap').innerHTML = blogs.map(blogCard).join('');
 
   const allLanes = document.getElementById('all-lanes');
-  buildSection(allLanes, arts, artCard, 8, [0.25, 0.18, 0.3]);
+  buildSection(allLanes, arts, artCard, 8, [0.4, 0.3, 0.48]);
 
   function themeOf(id) {
     const themes = {
@@ -717,7 +738,7 @@
     head.style.cssText = 'padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
     head.textContent = themeLabels[key];
     wrap.appendChild(head);
-    wrap.appendChild(makeLane(items.map(artCard), .22 + index * .06, index % 2 ? -1 : 1));
+    wrap.appendChild(makeLane(items.map(artCard), .32 + index * .08, index % 2 ? -1 : 1));
     themeLanes.appendChild(wrap);
   });
 

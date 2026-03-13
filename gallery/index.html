@@ -33,7 +33,13 @@ html,body{
 .nav-inner{
   width:min(1380px,97vw);margin:0 auto;
   padding:12px max(env(safe-area-inset-right),8px) 12px max(env(safe-area-inset-left),8px);
-  display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;
+  display:grid;gap:10px;justify-items:start;
+}
+.nav-kicker{
+  color:var(--muted);
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
 }
 .nav-brand{
   font-size:clamp(1rem,2vw,1.4rem);
@@ -41,17 +47,55 @@ html,body{
   text-decoration:none;color:var(--ink);
 }
 .nav-links{
-  display:flex;gap:8px;flex-wrap:wrap;
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;align-items:center;
 }
-.nav-links a{
+.nav-links a,
+.nav-links summary{
   color:var(--muted);text-decoration:none;
-  border:1px solid var(--line);padding:6px 10px;
+  border:1px solid var(--line);padding:7px 11px;
   font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;
-  min-height:40px;display:flex;align-items:center;
-  transition:color .15s,border-color .15s;
+  min-height:42px;display:inline-flex;align-items:center;justify-content:center;
+  transition:color .15s,border-color .15s,background .15s;
+  background:transparent;font-family:inherit;white-space:nowrap;
 }
-.nav-links a:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
-.nav-links a.active{color:var(--ink);border-color:rgba(255,255,255,.4)}
+.nav-links a:hover,
+.nav-links a.active,
+.nav-links summary:hover,
+.nav-links details[open] summary{
+  color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)
+}
+.nav-links summary{
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+}
+.nav-links summary::-webkit-details-marker{display:none}
+.menu-group{
+  position:relative;
+}
+.menu-group summary::after{
+  content:'+';
+  margin-left:8px;
+  font-size:.82em;
+}
+.menu-group[open] summary::after{content:'-'}
+.submenu{
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  min-width:180px;
+  padding:8px;
+  display:grid;
+  gap:6px;
+  border:1px solid var(--line);
+  background:rgba(5,5,5,.98);
+}
+.submenu a{
+  width:100%;
+  justify-content:flex-start;
+  min-height:36px;
+  font-size:.7rem;
+}
 
 /* ── main ── */
 main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
@@ -121,6 +165,36 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 .empty{color:var(--muted);font-size:.85rem;padding:40px 0}
 
 @media(max-width:600px){
+  .nav-inner{
+    gap:8px;
+  }
+  .nav-links{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+  .nav-links > a,
+  .nav-links > details,
+  .menu-group{
+    width:100%;
+  }
+  .nav-links a,
+  .nav-links summary{
+    width:100%;
+    justify-content:flex-start;
+    font-size:.68rem;
+    padding:5px 8px;
+    min-height:38px;
+  }
+  .menu-group[open]{
+    grid-column:1 / -1;
+  }
+  .submenu{
+    position:static;
+    min-width:0;
+    width:100%;
+    margin-top:6px;
+  }
   .toolbar{gap:8px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
   a.card{height:210px}
@@ -131,11 +205,20 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
 <nav class="nav">
   <div class="nav-inner">
+    <span class="nav-kicker">creative coding archive</span>
     <a class="nav-brand" href="../">Creative Clawing</a>
     <div class="nav-links">
-      <a href="../" >Home</a>
-      <a href="../#section-all">All Work</a>
       <a href="index.html" class="active">Gallery</a>
+      <a href="../microblogs.html">Microblog</a>
+      <details class="menu-group">
+        <summary>Contributors</summary>
+        <div class="submenu">
+          <a href="../#section-contributors">All Contributors</a>
+          <a href="../quimbot.html">Quimbot</a>
+          <a href="../petrarch.html">Petrarch</a>
+        </div>
+      </details>
+      <a href="../#section-themes">Themes</a>
     </div>
   </div>
 </nav>
@@ -256,6 +339,18 @@ function render(){
 search.addEventListener('input',render);
 renderFilters();
 render();
+
+const contributorMenu=document.querySelector('.menu-group');
+if(contributorMenu){
+  contributorMenu.querySelectorAll('a').forEach(link=>{
+    link.addEventListener('click',()=>{contributorMenu.open=false;});
+  });
+  document.addEventListener('click',event=>{
+    if(contributorMenu.open&&!contributorMenu.contains(event.target)){
+      contributorMenu.open=false;
+    }
+  });
+}
 </script>
 </body>
 </html>

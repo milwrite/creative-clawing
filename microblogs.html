@@ -157,6 +157,33 @@
     }
     .read-link:hover { color: var(--ink); }
 
+    @media (max-width: 840px) {
+      .menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+      .menu > a,
+      .menu > details,
+      .menu-group {
+        width: 100%;
+      }
+      .menu a,
+      .menu summary {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .menu-group[open] {
+        grid-column: 1 / -1;
+      }
+      .submenu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        margin-top: 6px;
+      }
+    }
+
     @media (max-width: 700px) {
       .nav-inner {
         gap: 8px;
@@ -169,12 +196,6 @@
         font-size: .68rem;
         padding: 5px 8px;
         min-height: 38px;
-      }
-      .submenu {
-        position: static;
-        min-width: 0;
-        width: 100%;
-        margin-top: 6px;
       }
     }
   </style>
