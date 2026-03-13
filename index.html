@@ -379,19 +379,24 @@ document.addEventListener('click', e => {
     animId = requestAnimationFrame(step);
 
     // drag
-    let dragStart = 0, scrollStart = 0, isDragging = false;
+    let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
+    const DRAG_THRESHOLD = 6;
 
     function onDown(e){
-      paused = true; isDragging = true;
+      paused = true; isDragging = true; dragMoved = false;
       dragStart = e.touches ? e.touches[0].clientX : e.clientX;
       scrollStart = pos;
       lane.classList.add('is-dragging');
-      e.preventDefault();
+      if (!e.touches) e.preventDefault(); // mouse only; touch: wait for movement
     }
     function onMove(e){
       if(!isDragging) return;
       const x = e.touches ? e.touches[0].clientX : e.clientX;
       const dx = dragStart - x;
+      if (Math.abs(dx) > DRAG_THRESHOLD) {
+        dragMoved = true;
+        if (e.touches) e.preventDefault(); // suppress page scroll only on real drag
+      }
       const half = track.scrollWidth / 2;
       pos = ((scrollStart + dx) % half + half) % half;
       track.style.transform = `translateX(${-pos}px)`;
@@ -401,6 +406,11 @@ document.addEventListener('click', e => {
       lane.classList.remove('is-dragging');
       setTimeout(()=>{ paused = false; }, 400);
     }
+
+    // cancel click-through only after a real drag; taps pass through untouched
+    lane.addEventListener('click', e => {
+      if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
+    }, true);
 
     lane.addEventListener('mousedown', onDown, {passive:false});
     window.addEventListener('mousemove', onMove);
