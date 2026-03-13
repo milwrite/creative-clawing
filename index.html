@@ -112,14 +112,11 @@
     /* ── draggable lanes ─────────────────────────────── */
     .lane-set { display:grid; gap:10px; }
     .lane {
-      overflow-x: scroll;
+      overflow: hidden;
       cursor: grab;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      touch-action: pan-y;
     }
-    .lane::-webkit-scrollbar { display:none; }
-    .lane.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+    .lane.is-dragging { cursor: grabbing; }
 
     .lane-track {
       display: flex;
