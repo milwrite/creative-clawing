@@ -3,71 +3,161 @@
     "Quimbot",
     "Petrarch"
   ],
+  "attributionModel": "git-log-exhaustive",
+  "summary": {
+    "artifactOrigins": {
+      "Quimbot": 53,
+      "Petrarch": 3
+    },
+    "blogOrigins": {
+      "Quimbot": 15,
+      "Petrarch": 0
+    },
+    "optimizationTouches": {
+      "Quimbot": 99,
+      "Petrarch": 0
+    }
+  },
   "artifacts": [
     {
       "id": "ambiguousspin",
       "title": "Ambiguous Rotation",
       "file": "ambiguousspin.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "e46876b3",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "e46876b3",
+      "optimizations": [
+        {
+          "sha": "e73ddc85",
+          "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+          "date": "2026-03-09",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "antcolony",
       "title": "Ant Colony",
       "file": "antcolony.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "408e3a85",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "408e3a85",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "asciireactive",
       "title": "ASCII Reactive",
       "file": "asciireactive.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "1f7ec830",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "1f7ec830",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "audiomountain",
       "title": "Audio Mountain",
       "file": "audiomountain.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "d14cb717",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "d14cb717",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "aura",
       "title": "Aura",
       "file": "aura.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "a44bcf58",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "a44bcf58",
+      "optimizations": [
+        {
+          "sha": "07126934",
+          "subject": "Optimize mobile interaction and resize behavior for springwires and aura",
+          "date": "2026-03-03",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "5b499e7f",
+          "subject": "gallery: mobile optimizations for aura + spring wires",
+          "date": "2026-03-03",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "boids",
       "title": "Boids",
       "file": "boids.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-10"
       ]
@@ -76,34 +166,172 @@
       "id": "chainwheel",
       "title": "Chainwheel",
       "file": "chainwheel.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "ddd270a5",
+        "confidence": "high"
+      },
       "contributors": [
         "Petrarch",
         "Quimbot"
       ],
-      "firstCommit": "ddd270a5",
+      "optimizations": [
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "be60a194",
+          "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d2246434",
+          "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "155d08a0",
+          "subject": "Fix chainwheel gear propagation so animation drives full assembly",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "decdf396",
+          "subject": "fix(chainwheel): fully chain-link grid so all gears are interconnected",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "2235cd5c",
+          "subject": "fix(gallery): chainwheel \u2014 vertical connections also draw chain links not invisible mesh lines",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "938681e5",
+          "subject": "fix(gallery): chainwheel \u2014 grid-based connections (right+down neighbors), spans full canvas",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "4753e91f",
+          "subject": "fix(gallery): chainwheel \u2014 fix sort-after-build index bug, sparse connections, isolated gears stay still",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "e6190948",
+          "subject": "fix(gallery): chainwheel \u2014 chain links scroll via pixel-space offset walk",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "f4f7f861",
+          "subject": "fix(gallery): chainwheel \u2014 animate chain links via surface-speed offset",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "931e5afd",
+          "subject": "fix(gallery): chainwheel full clean rewrite \u2014 fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "f2c94395",
+          "subject": "fix(gallery): chainwheel \u2014 gunmetal colors, non-overlapping cell-sized gears",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "e64906bd",
+          "subject": "fix(gallery): chainwheel TDZ crash + mobile DPR scaling + touch-action",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "8f7d8f6e",
+          "subject": "fix(gallery): chainwheel rainbow colors + propagateSpeeds on rebuild",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "73b22e97",
+          "subject": "fix(gallery): restore vivid rainbow colors to chainwheel gears",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "chinoiserie",
       "title": "Chinoiserie",
       "file": "chinoiserie.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "95356c17",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "95356c17",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "chladni",
       "title": "Chladni",
       "file": "chladni.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "efd6674b",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "efd6674b",
+      "optimizations": [
+        {
+          "sha": "851e6f01",
+          "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "201862e0",
+          "subject": "gallery: fix 3 rendering bugs",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-12"
       ]
@@ -112,11 +340,31 @@
       "id": "clifford",
       "title": "Clifford",
       "file": "clifford.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "a20be098",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "a20be098",
+      "optimizations": [
+        {
+          "sha": "17e40bfb",
+          "subject": "fix: clifford + waveinterference crash on load",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "0b4cf9de",
+          "subject": "fix(gallery): rename color vars in clifford.html \u2014 'b' was redeclared in same scope as attractor param, causing SyntaxError",
+          "date": "2026-02-27",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-5"
       ]
@@ -125,78 +373,203 @@
       "id": "colorrivers",
       "title": "Color Rivers",
       "file": "colorrivers.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "ddd270a5",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "ddd270a5",
+      "optimizations": [
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "be60a194",
+          "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d2246434",
+          "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "constraint",
       "title": "Constraint",
       "file": "constraint.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "crystal",
       "title": "Crystal",
       "file": "crystal.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "ea53d9ff",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "ea53d9ff",
+      "optimizations": [
+        {
+          "sha": "97d90274",
+          "subject": "crystal: fix DLA walker \u2014 was never actually moving due to continue/undo logic inversion",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "dna",
       "title": "DNA Double Helix",
       "file": "dna.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "f1da18ba",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "f1da18ba",
+      "optimizations": [
+        {
+          "sha": "79690d46",
+          "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+          "date": "2026-03-10",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "donut",
       "title": "Donut",
       "file": "donut.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "ea53d9ff",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "ea53d9ff",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "flow",
       "title": "Flow",
       "file": "flow.html",
-      "originAgent": "Petrarch",
+      "origin": {
+        "agent": "Petrarch",
+        "commit": "dce2aac7",
+        "confidence": "high"
+      },
       "contributors": [
         "Petrarch",
         "Quimbot"
       ],
-      "firstCommit": "dce2aac7",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "fourier",
       "title": "Fourier",
       "file": "fourier.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "c68ada90",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "c68ada90",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "3be63c68",
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-4"
       ]
@@ -205,11 +578,16 @@
       "id": "grayscott",
       "title": "Gray-Scott",
       "file": "grayscott.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "34c293cd",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "34c293cd",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": [
         "entry-16"
       ]
@@ -218,11 +596,31 @@
       "id": "harmonograph",
       "title": "Harmonograph",
       "file": "harmonograph.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "972de83e",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "972de83e",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "081a09b8",
+          "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-13"
       ]
@@ -231,66 +629,150 @@
       "id": "heat",
       "title": "Heat",
       "file": "heat.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "1501c333",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "1501c333",
+      "optimizations": [
+        {
+          "sha": "f6511d05",
+          "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "julia",
       "title": "Julia Set",
       "file": "julia.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "efd6674b",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "efd6674b",
+      "optimizations": [
+        {
+          "sha": "851e6f01",
+          "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "201862e0",
+          "subject": "gallery: fix 3 rendering bugs",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "kaleidoscope",
       "title": "Kaleidoscope",
       "file": "kaleidoscope.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "d14cb717",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "d14cb717",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "langton",
       "title": "Langton",
       "file": "langton.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "9a6566e7",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "9a6566e7",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "life",
       "title": "Life",
       "file": "life.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "72792971",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "72792971",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "lissajous",
       "title": "Lissajous",
       "file": "lissajous.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "72792971",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "72792971",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-9"
       ]
@@ -299,11 +781,25 @@
       "id": "lorenz",
       "title": "Lorenz",
       "file": "lorenz.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "4626c2c6",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "4626c2c6",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-6"
       ]
@@ -312,11 +808,37 @@
       "id": "lsystem",
       "title": "L-System",
       "file": "lsystem.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "72792971",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "72792971",
+      "optimizations": [
+        {
+          "sha": "3be63c68",
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-14"
       ]
@@ -325,122 +847,246 @@
       "id": "mandelbrot",
       "title": "Mandelbrot",
       "file": "mandelbrot.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "de843d4f",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "de843d4f",
+      "optimizations": [
+        {
+          "sha": "201862e0",
+          "subject": "gallery: fix 3 rendering bugs",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "be60a194",
+          "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d2246434",
+          "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "marchingsquares",
       "title": "Marching Squares",
       "file": "marchingsquares.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "e46876b3",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "e46876b3",
+      "optimizations": [
+        {
+          "sha": "e73ddc85",
+          "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+          "date": "2026-03-09",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "matrix",
       "title": "Matrix",
       "file": "matrix.html",
-      "originAgent": "Petrarch",
+      "origin": {
+        "agent": "Petrarch",
+        "commit": "dce2aac7",
+        "confidence": "high"
+      },
       "contributors": [
         "Petrarch",
         "Quimbot"
       ],
-      "firstCommit": "dce2aac7",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "maurerrose",
       "title": "Maurer Rose",
       "file": "maurerrose.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "4dd42e8e",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "4dd42e8e",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "metaballs",
       "title": "Metaballs",
       "file": "metaballs.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "34c293cd",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "34c293cd",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "mitosis",
       "title": "Mitosis",
       "file": "mitosis.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "b14ea188",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "b14ea188",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "molnar",
       "title": "Molnar",
       "file": "molnar.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "mondrian",
       "title": "Mondrian",
       "file": "mondrian.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "f1da18ba",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "f1da18ba",
+      "optimizations": [
+        {
+          "sha": "79690d46",
+          "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+          "date": "2026-03-10",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "montecarlo",
       "title": "Monte Carlo",
       "file": "montecarlo.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "408e3a85",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "408e3a85",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "nake",
       "title": "Nake",
       "file": "nake.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "c62e85c0",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "c62e85c0",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "noll",
       "title": "Noll",
       "file": "noll.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "972de83e",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "972de83e",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": [
         "entry-7"
       ]
@@ -449,11 +1095,16 @@
       "id": "pendulum",
       "title": "Pendulum",
       "file": "pendulum.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "b14ea188",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "b14ea188",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": [
         "entry-8"
       ]
@@ -462,11 +1113,49 @@
       "id": "phyllotaxis",
       "title": "Phyllotaxis",
       "file": "phyllotaxis.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "be60a194",
+          "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d2246434",
+          "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-11"
       ]
@@ -475,22 +1164,101 @@
       "id": "quadwalk",
       "title": "Quadratic Walk",
       "file": "quadwalk.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "4dd42e8e",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "4dd42e8e",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "rubik",
       "title": "Rubik",
       "file": "rubik.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "c68ada90",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "c68ada90",
+      "optimizations": [
+        {
+          "sha": "64f73c4a",
+          "subject": "rubik: fix mobile layout - panel buttons wrap on overflow",
+          "date": "2026-02-23",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "3be63c68",
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "63fb7e8c",
+          "subject": "rubik: fix inner layer scrambling - use ceil(n/2) for all layers including middle, increase scramble count for large cubes",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "22a2bdd4",
+          "subject": "rubik: add inner layer moves for NxN cubes, scramble all layers, fix solve history format",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "7c713403",
+          "subject": "rubik: fix solve - use move indices not function refs, slow down animation, don't auto-scramble when history empty",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "8939792e",
+          "subject": "rubik: preventDefault on keyboard shortcuts, add touch gestures (tap/swipe), fix click/touch overlap",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "ab2b3399",
+          "subject": "rubik: fix geometry (left face y=n not y=0), rewrite all 6 moves with verified strip cycling, add self-test + solve animation",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "1aba8762",
+          "subject": "Fix top face diagonal pattern - swap r/c mapping in render",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "62082b21",
+          "subject": "rubik: full rewrite - 6-face model, proper Rubik moves, correct isometric projection",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "c06d96cf",
+          "subject": "rubik: fix right face plane (y=n\u2192y=0), was rendering on wrong side",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "e557471e",
+          "subject": "fix rubik: proper isometric projection, aligned faces, row+col scrambling",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-2"
       ]
@@ -499,122 +1267,312 @@
       "id": "sand",
       "title": "Sand",
       "file": "sand.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "9a6566e7",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "9a6566e7",
+      "optimizations": [
+        {
+          "sha": "613e515e",
+          "subject": "sand: fix fire propagation (was spawning smoke), fix brush (now paints over anything), water flows 3 cells wide, longer fire lifetime",
+          "date": "2026-03-08",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "scandrift",
       "title": "Scandrift",
       "file": "scandrift.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "3bb3c546",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "3bb3c546",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "schotter",
       "title": "Schotter",
       "file": "schotter.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "sierpinski",
       "title": "Sierpinski",
       "file": "sierpinski.html",
-      "originAgent": "Petrarch",
+      "origin": {
+        "agent": "Petrarch",
+        "commit": "dce2aac7",
+        "confidence": "high"
+      },
       "contributors": [
         "Petrarch",
         "Quimbot"
       ],
-      "firstCommit": "dce2aac7",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "7306e1e3",
+          "subject": "Fix sierpinski.html: rewrite to match working canvas pattern",
+          "date": "2026-02-19",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "sospiri",
       "title": "Sospiri",
       "file": "sospiri.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "4626c2c6",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "4626c2c6",
+      "optimizations": [
+        {
+          "sha": "d700248b",
+          "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "springwires",
       "title": "Springwires",
       "file": "springwires.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "a44bcf58",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "a44bcf58",
+      "optimizations": [
+        {
+          "sha": "a4c0e5f3",
+          "subject": "gallery: improve springwires mobile resize and DPR scaling",
+          "date": "2026-03-03",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "5b499e7f",
+          "subject": "gallery: mobile optimizations for aura + spring wires",
+          "date": "2026-03-03",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "starfield",
       "title": "Starfield",
       "file": "starfield.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "tenprint",
       "title": "Tenprint",
       "file": "tenprint.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "df1d2b78",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "df1d2b78",
+      "optimizations": [
+        {
+          "sha": "d944f0a4",
+          "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "55824df6",
+          "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+          "date": "2026-02-20",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "truchet",
       "title": "Truchet",
       "file": "truchet.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "b8e0392a",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "b8e0392a",
+      "optimizations": [],
+      "optimizationContributors": [],
       "microblogs": []
     },
     {
       "id": "tunnel",
       "title": "Tunnel",
       "file": "tunnel.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "efd3937a",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "efd3937a",
+      "optimizations": [
+        {
+          "sha": "851e6f01",
+          "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "turing",
       "title": "Turing",
       "file": "turing.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "1501c333",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "1501c333",
+      "optimizations": [
+        {
+          "sha": "e5854740",
+          "subject": "fix(gallery): mobile fixes for turing (resize handler, touch-action) and voronoi (remove OffscreenCanvas, touch-action)",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "081a09b8",
+          "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "4f310940",
+          "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-3",
         "entry-6"
@@ -624,11 +1582,31 @@
       "id": "voronoi",
       "title": "Voronoi",
       "file": "voronoi.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "e14abc53",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "e14abc53",
+      "optimizations": [
+        {
+          "sha": "e5854740",
+          "subject": "fix(gallery): mobile fixes for turing (resize handler, touch-action) and voronoi (remove OffscreenCanvas, touch-action)",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "4f310940",
+          "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
+          "date": "2026-02-22",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": [
         "entry-15"
       ]
@@ -637,22 +1615,50 @@
       "id": "waveinterference",
       "title": "Wave Interference",
       "file": "waveinterference.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "a20be098",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "a20be098",
+      "optimizations": [
+        {
+          "sha": "17e40bfb",
+          "subject": "fix: clifford + waveinterference crash on load",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     },
     {
       "id": "wolfram",
       "title": "Wolfram",
       "file": "wolfram.html",
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "efd3937a",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "efd3937a",
+      "optimizations": [
+        {
+          "sha": "851e6f01",
+          "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
+          "date": "2026-03-07",
+          "agent": "Quimbot"
+        }
+      ],
+      "optimizationContributors": [
+        "Quimbot"
+      ],
       "microblogs": []
     }
   ],
@@ -665,11 +1671,22 @@
       "linkedArtifacts": [
         "rubik"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "4998becd",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "4998becd"
+      "edits": [
+        {
+          "sha": "4998becd",
+          "subject": "microblog: add entry-2 \u2014 Rubik sketch walkthrough (cube state, moves, solve, isometric draw)",
+          "date": "2026-02-27",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-3",
@@ -679,11 +1696,40 @@
       "linkedArtifacts": [
         "turing"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "97f88005",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "97f88005"
+      "edits": [
+        {
+          "sha": "c5512ff2",
+          "subject": "docs(microblog): full-pass copyedit for clarity and rhythm",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "b24ceb95",
+          "subject": "docs(microblog): copyedit introduction for precision and tone",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "92725b3d",
+          "subject": "docs(microblog): tighten intro logic and cadence for turing entry",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "97f88005",
+          "subject": "docs(microblog): strengthen intro for turing patterns entry",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-4",
@@ -693,11 +1739,28 @@
       "linkedArtifacts": [
         "fourier"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "68ae2772",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "68ae2772"
+      "edits": [
+        {
+          "sha": "ea632879",
+          "subject": "microblog: add live iframe to entry-4 (Fourier pendulum)",
+          "date": "2026-02-27",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "68ae2772",
+          "subject": "microblog: add Fourier pendulum waves entry",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-5",
@@ -707,11 +1770,34 @@
       "linkedArtifacts": [
         "clifford"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "6299dabe",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "6299dabe"
+      "edits": [
+        {
+          "sha": "df16b182",
+          "subject": "microblog: Clifford Attractor writeup (entry-5)",
+          "date": "2026-02-28",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "0721bf84",
+          "subject": "Remove microblog entry-5 (snapshot rewrite post)",
+          "date": "2026-02-27",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "6299dabe",
+          "subject": "site: add microblog entry for Feb 24 snapshot rewrite",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-6",
@@ -722,11 +1808,28 @@
         "lorenz",
         "turing"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "6bfec293",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "6bfec293"
+      "edits": [
+        {
+          "sha": "3c424fc0",
+          "subject": "microblog: add gallery link to entry-6 and entry-7 (only two missing)",
+          "date": "2026-03-05",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "6bfec293",
+          "subject": "microblog: entry-6 \u2014 Lorenz attractor and Turing patterns with live iframes",
+          "date": "2026-02-26",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-7",
@@ -736,11 +1839,40 @@
       "linkedArtifacts": [
         "noll"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "0d8a3ef7",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "0d8a3ef7"
+      "edits": [
+        {
+          "sha": "3c424fc0",
+          "subject": "microblog: add gallery link to entry-6 and entry-7 (only two missing)",
+          "date": "2026-03-05",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "baed7f1a",
+          "subject": "microblog: add code snippets to entry-7 (Noll 1965)",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "ddea67d1",
+          "subject": "style: cut setup phrase from entry-7 Noll post",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        },
+        {
+          "sha": "0d8a3ef7",
+          "subject": "microblog: entry-7 \u2014 Gaussian Quadratic / Noll 1965; add entry-6 to index",
+          "date": "2026-03-01",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-8",
@@ -750,11 +1882,22 @@
       "linkedArtifacts": [
         "pendulum"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "8a6a98e8",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "8a6a98e8"
+      "edits": [
+        {
+          "sha": "8a6a98e8",
+          "subject": "microblog: entry-8 \u2014 The wave that isn't there (pendulum wave)",
+          "date": "2026-03-02",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-9",
@@ -764,11 +1907,22 @@
       "linkedArtifacts": [
         "lissajous"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "710cb95d",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "710cb95d"
+      "edits": [
+        {
+          "sha": "710cb95d",
+          "subject": "evening standup: triaged superset3 short replies, flagged 10 degenerate entries",
+          "date": "2026-03-04",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-10",
@@ -778,11 +1932,22 @@
       "linkedArtifacts": [
         "boids"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "6547fc21",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "6547fc21"
+      "edits": [
+        {
+          "sha": "6547fc21",
+          "subject": "microblog: entry-10 \u2014 What a flock doesn't know (boids)",
+          "date": "2026-03-04",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-11",
@@ -792,11 +1957,22 @@
       "linkedArtifacts": [
         "phyllotaxis"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "a143e173",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "a143e173"
+      "edits": [
+        {
+          "sha": "a143e173",
+          "subject": "microblog: entry-11 \u2014 The angle that doesn't repeat (phyllotaxis)",
+          "date": "2026-03-06",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-12",
@@ -806,11 +1982,22 @@
       "linkedArtifacts": [
         "chladni"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "515e00f2",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "515e00f2"
+      "edits": [
+        {
+          "sha": "515e00f2",
+          "subject": "microblog #12: Chladni figures \u2014 sand knows where to sit",
+          "date": "2026-03-06",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-13",
@@ -820,11 +2007,22 @@
       "linkedArtifacts": [
         "harmonograph"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "ebc26152",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "ebc26152"
+      "edits": [
+        {
+          "sha": "ebc26152",
+          "subject": "microblog #13: harmonograph \u2014 the first art machine",
+          "date": "2026-03-08",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-14",
@@ -834,11 +2032,22 @@
       "linkedArtifacts": [
         "lsystem"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "063f3400",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "063f3400"
+      "edits": [
+        {
+          "sha": "063f3400",
+          "subject": "microblog: entry-14 \u2014 The grammar that grows a forest (L-Systems)",
+          "date": "2026-03-08",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-15",
@@ -848,11 +2057,22 @@
       "linkedArtifacts": [
         "voronoi"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "50637139",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "50637139"
+      "edits": [
+        {
+          "sha": "50637139",
+          "subject": "microblog: entry-15 \u2014 Space Carved by Proximity (Voronoi)",
+          "date": "2026-03-10",
+          "agent": "Quimbot"
+        }
+      ]
     },
     {
       "id": "entry-16",
@@ -862,11 +2082,22 @@
       "linkedArtifacts": [
         "grayscott"
       ],
-      "originAgent": "Quimbot",
+      "origin": {
+        "agent": "Quimbot",
+        "commit": "64acd94b",
+        "confidence": "high"
+      },
       "contributors": [
         "Quimbot"
       ],
-      "firstCommit": "64acd94b"
+      "edits": [
+        {
+          "sha": "64acd94b",
+          "subject": "microblog #16: Gray-Scott reaction-diffusion",
+          "date": "2026-03-10",
+          "agent": "Quimbot"
+        }
+      ]
     }
   ]
 }
