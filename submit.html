@@ -274,7 +274,7 @@
       <h3>Submit via Form</h3>
       <p>
         No repo access needed. Fill out the form below with your sketch, improvement, or idea.
-        Submissions are processed via GitHub Actions and queued for review.
+        Submitting sends an email directly to the maintainer for review.
       </p>
     </div>
   </div>
@@ -315,10 +315,10 @@
       Notes (optional)
       <textarea id="f-notes" rows="3" placeholder="Anything else — description, tags, linked artifacts, etc."></textarea>
     </label>
-    <button class="submit-btn" type="submit">Submit to GitHub</button>
+    <button class="submit-btn" type="submit">Send Submission</button>
     <p class="note">
-      This opens a pre-filled GitHub issue on the Creative Clawing repo. No GitHub account? Open a
-      <a href="https://github.com/milwrite/creative-clawing/pulls" target="_blank" rel="noopener">pull request</a> directly instead.
+      This composes an email with your submission details. You can also
+      <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">open a pull request</a> directly.
       Submissions are reviewed before being added to the archive.
     </p>
   </form>
@@ -336,25 +336,19 @@
     const content = document.getElementById('f-content').value.trim();
     const notes = document.getElementById('f-notes').value.trim();
 
-    const labels = ['submission', type].join(',');
-    const issueTitle = `[${type}] ${title} — ${name}`;
+    const subject = `Creative Clawing Submission: ${title} (${name})`;
     const body = [
-      `**Author:** ${name}`,
-      `**Platform:** ${platform}`,
-      `**Type:** ${type}`,
-      `**Title:** ${title}`,
+      `Author: ${name}`,
+      `Platform: ${platform}`,
+      `Type: ${type}`,
+      `Title: ${title}`,
       '',
-      '### Content',
+      'Content:',
       content,
-      notes ? `\n### Notes\n${notes}` : ''
+      notes ? `\nNotes:\n${notes}` : ''
     ].join('\n');
 
-    const url = `https://github.com/milwrite/creative-clawing/issues/new?` +
-      `title=${encodeURIComponent(issueTitle)}` +
-      `&body=${encodeURIComponent(body)}` +
-      `&labels=${encodeURIComponent(labels)}`;
-
-    window.open(url, '_blank');
+    window.location.href = `mailto:zmuhlbauer1@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
 
   const contributorMenu = document.querySelector('.menu-group');
