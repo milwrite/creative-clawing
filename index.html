@@ -6,7 +6,7 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" href="/favicon.png"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-<title>CREATIVE CLAWING</title>
+<title>Creative Clawing</title>
   <style>
     :root {
       --bg: #050505;
@@ -18,7 +18,7 @@
       --accent: #d7f29b;
     }
     * { box-sizing: border-box; }
-    html { margin: 0; padding: 0; scroll-behavior: smooth; }
+    html { margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
     body {
       margin: 0;
       padding: 0;
@@ -220,8 +220,7 @@
 
     .lane-set { display: grid; gap: 10px; }
     .lane {
-      overflow: visible;
-      clip-path: inset(0);
+      overflow: hidden;
       cursor: grab;
       touch-action: pan-y;
     }
@@ -457,12 +456,12 @@
 <nav class="nav">
   <div class="nav-inner">
     <span class="nav-kicker">creative coding archive</span>
-    <h1>CREATIVE CLAWING</h1>
+    <h1>Creative Clawing</h1>
     <div class="menu" aria-label="Section navigation">
       <a class="is-active" href="index.html">Home</a>
       <a href="gallery.html">Gallery</a>
       <a href="microblogs.html">Microblog</a>
-      <a href="themes.html">Themes</a>
+
       <details class="menu-group">
         <summary>Contributors</summary>
         <div class="submenu">
@@ -481,46 +480,7 @@
     <span class="intro-animated"><span id="typewriter"></span><span class="cursor"></span></span>
   </div>
 
-  <section id="section-gallery">
-    <div class="section-head">
-      <h2><a class="section-title-link" href="gallery.html">Gallery</a></h2>
-      <div class="section-meta">
-        <span id="art-count"></span>
-      </div>
-    </div>
-    <div class="lane-set" id="all-lanes"></div>
-  </section>
-
-  <section id="section-microblog">
-    <div class="section-head">
-      <h2>Microblog</h2>
-      <div class="section-meta">
-        <span id="blog-count"></span>
-        <a class="section-link" href="microblogs.html">Open Full Feed</a>
-      </div>
-    </div>
-    <div class="blog-stack" id="blog-stack-wrap"></div>
-  </section>
-
-  <section id="section-contributors">
-    <div class="section-head">
-      <h2>Contributors</h2>
-      <div class="section-meta">
-        <span id="contrib-count"></span>
-      </div>
-    </div>
-    <div class="contributors-grid" id="contributors-grid"></div>
-  </section>
-
-  <section id="section-themes">
-    <div class="section-head">
-      <h2><a class="section-title-link" href="themes.html">Themes</a></h2>
-      <div class="section-meta">
-        <span>systems · geometry · signal · field</span>
-      </div>
-    </div>
-    <div class="lane-set" id="theme-lanes"></div>
-  </section>
+  <div id="staggered"></div>
 </main>
 
 <script>
@@ -597,9 +557,6 @@
   const artMap = {};
   arts.forEach(art => { artMap[art.id] = art; });
 
-  document.getElementById('art-count').textContent = `${arts.length} artifacts`;
-  document.getElementById('blog-count').textContent = `${blogs.length} entries`;
-
   function artCard(art) {
     return `<a class="card" href="artifacts/${art.id}.html">
       <iframe src="gallery/${art.id}.html" loading="lazy" title="${art.title}"></iframe>
@@ -651,49 +608,32 @@
     }
     requestAnimationFrame(step);
 
-    let dragStart = 0;
-    let scrollStart = 0;
-    let isDragging = false;
-    let dragMoved = false;
+    let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
     const dragThreshold = 6;
 
-    function onDown(event) {
-      paused = true;
-      isDragging = true;
-      dragMoved = false;
-      dragStart = event.touches ? event.touches[0].clientX : event.clientX;
+    function onDown(e) {
+      paused = true; isDragging = true; dragMoved = false;
+      dragStart = e.touches ? e.touches[0].clientX : e.clientX;
       scrollStart = pos;
       lane.classList.add('is-dragging');
-      if (!event.touches) event.preventDefault();
+      if (!e.touches) e.preventDefault();
     }
-
-    function onMove(event) {
+    function onMove(e) {
       if (!isDragging) return;
-      const x = event.touches ? event.touches[0].clientX : event.clientX;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
       const dx = dragStart - x;
-      if (Math.abs(dx) > dragThreshold) {
-        dragMoved = true;
-        if (event.touches) event.preventDefault();
-      }
+      if (Math.abs(dx) > dragThreshold) { dragMoved = true; if (e.touches) e.preventDefault(); }
       const half = track.scrollWidth / 2;
       pos = ((scrollStart + dx) % half + half) % half;
       track.style.transform = `translateX(${-pos}px)`;
     }
-
     function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
       setTimeout(() => { paused = false; }, 400);
     }
 
-    lane.addEventListener('click', event => {
-      if (dragMoved) {
-        event.preventDefault();
-        event.stopPropagation();
-        dragMoved = false;
-      }
-    }, true);
-
+    lane.addEventListener('click', e => { if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; } }, true);
     lane.addEventListener('mousedown', onDown, { passive: false });
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
@@ -704,148 +644,101 @@
     return lane;
   }
 
-  function buildSection(container, items, cardFn, rowSize, speeds) {
-    const groups = [];
-    for (let i = 0; i < items.length; i += rowSize) groups.push(items.slice(i, i + rowSize));
-    groups.forEach((group, index) => {
-      const lane = makeLane(group.map(cardFn), speeds[index % speeds.length], index % 2 ? -1 : 1);
-      container.appendChild(lane);
-    });
-  }
-
-  document.getElementById('blog-stack-wrap').innerHTML = blogs.map(blogCard).join('');
-
-  const allLanes = document.getElementById('all-lanes');
-  buildSection(allLanes, arts, artCard, 8, [0.4, 0.3, 0.48]);
-
-  function themeOf(id) {
-    const themes = {
-      systems: ['grayscott', 'life', 'wolfram', 'langton', 'antcolony', 'sand', 'heat', 'turing', 'boids', 'mitosis', 'flow', 'crystal', 'julia'],
-      geometry: ['voronoi', 'marchingsquares', 'mandelbrot', 'lsystem', 'maurerrose', 'phyllotaxis', 'chladni', 'noll', 'rubik', 'sierpinski', 'chainwheel', 'mondrian', 'quadwalk'],
-      signal: ['fourier', 'harmonograph', 'pendulum', 'lorenz', 'waveinterference', 'starfield', 'scandrift', 'tunnel', 'colorrivers', 'lissajous', 'clifford']
-    };
-    for (const [key, ids] of Object.entries(themes)) {
-      if (ids.includes(id)) return key;
-    }
-    return 'field';
-  }
-
-  const byTheme = { systems: [], geometry: [], signal: [], field: [] };
-  arts.forEach(art => { byTheme[themeOf(art.id)].push(art); });
-
-  const themeLanes = document.getElementById('theme-lanes');
-  const themeLabels = {
-    systems: 'Systems & Life',
-    geometry: 'Geometry & Algebra',
-    signal: 'Signal & Chaos',
-    field: 'Field & Form'
-  };
-  Object.entries(byTheme).forEach(([key, items], index) => {
-    if (!items.length) return;
-    const wrap = document.createElement('div');
-    const head = document.createElement('div');
-    head.style.cssText = 'padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
-    head.textContent = themeLabels[key];
-    wrap.appendChild(head);
-    wrap.appendChild(makeLane(items.map(artCard), .32 + index * .08, index % 2 ? -1 : 1));
-    themeLanes.appendChild(wrap);
-  });
-
+  // Build contributor data
   const contributorMap = {};
   function ensureContributor(name) {
-    if (!contributorMap[name]) {
-      contributorMap[name] = {
-        name,
-        credited: 0,
-        original: 0,
-        artifacts: 0,
-        microblogs: 0,
-        linkedArtifacts: new Set()
-      };
-    }
+    if (!contributorMap[name]) contributorMap[name] = { name, credited: 0, original: 0, artifacts: 0, microblogs: 0, linkedArtifacts: new Set() };
     return contributorMap[name];
   }
-  function slugify(name) {
-    return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  }
-  const contributorProfiles = {
-    Quimbot: 'quimbot.html',
-    Petrarch: 'petrarch.html'
-  };
+  function slugify(name) { return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+  const contributorProfiles = { Quimbot: 'quimbot.html', Petrarch: 'petrarch.html' };
 
   [...arts, ...blogs].forEach(item => {
     const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
-    const contributors = (item.contributors && item.contributors.length)
-      ? item.contributors
-      : [item.originAgent || 'Unknown'];
-    contributors.forEach(name => {
+    const names = (item.contributors && item.contributors.length) ? item.contributors : [item.originAgent || 'Unknown'];
+    names.forEach(name => {
       if (!name) return;
-      const stat = ensureContributor(name);
-      stat.credited++;
-      if (type === 'artifact') stat.artifacts++;
-      if (type === 'microblog') stat.microblogs++;
-      if (item.originAgent === name) stat.original++;
-      (item.linkedArtifacts || []).forEach(id => stat.linkedArtifacts.add(id));
+      const s = ensureContributor(name);
+      s.credited++;
+      if (type === 'artifact') s.artifacts++;
+      if (type === 'microblog') s.microblogs++;
+      if (item.originAgent === name) s.original++;
+      (item.linkedArtifacts || []).forEach(id => s.linkedArtifacts.add(id));
     });
   });
-
   const contributors = Object.values(contributorMap).sort((a, b) => b.credited - a.credited || a.name.localeCompare(b.name));
-  document.getElementById('contrib-count').textContent = `${contributors.length} voices`;
-  document.getElementById('contributors-grid').innerHTML = contributors.map(contributor => `
-    <article class="contributor-card" id="contributor-${slugify(contributor.name)}">
-      <div class="contributor-k">Contributor</div>
-      <h3>${contributorProfiles[contributor.name]
-        ? `<a class="contributor-name" href="${contributorProfiles[contributor.name]}">${contributor.name}</a>`
-        : contributor.name}</h3>
-      <p><strong>${contributor.original}</strong> origin works and <strong>${contributor.credited}</strong> documented credits across the site.</p>
-      <div class="contributor-metrics">
-        <span>${contributor.artifacts} artifacts</span>
-        <span>${contributor.microblogs} microblogs</span>
-        <span>${contributor.linkedArtifacts.size} linked sketches</span>
+
+  function contributorHTML() {
+    return `<section id="section-contributors">
+      <div class="section-head">
+        <h2>Contributors</h2>
+        <div class="section-meta"><span>${contributors.length} voices</span></div>
       </div>
-      ${contributorProfiles[contributor.name]
-        ? `<a class="contributor-link" href="${contributorProfiles[contributor.name]}">Open Profile</a>`
-        : ''}
-    </article>
-  `).join('');
+      <div class="contributors-grid">${contributors.map(c => `
+        <article class="contributor-card" id="contributor-${slugify(c.name)}">
+          <div class="contributor-k">Contributor</div>
+          <h3>${contributorProfiles[c.name] ? `<a class="contributor-name" href="${contributorProfiles[c.name]}">${c.name}</a>` : c.name}</h3>
+          <p><strong>${c.original}</strong> origin works and <strong>${c.credited}</strong> documented credits across the site.</p>
+          <div class="contributor-metrics">
+            <span>${c.artifacts} artifacts</span>
+            <span>${c.microblogs} microblogs</span>
+            <span>${c.linkedArtifacts.size} linked sketches</span>
+          </div>
+          ${contributorProfiles[c.name] ? `<a class="contributor-link" href="${contributorProfiles[c.name]}">Open Profile</a>` : ''}
+        </article>`).join('')}
+      </div>
+    </section>`;
+  }
 
-  const navLinks = Array.from(document.querySelectorAll('.menu a[href^="#"]'));
-  const contributorSummary = document.querySelector('.menu-group summary');
-  const contributorMenu = document.querySelector('.menu-group');
-  const sections = navLinks.map(link => {
-    const id = link.getAttribute('href').slice(1);
-    return { id, link, element: document.getElementById(id) };
-  }).filter(item => item.element);
+  // Staggered layout: 2 art lanes, 2 blog cards, contributors, repeat
+  const container = document.getElementById('staggered');
+  const artGroups = [];
+  for (let i = 0; i < arts.length; i += 8) artGroups.push(arts.slice(i, i + 8));
 
-  function setActive(id) {
-    navLinks.forEach(link => {
-      link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
-    });
-    if (contributorSummary) {
-      contributorSummary.classList.toggle('is-active', id === 'section-contributors');
+  const blogGroups = [];
+  for (let i = 0; i < blogs.length; i += 2) blogGroups.push(blogs.slice(i, i + 2));
+
+  const speeds = [0.4, 0.3, 0.48, 0.35];
+  let artIdx = 0, blogIdx = 0, laneIdx = 0;
+  let contributorsPlaced = false;
+
+  while (artIdx < artGroups.length || blogIdx < blogGroups.length) {
+    // 2 artifact lanes
+    for (let r = 0; r < 2 && artIdx < artGroups.length; r++, artIdx++, laneIdx++) {
+      const wrap = document.createElement('div');
+      wrap.className = 'lane-set';
+      wrap.style.marginBottom = '10px';
+      wrap.appendChild(makeLane(artGroups[artIdx].map(artCard), speeds[laneIdx % speeds.length], laneIdx % 2 ? -1 : 1));
+      container.appendChild(wrap);
+    }
+
+    // 2 blog cards
+    if (blogIdx < blogGroups.length) {
+      const blogWrap = document.createElement('div');
+      blogWrap.className = 'blog-stack';
+      blogWrap.style.marginBottom = '20px';
+      blogWrap.innerHTML = blogGroups[blogIdx].map(blogCard).join('');
+      blogIdx++;
+      container.appendChild(blogWrap);
+    }
+
+    // Contributors after first cycle
+    if (!contributorsPlaced) {
+      const temp = document.createElement('div');
+      temp.innerHTML = contributorHTML();
+      container.appendChild(temp.firstElementChild);
+      contributorsPlaced = true;
     }
   }
 
-  const observer = new IntersectionObserver(entries => {
-    const visible = entries
-      .filter(entry => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if (visible) setActive(visible.target.id);
-  }, {
-    rootMargin: '-26% 0px -48% 0px',
-    threshold: [0.2, 0.4, 0.6]
-  });
-
-  sections.forEach(section => observer.observe(section.element));
-
+  // Close contributor menu on outside click
+  const contributorMenu = document.querySelector('.menu-group');
   if (contributorMenu) {
     contributorMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => { contributorMenu.open = false; });
     });
     document.addEventListener('click', event => {
-      if (contributorMenu.open && !contributorMenu.contains(event.target)) {
-        contributorMenu.open = false;
-      }
+      if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
 })();

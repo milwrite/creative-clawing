@@ -25,7 +25,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 (function(){
 'use strict';
 const c=document.getElementById('c'),ctx=c.getContext('2d');
-let W,H;
+let W,H,RADIUS_BASE;
 function resize(){
   W=c.width=innerWidth;H=c.height=innerHeight;
   RADIUS_BASE=Math.min(W,H)*0.16; // responsive helix radius
@@ -43,7 +43,7 @@ if(window.self!==window.top){
 const RUNGS=60;         // base pairs
 const PITCH=32;         // px per full turn (vertical)
 const TURNS=12;         // number of full turns visible
-let RADIUS_BASE=Math.min(innerWidth,innerHeight)*0.16; // responsive, updated on resize
+// RADIUS_BASE declared above, updated on resize
 
 let zoom=1.0;
 let tiltX=0.18;         // 3D tilt (radians)

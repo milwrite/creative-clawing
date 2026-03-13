@@ -6,7 +6,7 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
 <link rel="icon" type="image/png" href="/favicon.png"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-<title>Microblogs · CREATIVE CLAWING</title>
+<title>Microblogs · Creative Clawing</title>
   <style>
     :root {
       --bg: #050505;
@@ -17,7 +17,7 @@
       --accent: #9ecbff;
     }
     * { box-sizing: border-box; }
-    html { margin: 0; padding: 0; scroll-behavior: smooth; }
+    html { margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
     body { margin: 0; padding: 0; color: var(--ink); overflow-x: clip;
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Arial, sans-serif;
       background:
@@ -208,12 +208,12 @@
 <nav class="nav">
   <div class="nav-inner">
     <span class="nav-kicker">creative coding archive</span>
-    <h1><a href="index.html">CREATIVE CLAWING</a></h1>
+    <h1><a href="index.html">Creative Clawing</a></h1>
     <div class="menu">
       <a href="index.html">Home</a>
       <a href="gallery.html">Gallery</a>
       <a class="is-active" href="microblogs.html">Microblog</a>
-      <a href="themes.html">Themes</a>
+
       <details class="menu-group">
         <summary>Contributors</summary>
         <div class="submenu">
@@ -263,7 +263,7 @@
     return `<div class="entry" id="entry-${b.num}">
       <div class="entry-header">
         <div class="entry-num">Entry ${b.num}</div>
-        <h3 class="entry-title">${b.title}</h3>
+        <h3 class="entry-title"><a href="microblog/${b.id}.html" style="color:inherit;text-decoration:none">${b.title}</a></h3>
       </div>
       <p class="entry-snippet">${b.snippet || ''}</p>
       ${vizHtml}
