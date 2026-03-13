@@ -49,6 +49,40 @@
       min-height: 44px; display: flex; align-items: center;
     }
     .menu a:hover, .menu a:active { color: var(--ink); border-color: rgba(255,255,255,.4); }
+
+    /* ── dropdown ────────────────────────────────────── */
+    .menu-item { position: relative; flex-shrink: 0; }
+    .menu-item > a { white-space: nowrap; }
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(5,5,5,.97);
+      border: 1px solid var(--line);
+      border-top: none;
+      min-width: 150px;
+      z-index: 40;
+    }
+    .menu-item:hover .dropdown,
+    .menu-item:focus-within .dropdown { display: block; }
+    .dropdown a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 9px 12px;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      border-bottom: 1px solid var(--line);
+      border-left: none; border-right: none; border-top: none;
+      white-space: nowrap;
+      min-height: unset;
+      transition: color .15s, background .15s;
+    }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover, .dropdown a:active { color: var(--ink); background: rgba(255,255,255,.05); border-color: var(--line); }
+
     @media (max-width: 700px) {
       .nav-inner { gap: 8px; }
       h1 { font-size: 1.1rem; }
@@ -135,9 +169,13 @@
     <div class="menu">
       <a href="#section-all">All Artifacts</a>
       <a href="#section-themes">Themes</a>
-      <a href="#section-contributors">Contributors</a>
-      <a href="petrarch.html">Petrarch</a>
-      <a href="quimbot.html">Quimbot</a>
+      <div class="menu-item">
+        <a href="#section-contributors">Contributors ▾</a>
+        <div class="dropdown">
+          <a href="quimbot.html">Quimbot</a>
+          <a href="petrarch.html">Petrarch</a>
+        </div>
+      </div>
       <a href="#section-blog">Microblogs</a>
       <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">Repo</a>
     </div>
