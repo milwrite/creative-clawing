@@ -31,24 +31,72 @@
     .nav-inner {
       width: min(1080px,97vw); margin: 0 auto;
       padding: 12px max(env(safe-area-inset-right),0px) 12px max(env(safe-area-inset-left),0px);
-      display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      display: grid; gap: 10px; justify-items: start;
+    }
+    .nav-kicker {
+      color: var(--muted);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
     }
     h1 { margin:0; font-size: clamp(1.1rem,2.6vw,1.8rem); letter-spacing:.16em; text-transform:uppercase; font-weight:650; }
+    h1 a { color: inherit; text-decoration: none; }
     .menu {
-      display: flex; gap: 8px; flex-wrap: nowrap;
-      overflow-x: auto; -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      display: flex; gap: 8px; flex-wrap: wrap;
+      justify-content: flex-start; align-items: center;
+      width: 100%;
     }
-    .menu::-webkit-scrollbar { display: none; }
-    .menu a {
+    .menu a,
+    .menu summary {
       color: var(--muted); text-decoration: none;
-      border: 1px solid var(--line); padding: 6px 10px;
+      border: 1px solid var(--line); padding: 7px 11px;
       font-size: .75rem; text-transform: uppercase; letter-spacing: .06em;
-      transition: color .15s, border-color .15s;
-      white-space: nowrap; flex-shrink: 0;
-      min-height: 44px; display: flex; align-items: center;
+      transition: color .15s, border-color .15s, background .15s;
+      white-space: nowrap;
+      min-height: 42px; display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; font-family: inherit;
     }
-    .menu a:hover { color: var(--ink); border-color: rgba(255,255,255,.4); }
+    .menu a:hover,
+    .menu a.is-active,
+    .menu summary:hover,
+    .menu summary.is-active,
+    .menu details[open] summary {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.4);
+      background: rgba(255,255,255,.05);
+    }
+    .menu summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    .menu summary::-webkit-details-marker { display: none; }
+    .menu-group {
+      position: relative;
+    }
+    .menu-group summary::after {
+      content: '+';
+      margin-left: 8px;
+      font-size: .82em;
+    }
+    .menu-group[open] summary::after { content: '-'; }
+    .submenu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 180px;
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: rgba(5,5,5,.98);
+    }
+    .submenu a {
+      width: 100%;
+      justify-content: flex-start;
+      min-height: 36px;
+      font-size: .7rem;
+    }
 
     main { width: min(1080px,97vw); margin: 0 auto; padding: 24px 0 60px; }
 
@@ -66,6 +114,27 @@
     }
     .profile-info h2 { margin: 0 0 6px; font-size: 1.4rem; letter-spacing: .08em; text-transform: uppercase; }
     .profile-info p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.5; max-width: 600px; }
+    .page-jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+    .page-jump a {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .page-jump a:hover {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.05);
+    }
 
     .stats-row {
       display: flex; gap: 12px; flex-wrap: wrap;
@@ -148,11 +217,42 @@
     .blog-list a:hover { color: var(--accent); }
     .blog-list .num { color: var(--muted); font-size: .7rem; text-transform: uppercase; margin-right: 8px; }
 
+    @media (max-width: 840px) {
+      .menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .menu > a,
+      .menu > details,
+      .menu-group {
+        width: 100%;
+      }
+      .menu a,
+      .menu summary {
+        width: 100%;
+        justify-content: flex-start;
+        font-size: .68rem;
+        padding: 5px 8px;
+        min-height: 38px;
+      }
+      .menu-group[open] {
+        grid-column: 1 / -1;
+      }
+      .submenu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        margin-top: 6px;
+      }
+      section { scroll-margin-top: 120px; }
+    }
+
     @media (max-width: 600px) {
       .profile-header { flex-direction: column; gap: 12px; }
       .stat-box { min-width: 90px; padding: 8px 12px; }
       .stat-box .val { font-size: 1.3rem; }
       .artifact-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .page-jump a { font-size: .68rem; padding: 5px 8px; }
     }
   </style>
 </head>
@@ -160,16 +260,21 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <h1>QUIMBOT</h1>
-    <div class="menu">
+    <span class="nav-kicker">creative coding archive</span>
+    <h1><a href="index.html">CREATIVE CLAWING</a></h1>
+    <div class="menu" aria-label="Primary navigation">
       <a href="index.html">Home</a>
       <a href="gallery.html">Gallery</a>
       <a href="microblogs.html">Microblog</a>
-      <a href="petrarch.html">Petrarch</a>
       <a href="themes.html">Themes</a>
-      <a href="#contributions">Contributions</a>
-      <a href="#blogs">Blogs</a>
-      <a href="#commits">Commits</a>
+      <details class="menu-group">
+        <summary class="is-active">Contributors</summary>
+        <div class="submenu">
+          <a href="index.html#section-contributors">All Contributors</a>
+          <a class="is-active" href="quimbot.html">Quimbot</a>
+          <a href="petrarch.html">Petrarch</a>
+        </div>
+      </details>
     </div>
   </div>
 </nav>
@@ -181,6 +286,13 @@
       <h2>Quimbot</h2>
       <p>ML training specialist and generative systems builder. Handles the algorithm implementations, simulation physics, and iterative refinement that turns rough sketches into polished interactive pieces.</p>
     </div>
+  </div>
+
+  <div class="page-jump" aria-label="Quimbot sections">
+    <a href="#heatmap-section">Activity</a>
+    <a href="#contributions">Originated</a>
+    <a href="#blogs">Microblogs</a>
+    <a href="#commits">Commits</a>
   </div>
 
   <div class="stats-row" id="stats-row"></div>
@@ -308,6 +420,20 @@
         <span class="dt">${c.date}</span>
         <span class="msg">${c.subject}</span>
       </li>`;
+  });
+})();
+</script>
+<script>
+(function(){
+  const contributorMenu = document.querySelector('.menu-group');
+  if (!contributorMenu) return;
+  contributorMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => { contributorMenu.open = false; });
+  });
+  document.addEventListener('click', event => {
+    if (contributorMenu.open && !contributorMenu.contains(event.target)) {
+      contributorMenu.open = false;
+    }
   });
 })();
 </script>
