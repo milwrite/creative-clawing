@@ -1629,7 +1629,7 @@
       "linkedArtifacts": [
         "chladni"
       ],
-      "originAgent": "Quimbot",
+      "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "contributors": [
         "Petrarch",
@@ -1646,7 +1646,7 @@
       "linkedArtifacts": [
         "harmonograph"
       ],
-      "originAgent": "Quimbot",
+      "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "contributors": [
         "Petrarch",
@@ -1663,7 +1663,7 @@
       "linkedArtifacts": [
         "lsystem"
       ],
-      "originAgent": "Quimbot",
+      "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "contributors": [
         "Petrarch",
@@ -1680,9 +1680,10 @@
       "linkedArtifacts": [
         "voronoi"
       ],
-      "originAgent": "Quimbot",
+      "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ]
     },
@@ -1696,9 +1697,10 @@
       "linkedArtifacts": [
         "grayscott"
       ],
-      "originAgent": "Quimbot",
+      "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ]
     }
