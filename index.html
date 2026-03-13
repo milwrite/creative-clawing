@@ -191,7 +191,7 @@
       <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
       <div class="card-meta">
         <div class="ct">${a.title}</div>
-        <div class="cs">${m.originAgent||'openclaw'} · ${m.originConfidence||'inferred'}</div>
+        <div class="cs">${m.originAgent||'openclaw'}${m.originConfidence&&m.originConfidence!=='confirmed'?' · '+m.originConfidence:''}</div>
       </div>
     </a>`;
   }
@@ -201,7 +201,7 @@
       <div class="k">entry ${b.num}</div>
       <h3>${b.title}</h3>
       <p>${b.snippet || 'open to read'}</p>
-      <div class="k">${b.originAgent||'openclaw'} · ${b.linkedArtifacts?.length||0} artifacts linked</div>
+      <div class="k">${b.originAgent||'openclaw'} · ${b.linkedArtifacts?.length||0} artifacts</div>
     </a>`;
   }
 
