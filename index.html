@@ -52,7 +52,6 @@
     }
     .menu a:hover, .menu a:active { color: var(--ink); border-color: rgba(255,255,255,.4); }
 
-
     @media (max-width: 700px) {
       .nav-inner { gap: 6px; padding-left: max(env(safe-area-inset-left),10px); padding-right: max(env(safe-area-inset-right),10px); }
       h1 { font-size: .88rem; letter-spacing:.1em; }
@@ -80,16 +79,24 @@
     .section-head h2 { margin:0; font-size:.95rem; text-transform:uppercase; letter-spacing:.08em; }
     .section-head span { color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
 
+    /* ── split panel (medium+) ───────────────────────── */
+    .split-panels { display: grid; gap: 0 24px; }
+    @media (min-width: 768px) {
+      .split-panels {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+
     /* ── draggable lanes ─────────────────────────────── */
     .lane-set { display:grid; gap:10px; }
     .lane {
       overflow: visible;
-      clip-path: inset(0);        /* clip without creating a scroll container */
+      clip-path: inset(0);
       cursor: grab;
-      touch-action: pan-y;        /* pan-y scrolls page; horizontal defers to JS */
+      touch-action: pan-y;
     }
     .lane.is-dragging { cursor: grabbing; }
-
     .lane-track {
       display: flex;
       gap: 10px;
@@ -98,7 +105,7 @@
       will-change: transform;
     }
 
-    /* ── cards ───────────────────────────────────────── */
+    /* ── artifact cards ──────────────────────────────── */
     .card {
       width: 220px; min-width:220px; height:220px;
       border:1px solid var(--line);
@@ -120,20 +127,66 @@
     }
     .card-meta .ct { color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:.76rem; }
 
-    .blog-card {
-      width:260px; min-width:260px; height:220px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.4);
-      padding:10px;
-      display:grid; grid-template-rows:auto auto 1fr auto;
-      gap:5px;
-      text-decoration:none; color:inherit;
-      flex-shrink:0;
+    /* ── blog cards (vertical stack) ────────────────── */
+    .blog-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .blog-card:hover { border-color:rgba(255,255,255,.35); }
-    .blog-card .k { color:var(--muted); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; }
-    .blog-card h3 { margin:0; font-size:.88rem; line-height:1.3; }
-    .blog-card p { margin:0; color:var(--muted); font-size:.76rem; line-height:1.35; overflow:hidden; }
+
+    .blog-card {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.4);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .blog-card:hover { border-color: rgba(255,255,255,.35); }
+
+    .blog-main-link {
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 5px;
+      padding: 10px;
+      text-decoration: none;
+      color: inherit;
+      flex: 1;
+    }
+    .blog-main-link:hover { background: rgba(255,255,255,.025); }
+    .blog-main-link .k {
+      color: var(--muted); font-size:.7rem;
+      text-transform: uppercase; letter-spacing:.06em;
+    }
+    .blog-main-link h3 { margin: 0; font-size: .88rem; line-height: 1.3; }
+    .blog-main-link p {
+      margin: 0; color: var(--muted);
+      font-size: .76rem; line-height: 1.35;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .blog-art-row {
+      padding: 6px 10px 8px;
+      border-top: 1px solid var(--soft);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .art-chip {
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      text-decoration: none;
+      border: 1px solid var(--soft);
+      padding: 3px 7px;
+      white-space: nowrap;
+      transition: color .15s, border-color .15s;
+    }
+    .art-chip:hover { color: var(--ink); border-color: rgba(255,255,255,.35); }
   </style>
 </head>
 <body>
@@ -156,15 +209,17 @@
     <span class="intro-animated"><span id="typewriter"></span><span class="cursor"></span></span>
   </div>
 
-  <section id="section-blog">
-    <div class="section-head"><h2>Microblogs</h2><span id="blog-count"></span></div>
-    <div class="lane-set" id="blog-lanes"></div>
-  </section>
+  <div class="split-panels">
+    <section id="section-blog">
+      <div class="section-head"><h2>Microblogs</h2><span id="blog-count"></span></div>
+      <div id="blog-stack-wrap"></div>
+    </section>
 
-  <section id="section-all">
-    <div class="section-head"><h2>Artifacts</h2><span id="art-count"></span></div>
-    <div class="lane-set" id="all-lanes"></div>
-  </section>
+    <section id="section-all">
+      <div class="section-head"><h2>Artifacts</h2><span id="art-count"></span></div>
+      <div class="lane-set" id="all-lanes"></div>
+    </section>
+  </div>
 
   <section id="section-themes">
     <div class="section-head"><h2>Themes</h2><span>systems · geometry · signal · field</span></div>
@@ -183,7 +238,6 @@
     if (r.ok) phrases = await r.json();
   } catch(_) {}
 
-  // fisher-yates shuffle
   for (let i = phrases.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [phrases[i], phrases[j]] = [phrases[j], phrases[i]];
@@ -227,14 +281,28 @@
   const feed = await feedRes.json();
   const manifest = await manifestRes.json();
 
-  const arts = feed.artifacts;
-  const blogs = manifest.microblogs.slice().sort((a,b)=>b.num-a.num);
+  // deduplicate by id
+  function dedup(arr) {
+    const seen = new Set();
+    return arr.filter(x => {
+      if (seen.has(x.id)) return false;
+      seen.add(x.id);
+      return true;
+    });
+  }
+
+  const arts = dedup(feed.artifacts);
+  const blogs = dedup(manifest.microblogs.slice().sort((a,b)=>b.num-a.num));
+
+  // artifact id → metadata lookup
+  const artMap = {};
+  arts.forEach(a => { artMap[a.id] = a; });
 
   document.getElementById('art-count').textContent = `${arts.length} artifacts`;
   document.getElementById('blog-count').textContent = `${blogs.length} entries`;
 
   // ── helpers ────────────────────────────────────────────
-  function artCard(a){
+  function artCard(a) {
     return `<a class="card" href="artifacts/${a.id}.html">
       <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
       <div class="card-meta">
@@ -243,16 +311,24 @@
     </a>`;
   }
 
-  function blogCard(b){
-    return `<a class="blog-card" href="microblog/${b.id}.html">
-      <div class="k">entry ${b.num}</div>
-      <h3>${b.title}</h3>
-      <p>${b.snippet || 'open to read'}</p>
-      <div class="k">${b.linkedArtifacts?.length||0} artifact${b.linkedArtifacts?.length===1?'':'s'}</div>
-    </a>`;
+  function blogCard(b) {
+    const chips = (b.linkedArtifacts || []).slice(0, 2).map(id => {
+      const a = artMap[id];
+      const label = a ? a.title : id;
+      return `<a class="art-chip" href="artifacts/${id}.html">→ ${label}</a>`;
+    }).join('');
+
+    return `<div class="blog-card">
+      <a class="blog-main-link" href="microblog/${b.id}.html">
+        <div class="k">entry ${b.num}</div>
+        <h3>${b.title}</h3>
+        <p>${b.snippet || 'open to read'}</p>
+      </a>
+      ${chips ? `<div class="blog-art-row">${chips}</div>` : ''}
+    </div>`;
   }
 
-  function makeLane(cards, speed, dir){
+  function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
     lane.className = 'lane';
     const track = document.createElement('div');
@@ -261,52 +337,49 @@
     track.innerHTML = html;
     lane.appendChild(track);
 
-    // ── auto-drift with pointer/touch drag override ─────
-    let pos = 0, paused = false, animId = null;
+    let pos = 0, paused = false;
     const spd = speed * (dir < 0 ? -1 : 1);
 
-    function step(){
-      if(!paused){
+    function step() {
+      if (!paused) {
         pos += spd;
         const half = track.scrollWidth / 2;
-        if(pos > half) pos -= half;
-        if(pos < 0) pos += half;
+        if (pos > half) pos -= half;
+        if (pos < 0) pos += half;
         track.style.transform = `translateX(${-pos}px)`;
       }
-      animId = requestAnimationFrame(step);
+      requestAnimationFrame(step);
     }
-    animId = requestAnimationFrame(step);
+    requestAnimationFrame(step);
 
-    // drag
     let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
     const DRAG_THRESHOLD = 6;
 
-    function onDown(e){
+    function onDown(e) {
       paused = true; isDragging = true; dragMoved = false;
       dragStart = e.touches ? e.touches[0].clientX : e.clientX;
       scrollStart = pos;
       lane.classList.add('is-dragging');
-      if (!e.touches) e.preventDefault(); // mouse only; touch: wait for movement
+      if (!e.touches) e.preventDefault();
     }
-    function onMove(e){
-      if(!isDragging) return;
+    function onMove(e) {
+      if (!isDragging) return;
       const x = e.touches ? e.touches[0].clientX : e.clientX;
       const dx = dragStart - x;
       if (Math.abs(dx) > DRAG_THRESHOLD) {
         dragMoved = true;
-        if (e.touches) e.preventDefault(); // suppress page scroll only on real drag
+        if (e.touches) e.preventDefault();
       }
       const half = track.scrollWidth / 2;
       pos = ((scrollStart + dx) % half + half) % half;
       track.style.transform = `translateX(${-pos}px)`;
     }
-    function onUp(){
+    function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
-      setTimeout(()=>{ paused = false; }, 400);
+      setTimeout(() => { paused = false; }, 400);
     }
 
-    // cancel click-through only after a real drag; taps pass through untouched
     lane.addEventListener('click', e => {
       if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
     }, true);
@@ -321,48 +394,52 @@
     return lane;
   }
 
-  function buildSection(container, items, cardFn, rowSize, speeds){
+  function buildSection(container, items, cardFn, rowSize, speeds) {
     const groups = [];
-    for(let i=0;i<items.length;i+=rowSize) groups.push(items.slice(i,i+rowSize));
-    groups.forEach((g,i)=>{
-      const lane = makeLane(g.map(cardFn), speeds[i%speeds.length], i%2?-1:1);
+    for (let i = 0; i < items.length; i += rowSize) groups.push(items.slice(i, i + rowSize));
+    groups.forEach((g, i) => {
+      const lane = makeLane(g.map(cardFn), speeds[i % speeds.length], i % 2 ? -1 : 1);
       container.appendChild(lane);
     });
   }
 
-  // ── All artifacts — 3 drifting rows ───────────────────
+  // ── Microblogs — vertical stack ───────────────────────
+  const blogWrap = document.getElementById('blog-stack-wrap');
+  const stack = document.createElement('div');
+  stack.className = 'blog-stack';
+  stack.innerHTML = blogs.map(blogCard).join('');
+  blogWrap.appendChild(stack);
+
+  // ── All artifacts — 7 drifting rows of 8 ─────────────
   const allLanes = document.getElementById('all-lanes');
-  buildSection(allLanes, arts, artCard, 9, [0.25, 0.18, 0.3]);
+  buildSection(allLanes, arts, artCard, 8, [0.25, 0.18, 0.3]);
 
   // ── Themes ────────────────────────────────────────────
-  function themeOf(id){
+  function themeOf(id) {
     const t = {
-      systems:['grayscott','life','wolfram','langton','antcolony','sand','heat','turing','boids','mitosis','flow','crystal','julia'],
-      geometry:['voronoi','marchingsquares','mandelbrot','lsystem','maurerrose','phyllotaxis','chladni','noll','rubik','sierpinski','chainwheel','mondrian','quadwalk'],
-      signal:['fourier','harmonograph','pendulum','lorenz','waveinterference','starfield','scandrift','tunnel','colorrivers','lissajous','clifford'],
+      systems:  ['grayscott','life','wolfram','langton','antcolony','sand','heat','turing','boids','mitosis','flow','crystal','julia'],
+      geometry: ['voronoi','marchingsquares','mandelbrot','lsystem','maurerrose','phyllotaxis','chladni','noll','rubik','sierpinski','chainwheel','mondrian','quadwalk'],
+      signal:   ['fourier','harmonograph','pendulum','lorenz','waveinterference','starfield','scandrift','tunnel','colorrivers','lissajous','clifford'],
     };
-    for(const [k,v] of Object.entries(t)) if(v.includes(id)) return k;
+    for (const [k, v] of Object.entries(t)) if (v.includes(id)) return k;
     return 'field';
   }
-  const byTheme = {systems:[],geometry:[],signal:[],field:[]};
-  arts.forEach(a=>byTheme[themeOf(a.id)].push(a));
+
+  const byTheme = {systems:[], geometry:[], signal:[], field:[]};
+  arts.forEach(a => byTheme[themeOf(a.id)].push(a));
 
   const themeLanes = document.getElementById('theme-lanes');
-  const themeLabels = {systems:'Systems & Life',geometry:'Geometry & Algebra',signal:'Signal & Chaos',field:'Field & Form'};
-  Object.entries(byTheme).forEach(([k,arr],i)=>{
-    if(!arr.length) return;
+  const themeLabels = {systems:'Systems & Life', geometry:'Geometry & Algebra', signal:'Signal & Chaos', field:'Field & Form'};
+  Object.entries(byTheme).forEach(([k, arr], i) => {
+    if (!arr.length) return;
     const wrap = document.createElement('div');
     const head = document.createElement('div');
-    head.style.cssText='padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
+    head.style.cssText = 'padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
     head.textContent = themeLabels[k];
     wrap.appendChild(head);
-    wrap.appendChild(makeLane(arr.map(artCard), .22+i*.06, i%2?-1:1));
+    wrap.appendChild(makeLane(arr.map(artCard), .22 + i * .06, i % 2 ? -1 : 1));
     themeLanes.appendChild(wrap);
   });
-
-  // ── Microblogs ────────────────────────────────────────
-  const blogLanes = document.getElementById('blog-lanes');
-  buildSection(blogLanes, blogs, blogCard, 8, [0.22, 0.16]);
 })();
 </script>
 </body>
