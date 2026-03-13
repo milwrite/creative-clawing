@@ -112,9 +112,10 @@
     /* ── draggable lanes ─────────────────────────────── */
     .lane-set { display:grid; gap:10px; }
     .lane {
-      overflow: hidden;
+      overflow: visible;
+      clip-path: inset(0);        /* clip without creating a scroll container */
       cursor: grab;
-      touch-action: pan-y;
+      touch-action: pan-y;        /* pan-y scrolls page; horizontal defers to JS */
     }
     .lane.is-dragging { cursor: grabbing; }
 
