@@ -90,7 +90,15 @@
 
     /* ── layout ──────────────────────────────────────── */
     main { width: min(1380px,97vw); margin: 0 auto; padding: 16px 0 60px; }
-    .intro { color: var(--muted); font-size:.88rem; padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:16px; }
+    .intro { padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:16px; display:flex; flex-direction:column; gap:3px; }
+    .intro-fixed { color: var(--ink); font-size:.92rem; font-weight:500; letter-spacing:.04em; text-transform:lowercase; }
+    .intro-animated { color: var(--muted); font-size:.82rem; min-height:1.2em; }
+    .intro-animated .cursor {
+      display:inline-block; width:1px; height:.85em;
+      background:var(--muted); margin-left:1px; vertical-align:middle;
+      animation: blink .9s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     section { margin: 20px 0 28px; scroll-margin-top: 72px; }
     html { scroll-behavior: smooth; }
@@ -182,7 +190,10 @@
 </nav>
 
 <main>
-  <p class="intro" id="stat-bar">crowdsourced creative coding. drag or swipe lanes to explore.</p>
+  <div class="intro">
+    <span class="intro-fixed">a creative coding gallery</span>
+    <span class="intro-animated"><span id="typewriter"></span><span class="cursor"></span></span>
+  </div>
 
   <section id="section-all">
     <div class="section-head"><h2>Artifacts</h2><span id="art-count"></span></div>
@@ -257,6 +268,44 @@ document.addEventListener('click', e => {
     });
   }
 });
+</script>
+
+<script>
+// ── typewriter cycling tagline ──────────────────────────
+(function(){
+  const el = document.getElementById('typewriter');
+  const phrases = [
+    'curating web artifacts',
+    'microblogging code snippets',
+    'drag or swipe lanes to explore'
+  ];
+  let pIdx = 0, cIdx = 0, typing = true;
+
+  function tick() {
+    const phrase = phrases[pIdx];
+    if (typing) {
+      cIdx++;
+      el.textContent = phrase.slice(0, cIdx);
+      if (cIdx >= phrase.length) {
+        typing = false;
+        setTimeout(tick, 1800);
+        return;
+      }
+      setTimeout(tick, 60 + Math.random() * 45);
+    } else {
+      cIdx--;
+      el.textContent = phrase.slice(0, cIdx);
+      if (cIdx <= 0) {
+        typing = true;
+        pIdx = (pIdx + 1) % phrases.length;
+        setTimeout(tick, 280);
+        return;
+      }
+      setTimeout(tick, 35 + Math.random() * 18);
+    }
+  }
+  setTimeout(tick, 900);
+})();
 </script>
 
 <script>
