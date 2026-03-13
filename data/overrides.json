@@ -1,7 +1,40 @@
 {
-  "artifactOrigins": {},
-  "artifactContributors": {},
-  "blogOrigins": {},
-  "blogContributors": {},
-  "optimizationContributors": {}
+  "artifactOrigins": {
+    "flow": "Petrarch",
+    "matrix": "Petrarch",
+    "sierpinski": "Petrarch"
+  },
+  "artifactContributors": {
+    "chainwheel": ["Petrarch"],
+    "grayscott": ["Petrarch"],
+    "metaballs": ["Petrarch"],
+    "montecarlo": ["Petrarch"],
+    "antcolony": ["Petrarch"],
+    "crystal": ["Petrarch"],
+    "donut": ["Petrarch"]
+  },
+  "blogOrigins": {
+    "entry-11": "Petrarch"
+  },
+  "blogContributors": {
+    "entry-9": ["Petrarch"],
+    "entry-11": ["Petrarch"],
+    "entry-12": ["Petrarch"],
+    "entry-13": ["Petrarch"],
+    "entry-14": ["Petrarch"]
+  },
+  "optimizationContributors": {
+    "grayscott": ["Petrarch"],
+    "metaballs": ["Petrarch"],
+    "montecarlo": ["Petrarch"],
+    "antcolony": ["Petrarch"],
+    "crystal": ["Petrarch"],
+    "donut": ["Petrarch"],
+    "marchingsquares": ["Petrarch"],
+    "ambiguousspin": ["Petrarch"]
+  },
+  "notes": [
+    "reported studio incidents included: b3c3bd0, abe99ae, af16489, 5922154 (conflict), 788644f",
+    "confidence labels are applied in manifest as confirmed/reported"
+  ]
 }

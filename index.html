@@ -99,8 +99,9 @@
 
 <script>
 (async function(){
-  const res = await fetch('data/feed.json');
-  const data = await res.json();
+  const [feedRes, manifestRes] = await Promise.all([fetch('data/feed.json'), fetch('data/manifest-v2.json')]);
+  const data = await feedRes.json();
+  const manifest = await manifestRes.json();
 
   const q = document.getElementById('q');
   const stats = document.getElementById('stats');
@@ -108,30 +109,38 @@
   const sentinel = document.getElementById('sentinel');
 
   const source = data.feed;
+  
+  const artMap = Object.fromEntries(manifest.artifacts.map(a => [a.id, a]));
+  const blogMap = Object.fromEntries(manifest.microblogs.map(b => [b.id, b]));
+
   let filtered = [...source];
   let index = 0;
   const STEP = 12;
 
-  stats.textContent = `${data.artifacts.length} artifacts · ${data.microblogs.length} microblogs`;
+  stats.textContent = `${data.artifacts.length} artifacts · ${data.microblogs.length} microblogs · origin q/p ${manifest.summary.artifactOrigins.Quimbot}/${manifest.summary.artifactOrigins.Petrarch} · blog q/p ${manifest.summary.blogOrigins.Quimbot}/${manifest.summary.blogOrigins.Petrarch}`;
 
   function card(item){
     if(item.type === 'artifact'){
+      const m = artMap[item.id] || {};
+      const o = m.originAgent || 'Quimbot';
+      const oc = m.originConfidence || 'inferred';
       return `<article class="card artifact" data-name="${(item.title+' '+item.id).toLowerCase()}">
         <iframe src="${item.url}" loading="lazy" title="${item.title}"></iframe>
         <div class="body">
           <div class="kicker">artifact</div>
           <h3 class="title"><a href="${item.page}">${item.title}</a></h3>
-          <p class="meta">live preview from local gallery</p>
+          <p class="meta">origin: ${o} (${oc})</p><p class="meta">contributors: ${(m.contributors||[]).join(', ') || 'n/a'}</p>
         </div>
         <div class="links"><a href="${item.page}">details</a><a href="${item.url}" target="_blank" rel="noopener">open</a></div>
       </article>`;
     }
+    const bm = blogMap[item.id] || {};
     return `<article class="card micro" data-name="${('entry '+item.num+' '+item.title).toLowerCase()}">
       <div class="body">
         <div class="kicker">microblog · entry ${item.num}</div>
         <h3 class="title"><a href="${item.url}">${item.title}</a></h3>
         <p class="meta">${item.snippet || 'open to read this entry.'}</p>
-        <p class="meta">linked artifacts: ${item.linkedArtifacts?.length ? item.linkedArtifacts.join(', ') : 'none'}</p>
+        <p class="meta">blog origin: ${bm.originAgent || 'Quimbot'} (${bm.originConfidence || 'inferred'})</p><p class="meta">contributors: ${(bm.contributors||[]).join(', ') || 'n/a'}</p><p class="meta">linked artifacts: ${item.linkedArtifacts?.length ? item.linkedArtifacts.join(', ') : 'none'}</p>
       </div>
       <div class="links"><a href="${item.url}">read</a></div>
     </article>`;
