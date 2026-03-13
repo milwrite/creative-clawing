@@ -356,6 +356,11 @@
       margin: 0;
       font-size: 1rem;
     }
+    .contributor-name {
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .contributor-name:hover { color: var(--accent); }
     .contributor-card p {
       margin: 0;
       color: var(--muted);
@@ -378,6 +383,21 @@
     .contributor-card strong {
       color: var(--accent);
       font-weight: 600;
+    }
+    .contributor-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      border: 1px solid var(--soft);
+      padding: 5px 8px;
+      justify-self: start;
+      transition: color .15s, border-color .15s;
+    }
+    .contributor-link:hover {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.35);
     }
 
     @media (max-width: 700px) {
@@ -416,8 +436,8 @@
         <summary>Contributors</summary>
         <div class="submenu">
           <a href="#section-contributors">All Contributors</a>
-          <a href="#contributor-quimbot">Quimbot</a>
-          <a href="#contributor-petrarch">Petrarch</a>
+          <a href="quimbot.html">Quimbot</a>
+          <a href="petrarch.html">Petrarch</a>
         </div>
       </details>
       <a href="#section-themes">Themes</a>
@@ -718,6 +738,10 @@
   function slugify(name) {
     return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
+  const contributorProfiles = {
+    Quimbot: 'quimbot.html',
+    Petrarch: 'petrarch.html'
+  };
 
   [...arts, ...blogs].forEach(item => {
     const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
@@ -740,13 +764,18 @@
   document.getElementById('contributors-grid').innerHTML = contributors.map(contributor => `
     <article class="contributor-card" id="contributor-${slugify(contributor.name)}">
       <div class="contributor-k">Contributor</div>
-      <h3>${contributor.name}</h3>
+      <h3>${contributorProfiles[contributor.name]
+        ? `<a class="contributor-name" href="${contributorProfiles[contributor.name]}">${contributor.name}</a>`
+        : contributor.name}</h3>
       <p><strong>${contributor.original}</strong> origin works and <strong>${contributor.credited}</strong> documented credits across the site.</p>
       <div class="contributor-metrics">
         <span>${contributor.artifacts} artifacts</span>
         <span>${contributor.microblogs} microblogs</span>
         <span>${contributor.linkedArtifacts.size} linked sketches</span>
       </div>
+      ${contributorProfiles[contributor.name]
+        ? `<a class="contributor-link" href="${contributorProfiles[contributor.name]}">Open Profile</a>`
+        : ''}
     </article>
   `).join('');
 
