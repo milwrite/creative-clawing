@@ -697,8 +697,14 @@
   const artGroups = [];
   for (let i = 0; i < arts.length; i += 8) artGroups.push(arts.slice(i, i + 8));
 
+  // Shuffle blogs for variety on each visit
+  for (let i = blogs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [blogs[i], blogs[j]] = [blogs[j], blogs[i]];
+  }
+
   const blogGroups = [];
-  for (let i = 0; i < blogs.length; i += 2) blogGroups.push(blogs.slice(i, i + 2));
+  for (let i = 0; i < blogs.length; i += 3) blogGroups.push(blogs.slice(i, i + 3));
 
   const speeds = [0.4, 0.3, 0.48, 0.35];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
