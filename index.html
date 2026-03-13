@@ -11,10 +11,16 @@
       --muted: #9a9a9a;
       --line: rgba(255,255,255,.16);
       --soft: rgba(255,255,255,.09);
+      --panel: rgba(0,0,0,.42);
+      --accent: #d7f29b;
     }
     * { box-sizing: border-box; }
-    html { margin: 0; padding: 0; }
-    body { margin: 0; padding: 0; color: var(--ink); overflow-x: clip;
+    html { margin: 0; padding: 0; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      overflow-x: clip;
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Arial, sans-serif;
       background:
         linear-gradient(var(--soft) 1px, transparent 1px) 0 0 / 30px 30px,
@@ -22,74 +28,189 @@
         #050505;
     }
 
-    /* ── nav ─────────────────────────────────────────── */
     .nav {
-      position: sticky; top: 0; z-index: 20;
+      position: sticky;
+      top: 0;
+      z-index: 20;
       background: rgba(5,5,5,.92);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
     .nav-inner {
-      width: min(1380px,97vw); margin: 0 auto;
-      padding: 10px max(env(safe-area-inset-right),12px) 10px max(env(safe-area-inset-left),12px);
-      display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; overflow: hidden;
+      width: min(1380px,97vw);
+      margin: 0 auto;
+      padding: 12px max(env(safe-area-inset-right),12px) 12px max(env(safe-area-inset-left),12px);
+      display: grid;
+      gap: 10px;
+      justify-items: start;
     }
-    h1 { margin:0; font-size: clamp(.9rem,2.6vw,1.8rem); letter-spacing:.16em; text-transform:uppercase; font-weight:650; flex-shrink:0; }
+    .nav-kicker {
+      color: var(--muted);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1rem,2.8vw,1.9rem);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-weight: 650;
+    }
     .menu {
-      display: flex; gap: 6px; flex-wrap: nowrap; flex: 1; min-width: 0;
-      overflow-x: auto; -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; padding-bottom: 2px;
-      justify-content: flex-end;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
     }
-    .menu::-webkit-scrollbar { display: none; }
-    .menu a {
-      color: var(--muted); text-decoration: none;
-      border: 1px solid var(--line); padding: 6px 10px;
-      font-size: .75rem; text-transform: uppercase; letter-spacing: .06em;
-      transition: color .15s, border-color .15s;
-      white-space: nowrap; flex-shrink: 0;
-      min-height: 44px; display: flex; align-items: center;
+    .menu a,
+    .menu summary {
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 7px 11px;
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      transition: color .15s, border-color .15s, background .15s;
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      background: transparent;
+      font-family: inherit;
     }
-    .menu a:hover, .menu a:active { color: var(--ink); border-color: rgba(255,255,255,.4); }
+    .menu a:hover,
+    .menu a.is-active,
+    .menu summary:hover,
+    .menu summary.is-active,
+    .menu details[open] summary {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.05);
+    }
+    .menu summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    .menu summary::-webkit-details-marker { display: none; }
+    .menu-group {
+      position: relative;
+    }
+    .menu-group summary::after {
+      content: '+';
+      margin-left: 8px;
+      font-size: .82em;
+    }
+    .menu-group[open] summary::after { content: '-'; }
+    .submenu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 180px;
+      padding: 8px;
+      display: grid;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: rgba(5,5,5,.98);
+    }
+    .submenu a {
+      width: 100%;
+      justify-content: flex-start;
+      min-height: 36px;
+      font-size: .7rem;
+    }
 
-    @media (max-width: 700px) {
-      .nav-inner { gap: 6px; padding-left: max(env(safe-area-inset-left),10px); padding-right: max(env(safe-area-inset-right),10px); }
-      h1 { font-size: .88rem; letter-spacing:.1em; }
-      .menu a { font-size:.68rem; padding: 5px 8px; min-height:38px; }
+    main {
+      width: min(1380px,97vw);
+      margin: 0 auto;
+      padding: 18px 0 60px;
     }
-
-    /* ── layout ──────────────────────────────────────── */
-    main { width: min(1380px,97vw); margin: 0 auto; padding: 16px 0 60px; }
-    .intro { padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:16px; display:flex; flex-direction:column; gap:3px; }
-    .intro-fixed { color: var(--ink); font-size:.92rem; font-weight:500; letter-spacing:.04em; text-transform:lowercase; }
-    .intro-animated { color: var(--muted); font-size:.82rem; min-height:1.2em; }
+    .intro {
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      display: grid;
+      gap: 4px;
+    }
+    .intro-fixed {
+      color: var(--ink);
+      font-size: .95rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: lowercase;
+    }
+    .intro-animated {
+      color: var(--muted);
+      font-size: .82rem;
+      min-height: 1.2em;
+    }
     .intro-animated .cursor {
-      display:inline-block; width:1px; height:.85em;
-      background:var(--muted); margin-left:1px; vertical-align:middle;
+      display: inline-block;
+      width: 1px;
+      height: .85em;
+      background: var(--muted);
+      margin-left: 1px;
+      vertical-align: middle;
       animation: blink .9s step-end infinite;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
 
-    section { margin: 20px 0 28px; scroll-margin-top: 72px; }
-    html { scroll-behavior: smooth; }
+    section {
+      margin: 0 0 34px;
+      scroll-margin-top: 132px;
+    }
     .section-head {
-      display: flex; justify-content: space-between; align-items: baseline; gap:10px;
-      border-bottom: 1px solid var(--line); padding-bottom:6px; margin-bottom:8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
     }
-    .section-head h2 { margin:0; font-size:.95rem; text-transform:uppercase; letter-spacing:.08em; }
-    .section-head span { color:var(--muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
-
-    /* ── split panel (medium+) ───────────────────────── */
-    .split-panels { display: grid; gap: 0 24px; }
-    @media (min-width: 768px) {
-      .split-panels {
-        grid-template-columns: 1fr 1fr;
-        align-items: start;
-      }
+    .section-head h2 {
+      margin: 0;
+      font-size: .95rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .section-meta {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .section-meta span {
+      color: var(--muted);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .section-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      border: 1px solid var(--soft);
+      padding: 4px 8px;
+      transition: color .15s, border-color .15s;
+    }
+    .section-link:hover {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.35);
     }
 
-    /* ── draggable lanes ─────────────────────────────── */
-    .lane-set { display:grid; gap:10px; }
+    .lane-set { display: grid; gap: 10px; }
     .lane {
       overflow: visible;
       clip-path: inset(0);
@@ -105,73 +226,95 @@
       will-change: transform;
     }
 
-    /* ── artifact cards ──────────────────────────────── */
     .card {
-      width: 220px; min-width:220px; height:220px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.4);
-      display:grid; grid-template-rows:1fr auto;
-      text-decoration:none; color:inherit;
-      flex-shrink:0;
+      width: 220px;
+      min-width: 220px;
+      height: 220px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
     }
-    .card:hover { border-color:rgba(255,255,255,.35); }
+    .card:hover { border-color: rgba(255,255,255,.35); }
     .card iframe {
-      width:100%; height:100%; border:0; display:block; background:#000;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #000;
       pointer-events: none;
     }
     .card-meta {
-      border-top:1px solid var(--soft);
-      padding:7px 8px;
-      display:grid; gap:2px;
-      font-size:.71rem; line-height:1.3;
+      border-top: 1px solid var(--soft);
+      padding: 7px 8px;
+      display: grid;
+      gap: 2px;
+      font-size: .71rem;
+      line-height: 1.3;
     }
-    .card-meta .ct { color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:.76rem; }
+    .card-meta .ct {
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: .76rem;
+    }
 
-    /* ── blog cards (vertical stack) ────────────────── */
     .blog-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      column-gap: 12px;
+      column-count: 1;
     }
-
+    @media (min-width: 900px) {
+      .blog-stack { column-count: 2; }
+    }
+    @media (min-width: 1280px) {
+      .blog-stack { column-count: 3; }
+    }
     .blog-card {
       border: 1px solid var(--line);
-      background: rgba(0,0,0,.4);
-      display: flex;
+      background: var(--panel);
+      display: inline-flex;
+      width: 100%;
       flex-direction: column;
       overflow: hidden;
+      break-inside: avoid;
+      margin: 0 0 12px;
     }
     .blog-card:hover { border-color: rgba(255,255,255,.35); }
-
     .blog-main-link {
       display: grid;
       grid-template-rows: auto auto 1fr;
-      gap: 5px;
-      padding: 10px;
+      gap: 6px;
+      padding: 12px;
       text-decoration: none;
       color: inherit;
       flex: 1;
     }
     .blog-main-link:hover { background: rgba(255,255,255,.025); }
     .blog-main-link .k {
-      color: var(--muted); font-size:.7rem;
-      text-transform: uppercase; letter-spacing:.06em;
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    .blog-main-link h3 { margin: 0; font-size: .88rem; line-height: 1.3; }
+    .blog-main-link h3 {
+      margin: 0;
+      font-size: .92rem;
+      line-height: 1.32;
+    }
     .blog-main-link p {
-      margin: 0; color: var(--muted);
-      font-size: .76rem; line-height: 1.35;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+      margin: 0;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.42;
     }
-
     .blog-art-row {
-      padding: 6px 10px 8px;
-      border-top: 1px solid var(--soft);
+      padding: 0 12px 12px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -186,19 +329,98 @@
       white-space: nowrap;
       transition: color .15s, border-color .15s;
     }
-    .art-chip:hover { color: var(--ink); border-color: rgba(255,255,255,.35); }
+    .art-chip:hover {
+      color: var(--ink);
+      border-color: rgba(255,255,255,.35);
+    }
+
+    .contributors-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .contributor-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .contributor-k {
+      color: var(--muted);
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .contributor-card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .contributor-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.45;
+    }
+    .contributor-metrics {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .contributor-metrics span {
+      color: var(--ink);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      border: 1px solid var(--soft);
+      padding: 4px 8px;
+    }
+    .contributor-card strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 700px) {
+      .nav-inner {
+        gap: 8px;
+        padding-left: max(env(safe-area-inset-left),10px);
+        padding-right: max(env(safe-area-inset-right),10px);
+      }
+      .menu { gap: 6px; }
+      .menu a,
+      .menu summary {
+        font-size: .68rem;
+        padding: 5px 8px;
+        min-height: 38px;
+      }
+      .submenu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        margin-top: 6px;
+      }
+      section { scroll-margin-top: 120px; }
+    }
   </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
+    <span class="nav-kicker">creative coding archive</span>
     <h1>CREATIVE CLAWING</h1>
-    <div class="menu">
-      <a href="#section-blog">Microblogs</a>
-      <a href="#section-all">All Artifacts</a>
+    <div class="menu" aria-label="Section navigation">
+      <a class="is-active" href="#section-gallery">Gallery</a>
+      <a href="#section-microblog">Microblog</a>
+      <details class="menu-group">
+        <summary>Contributors</summary>
+        <div class="submenu">
+          <a href="#section-contributors">All Contributors</a>
+          <a href="#contributor-quimbot">Quimbot</a>
+          <a href="#contributor-petrarch">Petrarch</a>
+        </div>
+      </details>
       <a href="#section-themes">Themes</a>
-      <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">Repo</a>
     </div>
   </div>
 </nav>
@@ -209,26 +431,49 @@
     <span class="intro-animated"><span id="typewriter"></span><span class="cursor"></span></span>
   </div>
 
-  <div class="split-panels">
-    <section id="section-blog">
-      <div class="section-head"><h2>Microblogs</h2><span id="blog-count"></span></div>
-      <div id="blog-stack-wrap"></div>
-    </section>
+  <section id="section-gallery">
+    <div class="section-head">
+      <h2>Gallery</h2>
+      <div class="section-meta">
+        <span id="art-count"></span>
+      </div>
+    </div>
+    <div class="lane-set" id="all-lanes"></div>
+  </section>
 
-    <section id="section-all">
-      <div class="section-head"><h2>Artifacts</h2><span id="art-count"></span></div>
-      <div class="lane-set" id="all-lanes"></div>
-    </section>
-  </div>
+  <section id="section-microblog">
+    <div class="section-head">
+      <h2>Microblog</h2>
+      <div class="section-meta">
+        <span id="blog-count"></span>
+        <a class="section-link" href="microblogs.html">Open Full Feed</a>
+      </div>
+    </div>
+    <div class="blog-stack" id="blog-stack-wrap"></div>
+  </section>
+
+  <section id="section-contributors">
+    <div class="section-head">
+      <h2>Contributors</h2>
+      <div class="section-meta">
+        <span id="contrib-count"></span>
+      </div>
+    </div>
+    <div class="contributors-grid" id="contributors-grid"></div>
+  </section>
 
   <section id="section-themes">
-    <div class="section-head"><h2>Themes</h2><span>systems · geometry · signal · field</span></div>
+    <div class="section-head">
+      <h2>Themes</h2>
+      <div class="section-meta">
+        <span>systems · geometry · signal · field</span>
+      </div>
+    </div>
     <div class="lane-set" id="theme-lanes"></div>
   </section>
 </main>
 
 <script>
-// ── typewriter cycling tagline ──────────────────────────
 (async function(){
   const el = document.getElementById('typewriter');
 
@@ -236,14 +481,16 @@
   try {
     const r = await fetch('data/taglines.json?t=' + Date.now());
     if (r.ok) phrases = await r.json();
-  } catch(_) {}
+  } catch (_) {}
 
   for (let i = phrases.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [phrases[i], phrases[j]] = [phrases[j], phrases[i]];
   }
 
-  let pIdx = 0, cIdx = 0, typing = true;
+  let pIdx = 0;
+  let cIdx = 0;
+  let typing = true;
 
   function tick() {
     const phrase = phrases[pIdx];
@@ -281,48 +528,49 @@
   const feed = await feedRes.json();
   const manifest = await manifestRes.json();
 
-  // deduplicate by id
   function dedup(arr) {
     const seen = new Set();
-    return arr.filter(x => {
-      if (seen.has(x.id)) return false;
-      seen.add(x.id);
+    return arr.filter(item => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
       return true;
     });
   }
 
-  const arts = dedup(feed.artifacts);
-  const blogs = dedup(manifest.microblogs.slice().sort((a,b)=>b.num-a.num));
+  const manifestArtMap = {};
+  (manifest.artifacts || []).forEach(art => { manifestArtMap[art.id] = art; });
 
-  // artifact id → metadata lookup
+  let arts = dedup((feed.artifacts || []).map(art => ({ ...(manifestArtMap[art.id] || {}), ...art })));
+  if (!arts.length) arts = dedup(manifest.artifacts || []);
+  const blogs = dedup((manifest.microblogs || []).slice().sort((a, b) => b.num - a.num));
+
   const artMap = {};
-  arts.forEach(a => { artMap[a.id] = a; });
+  arts.forEach(art => { artMap[art.id] = art; });
 
   document.getElementById('art-count').textContent = `${arts.length} artifacts`;
   document.getElementById('blog-count').textContent = `${blogs.length} entries`;
 
-  // ── helpers ────────────────────────────────────────────
-  function artCard(a) {
-    return `<a class="card" href="artifacts/${a.id}.html">
-      <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
+  function artCard(art) {
+    return `<a class="card" href="artifacts/${art.id}.html">
+      <iframe src="gallery/${art.id}.html" loading="lazy" title="${art.title}"></iframe>
       <div class="card-meta">
-        <div class="ct">${a.title}</div>
+        <div class="ct">${art.title}</div>
       </div>
     </a>`;
   }
 
-  function blogCard(b) {
-    const chips = (b.linkedArtifacts || []).slice(0, 2).map(id => {
-      const a = artMap[id];
-      const label = a ? a.title : id;
-      return `<a class="art-chip" href="artifacts/${id}.html">→ ${label}</a>`;
+  function blogCard(blog) {
+    const chips = (blog.linkedArtifacts || []).slice(0, 2).map(id => {
+      const art = artMap[id];
+      const label = art ? art.title : id;
+      return `<a class="art-chip" href="artifacts/${id}.html" title="View linked artifact">↗ ${label}</a>`;
     }).join('');
 
     return `<div class="blog-card">
-      <a class="blog-main-link" href="microblog/${b.id}.html">
-        <div class="k">entry ${b.num}</div>
-        <h3>${b.title}</h3>
-        <p>${b.snippet || 'open to read'}</p>
+      <a class="blog-main-link" href="microblogs.html#entry-${blog.num}">
+        <div class="k">entry ${blog.num}</div>
+        <h3>${blog.title}</h3>
+        <p>${blog.snippet || 'open to read'}</p>
       </a>
       ${chips ? `<div class="blog-art-row">${chips}</div>` : ''}
     </div>`;
@@ -331,13 +579,14 @@
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
     lane.className = 'lane';
+
     const track = document.createElement('div');
     track.className = 'lane-track';
-    const html = cards.join('') + cards.join('');
-    track.innerHTML = html;
+    track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
-    let pos = 0, paused = false;
+    let pos = 0;
+    let paused = false;
     const spd = speed * (dir < 0 ? -1 : 1);
 
     function step() {
@@ -352,43 +601,54 @@
     }
     requestAnimationFrame(step);
 
-    let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
-    const DRAG_THRESHOLD = 6;
+    let dragStart = 0;
+    let scrollStart = 0;
+    let isDragging = false;
+    let dragMoved = false;
+    const dragThreshold = 6;
 
-    function onDown(e) {
-      paused = true; isDragging = true; dragMoved = false;
-      dragStart = e.touches ? e.touches[0].clientX : e.clientX;
+    function onDown(event) {
+      paused = true;
+      isDragging = true;
+      dragMoved = false;
+      dragStart = event.touches ? event.touches[0].clientX : event.clientX;
       scrollStart = pos;
       lane.classList.add('is-dragging');
-      if (!e.touches) e.preventDefault();
+      if (!event.touches) event.preventDefault();
     }
-    function onMove(e) {
+
+    function onMove(event) {
       if (!isDragging) return;
-      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const x = event.touches ? event.touches[0].clientX : event.clientX;
       const dx = dragStart - x;
-      if (Math.abs(dx) > DRAG_THRESHOLD) {
+      if (Math.abs(dx) > dragThreshold) {
         dragMoved = true;
-        if (e.touches) e.preventDefault();
+        if (event.touches) event.preventDefault();
       }
       const half = track.scrollWidth / 2;
       pos = ((scrollStart + dx) % half + half) % half;
       track.style.transform = `translateX(${-pos}px)`;
     }
+
     function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
       setTimeout(() => { paused = false; }, 400);
     }
 
-    lane.addEventListener('click', e => {
-      if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
+    lane.addEventListener('click', event => {
+      if (dragMoved) {
+        event.preventDefault();
+        event.stopPropagation();
+        dragMoved = false;
+      }
     }, true);
 
-    lane.addEventListener('mousedown', onDown, {passive:false});
+    lane.addEventListener('mousedown', onDown, { passive: false });
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
-    lane.addEventListener('touchstart', onDown, {passive:false});
-    lane.addEventListener('touchmove', onMove, {passive:false});
+    lane.addEventListener('touchstart', onDown, { passive: false });
+    lane.addEventListener('touchmove', onMove, { passive: false });
     lane.addEventListener('touchend', onUp);
 
     return lane;
@@ -397,49 +657,138 @@
   function buildSection(container, items, cardFn, rowSize, speeds) {
     const groups = [];
     for (let i = 0; i < items.length; i += rowSize) groups.push(items.slice(i, i + rowSize));
-    groups.forEach((g, i) => {
-      const lane = makeLane(g.map(cardFn), speeds[i % speeds.length], i % 2 ? -1 : 1);
+    groups.forEach((group, index) => {
+      const lane = makeLane(group.map(cardFn), speeds[index % speeds.length], index % 2 ? -1 : 1);
       container.appendChild(lane);
     });
   }
 
-  // ── Microblogs — vertical stack ───────────────────────
-  const blogWrap = document.getElementById('blog-stack-wrap');
-  const stack = document.createElement('div');
-  stack.className = 'blog-stack';
-  stack.innerHTML = blogs.map(blogCard).join('');
-  blogWrap.appendChild(stack);
+  document.getElementById('blog-stack-wrap').innerHTML = blogs.map(blogCard).join('');
 
-  // ── All artifacts — 7 drifting rows of 8 ─────────────
   const allLanes = document.getElementById('all-lanes');
   buildSection(allLanes, arts, artCard, 8, [0.25, 0.18, 0.3]);
 
-  // ── Themes ────────────────────────────────────────────
   function themeOf(id) {
-    const t = {
-      systems:  ['grayscott','life','wolfram','langton','antcolony','sand','heat','turing','boids','mitosis','flow','crystal','julia'],
-      geometry: ['voronoi','marchingsquares','mandelbrot','lsystem','maurerrose','phyllotaxis','chladni','noll','rubik','sierpinski','chainwheel','mondrian','quadwalk'],
-      signal:   ['fourier','harmonograph','pendulum','lorenz','waveinterference','starfield','scandrift','tunnel','colorrivers','lissajous','clifford'],
+    const themes = {
+      systems: ['grayscott', 'life', 'wolfram', 'langton', 'antcolony', 'sand', 'heat', 'turing', 'boids', 'mitosis', 'flow', 'crystal', 'julia'],
+      geometry: ['voronoi', 'marchingsquares', 'mandelbrot', 'lsystem', 'maurerrose', 'phyllotaxis', 'chladni', 'noll', 'rubik', 'sierpinski', 'chainwheel', 'mondrian', 'quadwalk'],
+      signal: ['fourier', 'harmonograph', 'pendulum', 'lorenz', 'waveinterference', 'starfield', 'scandrift', 'tunnel', 'colorrivers', 'lissajous', 'clifford']
     };
-    for (const [k, v] of Object.entries(t)) if (v.includes(id)) return k;
+    for (const [key, ids] of Object.entries(themes)) {
+      if (ids.includes(id)) return key;
+    }
     return 'field';
   }
 
-  const byTheme = {systems:[], geometry:[], signal:[], field:[]};
-  arts.forEach(a => byTheme[themeOf(a.id)].push(a));
+  const byTheme = { systems: [], geometry: [], signal: [], field: [] };
+  arts.forEach(art => { byTheme[themeOf(art.id)].push(art); });
 
   const themeLanes = document.getElementById('theme-lanes');
-  const themeLabels = {systems:'Systems & Life', geometry:'Geometry & Algebra', signal:'Signal & Chaos', field:'Field & Form'};
-  Object.entries(byTheme).forEach(([k, arr], i) => {
-    if (!arr.length) return;
+  const themeLabels = {
+    systems: 'Systems & Life',
+    geometry: 'Geometry & Algebra',
+    signal: 'Signal & Chaos',
+    field: 'Field & Form'
+  };
+  Object.entries(byTheme).forEach(([key, items], index) => {
+    if (!items.length) return;
     const wrap = document.createElement('div');
     const head = document.createElement('div');
     head.style.cssText = 'padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
-    head.textContent = themeLabels[k];
+    head.textContent = themeLabels[key];
     wrap.appendChild(head);
-    wrap.appendChild(makeLane(arr.map(artCard), .22 + i * .06, i % 2 ? -1 : 1));
+    wrap.appendChild(makeLane(items.map(artCard), .22 + index * .06, index % 2 ? -1 : 1));
     themeLanes.appendChild(wrap);
   });
+
+  const contributorMap = {};
+  function ensureContributor(name) {
+    if (!contributorMap[name]) {
+      contributorMap[name] = {
+        name,
+        credited: 0,
+        original: 0,
+        artifacts: 0,
+        microblogs: 0,
+        linkedArtifacts: new Set()
+      };
+    }
+    return contributorMap[name];
+  }
+  function slugify(name) {
+    return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  [...arts, ...blogs].forEach(item => {
+    const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
+    const contributors = (item.contributors && item.contributors.length)
+      ? item.contributors
+      : [item.originAgent || 'Unknown'];
+    contributors.forEach(name => {
+      if (!name) return;
+      const stat = ensureContributor(name);
+      stat.credited++;
+      if (type === 'artifact') stat.artifacts++;
+      if (type === 'microblog') stat.microblogs++;
+      if (item.originAgent === name) stat.original++;
+      (item.linkedArtifacts || []).forEach(id => stat.linkedArtifacts.add(id));
+    });
+  });
+
+  const contributors = Object.values(contributorMap).sort((a, b) => b.credited - a.credited || a.name.localeCompare(b.name));
+  document.getElementById('contrib-count').textContent = `${contributors.length} voices`;
+  document.getElementById('contributors-grid').innerHTML = contributors.map(contributor => `
+    <article class="contributor-card" id="contributor-${slugify(contributor.name)}">
+      <div class="contributor-k">Contributor</div>
+      <h3>${contributor.name}</h3>
+      <p><strong>${contributor.original}</strong> origin works and <strong>${contributor.credited}</strong> documented credits across the site.</p>
+      <div class="contributor-metrics">
+        <span>${contributor.artifacts} artifacts</span>
+        <span>${contributor.microblogs} microblogs</span>
+        <span>${contributor.linkedArtifacts.size} linked sketches</span>
+      </div>
+    </article>
+  `).join('');
+
+  const navLinks = Array.from(document.querySelectorAll('.menu a[href^="#"]'));
+  const contributorSummary = document.querySelector('.menu-group summary');
+  const contributorMenu = document.querySelector('.menu-group');
+  const sections = navLinks.map(link => {
+    const id = link.getAttribute('href').slice(1);
+    return { id, link, element: document.getElementById(id) };
+  }).filter(item => item.element);
+
+  function setActive(id) {
+    navLinks.forEach(link => {
+      link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+    });
+    if (contributorSummary) {
+      contributorSummary.classList.toggle('is-active', id === 'section-contributors');
+    }
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (visible) setActive(visible.target.id);
+  }, {
+    rootMargin: '-26% 0px -48% 0px',
+    threshold: [0.2, 0.4, 0.6]
+  });
+
+  sections.forEach(section => observer.observe(section.element));
+
+  if (contributorMenu) {
+    contributorMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => { contributorMenu.open = false; });
+    });
+    document.addEventListener('click', event => {
+      if (contributorMenu.open && !contributorMenu.contains(event.target)) {
+        contributorMenu.open = false;
+      }
+    });
+  }
 })();
 </script>
 </body>
