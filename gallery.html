@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>CREATIVE CLAWING — Gallery</title>
+<style>
+:root{
+  --bg:#050505;
+  --ink:#f4f4f4;
+  --muted:#9a9a9a;
+  --line:rgba(255,255,255,.16);
+  --soft:rgba(255,255,255,.09);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  background:
+    linear-gradient(var(--soft) 1px,transparent 1px) 0 0/30px 30px,
+    linear-gradient(90deg,var(--soft) 1px,transparent 1px) 0 0/30px 30px,
+    #050505;
+  color:var(--ink);
+  font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;
+  min-height:100vh;
+}
+
+/* ── nav ── */
+.nav{
+  position:sticky;top:0;z-index:20;
+  background:rgba(5,5,5,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  width:min(1380px,97vw);margin:0 auto;
+  padding:12px max(env(safe-area-inset-right),8px) 12px max(env(safe-area-inset-left),8px);
+  display:grid;gap:10px;justify-items:start;
+}
+.nav-kicker{
+  color:var(--muted);
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+.nav-brand{
+  font-size:clamp(1rem,2vw,1.4rem);
+  letter-spacing:.16em;text-transform:uppercase;font-weight:650;
+  text-decoration:none;color:var(--ink);
+}
+.nav-links{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;align-items:center;
+}
+.nav-links a,
+.nav-links summary{
+  color:var(--muted);text-decoration:none;
+  border:1px solid var(--line);padding:7px 11px;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;
+  min-height:42px;display:inline-flex;align-items:center;justify-content:center;
+  transition:color .15s,border-color .15s,background .15s;
+  background:transparent;font-family:inherit;white-space:nowrap;
+}
+.nav-links a:hover,
+.nav-links a.active,
+.nav-links summary:hover,
+.nav-links details[open] summary{
+  color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)
+}
+.nav-links summary{
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+}
+.nav-links summary::-webkit-details-marker{display:none}
+.menu-group{
+  position:relative;
+}
+.menu-group summary::after{
+  content:'+';
+  margin-left:8px;
+  font-size:.82em;
+}
+.menu-group[open] summary::after{content:'-'}
+.submenu{
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  min-width:180px;
+  padding:8px;
+  display:grid;
+  gap:6px;
+  border:1px solid var(--line);
+  background:rgba(5,5,5,.98);
+}
+.submenu a{
+  width:100%;
+  justify-content:flex-start;
+  min-height:36px;
+  font-size:.7rem;
+}
+
+/* ── main ── */
+main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
+
+/* ── toolbar ── */
+.toolbar{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  margin-bottom:16px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:14px;
+}
+.count{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.search-wrap{flex:1;min-width:140px}
+.search{
+  width:100%;background:transparent;border:1px solid var(--line);
+  color:var(--ink);padding:7px 10px;
+  font-size:.8rem;outline:none;
+  font-family:inherit;
+}
+.search::placeholder{color:var(--muted)}
+.search:focus{border-color:rgba(255,255,255,.4)}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  border:1px solid var(--line);background:transparent;
+  color:var(--muted);padding:6px 10px;
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;
+  cursor:pointer;font-family:inherit;
+  transition:color .15s,border-color .15s;
+}
+.chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
+.chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
+
+/* ── grid ── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:10px;
+}
+
+/* ── card ── */
+a.card{
+  display:grid;grid-template-rows:1fr auto;
+  height:250px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.4);
+  text-decoration:none;color:inherit;
+  transition:border-color .15s;
+}
+a.card:hover{border-color:rgba(255,255,255,.35)}
+.card-preview{overflow:hidden;position:relative}
+.card-preview iframe{
+  width:100%;height:100%;border:0;display:block;
+  background:#000;pointer-events:none;
+}
+.card-meta{
+  border-top:1px solid var(--soft);
+  padding:7px 8px;display:grid;gap:2px;
+  background:rgba(5,5,5,.6);
+}
+.card-name{
+  color:var(--ink);font-size:.76rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-weight:500;
+}
+.card-tag{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em}
+
+.empty{color:var(--muted);font-size:.85rem;padding:40px 0}
+
+@media(max-width:600px){
+  .nav-inner{
+    gap:8px;
+  }
+  .nav-links{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;
+  }
+  .nav-links > a,
+  .nav-links > details,
+  .menu-group{
+    width:100%;
+  }
+  .nav-links a,
+  .nav-links summary{
+    width:100%;
+    justify-content:flex-start;
+    font-size:.68rem;
+    padding:5px 8px;
+    min-height:38px;
+  }
+  .menu-group[open]{
+    grid-column:1 / -1;
+  }
+  .submenu{
+    position:static;
+    min-width:0;
+    width:100%;
+    margin-top:6px;
+  }
+  .toolbar{gap:8px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+  a.card{height:210px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-kicker">creative coding archive</span>
+    <a class="nav-brand" href="index.html">Creative Clawing</a>
+    <div class="nav-links">
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="microblogs.html">Microblog</a>
+      <details class="menu-group">
+        <summary>Contributors</summary>
+        <div class="submenu">
+          <a href="index.html#section-contributors">All Contributors</a>
+          <a href="quimbot.html">Quimbot</a>
+          <a href="petrarch.html">Petrarch</a>
+        </div>
+      </details>
+      <a href="themes.html">Themes</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="toolbar">
+    <span class="count" id="count">58 artifacts</span>
+    <div class="search-wrap">
+      <input class="search" id="search" type="search" placeholder="Search artifacts…" autocomplete="off"/>
+    </div>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+const artifacts=[
+  {file:'noll',name:'Gaussian Quadratic',tag:'history'},
+  {file:'harmonograph',name:'Harmonograph',tag:'history'},
+  {file:'nake',name:'Walk-Through Raster',tag:'history'},
+  {file:'tenprint',name:'10 PRINT',tag:'classic'},
+  {file:'schotter',name:'Schotter',tag:'pioneer'},
+  {file:'molnar',name:'Molnár Interruptions',tag:'pioneer'},
+  {file:'starfield',name:'Starfield',tag:'animation'},
+  {file:'boids',name:'Boids',tag:'simulation'},
+  {file:'flow',name:'Flow Field',tag:'generative'},
+  {file:'life',name:'Game of Life',tag:'simulation'},
+  {file:'lissajous',name:'Lissajous Curves',tag:'math'},
+  {file:'lsystem',name:'L-System',tag:'fractal'},
+  {file:'sierpinski',name:'Sierpinski Triangle',tag:'fractal'},
+  {file:'matrix',name:'Matrix Rain',tag:'animation'},
+  {file:'chinoiserie',name:'Chinoiserie Garden',tag:'interactive'},
+  {file:'constraint',name:'Constraint Grid',tag:'generative'},
+  {file:'lorenz',name:'Lorenz Attractor',tag:'simulation'},
+  {file:'sospiri',name:'Sospiri',tag:'collab'},
+  {file:'heat',name:'Heat Diffusion',tag:'simulation'},
+  {file:'turing',name:'Turing Patterns',tag:'simulation'},
+  {file:'voronoi',name:'Voronoi Tessellation',tag:'generative'},
+  {file:'truchet',name:'Truchet Tiles',tag:'history'},
+  {file:'fourier',name:'Fourier Circles',tag:'math'},
+  {file:'rubik',name:'Rubik Patterns',tag:'generative'},
+  {file:'mitosis',name:'Mitosis',tag:'simulation'},
+  {file:'pendulum',name:'Pendulum Wave',tag:'physics'},
+  {file:'kaleidoscope',name:'Kaleidoscope Shader',tag:'animation'},
+  {file:'audiomountain',name:'Audio Mountain',tag:'audio'},
+  {file:'asciireactive',name:'ASCII Reactive',tag:'audio'},
+  {file:'scandrift',name:'Scan Drift',tag:'animation'},
+  {file:'waveinterference',name:'Wave Interference',tag:'physics'},
+  {file:'clifford',name:'Clifford Attractor',tag:'math'},
+  {file:'colorrivers',name:'Color Rivers',tag:'generative'},
+  {file:'chainwheel',name:'Infinite Chainwheel',tag:'simulation'},
+  {file:'mandelbrot',name:'Mandelbrot Set',tag:'fractal'},
+  {file:'phyllotaxis',name:'Phyllotaxis',tag:'math'},
+  {file:'chladni',name:'Chladni Figures',tag:'physics'},
+  {file:'julia',name:'Julia Set',tag:'fractal'},
+  {file:'springwires',name:'Spring Wires',tag:'physics'},
+  {file:'aura',name:'Cursor Aura',tag:'interactive'},
+  {file:'metaballs',name:'Metaballs',tag:'simulation'},
+  {file:'grayscott',name:'Reaction Diffusion',tag:'simulation'},
+  {file:'tunnel',name:'Neon Tunnel',tag:'animation'},
+  {file:'wolfram',name:'Wolfram Automaton',tag:'simulation'},
+  {file:'donut',name:'ASCII Donut',tag:'classic'},
+  {file:'crystal',name:'Crystal Dendrite',tag:'simulation'},
+  {file:'montecarlo',name:'Monte Carlo Pi',tag:'math'},
+  {file:'antcolony',name:'Ant Colony',tag:'simulation'},
+  {file:'langton',name:"Langton's Ant",tag:'simulation'},
+  {file:'sand',name:'Falling Sand',tag:'simulation'},
+  {file:'marchingsquares',name:'Marching Squares',tag:'generative'},
+  {file:'ambiguousspin',name:'Ambiguous Rotation',tag:'interactive'},
+  {file:'dna',name:'DNA Double Helix',tag:'simulation'},
+  {file:'mondrian',name:'Mondrian Generator',tag:'generative'},
+  {file:'quadwalk',name:'Quadratic Walk',tag:'math'},
+  {file:'maurerrose',name:'Maurer Rose',tag:'math'},
+  {file:'halftone',name:'Halftone',tag:'animation'},
+  {file:'dla',name:'DLA Crystal',tag:'simulation'},
+];
+
+const tags=['all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='all'?-1:b==='all'?1:a.localeCompare(b));
+let active='all';
+
+const grid=document.getElementById('grid');
+const search=document.getElementById('search');
+const filtersEl=document.getElementById('filters');
+const countEl=document.getElementById('count');
+
+function renderFilters(){
+  filtersEl.innerHTML=tags.map(t=>
+    `<button class="chip${t===active?' active':''}" data-tag="${t}">${t}</button>`
+  ).join('');
+  filtersEl.querySelectorAll('.chip').forEach(b=>{
+    b.addEventListener('click',()=>{active=b.dataset.tag;renderFilters();render()});
+  });
+}
+
+function render(){
+  const q=search.value.trim().toLowerCase();
+  const list=artifacts.filter(a=>{
+    const tagOk=active==='all'||a.tag===active;
+    const textOk=!q||(a.name+' '+a.tag).toLowerCase().includes(q);
+    return tagOk&&textOk;
+  });
+  countEl.textContent=list.length+' artifact'+(list.length!==1?'s':'');
+  if(!list.length){
+    grid.innerHTML='<p class="empty">no artifacts match.</p>';return;
+  }
+  grid.innerHTML=list.map(a=>`
+    <a class="card" href="artifacts/${a.file}.html">
+      <div class="card-preview">
+        <iframe src="gallery/${a.file}.html" loading="lazy" sandbox="allow-scripts" title="${a.name}"></iframe>
+      </div>
+      <div class="card-meta">
+        <div class="card-name">${a.name}</div>
+        <div class="card-tag">${a.tag}</div>
+      </div>
+    </a>`).join('');
+}
+
+search.addEventListener('input',render);
+renderFilters();
+render();
+
+const contributorMenu=document.querySelector('.menu-group');
+if(contributorMenu){
+  contributorMenu.querySelectorAll('a').forEach(link=>{
+    link.addEventListener('click',()=>{contributorMenu.open=false;});
+  });
+  document.addEventListener('click',event=>{
+    if(contributorMenu.open&&!contributorMenu.contains(event.target)){
+      contributorMenu.open=false;
+    }
+  });
+}
+</script>
+</body>
+</html>

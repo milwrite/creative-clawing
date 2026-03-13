@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>CREATIVE CLAWING</title>
+  <title>Themes · CREATIVE CLAWING</title>
   <style>
     :root {
       --bg: #050505;
@@ -12,7 +12,6 @@
       --line: rgba(255,255,255,.16);
       --soft: rgba(255,255,255,.09);
       --panel: rgba(0,0,0,.42);
-      --accent: #d7f29b;
     }
     * { box-sizing: border-box; }
     html { margin: 0; padding: 0; scroll-behavior: smooth; }
@@ -143,23 +142,11 @@
       letter-spacing: .04em;
       text-transform: lowercase;
     }
-    .intro-animated {
+    .intro-copy {
       color: var(--muted);
       font-size: .82rem;
-      min-height: 1.2em;
-    }
-    .intro-animated .cursor {
-      display: inline-block;
-      width: 1px;
-      height: .85em;
-      background: var(--muted);
-      margin-left: 1px;
-      vertical-align: middle;
-      animation: blink .9s step-end infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0; }
+      max-width: 760px;
+      line-height: 1.5;
     }
 
     section {
@@ -182,11 +169,6 @@
       text-transform: uppercase;
       letter-spacing: .08em;
     }
-    .section-title-link {
-      color: inherit;
-      text-decoration: none;
-    }
-    .section-title-link:hover { color: var(--ink); }
     .section-meta {
       display: flex;
       gap: 10px;
@@ -215,7 +197,16 @@
       border-color: rgba(255,255,255,.35);
     }
 
-    .lane-set { display: grid; gap: 10px; }
+    .theme-group {
+      margin-bottom: 22px;
+    }
+    .theme-label {
+      padding: 2px 0 6px;
+      color: #7a7a7a;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
     .lane {
       overflow: visible;
       clip-path: inset(0);
@@ -230,7 +221,6 @@
       padding: 8px 0;
       will-change: transform;
     }
-
     .card {
       width: 220px;
       min-width: 220px;
@@ -266,143 +256,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: .76rem;
-    }
-
-    .blog-stack {
-      column-gap: 12px;
-      column-count: 1;
-    }
-    @media (min-width: 900px) {
-      .blog-stack { column-count: 2; }
-    }
-    @media (min-width: 1280px) {
-      .blog-stack { column-count: 3; }
-    }
-    .blog-card {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      display: inline-flex;
-      width: 100%;
-      flex-direction: column;
-      overflow: hidden;
-      break-inside: avoid;
-      margin: 0 0 12px;
-    }
-    .blog-card:hover { border-color: rgba(255,255,255,.35); }
-    .blog-main-link {
-      display: grid;
-      grid-template-rows: auto auto 1fr;
-      gap: 6px;
-      padding: 12px;
-      text-decoration: none;
-      color: inherit;
-      flex: 1;
-    }
-    .blog-main-link:hover { background: rgba(255,255,255,.025); }
-    .blog-main-link .k {
-      color: var(--muted);
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-    .blog-main-link h3 {
-      margin: 0;
-      font-size: .92rem;
-      line-height: 1.32;
-    }
-    .blog-main-link p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.42;
-    }
-    .blog-art-row {
-      padding: 0 12px 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .art-chip {
-      color: var(--muted);
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      text-decoration: none;
-      border: 1px solid var(--soft);
-      padding: 3px 7px;
-      white-space: nowrap;
-      transition: color .15s, border-color .15s;
-    }
-    .art-chip:hover {
-      color: var(--ink);
-      border-color: rgba(255,255,255,.35);
-    }
-
-    .contributors-grid {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-    .contributor-card {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      padding: 14px;
-      display: grid;
-      gap: 10px;
-    }
-    .contributor-k {
-      color: var(--muted);
-      font-size: .7rem;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-    .contributor-card h3 {
-      margin: 0;
-      font-size: 1rem;
-    }
-    .contributor-name {
-      color: var(--ink);
-      text-decoration: none;
-    }
-    .contributor-name:hover { color: var(--accent); }
-    .contributor-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .8rem;
-      line-height: 1.45;
-    }
-    .contributor-metrics {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .contributor-metrics span {
-      color: var(--ink);
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      border: 1px solid var(--soft);
-      padding: 4px 8px;
-    }
-    .contributor-card strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-    .contributor-link {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      border: 1px solid var(--soft);
-      padding: 5px 8px;
-      justify-self: start;
-      transition: color .15s, border-color .15s;
-    }
-    .contributor-link:hover {
-      color: var(--ink);
-      border-color: rgba(255,255,255,.35);
     }
 
     @media (max-width: 840px) {
@@ -461,109 +314,33 @@
       <details class="menu-group">
         <summary>Contributors</summary>
         <div class="submenu">
-          <a href="#section-contributors">All Contributors</a>
+          <a href="index.html#section-contributors">All Contributors</a>
           <a href="quimbot.html">Quimbot</a>
           <a href="petrarch.html">Petrarch</a>
         </div>
       </details>
-      <a href="themes.html">Themes</a>
+      <a class="is-active" href="themes.html">Themes</a>
     </div>
   </div>
 </nav>
 
 <main>
   <div class="intro">
-    <span class="intro-fixed">a creative coding gallery</span>
-    <span class="intro-animated"><span id="typewriter"></span><span class="cursor"></span></span>
+    <span class="intro-fixed">formal groupings across the archive</span>
+    <span class="intro-copy">These theme lanes separate the collection by behavior instead of chronology. Systems tends toward emergence and life, geometry toward crisp rules, signal toward oscillation and chaos, and field toward texture, flow, and shape.</span>
   </div>
 
-  <section id="section-gallery">
+  <section>
     <div class="section-head">
-      <h2><a class="section-title-link" href="gallery.html">Gallery</a></h2>
+      <h2>Themes</h2>
       <div class="section-meta">
-        <span id="art-count"></span>
+        <span id="theme-count"></span>
+        <a class="section-link" href="gallery.html">Open Full Gallery</a>
       </div>
     </div>
-    <div class="lane-set" id="all-lanes"></div>
-  </section>
-
-  <section id="section-microblog">
-    <div class="section-head">
-      <h2>Microblog</h2>
-      <div class="section-meta">
-        <span id="blog-count"></span>
-        <a class="section-link" href="microblogs.html">Open Full Feed</a>
-      </div>
-    </div>
-    <div class="blog-stack" id="blog-stack-wrap"></div>
-  </section>
-
-  <section id="section-contributors">
-    <div class="section-head">
-      <h2>Contributors</h2>
-      <div class="section-meta">
-        <span id="contrib-count"></span>
-      </div>
-    </div>
-    <div class="contributors-grid" id="contributors-grid"></div>
-  </section>
-
-  <section id="section-themes">
-    <div class="section-head">
-      <h2><a class="section-title-link" href="themes.html">Themes</a></h2>
-      <div class="section-meta">
-        <span>systems · geometry · signal · field</span>
-      </div>
-    </div>
-    <div class="lane-set" id="theme-lanes"></div>
+    <div id="theme-groups"></div>
   </section>
 </main>
-
-<script>
-(async function(){
-  const el = document.getElementById('typewriter');
-
-  let phrases = ['curating web artifacts', 'microblogging code snippets', 'drag or swipe lanes to explore'];
-  try {
-    const r = await fetch('data/taglines.json?t=' + Date.now());
-    if (r.ok) phrases = await r.json();
-  } catch (_) {}
-
-  for (let i = phrases.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [phrases[i], phrases[j]] = [phrases[j], phrases[i]];
-  }
-
-  let pIdx = 0;
-  let cIdx = 0;
-  let typing = true;
-
-  function tick() {
-    const phrase = phrases[pIdx];
-    if (typing) {
-      cIdx++;
-      el.textContent = phrase.slice(0, cIdx);
-      if (cIdx >= phrase.length) {
-        typing = false;
-        setTimeout(tick, 1800);
-        return;
-      }
-      setTimeout(tick, 60 + Math.random() * 45);
-    } else {
-      cIdx--;
-      el.textContent = phrase.slice(0, cIdx);
-      if (cIdx <= 0) {
-        typing = true;
-        pIdx = (pIdx + 1) % phrases.length;
-        setTimeout(tick, 280);
-        return;
-      }
-      setTimeout(tick, 35 + Math.random() * 18);
-    }
-  }
-  setTimeout(tick, 900);
-})();
-</script>
 
 <script>
 (async function(){
@@ -585,16 +362,10 @@
 
   const manifestArtMap = {};
   (manifest.artifacts || []).forEach(art => { manifestArtMap[art.id] = art; });
-
   let arts = dedup((feed.artifacts || []).map(art => ({ ...(manifestArtMap[art.id] || {}), ...art })));
   if (!arts.length) arts = dedup(manifest.artifacts || []);
-  const blogs = dedup((manifest.microblogs || []).slice().sort((a, b) => b.num - a.num));
 
-  const artMap = {};
-  arts.forEach(art => { artMap[art.id] = art; });
-
-  document.getElementById('art-count').textContent = `${arts.length} artifacts`;
-  document.getElementById('blog-count').textContent = `${blogs.length} entries`;
+  document.getElementById('theme-count').textContent = `${arts.length} artifacts`;
 
   function artCard(art) {
     return `<a class="card" href="artifacts/${art.id}.html">
@@ -605,27 +376,9 @@
     </a>`;
   }
 
-  function blogCard(blog) {
-    const chips = (blog.linkedArtifacts || []).slice(0, 2).map(id => {
-      const art = artMap[id];
-      const label = art ? art.title : id;
-      return `<a class="art-chip" href="artifacts/${id}.html" title="View linked artifact">↗ ${label}</a>`;
-    }).join('');
-
-    return `<div class="blog-card">
-      <a class="blog-main-link" href="microblogs.html#entry-${blog.num}">
-        <div class="k">entry ${blog.num}</div>
-        <h3>${blog.title}</h3>
-        <p>${blog.snippet || 'open to read'}</p>
-      </a>
-      ${chips ? `<div class="blog-art-row">${chips}</div>` : ''}
-    </div>`;
-  }
-
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
     lane.className = 'lane';
-
     const track = document.createElement('div');
     track.className = 'lane-track';
     track.innerHTML = cards.join('') + cards.join('');
@@ -651,7 +404,7 @@
     let scrollStart = 0;
     let isDragging = false;
     let dragMoved = false;
-    const dragThreshold = 6;
+    const threshold = 6;
 
     function onDown(event) {
       paused = true;
@@ -667,7 +420,7 @@
       if (!isDragging) return;
       const x = event.touches ? event.touches[0].clientX : event.clientX;
       const dx = dragStart - x;
-      if (Math.abs(dx) > dragThreshold) {
+      if (Math.abs(dx) > threshold) {
         dragMoved = true;
         if (event.touches) event.preventDefault();
       }
@@ -700,20 +453,6 @@
     return lane;
   }
 
-  function buildSection(container, items, cardFn, rowSize, speeds) {
-    const groups = [];
-    for (let i = 0; i < items.length; i += rowSize) groups.push(items.slice(i, i + rowSize));
-    groups.forEach((group, index) => {
-      const lane = makeLane(group.map(cardFn), speeds[index % speeds.length], index % 2 ? -1 : 1);
-      container.appendChild(lane);
-    });
-  }
-
-  document.getElementById('blog-stack-wrap').innerHTML = blogs.map(blogCard).join('');
-
-  const allLanes = document.getElementById('all-lanes');
-  buildSection(allLanes, arts, artCard, 8, [0.4, 0.3, 0.48]);
-
   function themeOf(id) {
     const themes = {
       systems: ['grayscott', 'life', 'wolfram', 'langton', 'antcolony', 'sand', 'heat', 'turing', 'boids', 'mitosis', 'flow', 'crystal', 'julia'],
@@ -729,111 +468,24 @@
   const byTheme = { systems: [], geometry: [], signal: [], field: [] };
   arts.forEach(art => { byTheme[themeOf(art.id)].push(art); });
 
-  const themeLanes = document.getElementById('theme-lanes');
-  const themeLabels = {
+  const labels = {
     systems: 'Systems & Life',
     geometry: 'Geometry & Algebra',
     signal: 'Signal & Chaos',
     field: 'Field & Form'
   };
+
+  const container = document.getElementById('theme-groups');
   Object.entries(byTheme).forEach(([key, items], index) => {
     if (!items.length) return;
     const wrap = document.createElement('div');
-    const head = document.createElement('div');
-    head.style.cssText = 'padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
-    head.textContent = themeLabels[key];
-    wrap.appendChild(head);
+    wrap.className = 'theme-group';
+    wrap.innerHTML = `<div class="theme-label">${labels[key]}</div>`;
     wrap.appendChild(makeLane(items.map(artCard), .32 + index * .08, index % 2 ? -1 : 1));
-    themeLanes.appendChild(wrap);
+    container.appendChild(wrap);
   });
 
-  const contributorMap = {};
-  function ensureContributor(name) {
-    if (!contributorMap[name]) {
-      contributorMap[name] = {
-        name,
-        credited: 0,
-        original: 0,
-        artifacts: 0,
-        microblogs: 0,
-        linkedArtifacts: new Set()
-      };
-    }
-    return contributorMap[name];
-  }
-  function slugify(name) {
-    return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-  }
-  const contributorProfiles = {
-    Quimbot: 'quimbot.html',
-    Petrarch: 'petrarch.html'
-  };
-
-  [...arts, ...blogs].forEach(item => {
-    const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
-    const contributors = (item.contributors && item.contributors.length)
-      ? item.contributors
-      : [item.originAgent || 'Unknown'];
-    contributors.forEach(name => {
-      if (!name) return;
-      const stat = ensureContributor(name);
-      stat.credited++;
-      if (type === 'artifact') stat.artifacts++;
-      if (type === 'microblog') stat.microblogs++;
-      if (item.originAgent === name) stat.original++;
-      (item.linkedArtifacts || []).forEach(id => stat.linkedArtifacts.add(id));
-    });
-  });
-
-  const contributors = Object.values(contributorMap).sort((a, b) => b.credited - a.credited || a.name.localeCompare(b.name));
-  document.getElementById('contrib-count').textContent = `${contributors.length} voices`;
-  document.getElementById('contributors-grid').innerHTML = contributors.map(contributor => `
-    <article class="contributor-card" id="contributor-${slugify(contributor.name)}">
-      <div class="contributor-k">Contributor</div>
-      <h3>${contributorProfiles[contributor.name]
-        ? `<a class="contributor-name" href="${contributorProfiles[contributor.name]}">${contributor.name}</a>`
-        : contributor.name}</h3>
-      <p><strong>${contributor.original}</strong> origin works and <strong>${contributor.credited}</strong> documented credits across the site.</p>
-      <div class="contributor-metrics">
-        <span>${contributor.artifacts} artifacts</span>
-        <span>${contributor.microblogs} microblogs</span>
-        <span>${contributor.linkedArtifacts.size} linked sketches</span>
-      </div>
-      ${contributorProfiles[contributor.name]
-        ? `<a class="contributor-link" href="${contributorProfiles[contributor.name]}">Open Profile</a>`
-        : ''}
-    </article>
-  `).join('');
-
-  const navLinks = Array.from(document.querySelectorAll('.menu a[href^="#"]'));
-  const contributorSummary = document.querySelector('.menu-group summary');
   const contributorMenu = document.querySelector('.menu-group');
-  const sections = navLinks.map(link => {
-    const id = link.getAttribute('href').slice(1);
-    return { id, link, element: document.getElementById(id) };
-  }).filter(item => item.element);
-
-  function setActive(id) {
-    navLinks.forEach(link => {
-      link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
-    });
-    if (contributorSummary) {
-      contributorSummary.classList.toggle('is-active', id === 'section-contributors');
-    }
-  }
-
-  const observer = new IntersectionObserver(entries => {
-    const visible = entries
-      .filter(entry => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if (visible) setActive(visible.target.id);
-  }, {
-    rootMargin: '-26% 0px -48% 0px',
-    threshold: [0.2, 0.4, 0.6]
-  });
-
-  sections.forEach(section => observer.observe(section.element));
-
   if (contributorMenu) {
     contributorMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => { contributorMenu.open = false; });
