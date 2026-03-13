@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CREATIVE CLAWING</title>
   <style>
     :root {
@@ -30,24 +30,37 @@
     }
     .nav-inner {
       width: min(1380px,97vw); margin: 0 auto;
-      padding: 12px 0;
+      padding: 12px max(env(safe-area-inset-right),0px) 12px max(env(safe-area-inset-left),0px);
       display: flex; gap: 10px; justify-content: space-between; align-items: center; flex-wrap: wrap;
     }
     h1 { margin:0; font-size: clamp(1.1rem,2.6vw,1.8rem); letter-spacing:.16em; text-transform:uppercase; font-weight:650; }
-    .menu { display:flex; gap:8px; flex-wrap:wrap; }
+    .menu {
+      display: flex; gap: 8px; flex-wrap: nowrap;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding-bottom: 2px;
+    }
+    .menu::-webkit-scrollbar { display: none; }
     .menu a {
       color: var(--muted); text-decoration: none;
       border: 1px solid var(--line); padding: 6px 10px;
       font-size: .75rem; text-transform: uppercase; letter-spacing: .06em;
       transition: color .15s, border-color .15s;
+      white-space: nowrap; flex-shrink: 0;
+      min-height: 44px; display: flex; align-items: center;
     }
-    .menu a:hover { color: var(--ink); border-color: rgba(255,255,255,.4); }
+    .menu a:hover, .menu a:active { color: var(--ink); border-color: rgba(255,255,255,.4); }
+    @media (max-width: 700px) {
+      .nav-inner { gap: 8px; }
+      h1 { font-size: 1.1rem; }
+      .menu { max-width: 100%; width: 100%; }
+    }
 
     /* ── layout ──────────────────────────────────────── */
     main { width: min(1380px,97vw); margin: 0 auto; padding: 16px 0 60px; }
     .intro { color: var(--muted); font-size:.88rem; padding-bottom:10px; border-bottom:1px solid var(--line); margin-bottom:16px; }
 
-    section { margin: 20px 0 28px; scroll-margin-top: 60px; }
+    section { margin: 20px 0 28px; scroll-margin-top: 72px; }
+    html { scroll-behavior: smooth; }
     .section-head {
       display: flex; justify-content: space-between; align-items: baseline; gap:10px;
       border-bottom: 1px solid var(--line); padding-bottom:6px; margin-bottom:8px;
