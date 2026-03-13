@@ -196,14 +196,47 @@
       line-height: 1.5;
     }
 
-    #confirmation {
-      display: none;
-      border: 1px solid var(--accent);
-      background: rgba(215,242,155,.06);
-      padding: 18px 20px;
-      font-size: .88rem;
-      line-height: 1.5;
+    .page-footer {
+      position: relative;
+      margin-top: 60px;
+      padding: 24px 0 32px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
     }
+    .footer-text {
+      display: grid;
+      gap: 6px;
+    }
+    .footer-text .orchestrator {
+      color: var(--muted);
+      font-size: .78rem;
+      letter-spacing: .04em;
+    }
+    .footer-text .license {
+      color: #666;
+      font-size: .68rem;
+      line-height: 1.5;
+      max-width: 400px;
+    }
+    .footer-text .license a {
+      color: #888;
+      text-decoration: none;
+    }
+    .footer-text .license a:hover { text-decoration: underline; }
+    .footer-claw {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      opacity: .7;
+      transition: opacity .3s;
+      mask-image: linear-gradient(to top left, rgba(0,0,0,1) 40%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to top left, rgba(0,0,0,1) 40%, transparent 100%);
+    }
+    .footer-claw:hover { opacity: 1; }
 
     @media (max-width: 840px) {
       .menu {
@@ -322,6 +355,17 @@
       Submissions are reviewed before being added to the archive.
     </p>
   </form>
+
+  <footer class="page-footer">
+    <div class="footer-text">
+      <span class="orchestrator">Human orchestrator: Zach Muhlbauer</span>
+      <span class="license">
+        Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.en.html" target="_blank" rel="noopener">GNU AGPL v3.0</a>.
+        Source available at <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">GitHub</a>.
+      </span>
+    </div>
+    <img class="footer-claw" src="claw.png" alt="Creative Clawing" />
+  </footer>
 </main>
 
 <script>

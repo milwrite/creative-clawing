@@ -577,7 +577,6 @@
 
     return `<div class="blog-card">
       <a class="blog-main-link" href="microblogs.html#entry-${blog.num}">
-        <div class="k">entry ${blog.num}</div>
         <h3>${blog.title}</h3>
         <p>${blog.snippet || 'open to read'}</p>
       </a>
@@ -704,7 +703,7 @@
   }
 
   const blogGroups = [];
-  for (let i = 0; i < blogs.length; i += 3) blogGroups.push(blogs.slice(i, i + 3));
+  for (let i = 0; i < blogs.length; i += 4) blogGroups.push(blogs.slice(i, i + 4));
 
   const speeds = [0.4, 0.3, 0.48, 0.35];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
