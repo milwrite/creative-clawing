@@ -1,0 +1,94 @@
+{
+  "auditDate": "2026-03-13",
+  "method": "git-reflog-cross-reference",
+  "notes": "Reflog shows which commits were created locally (Petrarch/Mac Studio) vs pulled from remote (Quimbot/Legion). Both agents share 'OpenClaw Agent <openclaw@example.com>' git identity, so author field alone is insufficient. Commits with author 'Zach Muhlbauer <milwright@milwright-2.local>' are definitively Petrarch.",
+
+  "petrarch": {
+    "artifactOrigins": {
+      "flow": { "commit": "dce2aac", "date": "2026-02-19", "title": "Perlin Flow Field", "confidence": "definite" },
+      "sierpinski": { "commit": "dce2aac", "date": "2026-02-19", "title": "Sierpiński Triangle", "confidence": "definite" },
+      "matrix": { "commit": "dce2aac", "date": "2026-02-19", "title": "Matrix Rain", "confidence": "definite" }
+    },
+    "artifactMajorRework": {
+      "chainwheel": {
+        "commits": ["5522263", "bbd3eaf", "155d08a", "decdf39", "8ea98c1"],
+        "dates": ["2026-02-28", "2026-03-01"],
+        "description": "Full rebuild: 35 gears, mechanical propagation, monochrome steel, chain-link grid fix, gear propagation fix",
+        "confidence": "definite"
+      }
+    },
+    "bugFixes": [
+      { "artifact": "rubik", "commit": "1aba876", "date": "2026-02-22", "subject": "Fix top face diagonal pattern - swap r/c mapping in render" }
+    ],
+    "mobileOptimizations": [
+      { "commit": "d224643", "date": "2026-03-01", "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts", "artifacts": ["mandelbrot", "phyllotaxis", "chainwheel", "colorrivers"] },
+      { "commit": "be60a19", "date": "2026-03-01", "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count", "artifacts": ["lorenz", "sospiri", "pendulum", "tenprint", "starfield"] },
+      { "commit": "d700248", "date": "2026-03-02", "subject": "mobile: optimize latest gallery artifacts for touch + viewport", "artifacts": ["chladni", "julia"] },
+      { "commit": "5b499e7", "date": "2026-03-03", "subject": "gallery: mobile optimizations for aura + spring wires", "artifacts": ["aura", "springwires"] },
+      { "commit": "0712693", "date": "2026-03-03", "subject": "Optimize mobile interaction and resize behavior for springwires and aura", "artifacts": ["springwires", "aura"] },
+      { "commit": "a4c0e5f", "date": "2026-03-03", "subject": "gallery: improve springwires mobile resize and DPR scaling", "artifacts": ["springwires"] },
+      { "commit": "b3c3bd0", "date": "2026-03-05", "subject": "Mobile pass: pointer input + safe-area/rotation fixes", "artifacts": ["multiple"] },
+      { "commit": "61629dd", "date": "2026-03-07", "subject": "mobile: add safe-area-insets + touch-action to wolfram, tunnel, chladni, julia", "artifacts": ["wolfram", "tunnel", "chladni", "julia"] },
+      { "commit": "b1408d0", "date": "2026-03-07", "subject": "mobile: add safe-area-insets to audiomountain, aura, boids, fourier, harmonograph", "artifacts": ["audiomountain", "aura", "boids", "fourier", "harmonograph"] },
+      { "commit": "7b9b09c", "date": "2026-03-09", "subject": "mobile: optimize marchingsquares + ambiguousspin for touch (11pm workflow)", "artifacts": ["marchingsquares", "ambiguousspin"] }
+    ],
+    "microblogOrigins": [
+      { "entry": "entry-17", "commit": "4591608", "date": "2026-03-13", "title": "The boundary that won't simplify (Mandelbrot set)", "confidence": "definite", "note": "Not yet on creative-clawing" }
+    ],
+    "microblogContributions": [
+      { "entry": "turing-patterns", "commit": "bba3ec9", "date": "2026-02-26", "subject": "docs: add microblog post on turing patterns", "type": "draft", "confidence": "definite-reflog" },
+      { "entry": "rubik-entry", "commit": "c5897ba", "date": "2026-02-26", "subject": "microblog: add rubik algorithm breakdown entry", "type": "draft", "confidence": "definite-reflog" },
+      { "entry": "voice-rewrite", "commit": "aaa8e1d", "date": "2026-02-26", "subject": "site: fix dev docs links and rewrite microblog entry voice", "type": "edit", "confidence": "definite-reflog" }
+    ],
+    "microblogCopyedits": [
+      { "commit": "97f8800", "date": "2026-02-26", "subject": "docs(microblog): strengthen intro for turing patterns entry" },
+      { "commit": "92725b3", "date": "2026-02-26", "subject": "docs(microblog): tighten intro logic and cadence for turing entry" },
+      { "commit": "b24ceb9", "date": "2026-02-26", "subject": "docs(microblog): copyedit introduction for precision and tone" },
+      { "commit": "c5512ff", "date": "2026-02-26", "subject": "docs(microblog): full-pass copyedit for clarity and rhythm" }
+    ],
+    "uiFeatures": [
+      { "commit": "2f02120", "date": "2026-02-20", "subject": "Add back-to-gallery navigation button to all artifact pages" },
+      { "commit": "6bfaa68", "date": "2026-02-20", "subject": "Hide back-to-gallery button when artifact pages are embedded in iframes" },
+      { "commit": "5b8d0b5", "date": "2026-02-20", "subject": "Add minimal geometric favicon to all gallery pages" },
+      { "commit": "0721bf8", "date": "2026-02-27", "subject": "Remove microblog entry-5 (snapshot rewrite post)" }
+    ],
+    "commitStats": {
+      "totalGalleryMicroblogCommits": 28,
+      "categories": {
+        "artifactCreation": 1,
+        "artifactRework": 5,
+        "mobileOptimization": 10,
+        "bugFix": 1,
+        "microblogCreation": 3,
+        "microblogCopyedit": 4,
+        "uiFeature": 4
+      }
+    }
+  },
+
+  "quimbot": {
+    "artifactOrigins": 50,
+    "microblogOrigins": 14,
+    "mobileOptimizations": 6,
+    "note": "Quimbot originated the vast majority of artifacts and all non-Petrarch microblogs. His commits come via pull/fast-forward in the reflog."
+  },
+
+  "correctedOverrides": {
+    "artifactOrigins": {
+      "flow": "Petrarch",
+      "matrix": "Petrarch",
+      "sierpinski": "Petrarch"
+    },
+    "artifactMajorContributor": {
+      "chainwheel": "Petrarch"
+    },
+    "petrarchMobileOptimizedArtifacts": [
+      "mandelbrot", "phyllotaxis", "chainwheel", "colorrivers",
+      "lorenz", "sospiri", "pendulum", "tenprint", "starfield",
+      "chladni", "julia", "aura", "springwires",
+      "wolfram", "tunnel", "boids", "fourier", "harmonograph",
+      "audiomountain", "marchingsquares", "ambiguousspin"
+    ],
+    "petrarchBugFixedArtifacts": ["rubik", "chainwheel"]
+  }
+}

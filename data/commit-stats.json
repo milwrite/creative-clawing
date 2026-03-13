@@ -1,0 +1,1045 @@
+{
+  "petrarch": {
+    "totalCommits": 21,
+    "dailyCounts": {
+      "2026-02-19": 1,
+      "2026-02-20": 3,
+      "2026-02-22": 1,
+      "2026-02-26": 4,
+      "2026-02-27": 1,
+      "2026-02-28": 1,
+      "2026-03-01": 4,
+      "2026-03-02": 1,
+      "2026-03-03": 3,
+      "2026-03-05": 1,
+      "2026-03-13": 1
+    },
+    "categoryCounts": {
+      "blog": 6,
+      "mobile": 7,
+      "fix": 3,
+      "other": 2,
+      "artifact": 3
+    },
+    "commits": [
+      {
+        "sha": "4591608",
+        "date": "2026-03-13",
+        "subject": "microblog #17: The boundary that won't simplify (Mandelbrot set)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "b3c3bd0",
+        "date": "2026-03-05",
+        "subject": "Mobile pass: pointer input + safe-area/rotation fixes",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "a4c0e5f",
+        "date": "2026-03-03",
+        "subject": "gallery: improve springwires mobile resize and DPR scaling",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "0712693",
+        "date": "2026-03-03",
+        "subject": "Optimize mobile interaction and resize behavior for springwires and aura",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "5b499e7",
+        "date": "2026-03-03",
+        "subject": "gallery: mobile optimizations for aura + spring wires",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "d700248",
+        "date": "2026-03-02",
+        "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "be60a19",
+        "date": "2026-03-01",
+        "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "d224643",
+        "date": "2026-03-01",
+        "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "155d08a",
+        "date": "2026-03-01",
+        "subject": "Fix chainwheel gear propagation so animation drives full assembly",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "decdf39",
+        "date": "2026-03-01",
+        "subject": "fix(chainwheel): fully chain-link grid so all gears are interconnected",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "5522263",
+        "date": "2026-02-28",
+        "subject": "[Petrarch] Cycle 1: chainwheel rebuild \u2014 35 gears, mechanical propagation, monochrome steel",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0721bf8",
+        "date": "2026-02-27",
+        "subject": "Remove microblog entry-5 (snapshot rewrite post)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "c5512ff",
+        "date": "2026-02-26",
+        "subject": "docs(microblog): full-pass copyedit for clarity and rhythm",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "b24ceb9",
+        "date": "2026-02-26",
+        "subject": "docs(microblog): copyedit introduction for precision and tone",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "92725b3",
+        "date": "2026-02-26",
+        "subject": "docs(microblog): tighten intro logic and cadence for turing entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "97f8800",
+        "date": "2026-02-26",
+        "subject": "docs(microblog): strengthen intro for turing patterns entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "1aba876",
+        "date": "2026-02-22",
+        "subject": "Fix top face diagonal pattern - swap r/c mapping in render",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "6bfaa68",
+        "date": "2026-02-20",
+        "subject": "Hide back-to-gallery button when artifact pages are embedded in iframes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2f02120",
+        "date": "2026-02-20",
+        "subject": "Add back-to-gallery navigation button to all artifact pages",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "5b8d0b5",
+        "date": "2026-02-20",
+        "subject": "Add minimal geometric favicon to all gallery pages",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "dce2aac",
+        "date": "2026-02-19",
+        "subject": "Add Petrarch's creative coding artifacts",
+        "categories": [
+          "artifact"
+        ]
+      }
+    ]
+  },
+  "quimbot": {
+    "totalCommits": 102,
+    "dailyCounts": {
+      "2026-02-19": 3,
+      "2026-02-20": 14,
+      "2026-02-21": 4,
+      "2026-02-22": 15,
+      "2026-02-23": 2,
+      "2026-02-26": 5,
+      "2026-02-27": 4,
+      "2026-02-28": 8,
+      "2026-03-01": 10,
+      "2026-03-02": 5,
+      "2026-03-03": 1,
+      "2026-03-04": 3,
+      "2026-03-05": 7,
+      "2026-03-06": 3,
+      "2026-03-07": 4,
+      "2026-03-08": 4,
+      "2026-03-09": 2,
+      "2026-03-10": 4,
+      "2026-03-11": 1,
+      "2026-03-12": 3
+    },
+    "categoryCounts": {
+      "blog": 20,
+      "artifact": 28,
+      "mobile": 13,
+      "fix": 26,
+      "other": 15
+    },
+    "commits": [
+      {
+        "sha": "6094ade",
+        "date": "2026-03-12",
+        "subject": "Add microblog entry #17 on Mandelbrot set",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "3bb3c54",
+        "date": "2026-03-12",
+        "subject": "Add Scan Drift gallery visualization",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "1f7ec83",
+        "date": "2026-03-12",
+        "subject": "Add ASCII Reactive gallery visualization",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "4dd42e8",
+        "date": "2026-03-11",
+        "subject": "gallery: add Quadratic Walk and Maurer Rose",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "64acd94",
+        "date": "2026-03-10",
+        "subject": "microblog #16: Gray-Scott reaction-diffusion",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "5063713",
+        "date": "2026-03-10",
+        "subject": "microblog: entry-15 \u2014 Space Carved by Proximity (Voronoi)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "79690d4",
+        "date": "2026-03-10",
+        "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "f1da18b",
+        "date": "2026-03-10",
+        "subject": "gallery: add DNA Double Helix and Mondrian Generator",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "e73ddc8",
+        "date": "2026-03-09",
+        "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "e46876b",
+        "date": "2026-03-09",
+        "subject": "gallery: add Marching Squares + Ambiguous Rotation",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "063f340",
+        "date": "2026-03-08",
+        "subject": "microblog: entry-14 \u2014 The grammar that grows a forest (L-Systems)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "ebc2615",
+        "date": "2026-03-08",
+        "subject": "microblog #13: harmonograph \u2014 the first art machine",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "613e515",
+        "date": "2026-03-08",
+        "subject": "sand: fix fire propagation (was spawning smoke), fix brush (now paints over anything), water flows 3 cells wide, longer fire lifetime",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9a6566e",
+        "date": "2026-03-08",
+        "subject": "gallery: add Langton's Ant and Falling Sand simulations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "f6511d0",
+        "date": "2026-03-07",
+        "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "851e6f0",
+        "date": "2026-03-07",
+        "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "97d9027",
+        "date": "2026-03-07",
+        "subject": "crystal: fix DLA walker \u2014 was never actually moving due to continue/undo logic inversion",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "408e3a8",
+        "date": "2026-03-07",
+        "subject": "gallery: add Monte Carlo Pi + Ant Colony visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "515e00f",
+        "date": "2026-03-06",
+        "subject": "microblog #12: Chladni figures \u2014 sand knows where to sit",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "a143e17",
+        "date": "2026-03-06",
+        "subject": "microblog: entry-11 \u2014 The angle that doesn't repeat (phyllotaxis)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "ea53d9f",
+        "date": "2026-03-06",
+        "subject": "gallery: add ASCII Donut + Crystal Dendrite (DLA snowflake)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "3849b99",
+        "date": "2026-03-05",
+        "subject": "starfield: 4x stronger steering, lerp tracking, speed scales with cursor distance from center",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "04e1c2a",
+        "date": "2026-03-05",
+        "subject": "gallery: anchor dropdown to topnav width, not button \u2014 fills page edge to edge",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0bd9315",
+        "date": "2026-03-05",
+        "subject": "gallery: dropdown max-width caps at viewport width on all screen sizes",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "3c424fc",
+        "date": "2026-03-05",
+        "subject": "microblog: add gallery link to entry-6 and entry-7 (only two missing)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "4666bac",
+        "date": "2026-03-05",
+        "subject": "gallery: mobile responsive \u2014 single column, smaller padding, dropdown width capped",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "06b037b",
+        "date": "2026-03-05",
+        "subject": "gallery: add microblog dropdown nav + home link",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "efd3937",
+        "date": "2026-03-05",
+        "subject": "gallery: add Neon Tunnel and Wolfram Automaton",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "6547fc2",
+        "date": "2026-03-04",
+        "subject": "microblog: entry-10 \u2014 What a flock doesn't know (boids)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "710cb95",
+        "date": "2026-03-04",
+        "subject": "evening standup: triaged superset3 short replies, flagged 10 degenerate entries",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "34c293c",
+        "date": "2026-03-04",
+        "subject": "gallery: add Metaballs and Gray-Scott Reaction-Diffusion visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "a44bcf5",
+        "date": "2026-03-03",
+        "subject": "gallery: add Spring Wires + Cursor Aura visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "8a6a98e",
+        "date": "2026-03-02",
+        "subject": "microblog: entry-8 \u2014 The wave that isn't there (pendulum wave)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "201862e",
+        "date": "2026-03-02",
+        "subject": "gallery: fix 3 rendering bugs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e46913a",
+        "date": "2026-03-02",
+        "subject": "gallery: add Chladni Figures + Julia Set (36 total)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "2f02779",
+        "date": "2026-03-02",
+        "subject": "revert: remove chladni and julia set gallery entries",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "efd6674",
+        "date": "2026-03-02",
+        "subject": "gallery: add Chladni Figures and Julia Set",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "de843d4",
+        "date": "2026-03-01",
+        "subject": "gallery: add Mandelbrot Set + Phyllotaxis (morning drop)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "2235cd5",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel \u2014 vertical connections also draw chain links not invisible mesh lines",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "938681e",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel \u2014 grid-based connections (right+down neighbors), spans full canvas",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "4753e91",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel \u2014 fix sort-after-build index bug, sparse connections, isolated gears stay still",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e619094",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel \u2014 chain links scroll via pixel-space offset walk",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "f4f7f86",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel \u2014 animate chain links via surface-speed offset",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "931e5af",
+        "date": "2026-03-01",
+        "subject": "fix(gallery): chainwheel full clean rewrite \u2014 fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "baed7f1",
+        "date": "2026-03-01",
+        "subject": "microblog: add code snippets to entry-7 (Noll 1965)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "ddea67d",
+        "date": "2026-03-01",
+        "subject": "style: cut setup phrase from entry-7 Noll post",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "0d8a3ef",
+        "date": "2026-03-01",
+        "subject": "microblog: entry-7 \u2014 Gaussian Quadratic / Noll 1965; add entry-6 to index",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "f2c9439",
+        "date": "2026-02-28",
+        "subject": "fix(gallery): chainwheel \u2014 gunmetal colors, non-overlapping cell-sized gears",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e64906b",
+        "date": "2026-02-28",
+        "subject": "fix(gallery): chainwheel TDZ crash + mobile DPR scaling + touch-action",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "8f7d8f6",
+        "date": "2026-02-28",
+        "subject": "fix(gallery): chainwheel rainbow colors + propagateSpeeds on rebuild",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "028956c",
+        "date": "2026-02-28",
+        "subject": "[Quimbot] Chainwheel cycle 1: monochrome steel, 33 gears, real chain links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "73b22e9",
+        "date": "2026-02-28",
+        "subject": "fix(gallery): restore vivid rainbow colors to chainwheel gears",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "ddd270a",
+        "date": "2026-02-28",
+        "subject": "gallery: add Color Rivers and Infinite Chainwheel visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "17e40bf",
+        "date": "2026-02-28",
+        "subject": "fix: clifford + waveinterference crash on load",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "df16b18",
+        "date": "2026-02-28",
+        "subject": "microblog: Clifford Attractor writeup (entry-5)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "0b4cf9d",
+        "date": "2026-02-27",
+        "subject": "fix(gallery): rename color vars in clifford.html \u2014 'b' was redeclared in same scope as attractor param, causing SyntaxError",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "ea63287",
+        "date": "2026-02-27",
+        "subject": "microblog: add live iframe to entry-4 (Fourier pendulum)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "4998bec",
+        "date": "2026-02-27",
+        "subject": "microblog: add entry-2 \u2014 Rubik sketch walkthrough (cube state, moves, solve, isometric draw)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "a20be09",
+        "date": "2026-02-27",
+        "subject": "gallery: add Wave Interference and Clifford Attractor visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "e585474",
+        "date": "2026-02-26",
+        "subject": "fix(gallery): mobile fixes for turing (resize handler, touch-action) and voronoi (remove OffscreenCanvas, touch-action)",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "6bfec29",
+        "date": "2026-02-26",
+        "subject": "microblog: entry-6 \u2014 Lorenz attractor and Turing patterns with live iframes",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "6299dab",
+        "date": "2026-02-26",
+        "subject": "site: add microblog entry for Feb 24 snapshot rewrite",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "d14cb71",
+        "date": "2026-02-26",
+        "subject": "feat(gallery): add kaleidoscope and audio mountain visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "68ae277",
+        "date": "2026-02-26",
+        "subject": "microblog: add Fourier pendulum waves entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "b14ea18",
+        "date": "2026-02-23",
+        "subject": "gallery: add Mitosis and Pendulum Wave visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "64f73c4",
+        "date": "2026-02-23",
+        "subject": "rubik: fix mobile layout - panel buttons wrap on overflow",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "3be63c6",
+        "date": "2026-02-22",
+        "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "67d6b89",
+        "date": "2026-02-22",
+        "subject": "turing: pre-seed and run 500 steps in iframe so gallery preview shows live coral patterns",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "081a09b",
+        "date": "2026-02-22",
+        "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "63fb7e8",
+        "date": "2026-02-22",
+        "subject": "rubik: fix inner layer scrambling - use ceil(n/2) for all layers including middle, increase scramble count for large cubes",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "22a2bdd",
+        "date": "2026-02-22",
+        "subject": "rubik: add inner layer moves for NxN cubes, scramble all layers, fix solve history format",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "7c71340",
+        "date": "2026-02-22",
+        "subject": "rubik: fix solve - use move indices not function refs, slow down animation, don't auto-scramble when history empty",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "8939792",
+        "date": "2026-02-22",
+        "subject": "rubik: preventDefault on keyboard shortcuts, add touch gestures (tap/swipe), fix click/touch overlap",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "ab2b339",
+        "date": "2026-02-22",
+        "subject": "rubik: fix geometry (left face y=n not y=0), rewrite all 6 moves with verified strip cycling, add self-test + solve animation",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "62082b2",
+        "date": "2026-02-22",
+        "subject": "rubik: full rewrite - 6-face model, proper Rubik moves, correct isometric projection",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c06d96c",
+        "date": "2026-02-22",
+        "subject": "rubik: fix right face plane (y=n\u2192y=0), was rendering on wrong side",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "a4beceb",
+        "date": "2026-02-22",
+        "subject": "lsystem: move controls to solid bottom panel, no more overlay",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9597d44",
+        "date": "2026-02-22",
+        "subject": "rebuild lsystem: 7 presets, auto-fit, grow animation, keyboard+swipe controls",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e557471",
+        "date": "2026-02-22",
+        "subject": "fix rubik: proper isometric projection, aligned faces, row+col scrambling",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c68ada9",
+        "date": "2026-02-22",
+        "subject": "gallery: add Fourier Circles + Rubik Patterns visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "4f31094",
+        "date": "2026-02-22",
+        "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "b8e0392",
+        "date": "2026-02-21",
+        "subject": "gallery: add Truchet Tiles (1704) \u2014 arc/triangle/diagonal styles, auto-mutation",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "bbce29c",
+        "date": "2026-02-21",
+        "subject": "gallery: add back button + iframe hiding to all artifacts",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "e14abc5",
+        "date": "2026-02-21",
+        "subject": "gallery: add Voronoi tessellation (interactive, drifting seeds)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "1501c33",
+        "date": "2026-02-21",
+        "subject": "gallery: add Heat Diffusion and Turing Patterns visualizations",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "ca8d7ac",
+        "date": "2026-02-20",
+        "subject": "Hide info overlays and controls when gallery pages are embedded in iframes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c62e85c",
+        "date": "2026-02-20",
+        "subject": "Add Frieder Nake Walk-Through Raster (1965) \u2014 recursive grid subdivision with Bauhaus colors",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "972de83",
+        "date": "2026-02-20",
+        "subject": "Add Noll Gaussian Quadratic (1965) + Harmonograph (1844) \u2014 history artifacts",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "a4959cf",
+        "date": "2026-02-20",
+        "subject": "Slow down 10 PRINT in iframe preview",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d944f0a",
+        "date": "2026-02-20",
+        "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "efaa02b",
+        "date": "2026-02-20",
+        "subject": "Hide all UI controls in iframe previews, not just info text",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "274fc67",
+        "date": "2026-02-20",
+        "subject": "Hide info text in iframe previews, show when opened directly",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4626c2c",
+        "date": "2026-02-20",
+        "subject": "Add Lorenz + Sospiri to correct gallery location, update index",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "dca1b4c",
+        "date": "2026-02-20",
+        "subject": "Reintegrate iframes with hard separation: preview in fixed container, info below with solid bg + border",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "55824df",
+        "date": "2026-02-20",
+        "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "4830c75",
+        "date": "2026-02-20",
+        "subject": "Redesign gallery: remove iframes, solid card layout with icons, readable text",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8e002d9",
+        "date": "2026-02-20",
+        "subject": "Fix gallery card text contrast \u2014 solid bg, brighter desc text (#ccc)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "95356c1",
+        "date": "2026-02-20",
+        "subject": "Add chinoiserie garden visualization \u2014 interactive flowering branches with petals",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "5422e97",
+        "date": "2026-02-20",
+        "subject": "Add gallery index page with iframe previews for all 12 artifacts",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "7306e1e",
+        "date": "2026-02-19",
+        "subject": "Fix sierpinski.html: rewrite to match working canvas pattern",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "df1d2b7",
+        "date": "2026-02-19",
+        "subject": "All gallery artifacts self-contained: no deck links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7279297",
+        "date": "2026-02-19",
+        "subject": "Replace MoltComps with creative coding gallery + 3 new artifacts (Lissajous, Life, L-System)",
+        "categories": [
+          "other"
+        ]
+      }
+    ]
+  }
+}

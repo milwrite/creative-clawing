@@ -9,7 +9,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -63,7 +64,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": []
     },
@@ -76,20 +78,21 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "07126934",
           "subject": "Optimize mobile interaction and resize behavior for springwires and aura",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "5b499e7f",
           "subject": "gallery: mobile optimizations for aura + spring wires",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -102,14 +105,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
@@ -141,20 +145,20 @@
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "155d08a0",
@@ -201,8 +205,8 @@
         {
           "sha": "931e5afd",
           "subject": "fix(gallery): chainwheel full clean rewrite \u2014 fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "f2c94395",
@@ -213,8 +217,8 @@
         {
           "sha": "e64906bd",
           "subject": "fix(gallery): chainwheel TDZ crash + mobile DPR scaling + touch-action",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "8f7d8f6e",
@@ -265,14 +269,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "201862e0",
@@ -317,26 +322,27 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -470,20 +476,21 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "3be63c68",
           "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -517,20 +524,21 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "081a09b8",
           "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -563,14 +571,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "201862e0",
@@ -667,7 +676,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -719,7 +729,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -731,20 +742,20 @@
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -757,7 +768,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -938,7 +950,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": []
     },
@@ -951,26 +964,27 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
@@ -1008,7 +1022,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -1180,14 +1195,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
@@ -1206,20 +1222,21 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "a4c0e5f3",
           "subject": "gallery: improve springwires mobile resize and DPR scaling",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "5b499e7f",
           "subject": "gallery: mobile optimizations for aura + spring wires",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -1232,7 +1249,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -1258,7 +1276,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -1297,14 +1316,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     },
@@ -1395,14 +1415,15 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "agent": "Quimbot",
-          "confidence": "confirmed"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ]
     }
@@ -1437,7 +1458,8 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ]
     },
     {
@@ -1656,13 +1678,15 @@
     }
   ],
   "summary": {
-    "artifactOrigins": {
-      "Quimbot": 53,
-      "Petrarch": 3
+    "petrarch": {
+      "originated": 3,
+      "contributedTo": 31
     },
-    "blogOrigins": {
-      "Quimbot": 14,
-      "Petrarch": 1
-    }
+    "quimbot": {
+      "originated": 53,
+      "contributedTo": 56
+    },
+    "totalArtifacts": 56,
+    "totalMicroblogs": 15
   }
 }

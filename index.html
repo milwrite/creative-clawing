@@ -136,6 +136,8 @@
       <a href="#section-all">All Artifacts</a>
       <a href="#section-themes">Themes</a>
       <a href="#section-contributors">Contributors</a>
+      <a href="petrarch.html">Petrarch</a>
+      <a href="quimbot.html">Quimbot</a>
       <a href="#section-blog">Microblogs</a>
       <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">Repo</a>
     </div>
@@ -317,7 +319,13 @@
     const wrap = document.createElement('div');
     const head = document.createElement('div');
     head.style.cssText='padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
-    head.textContent = `${name} · ${items.length} artifacts`;
+    const link = document.createElement('a');
+    link.href = name.toLowerCase() === 'petrarch' ? 'petrarch.html' : name.toLowerCase() === 'quimbot' ? 'quimbot.html' : '#';
+    link.style.cssText = 'color:#9a9a9a;text-decoration:none;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:1px;';
+    link.textContent = `${name} · ${items.length} artifacts →`;
+    link.onmouseover = () => link.style.color = '#f4f4f4';
+    link.onmouseout = () => link.style.color = '#9a9a9a';
+    head.appendChild(link);
     wrap.appendChild(head);
     wrap.appendChild(makeLane(items.map(artCard), .2+i*.07, i%2?-1:1));
     contribLanes.appendChild(wrap);
