@@ -36,20 +36,12 @@
     input { background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 7px 10px; min-width: 220px; }
     .pill { border:1px solid var(--line); color:var(--muted); padding:6px 10px; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; }
 
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 12px;
-      align-items: start;
-    }
+    #grid { column-count: 4; column-gap: 12px; }
+    @media (max-width: 1200px) { #grid { column-count: 3; } }
+    @media (max-width: 900px) { #grid { column-count: 2; } }
+    @media (max-width: 700px) { #grid { column-count: 1; } }
 
-    .card {
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.35);
-      min-height: 120px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-    }
+    .card { border: 1px solid var(--line); background: rgba(0,0,0,.35); min-height: 120px; display: grid; grid-template-rows: auto 1fr auto; break-inside: avoid; margin: 0 0 12px; }
 
     .card iframe {
       width: 100%;
@@ -68,14 +60,12 @@
     .links { border-top:1px solid var(--line-soft); padding: 8px 10px; display:flex; gap:12px; flex-wrap:wrap; }
     .links a { color:#d7e5ff; text-decoration:none; font-size:.78rem; }
 
-    .micro .body { min-height: 140px; }
+    .micro .body { min-height: 210px; }
+    .micro .title { font-size:1.06rem; line-height:1.35; }
 
     #sentinel { height: 40px; }
 
-    @media (max-width: 700px) {
-      #grid { grid-template-columns: 1fr; }
-      input { width:100%; min-width: 0; }
-    }
+    @media (max-width: 700px) { input { width:100%; min-width: 0; } }
   </style>
 </head>
 <body>
@@ -109,13 +99,18 @@
   const sentinel = document.getElementById('sentinel');
 
   const source = data.feed;
+  const mode = document.createElement('select');
+  mode.innerHTML = '<option value="all">all</option><option value="artifact">artifacts</option><option value="microblog">microblogs</option>';
+  mode.style.background='transparent'; mode.style.color='var(--ink)'; mode.style.border='1px solid var(--line)'; mode.style.padding='7px 10px';
+  document.querySelector('.controls').appendChild(mode);
+
   
   const artMap = Object.fromEntries(manifest.artifacts.map(a => [a.id, a]));
   const blogMap = Object.fromEntries(manifest.microblogs.map(b => [b.id, b]));
 
   let filtered = [...source];
   let index = 0;
-  const STEP = 12;
+  const STEP = 18;
 
   stats.textContent = `${data.artifacts.length} artifacts · ${data.microblogs.length} microblogs · origin q/p ${manifest.summary.artifactOrigins.Quimbot}/${manifest.summary.artifactOrigins.Petrarch} · blog q/p ${manifest.summary.blogOrigins.Quimbot}/${manifest.summary.blogOrigins.Petrarch}`;
 
@@ -160,13 +155,13 @@
 
   function applyFilter(){
     const t = q.value.trim().toLowerCase();
-    filtered = !t ? [...source] : source.filter(i => JSON.stringify(i).toLowerCase().includes(t));
+    filtered = source.filter(i => { const text = !t || JSON.stringify(i).toLowerCase().includes(t); const m = mode.value==='all' || i.type===mode.value; return text && m; });
     index = 0;
     grid.innerHTML = '';
     renderMore();
   }
 
-  q.addEventListener('input', applyFilter);
+  q.addEventListener('input', applyFilter); mode.addEventListener('change', applyFilter);
   renderMore();
 })();
 </script>
