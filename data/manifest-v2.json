@@ -1426,6 +1426,32 @@
           "confidence": "reported"
         }
       ]
+    },
+    {
+      "id": "halftone",
+      "title": "Halftone",
+      "type": "artifact",
+      "url": "gallery/halftone.html",
+      "page": "artifacts/halftone.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": []
+    },
+    {
+      "id": "dla",
+      "title": "DLA Crystal",
+      "type": "artifact",
+      "url": "gallery/dla.html",
+      "page": "artifacts/dla.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": []
     }
   ],
   "microblogs": [

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DLA Crystal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #030308; overflow: hidden; font-family: monospace; }
+    canvas { display: block; touch-action: none; }
+    #ui {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; align-items: center;
+    }
+    #ui button {
+      background: rgba(255,255,255,0.07); color: #bbb; border: 1px solid rgba(255,255,255,0.12);
+      padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: monospace;
+      font-size: 13px; letter-spacing: 0.05em; transition: background 0.2s;
+    }
+    #ui button:hover { background: rgba(255,255,255,0.14); }
+    #ui span { color: rgba(255,255,255,0.3); font-size: 12px; }
+    #back {
+      position: fixed; top: 16px; left: 16px;
+      color: rgba(255,255,255,0.3); font-size: 12px; text-decoration: none;
+      font-family: monospace; letter-spacing: 0.05em; transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.65); }
+    #counter {
+      position: fixed; top: 16px; right: 16px;
+      color: rgba(255,255,255,0.25); font-size: 11px; font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a id="back" href="index.html">← gallery</a>
+  <div id="counter"></div>
+  <div id="ui">
+    <span id="modeLabel">radial</span>
+    <button id="btnMode">mode</button>
+    <button id="btnReset">reset</button>
+  </div>
+  <script>
+    const inIframe = window.self !== window.top;
+    if (inIframe) {
+      document.getElementById('ui').style.display = 'none';
+      document.getElementById('back').style.display = 'none';
+      document.getElementById('counter').style.display = 'none';
+    }
+
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const counterEl = document.getElementById('counter');
+    let W, H, cx, cy;
+
+    // offscreen canvas for accumulation
+    let offC, offCtx;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      cx = W / 2; cy = H / 2;
+      offC = document.createElement('canvas');
+      offC.width = W; offC.height = H;
+      offCtx = offC.getContext('2d');
+      reset();
+    }
+    window.addEventListener('resize', resize);
+
+    // --- DLA state ---
+    // Use a Set of "gx,gy" strings for the aggregate, plus a flat array for fast neighbor checks
+    const CELL = 2;  // each grid cell = 2px
+    let grid;        // Int8Array — 1 if occupied
+    let gw, gh;
+    let stuckCount;
+    let maxR;        // maximum radius of aggregate
+    let mode = 0;    // 0=radial, 1=bottom-seed, 2=grid-seeds
+
+    const MODES = ['radial', 'bottom', 'seeds'];
+
+    function gridIdx(gx, gy) { return gy * gw + gx; }
+
+    function worldToGrid(wx, wy) {
+      return [Math.round(wx / CELL), Math.round(wy / CELL)];
+    }
+    function gridToWorld(gx, gy) {
+      return [gx * CELL, gy * CELL];
+    }
+
+    function isOccupied(gx, gy) {
+      if (gx < 0 || gy < 0 || gx >= gw || gy >= gh) return false;
+      return grid[gridIdx(gx, gy)] === 1;
+    }
+
+    function stick(gx, gy, gen) {
+      if (gx < 0 || gy < 0 || gx >= gw || gy >= gh) return;
+      grid[gridIdx(gx, gy)] = 1;
+      stuckCount++;
+
+      const [wx, wy] = gridToWorld(gx, gy);
+      const dx = wx - W/2, dy = wy - H/2;
+      const r2 = dx*dx + dy*dy;
+      if (r2 > maxR*maxR) maxR = Math.sqrt(r2);
+
+      // Draw on offscreen canvas — color by generation
+      const hue = (gen * 0.025 + 200) % 360;
+      const sat = 80 + Math.min(gen * 0.003, 18);
+      const lum = 45 + Math.min(gen * 0.004, 30);
+      offCtx.fillStyle = `hsl(${hue.toFixed(1)},${sat.toFixed(0)}%,${lum.toFixed(0)}%)`;
+      offCtx.beginPath();
+      offCtx.arc(wx, wy, CELL * 0.85, 0, Math.PI * 2);
+      offCtx.fill();
+    }
+
+    function hasNeighbor(gx, gy) {
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          if (isOccupied(gx+dx, gy+dy)) return true;
+        }
+      }
+      return false;
+    }
+
+    // Spawn a walker
+    function spawnWalker() {
+      const spawnR = maxR + 40 + 20;
+      const angle = Math.random() * Math.PI * 2;
+      let wx, wy;
+      if (mode === 1) {
+        // bottom seed — spawn from top
+        wx = W * 0.1 + Math.random() * W * 0.8;
+        wy = -CELL * 4;
+      } else {
+        wx = W/2 + Math.cos(angle) * spawnR;
+        wy = H/2 + Math.sin(angle) * spawnR;
+      }
+      return worldToGrid(wx, wy);
+    }
+
+    // Walk one particle to completion
+    function walkParticle(maxSteps) {
+      let [gx, gy] = spawnWalker();
+      const killR = maxR + 100;
+
+      for (let step = 0; step < maxSteps; step++) {
+        // random step
+        const dir = Math.floor(Math.random() * 4);
+        if (dir === 0) gx++;
+        else if (dir === 1) gx--;
+        else if (dir === 2) gy++;
+        else gy--;
+
+        // kill if too far
+        const wx = gx*CELL - W/2, wy = gy*CELL - H/2;
+        if (wx*wx + wy*wy > killR*killR) return false;
+
+        // check bounds
+        if (gx < 0 || gy < 0 || gx >= gw || gy >= gh) return false;
+
+        // check neighbor
+        if (hasNeighbor(gx, gy)) {
+          stick(gx, gy, stuckCount);
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function reset() {
+      gw = Math.ceil(W / CELL);
+      gh = Math.ceil(H / CELL);
+      grid = new Int8Array(gw * gh);
+      stuckCount = 0;
+      maxR = 0;
+      offCtx.clearRect(0, 0, W, H);
+      offCtx.fillStyle = '#030308';
+      offCtx.fillRect(0, 0, W, H);
+
+      // place seed(s)
+      if (mode === 1) {
+        // horizontal line at bottom
+        const sy = Math.round(H * 0.92 / CELL);
+        for (let sx = Math.round(W*0.2/CELL); sx < Math.round(W*0.8/CELL); sx++) {
+          stick(sx, sy, 0);
+        }
+        maxR = H * 0.1;
+      } else if (mode === 2) {
+        // scattered seeds
+        const seeds = 6;
+        for (let i = 0; i < seeds; i++) {
+          const angle = (i / seeds) * Math.PI * 2;
+          const r = Math.min(W, H) * 0.2;
+          const sx = Math.round((W/2 + Math.cos(angle)*r) / CELL);
+          const sy = Math.round((H/2 + Math.sin(angle)*r) / CELL);
+          stick(sx, sy, 0);
+        }
+        maxR = Math.min(W, H) * 0.22;
+      } else {
+        // center seed
+        const sx = Math.round(W/2 / CELL);
+        const sy = Math.round(H/2 / CELL);
+        stick(sx, sy, 0);
+        stick(sx+1, sy, 0);
+        stick(sx-1, sy, 0);
+        stick(sx, sy+1, 0);
+        stick(sx, sy-1, 0);
+        maxR = 4;
+      }
+    }
+
+    const MAX_PARTICLES = 18000;
+    const PER_FRAME = 8;
+    let fading = false;
+    let fadeAlpha = 0;
+
+    document.getElementById('btnMode').addEventListener('click', () => {
+      mode = (mode + 1) % MODES.length;
+      document.getElementById('modeLabel').textContent = MODES[mode];
+      resize();
+    });
+    document.getElementById('btnReset').addEventListener('click', () => {
+      resize();
+    });
+
+    function frame() {
+      requestAnimationFrame(frame);
+
+      if (fading) {
+        fadeAlpha += 0.015;
+        ctx.drawImage(offC, 0, 0);
+        ctx.fillStyle = `rgba(3,3,8,${Math.min(fadeAlpha, 1)})`;
+        ctx.fillRect(0, 0, W, H);
+        if (fadeAlpha >= 1) { fading = false; fadeAlpha = 0; resize(); }
+        return;
+      }
+
+      if (stuckCount < MAX_PARTICLES) {
+        let added = 0;
+        for (let i = 0; i < PER_FRAME * 3 && added < PER_FRAME; i++) {
+          if (walkParticle(4000)) added++;
+        }
+        if (!inIframe) {
+          counterEl.textContent = `${stuckCount.toLocaleString()} particles`;
+        }
+      } else {
+        fading = true;
+      }
+
+      ctx.drawImage(offC, 0, 0);
+    }
+
+    resize();
+    frame();
+  </script>
+</body>
+</html>

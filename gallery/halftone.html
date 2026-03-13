@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Halftone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #07070d; overflow: hidden; font-family: monospace; }
+    canvas { display: block; touch-action: none; }
+    #ui {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; align-items: center;
+    }
+    #ui button {
+      background: rgba(255,255,255,0.08); color: #ccc; border: 1px solid rgba(255,255,255,0.15);
+      padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: monospace;
+      font-size: 13px; letter-spacing: 0.05em; transition: background 0.2s;
+    }
+    #ui button:hover { background: rgba(255,255,255,0.15); }
+    #ui span { color: rgba(255,255,255,0.35); font-size: 12px; }
+    #back {
+      position: fixed; top: 16px; left: 16px;
+      color: rgba(255,255,255,0.35); font-size: 12px; text-decoration: none;
+      font-family: monospace; letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    #back:hover { color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a id="back" href="index.html">← gallery</a>
+  <div id="ui">
+    <span id="palLabel">chromatic</span>
+    <button id="btnPal">palette</button>
+    <button id="btnShape">shape: circle</button>
+  </div>
+  <script>
+    const inIframe = window.self !== window.top;
+    if (inIframe) {
+      document.getElementById('ui').style.display = 'none';
+      document.getElementById('back').style.display = 'none';
+    }
+
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // --- value noise ---
+    function hash2(x, y) {
+      const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+      return n - Math.floor(n);
+    }
+    function noise(x, y) {
+      const ix = Math.floor(x), iy = Math.floor(y);
+      const fx = x - ix, fy = y - iy;
+      const ux = fx * fx * (3 - 2 * fx);
+      const uy = fy * fy * (3 - 2 * fy);
+      const a = hash2(ix,   iy);
+      const b = hash2(ix+1, iy);
+      const c = hash2(ix,   iy+1);
+      const d = hash2(ix+1, iy+1);
+      return a*(1-ux)*(1-uy) + b*ux*(1-uy) + c*(1-ux)*uy + d*ux*uy;
+    }
+    function fbm(x, y) {
+      let v = 0, a = 0.5;
+      for (let i = 0; i < 4; i++) {
+        v += a * noise(x, y);
+        x *= 2.1; y *= 2.1; a *= 0.5;
+      }
+      return v;
+    }
+
+    // --- palettes ---
+    const palettes = [
+      {
+        name: 'chromatic',
+        color: (n, col, row, t) => {
+          const dx = col / 40 - 0.5, dy = row / 30 - 0.5;
+          const angle = Math.atan2(dy, dx);
+          const hue = ((angle / Math.PI * 180 + t * 30 + n * 60) % 360 + 360) % 360;
+          const sat = 60 + n * 20;
+          const lum = 35 + n * 30;
+          return `hsl(${hue.toFixed(1)},${sat.toFixed(0)}%,${lum.toFixed(0)}%)`;
+        }
+      },
+      {
+        name: 'neon',
+        color: (n, col, row, t) => {
+          const hues = [290, 180, 60, 320];
+          const idx = Math.floor(((col * 0.3 + row * 0.2 + t * 0.5) % hues.length + hues.length)) % hues.length;
+          const hue = hues[Math.floor(idx)] + n * 30;
+          return `hsl(${hue.toFixed(1)},100%,${40 + n * 40}%)`;
+        }
+      },
+      {
+        name: 'ember',
+        color: (n, col, row, t) => {
+          const hue = 10 + n * 40 + Math.sin(col * 0.2 + t) * 15;
+          return `hsl(${hue.toFixed(1)},${80 + n * 15}%,${20 + n * 55}%)`;
+        }
+      },
+      {
+        name: 'frost',
+        color: (n, col, row, t) => {
+          const hue = 195 + Math.sin(row * 0.25 + t * 0.8) * 25;
+          return `hsl(${hue.toFixed(1)},${50 + n * 30}%,${30 + n * 50}%)`;
+        }
+      },
+    ];
+
+    let palIdx = 0;
+    let shapeCircle = true;
+    let t = 0;
+
+    document.getElementById('btnPal').addEventListener('click', () => {
+      palIdx = (palIdx + 1) % palettes.length;
+      document.getElementById('palLabel').textContent = palettes[palIdx].name;
+    });
+    document.getElementById('btnShape').addEventListener('click', () => {
+      shapeCircle = !shapeCircle;
+      document.getElementById('btnShape').textContent = `shape: ${shapeCircle ? 'circle' : 'square'}`;
+    });
+
+    const COLS = 46;
+    let spacing, rows;
+
+    function drawDot(x, y, r, col, row) {
+      const pal = palettes[palIdx];
+      const n2 = fbm(col * 0.35 + t * 0.4, row * 0.35 + t * 0.3);
+      ctx.fillStyle = pal.color(n2, col, row, t);
+      if (shapeCircle) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        const side = r * 1.6;
+        ctx.fillRect(x - side/2, y - side/2, side, side);
+      }
+    }
+
+    function frame() {
+      requestAnimationFrame(frame);
+      t += 0.008;
+
+      ctx.fillStyle = '#07070d';
+      ctx.fillRect(0, 0, W, H);
+
+      spacing = W / COLS;
+      rows = Math.ceil(H / spacing) + 2;
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < COLS; col++) {
+          const x = col * spacing + spacing * 0.5;
+          const y = row * spacing + spacing * 0.5;
+
+          const nx = col * 0.22 + t * 0.5;
+          const ny = row * 0.22 + t * 0.38;
+          const n = fbm(nx, ny);
+
+          const maxR = spacing * 0.48;
+          const r = Math.max(0.5, n * maxR);
+
+          drawDot(x, y, r, col, row);
+        }
+      }
+    }
+
+    frame();
+  </script>
+</body>
+</html>
