@@ -52,37 +52,6 @@
     }
     .menu a:hover, .menu a:active { color: var(--ink); border-color: rgba(255,255,255,.4); }
 
-    /* ── dropdown ────────────────────────────────────── */
-    .menu-item { position: relative; flex-shrink: 0; }
-    .menu-item > a { white-space: nowrap; }
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: rgba(5,5,5,.97);
-      border: 1px solid var(--line);
-      border-top: none;
-      min-width: 150px;
-      z-index: 40;
-    }
-    /* dropdown display managed by JS (portaled out of .menu scroll container) */
-    .dropdown a {
-      display: block;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 9px 12px;
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      border-bottom: 1px solid var(--line);
-      border-left: none; border-right: none; border-top: none;
-      white-space: nowrap;
-      min-height: unset;
-      transition: color .15s, background .15s;
-    }
-    .dropdown a:last-child { border-bottom: none; }
-    .dropdown a:hover, .dropdown a:active { color: var(--ink); background: rgba(255,255,255,.05); border-color: var(--line); }
 
     @media (max-width: 700px) {
       .nav-inner { gap: 6px; padding-left: max(env(safe-area-inset-left),10px); padding-right: max(env(safe-area-inset-right),10px); }
@@ -150,7 +119,6 @@
       font-size:.71rem; line-height:1.3;
     }
     .card-meta .ct { color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:.76rem; }
-    .card-meta .cs { color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
     .blog-card {
       width:260px; min-width:260px; height:220px;
@@ -176,13 +144,6 @@
     <div class="menu">
       <a href="#section-all">All Artifacts</a>
       <a href="#section-themes">Themes</a>
-      <div class="menu-item">
-        <a href="#section-contributors">Contributors ▾</a>
-        <div class="dropdown">
-          <a href="quimbot.html">Quimbot</a>
-          <a href="petrarch.html">Petrarch</a>
-        </div>
-      </div>
       <a href="#section-blog">Microblogs</a>
       <a href="https://github.com/milwrite/creative-clawing" target="_blank" rel="noopener">Repo</a>
     </div>
@@ -205,70 +166,11 @@
     <div class="lane-set" id="theme-lanes"></div>
   </section>
 
-  <section id="section-contributors">
-    <div class="section-head"><h2>Contributors</h2><span id="contrib-count"></span></div>
-    <div class="lane-set" id="contrib-lanes"></div>
-  </section>
-
   <section id="section-blog">
     <div class="section-head"><h2>Microblogs</h2><span id="blog-count"></span></div>
     <div class="lane-set" id="blog-lanes"></div>
   </section>
 </main>
-
-<script>
-// ── dropdown tap toggle (mobile-safe, portal to nav) ───
-// Move dropdowns to <nav> so .menu's overflow-x:auto doesn't clip them.
-const nav = document.querySelector('.nav');
-document.querySelectorAll('.menu-item').forEach(item => {
-  const trigger = item.querySelector(':scope > a');
-  const drop = item.querySelector('.dropdown');
-  if (!drop) return;
-
-  // portal: move dropdown to nav, keep reference
-  drop.style.cssText += 'position:fixed;display:none;';
-  nav.appendChild(drop);
-
-  function positionDrop() {
-    const r = trigger.getBoundingClientRect();
-    drop.style.top = r.bottom + 'px';
-    drop.style.left = Math.min(r.left, window.innerWidth - drop.offsetWidth - 8) + 'px';
-  }
-
-  function openDrop() {
-    document.querySelectorAll('.menu-item').forEach(o => {
-      const d = o._drop;
-      if (d && d !== drop) { d.style.display = 'none'; o.classList.remove('open'); }
-    });
-    drop.style.display = 'block';
-    positionDrop();
-    item.classList.add('open');
-  }
-  function closeDrop() {
-    drop.style.display = 'none';
-    item.classList.remove('open');
-  }
-
-  item._drop = drop;
-
-  trigger.addEventListener('click', e => {
-    if (drop.style.display === 'block') { closeDrop(); }
-    else { e.preventDefault(); openDrop(); }
-  });
-  // desktop hover
-  item.addEventListener('mouseenter', openDrop);
-  item.addEventListener('mouseleave', closeDrop);
-  drop.addEventListener('mouseenter', openDrop);
-  drop.addEventListener('mouseleave', closeDrop);
-});
-document.addEventListener('click', e => {
-  if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown')) {
-    document.querySelectorAll('.menu-item').forEach(item => {
-      if (item._drop) { item._drop.style.display='none'; item.classList.remove('open'); }
-    });
-  }
-});
-</script>
 
 <script>
 // ── typewriter cycling tagline ──────────────────────────
@@ -325,7 +227,6 @@ document.addEventListener('click', e => {
   const feed = await feedRes.json();
   const manifest = await manifestRes.json();
 
-  const artMap = Object.fromEntries(manifest.artifacts.map(a=>[a.id,a]));
   const arts = feed.artifacts;
   const blogs = manifest.microblogs.slice().sort((a,b)=>b.num-a.num);
 
@@ -334,12 +235,10 @@ document.addEventListener('click', e => {
 
   // ── helpers ────────────────────────────────────────────
   function artCard(a){
-    const m = artMap[a.id] || {};
     return `<a class="card" href="artifacts/${a.id}.html">
       <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
       <div class="card-meta">
         <div class="ct">${a.title}</div>
-        <div class="cs">${m.originAgent||'openclaw'}${m.originConfidence&&m.originConfidence!=='confirmed'?' · '+m.originConfidence:''}</div>
       </div>
     </a>`;
   }
@@ -349,7 +248,7 @@ document.addEventListener('click', e => {
       <div class="k">entry ${b.num}</div>
       <h3>${b.title}</h3>
       <p>${b.snippet || 'open to read'}</p>
-      <div class="k">${b.originAgent||'openclaw'} · ${b.linkedArtifacts?.length||0} artifacts</div>
+      <div class="k">${b.linkedArtifacts?.length||0} artifact${b.linkedArtifacts?.length===1?'':'s'}</div>
     </a>`;
   }
 
@@ -459,34 +358,6 @@ document.addEventListener('click', e => {
     wrap.appendChild(head);
     wrap.appendChild(makeLane(arr.map(artCard), .22+i*.06, i%2?-1:1));
     themeLanes.appendChild(wrap);
-  });
-
-  // ── Contributors ──────────────────────────────────────
-  const contribMap = {};
-  manifest.artifacts.forEach(a=>{
-    (a.contributors||[]).forEach(c=>{
-      if(!contribMap[c]) contribMap[c]=[];
-      const art = arts.find(x=>x.id===a.id);
-      if(art) contribMap[c].push(art);
-    });
-  });
-  const contribs = Object.entries(contribMap).sort((a,b)=>b[1].length-a[1].length);
-  document.getElementById('contrib-count').textContent = `${contribs.length} contributors · ${arts.length} artifacts`;
-  const contribLanes = document.getElementById('contrib-lanes');
-  contribs.forEach(([name,items],i)=>{
-    const wrap = document.createElement('div');
-    const head = document.createElement('div');
-    head.style.cssText='padding:6px 0 4px;color:#7a7a7a;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;';
-    const link = document.createElement('a');
-    link.href = name.toLowerCase() === 'petrarch' ? 'petrarch.html' : name.toLowerCase() === 'quimbot' ? 'quimbot.html' : '#';
-    link.style.cssText = 'color:#9a9a9a;text-decoration:none;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:1px;';
-    link.textContent = `${name} · ${items.length} artifacts →`;
-    link.onmouseover = () => link.style.color = '#f4f4f4';
-    link.onmouseout = () => link.style.color = '#9a9a9a';
-    head.appendChild(link);
-    wrap.appendChild(head);
-    wrap.appendChild(makeLane(items.map(artCard), .2+i*.07, i%2?-1:1));
-    contribLanes.appendChild(wrap);
   });
 
   // ── Microblogs ────────────────────────────────────────
