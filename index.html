@@ -64,8 +64,7 @@
       min-width: 150px;
       z-index: 40;
     }
-    .menu-item:hover .dropdown,
-    .menu-item:focus-within .dropdown { display: block; }
+    /* dropdown display managed by JS (portaled out of .menu scroll container) */
     .dropdown a {
       display: block;
       color: var(--muted);
@@ -205,6 +204,60 @@
     <div class="lane-set" id="blog-lanes"></div>
   </section>
 </main>
+
+<script>
+// ── dropdown tap toggle (mobile-safe, portal to nav) ───
+// Move dropdowns to <nav> so .menu's overflow-x:auto doesn't clip them.
+const nav = document.querySelector('.nav');
+document.querySelectorAll('.menu-item').forEach(item => {
+  const trigger = item.querySelector(':scope > a');
+  const drop = item.querySelector('.dropdown');
+  if (!drop) return;
+
+  // portal: move dropdown to nav, keep reference
+  drop.style.cssText += 'position:fixed;display:none;';
+  nav.appendChild(drop);
+
+  function positionDrop() {
+    const r = trigger.getBoundingClientRect();
+    drop.style.top = r.bottom + 'px';
+    drop.style.left = Math.min(r.left, window.innerWidth - drop.offsetWidth - 8) + 'px';
+  }
+
+  function openDrop() {
+    document.querySelectorAll('.menu-item').forEach(o => {
+      const d = o._drop;
+      if (d && d !== drop) { d.style.display = 'none'; o.classList.remove('open'); }
+    });
+    drop.style.display = 'block';
+    positionDrop();
+    item.classList.add('open');
+  }
+  function closeDrop() {
+    drop.style.display = 'none';
+    item.classList.remove('open');
+  }
+
+  item._drop = drop;
+
+  trigger.addEventListener('click', e => {
+    if (drop.style.display === 'block') { closeDrop(); }
+    else { e.preventDefault(); openDrop(); }
+  });
+  // desktop hover
+  item.addEventListener('mouseenter', openDrop);
+  item.addEventListener('mouseleave', closeDrop);
+  drop.addEventListener('mouseenter', openDrop);
+  drop.addEventListener('mouseleave', closeDrop);
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('.menu-item') && !e.target.closest('.dropdown')) {
+    document.querySelectorAll('.menu-item').forEach(item => {
+      if (item._drop) { item._drop.style.display='none'; item.classList.remove('open'); }
+    });
+  }
+});
+</script>
 
 <script>
 (async function(){
