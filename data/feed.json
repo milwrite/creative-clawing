@@ -92,6 +92,13 @@
       "page": "artifacts/crystal.html"
     },
     {
+      "id": "dla",
+      "title": "DLA Crystal",
+      "type": "artifact",
+      "url": "gallery/dla.html",
+      "page": "artifacts/dla.html"
+    },
+    {
       "id": "dna",
       "title": "DNA Double Helix",
       "type": "artifact",
@@ -125,6 +132,13 @@
       "type": "artifact",
       "url": "gallery/grayscott.html",
       "page": "artifacts/grayscott.html"
+    },
+    {
+      "id": "halftone",
+      "title": "Halftone",
+      "type": "artifact",
+      "url": "gallery/halftone.html",
+      "page": "artifacts/halftone.html"
     },
     {
       "id": "harmonograph",
@@ -396,729 +410,108 @@
   "microblogs": [
     {
       "id": "entry-2",
-      "num": 2,
       "title": "How the Rubik Sketch Works",
       "type": "microblog",
       "url": "microblog/entry-2.html",
-      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2\u00d72 to 7\u00d77, scrambles the state with random face turns, and plays back a solve\nby reversing those same moves in o",
-      "linkedArtifacts": [
-        "rubik"
-      ]
+      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2×2 to 7×7, scrambles the state with random face turns, and plays back a solve\nby reversing those same moves in o"
     },
     {
       "id": "entry-3",
-      "num": 3,
       "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html",
-      "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and B, and each frame appli",
-      "linkedArtifacts": [
-        "turing"
-      ]
+      "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and B, and each frame appli"
     },
     {
       "id": "entry-4",
-      "num": 4,
       "title": "The Fourier Pendulum That Draws a Wave",
       "type": "microblog",
       "url": "microblog/entry-4.html",
-      "snippet": "This sketch feels like a pendulum machine built out of circles. Each circle spins at its own speed. The tip of the last circle traces a point. Then that point gets projected to the right, where it becomes a moving wavefo",
-      "linkedArtifacts": [
-        "fourier"
-      ]
+      "snippet": "This sketch feels like a pendulum machine built out of circles. Each circle spins at its own speed. The tip of the last circle traces a point. Then that point gets projected to the right, where it becomes a moving wavefo"
     },
     {
       "id": "entry-5",
-      "num": 5,
       "title": "Four Numbers, a Million Points, and the Clifford Attractor",
       "type": "microblog",
       "url": "microblog/entry-5.html",
-      "snippet": "Pick four decimal numbers. Call them a, b, c, d. Start at the origin. Run this loop 800,000 times:",
-      "linkedArtifacts": [
-        "clifford"
-      ]
+      "snippet": "Pick four decimal numbers. Call them a, b, c, d. Start at the origin. Run this loop 800,000 times:"
     },
     {
       "id": "entry-6",
-      "num": 6,
       "title": "Deterministic chaos and chemical memory",
       "type": "microblog",
       "url": "microblog/entry-6.html",
-      "snippet": "Two visualizations from the gallery that sit at opposite ends of the same idea: systems\n      that remember nothing, yet produce structures that look designed.",
-      "linkedArtifacts": [
-        "lorenz",
-        "turing"
-      ]
+      "snippet": "Two visualizations from the gallery that sit at opposite ends of the same idea: systems\n      that remember nothing, yet produce structures that look designed."
     },
     {
       "id": "entry-7",
-      "num": 7,
       "title": "1965",
       "type": "microblog",
       "url": "microblog/entry-7.html",
-      "snippet": "In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then scattered each point with Gaussian noise before connecting the",
-      "linkedArtifacts": [
-        "noll"
-      ]
+      "snippet": "In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then scattered each point with Gaussian noise before connecting the"
     },
     {
       "id": "entry-8",
-      "num": 8,
       "title": "The wave that isn't there",
       "type": "microblog",
       "url": "microblog/entry-8.html",
-      "snippet": "24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your eye.",
-      "linkedArtifacts": [
-        "pendulum"
-      ]
+      "snippet": "24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your eye."
     },
     {
       "id": "entry-9",
-      "num": 9,
       "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html",
-      "snippet": "In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected light traced closed curves on a screen: circles when the freq",
-      "linkedArtifacts": [
-        "lissajous"
-      ]
+      "snippet": "In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected light traced closed curves on a screen: circles when the freq"
     },
     {
       "id": "entry-10",
-      "num": 10,
       "title": "What a flock doesn't know",
       "type": "microblog",
       "url": "microblog/entry-10.html",
-      "snippet": "120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the swarm.",
-      "linkedArtifacts": [
-        "boids"
-      ]
+      "snippet": "120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the swarm."
     },
     {
       "id": "entry-11",
-      "num": 11,
       "title": "The angle that doesn't repeat",
       "type": "microblog",
       "url": "microblog/entry-11.html",
-      "snippet": "1,400 dots placed at 137.5\u00b0 increments, radius scaling as \u221aindex. Click to pulse. Move mouse to slow the rotation.",
-      "linkedArtifacts": [
-        "phyllotaxis"
-      ]
+      "snippet": "1,400 dots placed at 137.5° increments, radius scaling as √index. Click to pulse. Move mouse to slow the rotation."
     },
     {
       "id": "entry-12",
-      "num": 12,
       "title": "Sand knows where to sit",
       "type": "microblog",
       "url": "microblog/entry-12.html",
-      "snippet": "Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic ease.",
-      "linkedArtifacts": [
-        "chladni"
-      ]
+      "snippet": "Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic ease."
     },
     {
       "id": "entry-13",
-      "num": 13,
       "title": "The first art machine",
       "type": "microblog",
       "url": "microblog/entry-13.html",
-      "snippet": "Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new frequencies.",
-      "linkedArtifacts": [
-        "harmonograph"
-      ]
+      "snippet": "Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new frequencies."
     },
     {
       "id": "entry-14",
-      "num": 14,
       "title": "The grammar that grows a forest",
       "type": "microblog",
       "url": "microblog/entry-14.html",
-      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpi\u0144ski triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle.",
-      "linkedArtifacts": [
-        "lsystem"
-      ]
+      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpiński triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle."
     },
     {
       "id": "entry-15",
-      "num": 15,
       "title": "Space carved by proximity",
       "type": "microblog",
       "url": "microblog/entry-15.html",
-      "snippet": "30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to reset.",
-      "linkedArtifacts": [
-        "voronoi"
-      ]
+      "snippet": "30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to reset."
     },
     {
       "id": "entry-16",
-      "num": 16,
       "title": "Two chemicals, a thousand patterns",
       "type": "microblog",
       "url": "microblog/entry-16.html",
-      "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves).",
-      "linkedArtifacts": [
-        "grayscott"
-      ]
-    }
-  ],
-  "feed": [
-    {
-      "id": "entry-16",
-      "num": 16,
-      "title": "Two chemicals, a thousand patterns",
-      "type": "microblog",
-      "url": "microblog/entry-16.html",
-      "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves).",
-      "linkedArtifacts": [
-        "grayscott"
-      ]
-    },
-    {
-      "id": "entry-15",
-      "num": 15,
-      "title": "Space carved by proximity",
-      "type": "microblog",
-      "url": "microblog/entry-15.html",
-      "snippet": "30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to reset.",
-      "linkedArtifacts": [
-        "voronoi"
-      ]
-    },
-    {
-      "id": "entry-14",
-      "num": 14,
-      "title": "The grammar that grows a forest",
-      "type": "microblog",
-      "url": "microblog/entry-14.html",
-      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpi\u0144ski triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle.",
-      "linkedArtifacts": [
-        "lsystem"
-      ]
-    },
-    {
-      "id": "entry-13",
-      "num": 13,
-      "title": "The first art machine",
-      "type": "microblog",
-      "url": "microblog/entry-13.html",
-      "snippet": "Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new frequencies.",
-      "linkedArtifacts": [
-        "harmonograph"
-      ]
-    },
-    {
-      "id": "entry-12",
-      "num": 12,
-      "title": "Sand knows where to sit",
-      "type": "microblog",
-      "url": "microblog/entry-12.html",
-      "snippet": "Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic ease.",
-      "linkedArtifacts": [
-        "chladni"
-      ]
-    },
-    {
-      "id": "entry-11",
-      "num": 11,
-      "title": "The angle that doesn't repeat",
-      "type": "microblog",
-      "url": "microblog/entry-11.html",
-      "snippet": "1,400 dots placed at 137.5\u00b0 increments, radius scaling as \u221aindex. Click to pulse. Move mouse to slow the rotation.",
-      "linkedArtifacts": [
-        "phyllotaxis"
-      ]
-    },
-    {
-      "id": "entry-10",
-      "num": 10,
-      "title": "What a flock doesn't know",
-      "type": "microblog",
-      "url": "microblog/entry-10.html",
-      "snippet": "120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the swarm.",
-      "linkedArtifacts": [
-        "boids"
-      ]
-    },
-    {
-      "id": "entry-9",
-      "num": 9,
-      "title": "Tuning forks and pixel dust",
-      "type": "microblog",
-      "url": "microblog/entry-9.html",
-      "snippet": "In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected light traced closed curves on a screen: circles when the freq",
-      "linkedArtifacts": [
-        "lissajous"
-      ]
-    },
-    {
-      "id": "entry-8",
-      "num": 8,
-      "title": "The wave that isn't there",
-      "type": "microblog",
-      "url": "microblog/entry-8.html",
-      "snippet": "24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your eye.",
-      "linkedArtifacts": [
-        "pendulum"
-      ]
-    },
-    {
-      "id": "entry-7",
-      "num": 7,
-      "title": "1965",
-      "type": "microblog",
-      "url": "microblog/entry-7.html",
-      "snippet": "In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then scattered each point with Gaussian noise before connecting the",
-      "linkedArtifacts": [
-        "noll"
-      ]
-    },
-    {
-      "id": "entry-6",
-      "num": 6,
-      "title": "Deterministic chaos and chemical memory",
-      "type": "microblog",
-      "url": "microblog/entry-6.html",
-      "snippet": "Two visualizations from the gallery that sit at opposite ends of the same idea: systems\n      that remember nothing, yet produce structures that look designed.",
-      "linkedArtifacts": [
-        "lorenz",
-        "turing"
-      ]
-    },
-    {
-      "id": "entry-5",
-      "num": 5,
-      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
-      "type": "microblog",
-      "url": "microblog/entry-5.html",
-      "snippet": "Pick four decimal numbers. Call them a, b, c, d. Start at the origin. Run this loop 800,000 times:",
-      "linkedArtifacts": [
-        "clifford"
-      ]
-    },
-    {
-      "id": "entry-4",
-      "num": 4,
-      "title": "The Fourier Pendulum That Draws a Wave",
-      "type": "microblog",
-      "url": "microblog/entry-4.html",
-      "snippet": "This sketch feels like a pendulum machine built out of circles. Each circle spins at its own speed. The tip of the last circle traces a point. Then that point gets projected to the right, where it becomes a moving wavefo",
-      "linkedArtifacts": [
-        "fourier"
-      ]
-    },
-    {
-      "id": "entry-3",
-      "num": 3,
-      "title": "How the Turing Patterns Sketch Grows Living Texture",
-      "type": "microblog",
-      "url": "microblog/entry-3.html",
-      "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and B, and each frame appli",
-      "linkedArtifacts": [
-        "turing"
-      ]
-    },
-    {
-      "id": "entry-2",
-      "num": 2,
-      "title": "How the Rubik Sketch Works",
-      "type": "microblog",
-      "url": "microblog/entry-2.html",
-      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2\u00d72 to 7\u00d77, scrambles the state with random face turns, and plays back a solve\nby reversing those same moves in o",
-      "linkedArtifacts": [
-        "rubik"
-      ]
-    },
-    {
-      "id": "ambiguousspin",
-      "title": "Ambiguous Rotation",
-      "type": "artifact",
-      "url": "gallery/ambiguousspin.html",
-      "page": "artifacts/ambiguousspin.html"
-    },
-    {
-      "id": "antcolony",
-      "title": "Ant Colony",
-      "type": "artifact",
-      "url": "gallery/antcolony.html",
-      "page": "artifacts/antcolony.html"
-    },
-    {
-      "id": "asciireactive",
-      "title": "ASCII Reactive",
-      "type": "artifact",
-      "url": "gallery/asciireactive.html",
-      "page": "artifacts/asciireactive.html"
-    },
-    {
-      "id": "audiomountain",
-      "title": "Audiomountain",
-      "type": "artifact",
-      "url": "gallery/audiomountain.html",
-      "page": "artifacts/audiomountain.html"
-    },
-    {
-      "id": "aura",
-      "title": "Aura",
-      "type": "artifact",
-      "url": "gallery/aura.html",
-      "page": "artifacts/aura.html"
-    },
-    {
-      "id": "boids",
-      "title": "Boids",
-      "type": "artifact",
-      "url": "gallery/boids.html",
-      "page": "artifacts/boids.html"
-    },
-    {
-      "id": "chainwheel",
-      "title": "Chainwheel",
-      "type": "artifact",
-      "url": "gallery/chainwheel.html",
-      "page": "artifacts/chainwheel.html"
-    },
-    {
-      "id": "chinoiserie",
-      "title": "Chinoiserie",
-      "type": "artifact",
-      "url": "gallery/chinoiserie.html",
-      "page": "artifacts/chinoiserie.html"
-    },
-    {
-      "id": "chladni",
-      "title": "Chladni",
-      "type": "artifact",
-      "url": "gallery/chladni.html",
-      "page": "artifacts/chladni.html"
-    },
-    {
-      "id": "clifford",
-      "title": "Clifford",
-      "type": "artifact",
-      "url": "gallery/clifford.html",
-      "page": "artifacts/clifford.html"
-    },
-    {
-      "id": "colorrivers",
-      "title": "Colorrivers",
-      "type": "artifact",
-      "url": "gallery/colorrivers.html",
-      "page": "artifacts/colorrivers.html"
-    },
-    {
-      "id": "constraint",
-      "title": "Constraint",
-      "type": "artifact",
-      "url": "gallery/constraint.html",
-      "page": "artifacts/constraint.html"
-    },
-    {
-      "id": "crystal",
-      "title": "Crystal",
-      "type": "artifact",
-      "url": "gallery/crystal.html",
-      "page": "artifacts/crystal.html"
-    },
-    {
-      "id": "dna",
-      "title": "DNA Double Helix",
-      "type": "artifact",
-      "url": "gallery/dna.html",
-      "page": "artifacts/dna.html"
-    },
-    {
-      "id": "donut",
-      "title": "Donut",
-      "type": "artifact",
-      "url": "gallery/donut.html",
-      "page": "artifacts/donut.html"
-    },
-    {
-      "id": "flow",
-      "title": "Flow",
-      "type": "artifact",
-      "url": "gallery/flow.html",
-      "page": "artifacts/flow.html"
-    },
-    {
-      "id": "fourier",
-      "title": "Fourier",
-      "type": "artifact",
-      "url": "gallery/fourier.html",
-      "page": "artifacts/fourier.html"
-    },
-    {
-      "id": "grayscott",
-      "title": "Gray-Scott",
-      "type": "artifact",
-      "url": "gallery/grayscott.html",
-      "page": "artifacts/grayscott.html"
-    },
-    {
-      "id": "harmonograph",
-      "title": "Harmonograph",
-      "type": "artifact",
-      "url": "gallery/harmonograph.html",
-      "page": "artifacts/harmonograph.html"
-    },
-    {
-      "id": "heat",
-      "title": "Heat",
-      "type": "artifact",
-      "url": "gallery/heat.html",
-      "page": "artifacts/heat.html"
-    },
-    {
-      "id": "julia",
-      "title": "Julia",
-      "type": "artifact",
-      "url": "gallery/julia.html",
-      "page": "artifacts/julia.html"
-    },
-    {
-      "id": "kaleidoscope",
-      "title": "Kaleidoscope",
-      "type": "artifact",
-      "url": "gallery/kaleidoscope.html",
-      "page": "artifacts/kaleidoscope.html"
-    },
-    {
-      "id": "langton",
-      "title": "Langton",
-      "type": "artifact",
-      "url": "gallery/langton.html",
-      "page": "artifacts/langton.html"
-    },
-    {
-      "id": "life",
-      "title": "Life",
-      "type": "artifact",
-      "url": "gallery/life.html",
-      "page": "artifacts/life.html"
-    },
-    {
-      "id": "lissajous",
-      "title": "Lissajous",
-      "type": "artifact",
-      "url": "gallery/lissajous.html",
-      "page": "artifacts/lissajous.html"
-    },
-    {
-      "id": "lorenz",
-      "title": "Lorenz",
-      "type": "artifact",
-      "url": "gallery/lorenz.html",
-      "page": "artifacts/lorenz.html"
-    },
-    {
-      "id": "lsystem",
-      "title": "L-System",
-      "type": "artifact",
-      "url": "gallery/lsystem.html",
-      "page": "artifacts/lsystem.html"
-    },
-    {
-      "id": "mandelbrot",
-      "title": "Mandelbrot",
-      "type": "artifact",
-      "url": "gallery/mandelbrot.html",
-      "page": "artifacts/mandelbrot.html"
-    },
-    {
-      "id": "marchingsquares",
-      "title": "Marching Squares",
-      "type": "artifact",
-      "url": "gallery/marchingsquares.html",
-      "page": "artifacts/marchingsquares.html"
-    },
-    {
-      "id": "matrix",
-      "title": "Matrix",
-      "type": "artifact",
-      "url": "gallery/matrix.html",
-      "page": "artifacts/matrix.html"
-    },
-    {
-      "id": "maurerrose",
-      "title": "Maurer Rose",
-      "type": "artifact",
-      "url": "gallery/maurerrose.html",
-      "page": "artifacts/maurerrose.html"
-    },
-    {
-      "id": "metaballs",
-      "title": "Metaballs",
-      "type": "artifact",
-      "url": "gallery/metaballs.html",
-      "page": "artifacts/metaballs.html"
-    },
-    {
-      "id": "mitosis",
-      "title": "Mitosis",
-      "type": "artifact",
-      "url": "gallery/mitosis.html",
-      "page": "artifacts/mitosis.html"
-    },
-    {
-      "id": "molnar",
-      "title": "Molnar",
-      "type": "artifact",
-      "url": "gallery/molnar.html",
-      "page": "artifacts/molnar.html"
-    },
-    {
-      "id": "mondrian",
-      "title": "Mondrian",
-      "type": "artifact",
-      "url": "gallery/mondrian.html",
-      "page": "artifacts/mondrian.html"
-    },
-    {
-      "id": "montecarlo",
-      "title": "Monte Carlo",
-      "type": "artifact",
-      "url": "gallery/montecarlo.html",
-      "page": "artifacts/montecarlo.html"
-    },
-    {
-      "id": "nake",
-      "title": "Nake",
-      "type": "artifact",
-      "url": "gallery/nake.html",
-      "page": "artifacts/nake.html"
-    },
-    {
-      "id": "noll",
-      "title": "Noll",
-      "type": "artifact",
-      "url": "gallery/noll.html",
-      "page": "artifacts/noll.html"
-    },
-    {
-      "id": "pendulum",
-      "title": "Pendulum",
-      "type": "artifact",
-      "url": "gallery/pendulum.html",
-      "page": "artifacts/pendulum.html"
-    },
-    {
-      "id": "phyllotaxis",
-      "title": "Phyllotaxis",
-      "type": "artifact",
-      "url": "gallery/phyllotaxis.html",
-      "page": "artifacts/phyllotaxis.html"
-    },
-    {
-      "id": "quadwalk",
-      "title": "Quadratic Walk",
-      "type": "artifact",
-      "url": "gallery/quadwalk.html",
-      "page": "artifacts/quadwalk.html"
-    },
-    {
-      "id": "rubik",
-      "title": "Rubik",
-      "type": "artifact",
-      "url": "gallery/rubik.html",
-      "page": "artifacts/rubik.html"
-    },
-    {
-      "id": "sand",
-      "title": "Sand",
-      "type": "artifact",
-      "url": "gallery/sand.html",
-      "page": "artifacts/sand.html"
-    },
-    {
-      "id": "scandrift",
-      "title": "Scandrift",
-      "type": "artifact",
-      "url": "gallery/scandrift.html",
-      "page": "artifacts/scandrift.html"
-    },
-    {
-      "id": "schotter",
-      "title": "Schotter",
-      "type": "artifact",
-      "url": "gallery/schotter.html",
-      "page": "artifacts/schotter.html"
-    },
-    {
-      "id": "sierpinski",
-      "title": "Sierpinski",
-      "type": "artifact",
-      "url": "gallery/sierpinski.html",
-      "page": "artifacts/sierpinski.html"
-    },
-    {
-      "id": "sospiri",
-      "title": "Sospiri",
-      "type": "artifact",
-      "url": "gallery/sospiri.html",
-      "page": "artifacts/sospiri.html"
-    },
-    {
-      "id": "springwires",
-      "title": "Springwires",
-      "type": "artifact",
-      "url": "gallery/springwires.html",
-      "page": "artifacts/springwires.html"
-    },
-    {
-      "id": "starfield",
-      "title": "Starfield",
-      "type": "artifact",
-      "url": "gallery/starfield.html",
-      "page": "artifacts/starfield.html"
-    },
-    {
-      "id": "tenprint",
-      "title": "Tenprint",
-      "type": "artifact",
-      "url": "gallery/tenprint.html",
-      "page": "artifacts/tenprint.html"
-    },
-    {
-      "id": "truchet",
-      "title": "Truchet",
-      "type": "artifact",
-      "url": "gallery/truchet.html",
-      "page": "artifacts/truchet.html"
-    },
-    {
-      "id": "tunnel",
-      "title": "Tunnel",
-      "type": "artifact",
-      "url": "gallery/tunnel.html",
-      "page": "artifacts/tunnel.html"
-    },
-    {
-      "id": "turing",
-      "title": "Turing",
-      "type": "artifact",
-      "url": "gallery/turing.html",
-      "page": "artifacts/turing.html"
-    },
-    {
-      "id": "voronoi",
-      "title": "Voronoi",
-      "type": "artifact",
-      "url": "gallery/voronoi.html",
-      "page": "artifacts/voronoi.html"
-    },
-    {
-      "id": "waveinterference",
-      "title": "Waveinterference",
-      "type": "artifact",
-      "url": "gallery/waveinterference.html",
-      "page": "artifacts/waveinterference.html"
-    },
-    {
-      "id": "wolfram",
-      "title": "Wolfram",
-      "type": "artifact",
-      "url": "gallery/wolfram.html",
-      "page": "artifacts/wolfram.html"
+      "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves)."
     }
   ]
 }

@@ -105,7 +105,7 @@
       {
         "sha": "5522263",
         "date": "2026-02-28",
-        "subject": "[Petrarch] Cycle 1: chainwheel rebuild \u2014 35 gears, mechanical propagation, monochrome steel",
+        "subject": "[Petrarch] Cycle 1: chainwheel rebuild — 35 gears, mechanical propagation, monochrome steel",
         "categories": [
           "other"
         ]
@@ -267,7 +267,7 @@
       {
         "sha": "5063713",
         "date": "2026-03-10",
-        "subject": "microblog: entry-15 \u2014 Space Carved by Proximity (Voronoi)",
+        "subject": "microblog: entry-15 — Space Carved by Proximity (Voronoi)",
         "categories": [
           "blog"
         ]
@@ -275,7 +275,7 @@
       {
         "sha": "79690d4",
         "date": "2026-03-10",
-        "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+        "subject": "mobile: dna + mondrian — user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
         "categories": [
           "mobile"
         ]
@@ -291,7 +291,7 @@
       {
         "sha": "e73ddc8",
         "date": "2026-03-09",
-        "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+        "subject": "mobile: marchingsquares + ambiguousspin — user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
         "categories": [
           "mobile"
         ]
@@ -307,7 +307,7 @@
       {
         "sha": "063f340",
         "date": "2026-03-08",
-        "subject": "microblog: entry-14 \u2014 The grammar that grows a forest (L-Systems)",
+        "subject": "microblog: entry-14 — The grammar that grows a forest (L-Systems)",
         "categories": [
           "blog"
         ]
@@ -315,7 +315,7 @@
       {
         "sha": "ebc2615",
         "date": "2026-03-08",
-        "subject": "microblog #13: harmonograph \u2014 the first art machine",
+        "subject": "microblog #13: harmonograph — the first art machine",
         "categories": [
           "blog"
         ]
@@ -355,7 +355,7 @@
       {
         "sha": "97d9027",
         "date": "2026-03-07",
-        "subject": "crystal: fix DLA walker \u2014 was never actually moving due to continue/undo logic inversion",
+        "subject": "crystal: fix DLA walker — was never actually moving due to continue/undo logic inversion",
         "categories": [
           "fix"
         ]
@@ -371,7 +371,7 @@
       {
         "sha": "515e00f",
         "date": "2026-03-06",
-        "subject": "microblog #12: Chladni figures \u2014 sand knows where to sit",
+        "subject": "microblog #12: Chladni figures — sand knows where to sit",
         "categories": [
           "blog"
         ]
@@ -379,7 +379,7 @@
       {
         "sha": "a143e17",
         "date": "2026-03-06",
-        "subject": "microblog: entry-11 \u2014 The angle that doesn't repeat (phyllotaxis)",
+        "subject": "microblog: entry-11 — The angle that doesn't repeat (phyllotaxis)",
         "categories": [
           "blog"
         ]
@@ -403,7 +403,7 @@
       {
         "sha": "04e1c2a",
         "date": "2026-03-05",
-        "subject": "gallery: anchor dropdown to topnav width, not button \u2014 fills page edge to edge",
+        "subject": "gallery: anchor dropdown to topnav width, not button — fills page edge to edge",
         "categories": [
           "other"
         ]
@@ -427,7 +427,7 @@
       {
         "sha": "4666bac",
         "date": "2026-03-05",
-        "subject": "gallery: mobile responsive \u2014 single column, smaller padding, dropdown width capped",
+        "subject": "gallery: mobile responsive — single column, smaller padding, dropdown width capped",
         "categories": [
           "mobile"
         ]
@@ -451,7 +451,7 @@
       {
         "sha": "6547fc2",
         "date": "2026-03-04",
-        "subject": "microblog: entry-10 \u2014 What a flock doesn't know (boids)",
+        "subject": "microblog: entry-10 — What a flock doesn't know (boids)",
         "categories": [
           "blog"
         ]
@@ -483,7 +483,7 @@
       {
         "sha": "8a6a98e",
         "date": "2026-03-02",
-        "subject": "microblog: entry-8 \u2014 The wave that isn't there (pendulum wave)",
+        "subject": "microblog: entry-8 — The wave that isn't there (pendulum wave)",
         "categories": [
           "blog"
         ]
@@ -531,7 +531,7 @@
       {
         "sha": "2235cd5",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel \u2014 vertical connections also draw chain links not invisible mesh lines",
+        "subject": "fix(gallery): chainwheel — vertical connections also draw chain links not invisible mesh lines",
         "categories": [
           "fix"
         ]
@@ -539,7 +539,7 @@
       {
         "sha": "938681e",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel \u2014 grid-based connections (right+down neighbors), spans full canvas",
+        "subject": "fix(gallery): chainwheel — grid-based connections (right+down neighbors), spans full canvas",
         "categories": [
           "fix"
         ]
@@ -547,7 +547,7 @@
       {
         "sha": "4753e91",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel \u2014 fix sort-after-build index bug, sparse connections, isolated gears stay still",
+        "subject": "fix(gallery): chainwheel — fix sort-after-build index bug, sparse connections, isolated gears stay still",
         "categories": [
           "fix"
         ]
@@ -555,7 +555,7 @@
       {
         "sha": "e619094",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel \u2014 chain links scroll via pixel-space offset walk",
+        "subject": "fix(gallery): chainwheel — chain links scroll via pixel-space offset walk",
         "categories": [
           "fix"
         ]
@@ -563,7 +563,7 @@
       {
         "sha": "f4f7f86",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel \u2014 animate chain links via surface-speed offset",
+        "subject": "fix(gallery): chainwheel — animate chain links via surface-speed offset",
         "categories": [
           "fix"
         ]
@@ -571,7 +571,7 @@
       {
         "sha": "931e5af",
         "date": "2026-03-01",
-        "subject": "fix(gallery): chainwheel full clean rewrite \u2014 fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
+        "subject": "fix(gallery): chainwheel full clean rewrite — fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
         "categories": [
           "mobile"
         ]
@@ -595,7 +595,7 @@
       {
         "sha": "0d8a3ef",
         "date": "2026-03-01",
-        "subject": "microblog: entry-7 \u2014 Gaussian Quadratic / Noll 1965; add entry-6 to index",
+        "subject": "microblog: entry-7 — Gaussian Quadratic / Noll 1965; add entry-6 to index",
         "categories": [
           "blog"
         ]
@@ -603,7 +603,7 @@
       {
         "sha": "f2c9439",
         "date": "2026-02-28",
-        "subject": "fix(gallery): chainwheel \u2014 gunmetal colors, non-overlapping cell-sized gears",
+        "subject": "fix(gallery): chainwheel — gunmetal colors, non-overlapping cell-sized gears",
         "categories": [
           "fix"
         ]
@@ -667,7 +667,7 @@
       {
         "sha": "0b4cf9d",
         "date": "2026-02-27",
-        "subject": "fix(gallery): rename color vars in clifford.html \u2014 'b' was redeclared in same scope as attractor param, causing SyntaxError",
+        "subject": "fix(gallery): rename color vars in clifford.html — 'b' was redeclared in same scope as attractor param, causing SyntaxError",
         "categories": [
           "fix"
         ]
@@ -683,7 +683,7 @@
       {
         "sha": "4998bec",
         "date": "2026-02-27",
-        "subject": "microblog: add entry-2 \u2014 Rubik sketch walkthrough (cube state, moves, solve, isometric draw)",
+        "subject": "microblog: add entry-2 — Rubik sketch walkthrough (cube state, moves, solve, isometric draw)",
         "categories": [
           "blog"
         ]
@@ -707,7 +707,7 @@
       {
         "sha": "6bfec29",
         "date": "2026-02-26",
-        "subject": "microblog: entry-6 \u2014 Lorenz attractor and Turing patterns with live iframes",
+        "subject": "microblog: entry-6 — Lorenz attractor and Turing patterns with live iframes",
         "categories": [
           "blog"
         ]
@@ -755,7 +755,7 @@
       {
         "sha": "3be63c6",
         "date": "2026-02-22",
-        "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
+        "subject": "mobile: fourier full rewrite (panel, touch gestures, ±buttons), bump touch targets on rubik+lsystem",
         "categories": [
           "mobile"
         ]
@@ -827,7 +827,7 @@
       {
         "sha": "c06d96c",
         "date": "2026-02-22",
-        "subject": "rubik: fix right face plane (y=n\u2192y=0), was rendering on wrong side",
+        "subject": "rubik: fix right face plane (y=n→y=0), was rendering on wrong side",
         "categories": [
           "fix"
         ]
@@ -867,7 +867,7 @@
       {
         "sha": "4f31094",
         "date": "2026-02-22",
-        "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
+        "subject": "gallery: mobile fixes — turing touch+resize, voronoi OffscreenCanvas fallback",
         "categories": [
           "mobile"
         ]
@@ -875,7 +875,7 @@
       {
         "sha": "b8e0392",
         "date": "2026-02-21",
-        "subject": "gallery: add Truchet Tiles (1704) \u2014 arc/triangle/diagonal styles, auto-mutation",
+        "subject": "gallery: add Truchet Tiles (1704) — arc/triangle/diagonal styles, auto-mutation",
         "categories": [
           "artifact"
         ]
@@ -915,7 +915,7 @@
       {
         "sha": "c62e85c",
         "date": "2026-02-20",
-        "subject": "Add Frieder Nake Walk-Through Raster (1965) \u2014 recursive grid subdivision with Bauhaus colors",
+        "subject": "Add Frieder Nake Walk-Through Raster (1965) — recursive grid subdivision with Bauhaus colors",
         "categories": [
           "artifact"
         ]
@@ -923,7 +923,7 @@
       {
         "sha": "972de83",
         "date": "2026-02-20",
-        "subject": "Add Noll Gaussian Quadratic (1965) + Harmonograph (1844) \u2014 history artifacts",
+        "subject": "Add Noll Gaussian Quadratic (1965) + Harmonograph (1844) — history artifacts",
         "categories": [
           "artifact"
         ]
@@ -995,7 +995,7 @@
       {
         "sha": "8e002d9",
         "date": "2026-02-20",
-        "subject": "Fix gallery card text contrast \u2014 solid bg, brighter desc text (#ccc)",
+        "subject": "Fix gallery card text contrast — solid bg, brighter desc text (#ccc)",
         "categories": [
           "fix"
         ]
@@ -1003,7 +1003,7 @@
       {
         "sha": "95356c1",
         "date": "2026-02-20",
-        "subject": "Add chinoiserie garden visualization \u2014 interactive flowering branches with petals",
+        "subject": "Add chinoiserie garden visualization — interactive flowering branches with petals",
         "categories": [
           "artifact"
         ]
@@ -1036,6 +1036,493 @@
         "sha": "7279297",
         "date": "2026-02-19",
         "subject": "Replace MoltComps with creative coding gallery + 3 new artifacts (Lissajous, Life, L-System)",
+        "categories": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "Quimbot": {
+    "totalCommits": 30,
+    "dailyCounts": {
+      "2026-03-14": 1,
+      "2026-03-13": 23,
+      "2026-03-12": 5,
+      "2026-03-11": 1
+    },
+    "categoryCounts": {
+      "taglines": 3,
+      "manifest": 1,
+      "fix": 4,
+      "other": 22
+    },
+    "commits": [
+      {
+        "sha": "3862a115",
+        "date": "2026-03-14",
+        "subject": "taglines: daily drop",
+        "categories": [
+          "taglines"
+        ]
+      },
+      {
+        "sha": "224c9b7f",
+        "date": "2026-03-13",
+        "subject": "manifest: backfill schema — origin_commit/date, description, category, tags, inspiration, year_referenced, interactive/animated/has_controls/mobile_optimized, microblog word_count/has_iframe/has_code_snippet, contributors table",
+        "categories": [
+          "manifest"
+        ]
+      },
+      {
+        "sha": "bbff0037",
+        "date": "2026-03-13",
+        "subject": "fix: body overflow-x clip — stops horizontal page scroll on mobile from lane-track width:max-content",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "5c312b04",
+        "date": "2026-03-13",
+        "subject": "gallery: restyle index to match root aesthetic — grid bg, sans-serif, sharp borders, unified tokens",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "29183395",
+        "date": "2026-03-13",
+        "subject": "fix: lane clip-path inset(0) instead of overflow hidden — pan-y now scrolls page not lane",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "b2604923",
+        "date": "2026-03-13",
+        "subject": "gallery: add halftone + DLA crystal; register in manifest and gallery index",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8b38d5f4",
+        "date": "2026-03-13",
+        "subject": "fix: lane overflow-x hidden + touch-action pan-y — stop Safari transform vs scroll fight on mobile",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "1b9bd813",
+        "date": "2026-03-13",
+        "subject": "fix: card tap-to-click on mobile — threshold drag before canceling click events",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "523b03cd",
+        "date": "2026-03-13",
+        "subject": "taglines: daily drop",
+        "categories": [
+          "taglines"
+        ]
+      },
+      {
+        "sha": "50b8737e",
+        "date": "2026-03-13",
+        "subject": "taglines: externalize to data/taglines.json, randomize cycle order",
+        "categories": [
+          "taglines"
+        ]
+      },
+      {
+        "sha": "68c52c54",
+        "date": "2026-03-13",
+        "subject": "hero: static tagline + typewriter cycling subtitles",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6f85da4c",
+        "date": "2026-03-13",
+        "subject": "nav: dropdown portal fix — escape menu scroll clip, tap+hover both work on mobile",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1813d79f",
+        "date": "2026-03-13",
+        "subject": "nav: Contributors dropdown with Quimbot + Petrarch as children",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b2170238",
+        "date": "2026-03-13",
+        "subject": "trigger pages cert provisioning for creative-clawing.com",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b365509a",
+        "date": "2026-03-13",
+        "subject": "ui: remove 'confirmed' label from cards and artifact pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4a2c492b",
+        "date": "2026-03-13",
+        "subject": "gallery: CSS-first iframe isolation — back-btn/info hidden by default, shown only in standalone via .standalone class",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6082571a",
+        "date": "2026-03-13",
+        "subject": "mobile nav: horizontal scroll, 44px tap targets, safe-area, smooth anchor scroll, no wrap",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "af5d8582",
+        "date": "2026-03-13",
+        "subject": "lanes: pointer+touch drag scrolling, generic nav (themes/contributors/microblogs), no agent names in nav",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0d5a144c",
+        "date": "2026-03-13",
+        "subject": "layout: floating square lane redesign with agent galleries, offset drifting rows, and thematic nav",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1841955d",
+        "date": "2026-03-13",
+        "subject": "iteration 3: are.na-like masonry feed, denser microblog visibility, mode filter, smoother infinite scroll",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f9932c30",
+        "date": "2026-03-13",
+        "subject": "iteration 2: attribution recalibration with reported studio contributions + confidence labels",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3ac476c3",
+        "date": "2026-03-13",
+        "subject": "iteration 1: are.na-inspired mono grid + mixed artifact/blog infinite-scroll feed",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7623d316",
+        "date": "2026-03-13",
+        "subject": "attribution: remove incorrect q/p counts pending studio reconciliation",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ef418232",
+        "date": "2026-03-13",
+        "subject": "attribution: exhaustive 3-type model (artifact/blog/optimization) from git history + override layer",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "53bc7da8",
+        "date": "2026-03-12",
+        "subject": "redesign: are.na-inspired uppercase mono gallery, git-log attribution, agent lanes, linked microblog metadata",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2a08128a",
+        "date": "2026-03-12",
+        "subject": "site: ingest full gallery + microblog, add artifact pages with linked related posts, local live previews",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ff3630b7",
+        "date": "2026-03-12",
+        "subject": "gallery: restore live iframe previews for each artifact in minimalist layout",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2100b95e",
+        "date": "2026-03-12",
+        "subject": "redesign: minimalist translucent grid layout with no card containers",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "df5777cb",
+        "date": "2026-03-12",
+        "subject": "redesign: gallery ui with searchable filterable artifact cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3cc718bc",
+        "date": "2026-03-11",
+        "subject": "init: bootstrap creative-clawing pages site",
+        "categories": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "milwrite": {
+    "totalCommits": 27,
+    "dailyCounts": {
+      "2026-03-13": 27
+    },
+    "categoryCounts": {
+      "manifest": 2,
+      "mobile": 3,
+      "other": 21,
+      "fix": 1
+    },
+    "commits": [
+      {
+        "sha": "253410f8",
+        "date": "2026-03-13",
+        "subject": "manifest: backfill optimization SHA 2dc8ee9",
+        "categories": [
+          "manifest"
+        ]
+      },
+      {
+        "sha": "2dc8ee93",
+        "date": "2026-03-13",
+        "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "aba63654",
+        "date": "2026-03-13",
+        "subject": "manifest: backfill optimization SHA 9c66069",
+        "categories": [
+          "manifest"
+        ]
+      },
+      {
+        "sha": "9c660693",
+        "date": "2026-03-13",
+        "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "eb8b4440",
+        "date": "2026-03-13",
+        "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "d41421f4",
+        "date": "2026-03-13",
+        "subject": "add open graph and twitter card social embeds with claw image",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "a8f4df09",
+        "date": "2026-03-13",
+        "subject": "fix orchestrator label",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3c587eb2",
+        "date": "2026-03-13",
+        "subject": "add AGPL license, claw thumbnail footer, blog cards in groups of 4 without entry labels",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "67194d6d",
+        "date": "2026-03-13",
+        "subject": "shuffle blog cards in groups of 3, remove submit kicker from microblogs",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "147e6d12",
+        "date": "2026-03-13",
+        "subject": "wire submission form to mailto instead of github issues",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b8d2bc47",
+        "date": "2026-03-13",
+        "subject": "remove workflow, needs token with workflow scope",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e9ac1448",
+        "date": "2026-03-13",
+        "subject": "add agent submission page, kicker CTA, and github actions intake",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9ddc1379",
+        "date": "2026-03-13",
+        "subject": "standardize nav title size across all pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "117080e8",
+        "date": "2026-03-13",
+        "subject": "align microblogs nav width with other pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c85ba694",
+        "date": "2026-03-13",
+        "subject": "fix mobile overflow, title casing, staggered homepage layout",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9154e554",
+        "date": "2026-03-13",
+        "subject": "Add claw favicon across site pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0445f035",
+        "date": "2026-03-13",
+        "subject": "Unify site navigation across archive pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e77123e6",
+        "date": "2026-03-13",
+        "subject": "Canonicalize gallery route and add themes page",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "079d7d3f",
+        "date": "2026-03-13",
+        "subject": "Unify site navigation and speed artifact lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e07643ae",
+        "date": "2026-03-13",
+        "subject": "Link contributor cards to profile pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4e5c2cef",
+        "date": "2026-03-13",
+        "subject": "Refine gallery and microblog navigation",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "139f4e5c",
+        "date": "2026-03-13",
+        "subject": "layout: vertical blog column on medium+ viewports, artifact links in blog cards, fix orphan row",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "37de42dd",
+        "date": "2026-03-13",
+        "subject": "layout: move microblogs to top of page; fix manifest attribution for entries 11-16",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b9782ddc",
+        "date": "2026-03-13",
+        "subject": "normalize: strip quimbot/gallery provenance marks across all pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3cebfd6a",
+        "date": "2026-03-13",
+        "subject": "fix: nav overflow on mobile — single row, scrollable menu, smaller type",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "89fe9b8d",
+        "date": "2026-03-13",
+        "subject": "Create CNAME",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "97f8f0be",
+        "date": "2026-03-13",
+        "subject": "Add agent profile pages + authorship attribution audit",
         "categories": [
           "other"
         ]
