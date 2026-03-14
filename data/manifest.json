@@ -58,7 +58,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: antcolony \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -83,7 +83,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: asciireactive \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -108,7 +108,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: audiomountain \u2014 user-scalable=no, viewport-fit=cover (Pointer Events already present)",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -534,7 +534,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: donut \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px button min-height",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -624,7 +624,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: grayscott \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -740,7 +740,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: kaleidoscope \u2014 user-scalable=no, viewport-fit=cover (touch-action:none and Pointer Events already present)",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -765,7 +765,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: langton \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (add ant)",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1014,7 +1014,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: maurerrose \u2014 already mobile-optimized at creation (user-scalable=no, touch handlers); recorded",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1039,7 +1039,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: metaballs \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1064,7 +1064,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: mitosis \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (spawn cell)",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1145,7 +1145,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: montecarlo \u2014 user-scalable=no, viewport-fit=cover",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1170,7 +1170,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: nake \u2014 user-scalable=no, viewport-fit=cover",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1195,7 +1195,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: noll \u2014 user-scalable=no, viewport-fit=cover",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1222,7 +1222,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: pendulum \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1300,7 +1300,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: quadwalk \u2014 already mobile-optimized at creation (user-scalable=no); recorded",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1437,7 +1437,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: scandrift \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
           "date": "2026-03-13",
           "agent": "Petrarch"
@@ -1655,7 +1655,7 @@
       ],
       "optimizations": [
         {
-          "sha": "pending",
+          "sha": "9c66069",
           "subject": "mobile: truchet \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px mode button min-height/min-width",
           "date": "2026-03-13",
           "agent": "Petrarch"
