@@ -56,8 +56,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: antcolony \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -72,8 +81,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: asciireactive \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -88,8 +106,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: audiomountain \u2014 user-scalable=no, viewport-fit=cover (Pointer Events already present)",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -505,8 +532,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: donut \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px button min-height",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -586,8 +622,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: grayscott \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": [
         "entry-16"
       ]
@@ -693,8 +738,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: kaleidoscope \u2014 user-scalable=no, viewport-fit=cover (touch-action:none and Pointer Events already present)",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -709,8 +763,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: langton \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (add ant)",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -949,8 +1012,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: maurerrose \u2014 already mobile-optimized at creation (user-scalable=no, touch handlers); recorded",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -965,8 +1037,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: metaballs \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -981,8 +1062,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: mitosis \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (spawn cell)",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -1053,8 +1143,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: montecarlo \u2014 user-scalable=no, viewport-fit=cover",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -1069,8 +1168,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: nake \u2014 user-scalable=no, viewport-fit=cover",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -1085,8 +1193,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: noll \u2014 user-scalable=no, viewport-fit=cover",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": [
         "entry-7"
       ]
@@ -1103,8 +1220,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: pendulum \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": [
         "entry-8"
       ]
@@ -1172,8 +1298,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: quadwalk \u2014 already mobile-optimized at creation (user-scalable=no); recorded",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -1300,8 +1435,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: scandrift \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {
@@ -1509,8 +1653,17 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
-      "optimizationContributors": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: truchet \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px mode button min-height/min-width",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
+        }
+      ],
+      "optimizationContributors": [
+        "Petrarch"
+      ],
       "microblogs": []
     },
     {

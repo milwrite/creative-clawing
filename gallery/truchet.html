@@ -10,11 +10,11 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:#0a0a0a;overflow:hidden;cursor:pointer}
-  canvas{display:block}
+  canvas{display:block;touch-action:none}
   .back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
   .back:hover{border-color:#666;color:#fff}
   .label{position:fixed;bottom:1rem;left:1rem;font:0.75rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#888;background:rgba(10,10,10,0.85);padding:0.4rem 0.7rem;border-radius:4px;pointer-events:none}
-  .mode{position:fixed;top:1rem;right:1rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;border:1px solid #333;cursor:pointer;z-index:10;transition:border-color 0.2s}
+  .mode{position:fixed;top:1rem;right:1rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;border:1px solid #333;cursor:pointer;z-index:10;transition:border-color 0.2s;min-height:44px;min-width:44px}
   .mode:hover{border-color:#666;color:#fff}
   .in-iframe .back,.in-iframe .label,.in-iframe .mode{display:none}
 </style>

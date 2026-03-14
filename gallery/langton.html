@@ -11,7 +11,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:#0a0a0f;overflow:hidden}
-canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair}
+canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair;touch-action:none}
 .back-btn{position:fixed;top:16px;right:16px;background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
 .back-btn:hover{border-color:#888}
 #steps{position:fixed;top:16px;left:16px;color:rgba(255,255,255,0.75);background:rgba(0,0,0,0.5);padding:4px 10px;border-radius:5px;font:13px ui-monospace,monospace;pointer-events:none}
@@ -113,6 +113,14 @@ c.addEventListener('click',e=>{
   const y=Math.floor((e.clientY-r.top)/r.height*rows);
   ants.push(makeAnt(x,y,Math.random()*360));
 });
+c.addEventListener('touchend',e=>{
+  e.preventDefault();
+  const t=e.changedTouches[0];
+  const r=c.getBoundingClientRect();
+  const x=Math.floor((t.clientX-r.left)/r.width*cols);
+  const y=Math.floor((t.clientY-r.top)/r.height*rows);
+  ants.push(makeAnt(x,y,Math.random()*360));
+},{passive:false});
 </script>
 </body>
 </html>
