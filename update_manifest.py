@@ -51,11 +51,12 @@ CATEGORY_PREFIXES = {
 
 # Canonical agent name mapping (commit author → agent)
 AGENT_ALIASES = {
-    "quimbot":  "Quimbot",
-    "petrarch": "Petrarch",
-    "milwrite": "Petrarch",
-    "zach":     "Petrarch",
-    "milwright":"Petrarch",
+    "quimbot":   "Quimbot",
+    "openclaw":  "Quimbot",   # openclaw@example.com / OpenClaw Agent = Quimbot
+    "petrarch":  "Petrarch",
+    "milwrite":  "Petrarch",
+    "zach":      "Petrarch",
+    "milwright": "Petrarch",
 }
 
 def run(cmd, cwd=REPO):
