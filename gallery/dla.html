@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
   <meta charset="utf-8">
   <title>DLA Crystal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow: hidden; }
     body { background: #030308; overflow: hidden; font-family: monospace; }
     canvas { display: block; touch-action: none; }
     #ui {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom, 20px));
+      left: 50%; transform: translateX(-50%);
       display: flex; gap: 10px; align-items: center;
+      white-space: nowrap;
     }
     #ui button {
       background: rgba(255,255,255,0.07); color: #bbb; border: 1px solid rgba(255,255,255,0.12);
-      padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: monospace;
+      padding: 12px 18px; border-radius: 4px; cursor: pointer; font-family: monospace;
       font-size: 13px; letter-spacing: 0.05em; transition: background 0.2s;
+      min-height: 44px; -webkit-tap-highlight-color: transparent;
     }
-    #ui button:hover { background: rgba(255,255,255,0.14); }
+    #ui button:active { background: rgba(255,255,255,0.22); }
     #ui span { color: rgba(255,255,255,0.3); font-size: 12px; }
     #back {
-      position: fixed; top: 16px; left: 16px;
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top, 16px));
+      left: max(16px, env(safe-area-inset-left, 16px));
       color: rgba(255,255,255,0.3); font-size: 12px; text-decoration: none;
       font-family: monospace; letter-spacing: 0.05em; transition: color 0.2s;
+      padding: 6px; min-height: 44px; display: flex; align-items: center;
     }
-    #back:hover { color: rgba(255,255,255,0.65); }
+    #back:hover, #back:active { color: rgba(255,255,255,0.65); }
     #counter {
-      position: fixed; top: 16px; right: 16px;
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top, 16px));
+      right: max(16px, env(safe-area-inset-right, 16px));
       color: rgba(255,255,255,0.25); font-size: 11px; font-family: monospace;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -41,12 +55,9 @@
     <button id="btnReset">reset</button>
   </div>
   <script>
-    const inIframe = window.self !== window.top;
-    if (inIframe) {
-      document.getElementById('ui').style.display = 'none';
-      document.getElementById('back').style.display = 'none';
-      document.getElementById('counter').style.display = 'none';
-    }
+    // Detect mobile for performance scaling
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ||
+                     (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
 
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
@@ -68,7 +79,6 @@
     window.addEventListener('resize', resize);
 
     // --- DLA state ---
-    // Use a Set of "gx,gy" strings for the aggregate, plus a flat array for fast neighbor checks
     const CELL = 2;  // each grid cell = 2px
     let grid;        // Int8Array — 1 if occupied
     let gw, gh;
@@ -77,6 +87,11 @@
     let mode = 0;    // 0=radial, 1=bottom-seed, 2=grid-seeds
 
     const MODES = ['radial', 'bottom', 'seeds'];
+
+    // Mobile: fewer particles and shorter walk to stay smooth
+    const MAX_PARTICLES = isMobile ? 8000  : 18000;
+    const PER_FRAME     = isMobile ? 3     : 8;
+    const MAX_STEPS     = isMobile ? 2000  : 4000;
 
     function gridIdx(gx, gy) { return gy * gw + gx; }
 
@@ -209,10 +224,10 @@
       }
     }
 
-    const MAX_PARTICLES = 18000;
-    const PER_FRAME = 8;
     let fading = false;
     let fadeAlpha = 0;
+    // Counter hidden when in iframe (UI block hidden by CSS-first pattern above)
+    const showCounter = window.self === window.top;
 
     document.getElementById('btnMode').addEventListener('click', () => {
       mode = (mode + 1) % MODES.length;
@@ -238,9 +253,9 @@
       if (stuckCount < MAX_PARTICLES) {
         let added = 0;
         for (let i = 0; i < PER_FRAME * 3 && added < PER_FRAME; i++) {
-          if (walkParticle(4000)) added++;
+          if (walkParticle(MAX_STEPS)) added++;
         }
-        if (!inIframe) {
+        if (showCounter) {
           counterEl.textContent = `${stuckCount.toLocaleString()} particles`;
         }
       } else {

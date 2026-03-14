@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
   <meta charset="utf-8">
   <title>Halftone</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow: hidden; }
     body { background: #07070d; overflow: hidden; font-family: monospace; }
     canvas { display: block; touch-action: none; }
     #ui {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom, 20px));
+      left: 50%; transform: translateX(-50%);
       display: flex; gap: 10px; align-items: center;
+      white-space: nowrap;
     }
     #ui button {
       background: rgba(255,255,255,0.08); color: #ccc; border: 1px solid rgba(255,255,255,0.15);
-      padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: monospace;
+      padding: 12px 18px; border-radius: 4px; cursor: pointer; font-family: monospace;
       font-size: 13px; letter-spacing: 0.05em; transition: background 0.2s;
+      min-height: 44px; -webkit-tap-highlight-color: transparent;
     }
-    #ui button:hover { background: rgba(255,255,255,0.15); }
+    #ui button:active { background: rgba(255,255,255,0.22); }
     #ui span { color: rgba(255,255,255,0.35); font-size: 12px; }
     #back {
-      position: fixed; top: 16px; left: 16px;
+      position: fixed;
+      top: max(16px, env(safe-area-inset-top, 16px));
+      left: max(16px, env(safe-area-inset-left, 16px));
       color: rgba(255,255,255,0.35); font-size: 12px; text-decoration: none;
       font-family: monospace; letter-spacing: 0.05em;
-      transition: color 0.2s;
+      transition: color 0.2s; padding: 6px; min-height: 44px; display: flex; align-items: center;
     }
-    #back:hover { color: rgba(255,255,255,0.7); }
+    #back:hover, #back:active { color: rgba(255,255,255,0.7); }
   </style>
 </head>
 <body>
@@ -37,12 +47,6 @@
     <button id="btnShape">shape: circle</button>
   </div>
   <script>
-    const inIframe = window.self !== window.top;
-    if (inIframe) {
-      document.getElementById('ui').style.display = 'none';
-      document.getElementById('back').style.display = 'none';
-    }
-
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
     let W, H;
