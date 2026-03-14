@@ -239,7 +239,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
 <main>
   <div class="toolbar">
-    <span class="count" id="count">58 artifacts</span>
+    <span class="count" id="count">59 artifacts</span>
     <div class="search-wrap">
       <input class="search" id="search" type="search" placeholder="Search artifacts…" autocomplete="off"/>
     </div>
@@ -308,6 +308,7 @@ const artifacts=[
   {file:'maurerrose',name:'Maurer Rose',tag:'math'},
   {file:'halftone',name:'Halftone',tag:'animation'},
   {file:'dla',name:'DLA Crystal',tag:'simulation'},
+  {file:'newton',name:"Newton's Fractal",tag:'fractal'},
 ];
 
 const tags=['all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='all'?-1:b==='all'?1:a.localeCompare(b));

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#hint{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #hint{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2UwZTBmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48Y2lyY2xlIGN4PSIxNiIgY3k9IjQiIHI9IjIiIGZpbGw9IiNlMGUwZmYiLz48Y2lyY2xlIGN4PSIyNi45IiBjeT0iMTAuNSIgcj0iMiIgZmlsbD0iI2ZmYzA2MCIvPjxjaXJjbGUgY3g9IjIyLjUiIGN5PSIyNS45IiByPSIyIiBmaWxsPSIjNjBmZmEwIi8+PGNpcmNsZSBjeD0iOS41IiBjeT0iMjUuOSIgcj0iMiIgZmlsbD0iI2QwNjBmZiIvPjxjaXJjbGUgY3g9IjUuMSIgY3k9IjEwLjUiIHI9IjIiIGZpbGw9IiM2MGZmZjAiLz48L3N2Zz4="/>
+<title>Newton's Fractal</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;overflow:hidden;cursor:crosshair;-webkit-tap-highlight-color:transparent}
+  canvas{display:block;width:100vw;height:100vh;touch-action:none}
+  #back{
+    position:fixed;top:max(16px,env(safe-area-inset-top));left:max(16px,env(safe-area-inset-left));
+    color:rgba(255,255,255,.45);font:13px/1 system-ui,sans-serif;text-decoration:none;
+    background:rgba(0,0,0,.55);padding:6px 14px;border-radius:20px;
+    border:1px solid rgba(255,255,255,.15);
+  }
+  #back:hover{color:#fff}
+  #hint{
+    position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+    color:rgba(255,255,255,.35);font:12px system-ui,sans-serif;white-space:nowrap;
+    pointer-events:none;transition:opacity .6s;
+  }
+  #hint.gone{opacity:0}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<a id="back" class="back-btn" href="../gallery/">← gallery</a>
+<div id="hint" class="back-btn">tap to zoom · double-tap to reset</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const hint = document.getElementById('hint');
+
+let W, H;
+let imgData;
+let renderRAF = null;
+let currentRow = 0;
+
+// View bounds
+let xmin = -2, xmax = 2, ymin = -2, ymax = 2;
+
+// 5th roots of unity: z^5 = 1
+const NROOTS = 5;
+const roots = Array.from({length: NROOTS}, (_, k) => [
+  Math.cos(2 * Math.PI * k / NROOTS),
+  Math.sin(2 * Math.PI * k / NROOTS)
+]);
+
+// Muted palette — not rainbow
+// blue, amber, sage, violet, teal
+const palette = [
+  [20,  80, 200],
+  [210, 100,  20],
+  [ 30, 160,  65],
+  [150,  30, 180],
+  [ 20, 175, 165],
+];
+
+const MAX_ITER = 80;
+const TOL2 = 1e-10;
+
+function newton(re0, im0) {
+  let re = re0, im = im0;
+  for (let iter = 0; iter < MAX_ITER; iter++) {
+    // Build z^2, z^3, z^4, z^5 from z = (re, im)
+    const br = re*re - im*im,    bi = 2*re*im;             // z^2
+    const cr = br*re - bi*im,    ci = br*im + bi*re;       // z^3
+    const z4r = cr*re - ci*im,   z4i = cr*im + ci*re;      // z^4
+    const z5r = z4r*re - z4i*im, z5i = z4r*im + z4i*re;   // z^5
+
+    // Newton step: z -= (z^5 - 1) / (5 * z^4)
+    const nr = z5r - 1, ni = z5i;
+    const dr = 5 * z4r, di = 5 * z4i;
+    const denom = dr * dr + di * di;
+    if (denom < 1e-20) return [0, MAX_ITER];
+    re -= (nr * dr + ni * di) / denom;
+    im -= (ni * dr - nr * di) / denom;
+
+    // Check convergence to each root
+    for (let r = 0; r < NROOTS; r++) {
+      const dx = re - roots[r][0], dy = im - roots[r][1];
+      if (dx * dx + dy * dy < TOL2) return [r, iter + 1];
+    }
+  }
+  return [0, MAX_ITER];
+}
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  // Maintain aspect ratio
+  const xrange = xmax - xmin;
+  const cx = (xmin + xmax) / 2;
+  const cy = (ymin + ymax) / 2;
+  const yrange = xrange * H / W;
+  ymin = cy - yrange / 2;
+  ymax = cy + yrange / 2;
+}
+
+function startRender() {
+  cancelAnimationFrame(renderRAF);
+  imgData = ctx.createImageData(W, H);
+  // Fill background black
+  for (let i = 3; i < W * H * 4; i += 4) imgData.data[i] = 255;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+  currentRow = 0;
+  renderRAF = requestAnimationFrame(renderChunk);
+}
+
+function renderChunk() {
+  const ROWS = 16;
+  const end = Math.min(currentRow + ROWS, H);
+
+  for (let y = currentRow; y < end; y++) {
+    for (let x = 0; x < W; x++) {
+      const re = xmin + (x / W) * (xmax - xmin);
+      const im = ymax - (y / H) * (ymax - ymin);
+      const [rootIdx, iter] = newton(re, im);
+
+      // Brightness: converged fast = brighter; boundary = dark
+      const t = Math.pow(1 - (iter - 1) / MAX_ITER, 2.2);
+      const [r, g, b] = palette[rootIdx % NROOTS];
+      const i4 = (y * W + x) * 4;
+      imgData.data[i4]     = (r * t) | 0;
+      imgData.data[i4 + 1] = (g * t) | 0;
+      imgData.data[i4 + 2] = (b * t) | 0;
+      imgData.data[i4 + 3] = 255;
+    }
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+  currentRow = end;
+  if (currentRow < H) {
+    renderRAF = requestAnimationFrame(renderChunk);
+  }
+}
+
+function zoomTo(fx, fy, factor) {
+  const cx = xmin + fx * (xmax - xmin);
+  const cy = ymax - fy * (ymax - ymin);
+  const halfX = (xmax - xmin) * factor / 2;
+  const halfY = (ymax - ymin) * factor / 2;
+  xmin = cx - halfX; xmax = cx + halfX;
+  ymin = cy - halfY; ymax = cy + halfY;
+  startRender();
+}
+
+function resetView() {
+  xmin = -2; xmax = 2;
+  const yrange = 4 * H / W;
+  ymin = -yrange / 2; ymax = yrange / 2;
+  startRender();
+}
+
+// Mouse events
+let lastClick = 0;
+canvas.addEventListener('click', e => {
+  const now = Date.now();
+  if (now - lastClick < 350) {
+    resetView();
+  } else {
+    zoomTo(e.clientX / W, e.clientY / H, 0.38);
+  }
+  lastClick = now;
+});
+canvas.addEventListener('dblclick', e => { e.preventDefault(); resetView(); });
+
+// Touch events
+let lastTap = 0;
+let tapTimer = null;
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (e.touches.length === 1) {
+    const now = Date.now();
+    const t = e.touches[0];
+    const fx = t.clientX / W, fy = t.clientY / H;
+    if (now - lastTap < 350) {
+      clearTimeout(tapTimer);
+      resetView();
+    } else {
+      tapTimer = setTimeout(() => zoomTo(fx, fy, 0.38), 360);
+    }
+    lastTap = now;
+  }
+}, {passive: false});
+
+// Fade hint
+setTimeout(() => hint && hint.classList.add('gone'), 3500);
+
+window.addEventListener('resize', () => { resize(); startRender(); });
+
+resize();
+startRender();
+</script>
+</body>
+</html>

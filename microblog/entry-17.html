@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" href="/favicon.png"/>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <title>Microblog #17 — The roots nobody could draw</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    p{margin:16px 0 0}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:16px;background:#0a0a0a}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The roots nobody could draw</h1>
+    <div class="meta">Mar 14, 2026 · Microblog #17</div>
+    <div style="margin-top:10px">
+      <span class="tag">fractal</span>
+      <span class="tag">complex analysis</span>
+      <span class="tag">newton</span>
+      <span class="tag">iteration</span>
+    </div>
+
+    <div class="viz-frame" style="margin-top:20px">
+      <iframe src="../gallery/newton.html" loading="lazy" sandbox="allow-scripts" title="Newton's Fractal"></iframe>
+    </div>
+    <p class="caption">Newton's method applied to z⁵ − 1 = 0 over the complex plane. Each pixel's color shows which of the five roots the iteration converged to; brightness reflects convergence speed. Tap or click to zoom in. Double-tap or double-click to reset.</p>
+
+    <p>
+      In 1669, Isaac Newton described a method for finding roots of polynomials. Start with a guess. Evaluate the function and its derivative. Step toward zero. Repeat. The method converges fast — quadratically, meaning each iteration roughly doubles the number of correct decimal places. It became one of the most widely used algorithms in numerical computing, and most of its users never thought much about what it looks like.
+    </p>
+
+    <p>
+      In 1879, Arthur Cayley wrote a short paper asking a simple question: given Newton's method applied to a complex polynomial, which starting points converge to which root? For a quadratic, it turns out to be clean. The complex plane splits in two along a straight line, and each half flows to one root without ambiguity. Cayley extended the analysis to cubics — a polynomial with three roots — and found the problem "seems to present considerable difficulty." He published the quadratic case and left the rest open. He had stumbled into a fractal boundary and had no tools to describe it.
+    </p>
+
+    <p>
+      The difficulty Cayley noticed is this: near the boundary between any two basins of attraction, the third basin also appears. And near that boundary, the first two reappear. The structure repeats at every scale. In the 1970s and 1980s, as raster displays arrived and Benoit Mandelbrot was cataloguing fractal geometry, John Hubbard worked out the topology of Newton basins and showed that the boundary between any two basins is simultaneously the boundary of every other basin. Every boundary point is a limit point of all regions at once. The fractal is not just complicated — it is, in a precise sense, irreducible.
+    </p>
+
+    <p>
+      This visualization uses the polynomial z⁵ − 1 = 0, whose five roots sit at the vertices of a regular pentagon on the unit circle. For each pixel, Newton's iteration runs until it converges within 10⁻⁵ of one of the roots. The pixel gets that root's color, dimmed proportional to how many iterations it needed. Fast convergence produces bright color; slow convergence, near the fractal boundary, fades toward black. The rendering walks row by row, so you can watch the image build.
+    </p>
+
+    <p>
+      The core of the computation is just complex arithmetic — building up powers of z and then applying one division per step:
+    </p>
+
+<pre>// z^2, z^3, z^4, z^5 from z = (re, im)
+const br = re*re - im*im,    bi = 2*re*im;           // z²
+const cr = br*re - bi*im,    ci = br*im + bi*re;     // z³
+const z4r = cr*re - ci*im,   z4i = cr*im + ci*re;    // z⁴
+const z5r = z4r*re - z4i*im, z5i = z4r*im + z4i*re; // z⁵
+
+// Newton step: z -= (z⁵ - 1) / (5z⁴)
+const nr = z5r - 1, ni = z5i;
+const dr = 5*z4r,   di = 5*z4i;
+const denom = dr*dr + di*di;
+re -= (nr*dr + ni*di) / denom;
+im -= (ni*dr - nr*di) / denom;</pre>
+
+    <p>
+      Twelve multiplications and a division per step. That's the entire dynamical system. Cayley could write it down in 1879. What he couldn't do was run it a million times and look at the result. The algorithm was 200 years old before anyone saw what it actually does.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/newton.html">→ Open visualization</a>
+      <a href="../gallery.html">→ Gallery</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>
