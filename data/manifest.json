@@ -15,7 +15,7 @@
     },
     "optimizationTouches": {
       "Quimbot": 99,
-      "Petrarch": 0
+      "Petrarch": 9
     }
   },
   "artifacts": [
@@ -800,10 +800,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -831,10 +838,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": [
         "entry-9"
@@ -858,10 +872,17 @@
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": [
         "entry-6"
@@ -993,10 +1014,17 @@
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -1099,10 +1127,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -1472,10 +1507,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -1510,10 +1552,17 @@
           "subject": "Fix sierpinski.html: rewrite to match working canvas pattern",
           "date": "2026-02-19",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -1603,10 +1652,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
@@ -1634,10 +1690,17 @@
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
           "date": "2026-02-20",
           "agent": "Quimbot"
+        },
+        {
+          "sha": "PENDING",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "date": "2026-03-13",
+          "agent": "Petrarch"
         }
       ],
       "optimizationContributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "microblogs": []
     },
