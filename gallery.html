@@ -311,6 +311,8 @@ const artifacts=[
   {file:'halftone',name:'Halftone',tag:'animation'},
   {file:'dla',name:'DLA Crystal',tag:'simulation'},
   {file:'newton',name:"Newton's Fractal",tag:'fractal'},
+  {file:'terrain',name:'Terrain',tag:'simulation'},
+  {file:'aurora',name:'Aurora',tag:'simulation'},
 ];
 
 const tags=['all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='all'?-1:b==='all'?1:a.localeCompare(b));

@@ -405,6 +405,20 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
+    },
+    {
+      "id": "terrain",
+      "title": "Terrain",
+      "type": "artifact",
+      "url": "gallery/terrain.html",
+      "page": "artifacts/terrain.html"
+    },
+    {
+      "id": "aurora",
+      "title": "Aurora",
+      "type": "artifact",
+      "url": "gallery/aurora.html",
+      "page": "artifacts/aurora.html"
     }
   ],
   "microblogs": [
@@ -413,7 +427,7 @@
       "title": "How the Rubik Sketch Works",
       "type": "microblog",
       "url": "microblog/entry-2.html",
-      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2×2 to 7×7, scrambles the state with random face turns, and plays back a solve\nby reversing those same moves in o"
+      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2\u00d72 to 7\u00d77, scrambles the state with random face turns, and plays back a solve\nby reversing those same moves in o"
     },
     {
       "id": "entry-3",
@@ -476,7 +490,7 @@
       "title": "The angle that doesn't repeat",
       "type": "microblog",
       "url": "microblog/entry-11.html",
-      "snippet": "1,400 dots placed at 137.5° increments, radius scaling as √index. Click to pulse. Move mouse to slow the rotation."
+      "snippet": "1,400 dots placed at 137.5\u00b0 increments, radius scaling as \u221aindex. Click to pulse. Move mouse to slow the rotation."
     },
     {
       "id": "entry-12",
@@ -497,7 +511,7 @@
       "title": "The grammar that grows a forest",
       "type": "microblog",
       "url": "microblog/entry-14.html",
-      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpiński triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle."
+      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpi\u0144ski triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle."
     },
     {
       "id": "entry-15",
