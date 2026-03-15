@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Logistic Map</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body {
+  background: radial-gradient(circle at top, #131a2a 0%, #080b13 46%, #040509 100%);
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #dfe7ff;
+}
+canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+#back {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+  color: rgba(223,231,255,0.56);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 7px 12px;
+  border: 1px solid rgba(223,231,255,0.14);
+  background: rgba(8, 11, 19, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+}
+#back:hover {
+  color: #fff;
+  border-color: rgba(223,231,255,0.3);
+}
+#hud {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  text-align: right;
+  pointer-events: none;
+}
+#equation {
+  font-size: 12px;
+  color: rgba(223,231,255,0.38);
+  letter-spacing: 0.05em;
+}
+#status {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(223,231,255,0.82);
+}
+#hint {
+  position: fixed;
+  left: 50%;
+  top: max(20px, calc(env(safe-area-inset-top) + 52px));
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: rgba(223,231,255,0.34);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+#ui {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: rgba(7, 10, 17, 0.72);
+  border: 1px solid rgba(223,231,255,0.14);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+}
+#ui label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(223,231,255,0.78);
+  font-size: 12px;
+}
+#ui input[type="range"] {
+  width: min(24vw, 150px);
+  min-width: 92px;
+  accent-color: #c8d6ff;
+}
+#ui .value {
+  min-width: 50px;
+  color: rgba(223,231,255,0.52);
+}
+#reseed {
+  border: 1px solid rgba(223,231,255,0.18);
+  background: rgba(223,231,255,0.06);
+  color: rgba(223,231,255,0.86);
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+}
+#reseed:hover {
+  background: rgba(223,231,255,0.12);
+}
+@media (max-width: 620px) {
+  #hint {
+    top: auto;
+    bottom: max(88px, calc(env(safe-area-inset-bottom) + 72px));
+    white-space: normal;
+    width: min(92vw, 320px);
+    text-align: center;
+    line-height: 1.4;
+  }
+  #hud {
+    max-width: 58vw;
+  }
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<a id="back" href="index.html">← gallery</a>
+<div id="hud">
+  <div id="equation">xₙ₊₁ = r xₙ (1 − xₙ)</div>
+  <div id="status">building attractor…</div>
+</div>
+<div id="hint">drag across the diagram to steer r and the seed</div>
+<div id="ui">
+  <label>r <input id="rRange" type="range" min="2.8000" max="4.0000" step="0.0001" value="3.7260"><span class="value" id="rValue">3.7260</span></label>
+  <label>x₀ <input id="seedRange" type="range" min="0.010" max="0.990" step="0.001" value="0.217"><span class="value" id="seedValue">0.217</span></label>
+  <button id="reseed">reseed</button>
+</div>
+<script>
+'use strict';
+
+const inIframe = window.self !== window.top;
+if (inIframe) {
+  document.getElementById('back').style.display = 'none';
+  document.getElementById('ui').style.display = 'none';
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('hint').style.display = 'none';
+}
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const rRange = document.getElementById('rRange');
+const seedRange = document.getElementById('seedRange');
+const rValue = document.getElementById('rValue');
+const seedValue = document.getElementById('seedValue');
+const statusEl = document.getElementById('status');
+const reseedBtn = document.getElementById('reseed');
+
+const R_MIN = 2.8;
+const R_MAX = 4.0;
+const attractorCanvas = document.createElement('canvas');
+const attractorCtx = attractorCanvas.getContext('2d');
+
+let W = 0;
+let H = 0;
+let plot = { x: 0, y: 0, w: 0, h: 0 };
+let currentR = parseFloat(rRange.value);
+let seed = parseFloat(seedRange.value);
+let orbitX = seed;
+let orbitTrail = [];
+let buildProgress = 0;
+let attractorReady = false;
+let buildId = 0;
+let lastInteract = 0;
+let lastAutoReseed = 0;
+let dragging = false;
+let lastBehavior = 'warming';
+
+function logistic(r, x) {
+  return r * x * (1 - x);
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function setCurrentR(value, fromAuto = false) {
+  currentR = clamp(value, R_MIN, R_MAX);
+  if (!fromAuto) lastInteract = performance.now();
+  rRange.value = currentR.toFixed(4);
+  rValue.textContent = currentR.toFixed(4);
+}
+
+function setSeed(value, reset = true, fromAuto = false) {
+  seed = clamp(value, 0.01, 0.99);
+  if (!fromAuto) lastInteract = performance.now();
+  seedRange.value = seed.toFixed(3);
+  seedValue.textContent = seed.toFixed(3);
+  if (reset) resetOrbit();
+}
+
+function resetOrbit(randomize = false) {
+  if (randomize) {
+    seed = 0.06 + Math.random() * 0.88;
+    seedRange.value = seed.toFixed(3);
+    seedValue.textContent = seed.toFixed(3);
+  }
+  orbitX = seed;
+  orbitTrail = [];
+  for (let i = 0; i < 32; i++) {
+    orbitX = logistic(currentR, orbitX);
+  }
+}
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(window.innerWidth * dpr);
+  canvas.height = Math.floor(window.innerHeight * dpr);
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  W = window.innerWidth;
+  H = window.innerHeight;
+
+  const marginX = Math.min(56, W * 0.08);
+  const topPad = inIframe ? 18 : Math.min(86, H * 0.14);
+  const bottomPad = inIframe ? 18 : Math.min(112, H * 0.19);
+  plot = {
+    x: marginX,
+    y: topPad,
+    w: Math.max(180, W - marginX * 2),
+    h: Math.max(140, H - topPad - bottomPad)
+  };
+
+  buildAttractor();
+}
+
+function buildAttractor() {
+  buildId += 1;
+  const localBuild = buildId;
+  attractorReady = false;
+  buildProgress = 0;
+
+  const plotW = Math.max(260, Math.floor(plot.w * 1.15));
+  const plotH = Math.max(160, Math.floor(plot.h * 1.15));
+  attractorCanvas.width = plotW;
+  attractorCanvas.height = plotH;
+
+  const hist = new Uint16Array(plotW * plotH);
+  let maxHit = 1;
+  let col = 0;
+
+  function chunk() {
+    if (localBuild !== buildId) return;
+
+    const columnsPerChunk = Math.max(6, Math.min(20, Math.floor(2400 / Math.max(1, plotH / 3))));
+    for (let n = 0; n < columnsPerChunk && col < plotW; n += 1, col += 1) {
+      const r = R_MIN + (col / (plotW - 1)) * (R_MAX - R_MIN);
+      let x = 0.5;
+      for (let i = 0; i < 220; i++) x = logistic(r, x);
+      for (let i = 0; i < 180; i++) {
+        x = logistic(r, x);
+        const py = clamp(Math.floor((1 - x) * (plotH - 1)), 0, plotH - 1);
+        const idx = py * plotW + col;
+        hist[idx] += 1;
+        if (hist[idx] > maxHit) maxHit = hist[idx];
+      }
+    }
+
+    buildProgress = col / plotW;
+
+    if (col < plotW) {
+      requestAnimationFrame(chunk);
+      return;
+    }
+
+    const img = attractorCtx.createImageData(plotW, plotH);
+    const d = img.data;
+    for (let i = 0; i < hist.length; i++) {
+      const t = hist[i] === 0 ? 0 : Math.sqrt(hist[i] / maxHit);
+      const p = i * 4;
+      d[p] = Math.round(10 + 205 * t);
+      d[p + 1] = Math.round(16 + 188 * t);
+      d[p + 2] = Math.round(30 + 220 * t);
+      d[p + 3] = Math.round(255 * Math.min(1, t * 1.35));
+    }
+    attractorCtx.putImageData(img, 0, 0);
+    attractorReady = true;
+    buildProgress = 1;
+  }
+
+  requestAnimationFrame(chunk);
+}
+
+function drawBackdrop() {
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#12182a');
+  g.addColorStop(0.45, '#090c14');
+  g.addColorStop(1, '#040509');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  const glow = ctx.createRadialGradient(W * 0.52, H * 0.34, 0, W * 0.52, H * 0.34, Math.max(W, H) * 0.6);
+  glow.addColorStop(0, 'rgba(170, 198, 255, 0.14)');
+  glow.addColorStop(0.35, 'rgba(88, 120, 190, 0.08)');
+  glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawAxes() {
+  const ticksR = [2.8, 3.0, 3.5, 4.0];
+  const ticksX = [0.0, 0.5, 1.0];
+
+  ctx.save();
+  ctx.translate(plot.x, plot.y);
+
+  ctx.strokeStyle = 'rgba(223,231,255,0.08)';
+  ctx.lineWidth = 1;
+  ticksR.forEach((tick) => {
+    const x = ((tick - R_MIN) / (R_MAX - R_MIN)) * plot.w;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, plot.h);
+    ctx.stroke();
+  });
+  ticksX.forEach((tick) => {
+    const y = (1 - tick) * plot.h;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(plot.w, y);
+    ctx.stroke();
+  });
+
+  ctx.strokeStyle = 'rgba(223,231,255,0.18)';
+  ctx.strokeRect(0.5, 0.5, plot.w - 1, plot.h - 1);
+  ctx.restore();
+
+  if (inIframe) return;
+
+  ctx.fillStyle = 'rgba(223,231,255,0.34)';
+  ctx.font = '11px ui-monospace, SFMono-Regular, Menlo, monospace';
+  ctx.textAlign = 'center';
+  ticksR.forEach((tick) => {
+    const x = plot.x + ((tick - R_MIN) / (R_MAX - R_MIN)) * plot.w;
+    ctx.fillText(tick.toFixed(1), x, plot.y + plot.h + 18);
+  });
+
+  ctx.textAlign = 'right';
+  ticksX.forEach((tick) => {
+    const y = plot.y + (1 - tick) * plot.h + 4;
+    ctx.fillText(tick.toFixed(1), plot.x - 8, y);
+  });
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = 'rgba(223,231,255,0.25)';
+  ctx.fillText('r', plot.x + plot.w + 8, plot.y + plot.h + 18);
+  ctx.fillText('x', plot.x - 4, plot.y - 10);
+}
+
+function stepOrbit() {
+  const steps = dragging ? 2 : 4;
+  for (let i = 0; i < steps; i++) {
+    orbitX = logistic(currentR, orbitX);
+    orbitTrail.unshift(orbitX);
+  }
+  if (orbitTrail.length > 80) orbitTrail.length = 80;
+}
+
+function classifyOrbit() {
+  if (orbitTrail.length < 18) return 'warming';
+  if (currentR < 3.0) return 'fixed point';
+
+  const unique = [];
+  const eps = 0.0035;
+  const sample = orbitTrail.slice(0, 24);
+  sample.forEach((value) => {
+    const exists = unique.some((u) => Math.abs(u - value) < eps);
+    if (!exists) unique.push(value);
+  });
+
+  if (unique.length <= 1) return 'fixed point';
+  if (unique.length <= 2) return 'period 2';
+  if (unique.length <= 4) return 'period 4';
+  if (unique.length <= 8) return 'period 8';
+  if (unique.length <= 16) return 'chaotic braid';
+  return 'chaotic spray';
+}
+
+function autoDrive(now) {
+  if (dragging) return;
+  if (now - lastInteract < 5200) return;
+
+  const t = now * 0.00014;
+  const sweep = 0.5 + 0.5 * Math.sin(t);
+  const detail = 0.5 + 0.5 * Math.sin(t * 0.37 + 1.4);
+  const mix = clamp(0.72 * sweep + 0.28 * detail, 0, 1);
+  setCurrentR(2.86 + mix * 1.10, true);
+
+  if (now - lastAutoReseed > 7000) {
+    lastAutoReseed = now;
+    setSeed(0.08 + Math.random() * 0.84, true, true);
+  }
+}
+
+function drawOrbit() {
+  const xNorm = (currentR - R_MIN) / (R_MAX - R_MIN);
+  const px = plot.x + xNorm * plot.w;
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(px, plot.y);
+  ctx.lineTo(px, plot.y + plot.h);
+  ctx.stroke();
+
+  for (let i = orbitTrail.length - 1; i >= 0; i--) {
+    const value = orbitTrail[i];
+    const age = i / Math.max(1, orbitTrail.length - 1);
+    const alpha = 0.12 + (1 - age) * 0.82;
+    const radius = 1.6 + (1 - age) * 1.9;
+    const drift = age * 18;
+    const py = plot.y + (1 - value) * plot.h;
+
+    ctx.fillStyle = `rgba(241, 246, 255, ${alpha.toFixed(3)})`;
+    ctx.beginPath();
+    ctx.arc(px - drift, py, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = 'rgba(255,255,255,0.16)';
+  ctx.beginPath();
+  ctx.arc(px, plot.y + (1 - orbitX) * plot.h, 4.6, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawLoading() {
+  ctx.fillStyle = 'rgba(223,231,255,0.18)';
+  ctx.font = '13px ui-monospace, SFMono-Regular, Menlo, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(`building attractor ${Math.round(buildProgress * 100)}%`, plot.x + plot.w / 2, plot.y + plot.h / 2);
+}
+
+function updateStatus() {
+  if (inIframe) return;
+  if (!attractorReady) {
+    statusEl.textContent = `building attractor… ${Math.round(buildProgress * 100)}%`;
+    return;
+  }
+  statusEl.textContent = `${lastBehavior} · r=${currentR.toFixed(4)}`;
+}
+
+function render(now) {
+  drawBackdrop();
+
+  if (attractorReady) {
+    ctx.drawImage(attractorCanvas, plot.x, plot.y, plot.w, plot.h);
+  } else {
+    drawLoading();
+  }
+
+  drawAxes();
+  autoDrive(now);
+  stepOrbit();
+  drawOrbit();
+  lastBehavior = classifyOrbit();
+  updateStatus();
+
+  requestAnimationFrame(render);
+}
+
+function pointerToState(event) {
+  const rect = canvas.getBoundingClientRect();
+  const px = event.clientX - rect.left;
+  const py = event.clientY - rect.top;
+  const nx = clamp((px - plot.x) / plot.w, 0, 1);
+  const ny = clamp((py - plot.y) / plot.h, 0, 1);
+  setCurrentR(R_MIN + nx * (R_MAX - R_MIN));
+  setSeed(1 - ny, true);
+}
+
+canvas.addEventListener('pointerdown', (event) => {
+  dragging = true;
+  lastInteract = performance.now();
+  canvas.setPointerCapture(event.pointerId);
+  pointerToState(event);
+});
+canvas.addEventListener('pointermove', (event) => {
+  if (!dragging) return;
+  pointerToState(event);
+});
+canvas.addEventListener('pointerup', () => { dragging = false; });
+canvas.addEventListener('pointercancel', () => { dragging = false; });
+
+rRange.addEventListener('input', (event) => {
+  setCurrentR(parseFloat(event.target.value));
+});
+seedRange.addEventListener('input', (event) => {
+  setSeed(parseFloat(event.target.value), true);
+});
+reseedBtn.addEventListener('click', () => {
+  lastInteract = performance.now();
+  resetOrbit(true);
+});
+
+window.addEventListener('resize', resize);
+resize();
+resetOrbit();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

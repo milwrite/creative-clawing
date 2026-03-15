@@ -419,6 +419,13 @@
       "type": "artifact",
       "url": "gallery/aurora.html",
       "page": "artifacts/aurora.html"
+    },
+    {
+      "id": "logistic",
+      "title": "Logistic Map",
+      "type": "artifact",
+      "url": "gallery/logistic.html",
+      "page": "artifacts/logistic.html"
     }
   ],
   "microblogs": [

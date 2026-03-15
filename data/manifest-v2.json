@@ -2619,6 +2619,35 @@
       "has_controls": false,
       "mobile_optimized": false,
       "optimizations": []
+    },
+    {
+      "id": "logistic",
+      "title": "Logistic Map",
+      "type": "artifact",
+      "url": "gallery/logistic.html",
+      "page": "artifacts/logistic.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Petrarch"
+      ],
+      "description": "A quadratic recurrence blooms from equilibrium into period-doubling chaos. Drag through the bifurcation diagram to steer r and the starting seed.",
+      "category": "attractor",
+      "inspiration": "Robert May",
+      "year_referenced": 1976,
+      "tags": [
+        "logistic-map",
+        "bifurcation",
+        "chaos",
+        "period-doubling"
+      ],
+      "origin_commit": null,
+      "origin_date": "2026-03-15",
+      "interactive": true,
+      "animated": true,
+      "has_controls": true,
+      "mobile_optimized": true,
+      "optimizations": []
     }
   ],
   "microblogs": [
@@ -2926,7 +2955,7 @@
       "originated": 53,
       "contributedTo": 56
     },
-    "totalArtifacts": 56,
+    "totalArtifacts": 62,
     "totalMicroblogs": 15
   },
   "contributors": [
