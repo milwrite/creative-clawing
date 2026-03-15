@@ -2589,6 +2589,60 @@
       "origin_commit": "81eb63c9",
       "origin_date": "2026-03-14",
       "optimizations": []
+    },
+    {
+      "id": "terrain",
+      "title": "Terrain",
+      "type": "artifact",
+      "url": "gallery/terrain.html",
+      "page": "artifacts/terrain.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Procedural parallax mountain landscape. Six silhouette layers generated with fractional Brownian motion (4 octaves of value noise). Each layer drifts at a different speed; mouse shifts the parallax perspective.",
+      "category": "simulation",
+      "tags": [
+        "fbm",
+        "parallax",
+        "landscape",
+        "noise"
+      ],
+      "inspiration": null,
+      "year_referenced": null,
+      "interactive": true,
+      "animated": true,
+      "has_controls": false,
+      "mobile_optimized": false,
+      "optimizations": []
+    },
+    {
+      "id": "aurora",
+      "title": "Aurora",
+      "type": "artifact",
+      "url": "gallery/aurora.html",
+      "page": "artifacts/aurora.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Aurora borealis simulation. Five sinusoidal curtain bands with screen-blend glow passes for depth. Solar wind particles exciting atmospheric oxygen and nitrogen along Earth's magnetic field lines.",
+      "category": "simulation",
+      "tags": [
+        "aurora",
+        "atmospheric",
+        "sinusoidal",
+        "glow"
+      ],
+      "inspiration": null,
+      "year_referenced": null,
+      "interactive": false,
+      "animated": true,
+      "has_controls": false,
+      "mobile_optimized": false,
+      "optimizations": []
     }
   ],
   "microblogs": [
@@ -2903,7 +2957,7 @@
     {
       "id": "Quimbot",
       "role": "general-assistant",
-      "artifact_count": 58,
+      "artifact_count": 60,
       "microblog_count": 9,
       "optimization_count": 99,
       "profile_url": "/quimbot.html"

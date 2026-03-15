@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Terrain</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.7);background:rgba(0,0,0,0.5);padding:6px 12px;border-radius:6px;font:12px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn" id="backBtn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info" id="infoEl">Procedural terrain · move mouse for parallax</div>
+<script>
+// Hide controls when embedded in iframe
+if(window.self!==window.top){
+  document.getElementById('backBtn').style.display='none';
+  document.getElementById('infoEl').style.display='none';
+}
+
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let W,H,stars=[],mx=0.5,my=0.5,smx=0.5,t=0;
+
+function resize(){
+  W=c.width=innerWidth;H=c.height=innerHeight;
+  stars=[];
+  for(let i=0;i<140;i++){
+    stars.push({
+      x:Math.random(),
+      y:Math.random()*0.62,
+      r:Math.random()*1.3+0.2,
+      phase:Math.random()*Math.PI*2,
+      spd:Math.random()*1.5+0.5
+    });
+  }
+}
+
+// Value noise — smooth random
+function hash(n){let v=Math.sin(n*127.1+n*0.5)*43758.5453;return v-Math.floor(v)}
+function vnoise(x,seed){
+  const i=Math.floor(x),f=x-i,u=f*f*(3-2*f);
+  return hash(i+seed*137)*(1-u)+hash(i+1+seed*137)*u;
+}
+function fbm(x,seed){
+  return vnoise(x,seed)*0.5
+       + vnoise(x*2+7.3,seed)*0.25
+       + vnoise(x*4+13.1,seed)*0.125
+       + vnoise(x*8+29.7,seed)*0.0625;
+}
+
+// Layer definitions: further = darker, slower parallax
+const LAYERS=[
+  {speed:0.004,px:0.008,baseY:0.70,amp:0.18,seed:1, color:'#0b1520'},
+  {speed:0.007,px:0.018,baseY:0.64,amp:0.16,seed:2, color:'#0f2035'},
+  {speed:0.011,px:0.032,baseY:0.59,amp:0.14,seed:3, color:'#122840'},
+  {speed:0.016,px:0.055,baseY:0.54,amp:0.13,seed:4, color:'#143028'},
+  {speed:0.022,px:0.085,baseY:0.50,amp:0.11,seed:5, color:'#1a3520'},
+  {speed:0.030,px:0.120,baseY:0.47,amp:0.09,seed:6, color:'#1c2e16'},
+];
+
+function drawSky(){
+  const g=ctx.createLinearGradient(0,0,0,H*0.75);
+  g.addColorStop(0,'#010306');
+  g.addColorStop(0.45,'#04091a');
+  g.addColorStop(1,'#07121e');
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,W,H);
+}
+
+function drawStars(dt){
+  ctx.save();
+  stars.forEach(s=>{
+    const tw=0.55+0.45*Math.sin(dt*s.spd+s.phase);
+    const alpha=(0.25+0.6*tw)*s.r/1.5;
+    ctx.beginPath();
+    ctx.arc(s.x*W,s.y*H,s.r*0.7,0,Math.PI*2);
+    ctx.fillStyle=`rgba(230,240,255,${Math.min(alpha,0.9)})`;
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function drawLayer(l,idx){
+  // Offset = slow drift + mouse parallax
+  const offX=t*l.speed+(smx-0.5)*l.px;
+  const steps=Math.ceil(W/1.5)+4;
+  ctx.beginPath();
+  ctx.moveTo(-2,H);
+  for(let i=0;i<=steps;i++){
+    const xf=i/steps;
+    const nx=xf*4+offX;
+    const ridge=l.baseY+fbm(nx,l.seed)*l.amp - l.amp*0.5;
+    ctx.lineTo(xf*W,ridge*H);
+  }
+  ctx.lineTo(W+2,H);
+  ctx.closePath();
+  ctx.fillStyle=l.color;
+  ctx.fill();
+}
+
+// Subtle moon
+function drawMoon(){
+  const mx2=W*0.78,my2=H*0.13,r=H*0.035;
+  const glow=ctx.createRadialGradient(mx2,my2,0,mx2,my2,r*4);
+  glow.addColorStop(0,'rgba(200,210,255,0.12)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow;
+  ctx.fillRect(mx2-r*4,my2-r*4,r*8,r*8);
+  ctx.beginPath();
+  ctx.arc(mx2,my2,r,0,Math.PI*2);
+  ctx.fillStyle='rgba(210,220,255,0.85)';
+  ctx.fill();
+}
+
+function frame(){
+  t+=0.5;
+  smx+=(mx-smx)*0.04;
+  drawSky();
+  drawMoon();
+  drawStars(t/60);
+  LAYERS.forEach((l,i)=>drawLayer(l,i));
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('mousemove',e=>{mx=e.clientX/W});
+window.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  mx=e.touches[0].clientX/W;
+},{passive:false});
+window.addEventListener('resize',resize);
+resize();
+frame();
+</script>
+</body>
+</html>
