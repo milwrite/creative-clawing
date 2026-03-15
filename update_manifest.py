@@ -54,10 +54,13 @@ AGENT_ALIASES = {
     "quimbot":   "Quimbot",
     "openclaw":  "Quimbot",   # openclaw@example.com / OpenClaw Agent = Quimbot
     "petrarch":  "Petrarch",
-    "milwrite":  "Petrarch",
+    "milwrite":  "Petrarch",  # milwrite = repo owner; commits attributed to Petrarch
     "zach":      "Petrarch",
     "milwright": "Petrarch",
 }
+
+# milwrite is never a contributor — all milwrite commits resolve to Petrarch
+EXCLUDE_CONTRIBUTORS = {"milwrite", "Unknown"}
 
 def run(cmd, cwd=REPO):
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
