@@ -576,6 +576,7 @@
   }
 
   function blogCard(blog) {
+    const postHref = blog.url || `microblog/${blog.id}.html`;
     const chips = (blog.linkedArtifacts || []).slice(0, 2).map(id => {
       const art = artMap[id];
       const label = art ? art.title : id;
@@ -583,7 +584,8 @@
     }).join('');
 
     return `<div class="blog-card">
-      <a class="blog-main-link" href="microblogs.html#entry-${blog.num}">
+      <a class="blog-main-link" href="${postHref}">
+        <div class="k">Microblog</div>
         <h3>${blog.title}</h3>
         <p>${blog.snippet || 'open to read'}</p>
       </a>
