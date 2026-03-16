@@ -226,6 +226,7 @@ c.addEventListener('click',e=>{
   foods.push(new Food(e.clientX,e.clientY));
 });
 
+c.addEventListener('touchstart',e=>{e.preventDefault()},{passive:false});
 c.addEventListener('touchend',e=>{
   e.preventDefault();
   const t=e.changedTouches[0];

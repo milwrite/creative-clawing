@@ -130,6 +130,7 @@ function frame(){
 }
 
 window.addEventListener('mousemove',e=>{mx=e.clientX/W});
+window.addEventListener('touchstart',e=>{e.preventDefault()},{passive:false});
 window.addEventListener('touchmove',e=>{
   e.preventDefault();
   mx=e.touches[0].clientX/W;
