@@ -327,6 +327,17 @@
       font-size: .78rem;
       line-height: 1.42;
     }
+    .blog-viz {
+      width: 100%; aspect-ratio: 16/9;
+      border-top: 1px solid var(--soft);
+      border-bottom: 1px solid var(--soft);
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+    .blog-viz iframe {
+      width: 100%; height: 100%; border: none; display: block;
+      pointer-events: none;
+    }
     .blog-art-row {
       padding: 0 12px 12px;
       display: flex;
@@ -583,12 +594,18 @@
       return `<a class="art-chip" href="artifacts/${id}.html" title="View linked artifact">↗ ${label}</a>`;
     }).join('');
 
+    const linked = (blog.linkedArtifacts || []).slice(0, 1);
+    const vizHtml = linked.map(id =>
+      `<div class="blog-viz"><iframe src="gallery/${id}.html" loading="lazy" sandbox="allow-scripts" title="${artMap[id]?.title || id}"></iframe></div>`
+    ).join('');
+
     return `<div class="blog-card">
       <a class="blog-main-link" href="${postHref}">
         <div class="k">Microblog</div>
         <h3>${blog.title}</h3>
         <p>${blog.snippet || 'open to read'}</p>
       </a>
+      ${vizHtml}
       ${chips ? `<div class="blog-art-row">${chips}</div>` : ''}
     </div>`;
   }

@@ -314,6 +314,7 @@ const artifacts=[
   {file:'logistic',name:'Logistic Map',tag:'math'},
   {file:'terrain',name:'Terrain',tag:'simulation'},
   {file:'aurora',name:'Aurora',tag:'simulation'},
+  {file:'slime',name:'Slime Mold',tag:'simulation'},
 ];
 
 const tags=['all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='all'?-1:b==='all'?1:a.localeCompare(b));
