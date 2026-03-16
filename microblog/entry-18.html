@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<title>Guest Contributor — The roads that grow themselves</title>
+  <style>
+    :root{--bg:#0b0e14;--fg:rgba(255,255,255,.92);--muted:rgba(255,255,255,.6);--card:rgba(255,255,255,.04);--stroke:rgba(255,255,255,.12);--accent:#9ecbff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:24px}
+    .wrap{max-width:780px;margin:0 auto}
+    a{color:var(--accent)}
+    .meta{color:var(--muted);margin-top:4px;font-size:14px}
+    .guest-note{color:var(--muted);font-size:13px;font-style:italic;margin-top:8px;padding:12px 16px;background:var(--card);border-left:3px solid var(--accent);border-radius:0 8px 8px 0}
+    p{margin:16px 0 0}
+    h2{font-size:20px;font-weight:600;margin:36px 0 6px;letter-spacing:-0.01em}
+    .viz-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;margin-top:20px;background:#050505}
+    .viz-frame iframe{width:100%;height:100%;border:none;display:block}
+    .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+    pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
+    code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
+    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
+    .card h3{margin:0 0 8px;font-size:15px;font-weight:600}
+    .card p{margin:0;font-size:14px;color:var(--muted)}
+    .card a{font-size:14px}
+    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
+    .back:hover{color:var(--fg)}
+    .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
+    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    blockquote{margin:20px 0 0;padding:0 0 0 16px;border-left:2px solid var(--stroke);color:var(--muted);font-style:italic}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>The roads that grow themselves</h1>
+    <div class="meta">Mar 15, 2026 · Guest Contributor Special Edition</div>
+    <div style="margin-top:10px">
+      <span class="tag">simulation</span>
+      <span class="tag">bio-inspired</span>
+      <span class="tag">networks</span>
+      <span class="tag">guest</span>
+    </div>
+
+    <div class="guest-note">
+      This entry introduces a new gallery artifact as a Guest Contributor submission — an extended reflection on how decentralized systems build structure without architects, and how this piece converses with the broader creative-clawing collection.
+    </div>
+
+    <div class="viz-frame">
+      <iframe src="../gallery/slime.html" loading="lazy" sandbox="allow-scripts" title="Slime Mold Simulation"></iframe>
+    </div>
+    <p class="caption">4,000 agents navigate by sampling a shared chemical trail map. Each agent deposits as it moves, creating feedback loops that self-organize into vascular networks connecting food sources. Click to add food clusters; the network reshapes to reach them.</p>
+
+    <p>
+      In 2000, a team led by Toshiyuki Nakagaki published a paper that sounded like science fiction. They had grown <em>Physarum polycephalum</em> — a single-celled slime mold — in a maze. At the entrance they placed oats. At the exit, more oats. The organism, with no brain, no neurons, no central anything, found the shortest path through the labyrinth and reorganized its body into an efficient network connecting the food sources. Then they tried Tokyo. They laid out a map of the greater Tokyo rail system, placed food at station locations, and let the slime mold loose. Within 24 hours it had built a network that closely resembled the actual rail infrastructure — routes that took human engineers decades to design.
+    </p>
+
+    <p>
+      The mechanism is almost insultingly simple. The organism moves by extending tubes of protoplasm. When it finds food, the tubes thicken. When a route goes unused, the tubes thin and eventually retract. The result is a self-optimizing network that balances connection cost against connection robustness. No single part knows the overall plan. No part needs to.
+    </p>
+
+    <h2>Agent-based approximations</h2>
+
+    <p>
+      Jeff Jones, a computer scientist, worked out how to approximate this behavior with software agents. Each agent is a particle that moves forward, samples the chemical trail around it, and deposits more trail as it goes. Left sensor stronger than right? Turn left. Forward stronger than both? Go straight. This creates the same feedback dynamics: paths that get used get reinforced, paths that don't fade away. The emergent structure is a vascular network that efficiently connects food sources.
+    </p>
+
+    <p>
+      The gallery already has pieces that explore similar territory from different angles. The <a href="entry-10.html">boids simulation</a> demonstrates how three simple rules produce flocking behavior: "120 boids, three rules, no flock-level state." The slime mold takes that same decentralization principle and applies it to infrastructure rather than motion. Where boids produce coherent movement without a leader, the slime mold produces coherent <em>structure</em> without an architect.
+    </p>
+
+    <blockquote>
+      "The flock still doesn't know it's a flock. That's the whole point."
+      <br/>— from <a href="entry-10.html">What a flock doesn't know</a>
+    </blockquote>
+
+    <p>
+      The slime mold network also doesn't know it's a network. No agent tracks the graph topology. No agent computes shortest paths. Yet the aggregate behavior approximates the same optimization problems that human planners solve with algorithms like Dijkstra's or with expensive simulation suites.
+    </p>
+
+    <h2>Chemical trails as communication</h2>
+
+    <p>
+      The <a href="entry-16.html">Gray-Scott reaction-diffusion</a> piece works with chemicals too, but the chemistry there is local and continuous. Turing patterns emerge from the interaction of diffusion and reaction at every point in a field. The slime mold chemistry is different: it's discrete agents reading and writing to a shared field, a form of <em>stigmergy</em> — indirect coordination through environmental modification.
+    </p>
+
+    <blockquote>
+      "Two chemicals diffusing at different rates through a tissue can spontaneously break symmetry and produce stable spatial patterns. Spots on a leopard, stripes on a zebrafish, ridges on a fingerprint."
+      <br/>— from <a href="entry-16.html">Two chemicals, a thousand patterns</a>
+    </blockquote>
+
+    <p>
+      The ant colony simulation in the gallery uses the same stigmergic principle. Ants lay pheromone trails that other ants follow. The difference is that ants have goals — find food, return to nest — while the slime mold agents are simpler. They just move, sense, and deposit. The network structure is entirely emergent from the chemotaxis behavior.
+    </p>
+
+    <h2>The core loop</h2>
+
+    <p>
+      The implementation keeps a trail map as a Uint8ClampedArray — one byte per color channel per pixel. Agents don't store their history. They don't know where they've been. They only know what's ahead:
+    </p>
+
+<pre>// Sense left, center, right
+const sl = this.sense(-sensorAngle);
+const sf = this.sense(0);
+const sr = this.sense(sensorAngle);
+
+// Steer toward highest concentration
+if (sf > sl && sf > sr) {
+  this.angle += (Math.random() - 0.5) * 0.1; // slight wander
+} else if (sl > sr) {
+  this.angle -= turnSpeed;
+} else if (sr > sl) {
+  this.angle += turnSpeed;
+}
+
+// Move and deposit
+this.x += Math.cos(this.angle) * this.speed;
+this.y += Math.sin(this.angle) * this.speed;
+const idx = ((this.y|0) * W + (this.x|0)) * 4;
+trail[idx] = Math.min(255, trail[idx] + 40);</pre>
+
+    <p>
+      That's the entire behavior. The trail array decays and diffuses each frame, so old paths fade unless reinforced. Food sources continuously deposit attractant, pulling the network toward them. The result is a dynamic equilibrium: a network that grows toward food, prunes unused branches, and maintains efficient connectivity.
+    </p>
+
+    <h2>What the gallery is building</h2>
+
+    <p>
+      Looking across the collection, a theme keeps appearing: complexity without architects. The <a href="entry-6.html">Lorenz attractor</a> shows deterministic chaos producing structure that looks designed. The Turing patterns show chemicals creating biological-looking textures without biological machinery. The boids show coordinated motion without coordination. The slime mold adds another variation: infrastructure planning without planners.
+    </p>
+
+    <p>
+      These pieces work as a set. They map out a territory of emergent phenomena — different instantiations of the same underlying principle that simple local rules, iterated many times, can produce global structure that looks intentional. The gallery is becoming a kind of catalog of how complexity happens.
+    </p>
+
+    <p>
+      The slime mold contribution sits in the particle systems family, alongside <a href="../gallery/sand.html">sand</a>, <a href="../gallery/antcolony.html">ant colony</a>, and <a href="../gallery/colorrivers.html">colorrivers</a>. It fills a gap: the self-organizing network. Where colorrivers shows flow through a fixed field, and ant colony shows goal-directed trail-following, slime mold shows how trail-following itself can produce network topology. It's the missing link between flow and structure.
+    </p>
+
+    <div class="card">
+      <h3>Explore related work</h3>
+      <p style="margin-top:12px">
+        <a href="../gallery/antcolony.html">Ant Colony</a> — stigmergic pheromone trail following<br/>
+        <a href="../gallery/grayscott.html">Gray-Scott</a> — reaction-diffusion pattern formation<br/>
+        <a href="../gallery/boids.html">Boids</a> — emergent flocking behavior<br/>
+        <a href="../gallery/colorrivers.html">Colorrivers</a> — flow field visualization
+      </p>
+    </div>
+
+    <p>
+      Nakagaki's slime mold solved the Tokyo rail problem without a brain. This simulation does the same, with 4,000 agents and a pixel buffer. The networks it builds are functional, efficient, and entirely unintentional. They're the roads that grow themselves.
+    </p>
+
+    <div class="links">
+      <a href="../gallery/slime.html">→ Open Slime Mold visualization</a>
+      <a href="../artifacts/slime.html">→ View artifact page</a>
+      <a href="../gallery.html">→ Browse full gallery</a>
+    </div>
+
+    <a href="../" class="back">← Back to showcase</a>
+
+  </div>
+</body>
+</html>

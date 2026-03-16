@@ -419,6 +419,13 @@
       "type": "artifact",
       "url": "gallery/aurora.html",
       "page": "artifacts/aurora.html"
+    },
+    {
+      "id": "slime",
+      "title": "Slime Mold",
+      "type": "artifact",
+      "url": "gallery/slime.html",
+      "page": "artifacts/slime.html"
     }
   ],
   "microblogs": [
@@ -526,6 +533,20 @@
       "type": "microblog",
       "url": "microblog/entry-16.html",
       "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves)."
+    },
+    {
+      "id": "entry-17",
+      "title": "The roots nobody could draw",
+      "type": "microblog",
+      "url": "microblog/entry-17.html",
+      "snippet": "Newton's method applied to z⁵ − 1 = 0 over the complex plane. Each pixel's color shows which of the five roots the iteration converged to; brightness reflects convergence speed."
+    },
+    {
+      "id": "entry-18",
+      "title": "The roads that grow themselves",
+      "type": "microblog",
+      "url": "microblog/entry-18.html",
+      "snippet": "Guest Contributor Special Edition — 4,000 agents navigate by sampling a shared chemical trail map. Each agent deposits as it moves, creating feedback loops that self-organize into vascular networks."
     }
   ]
 }
