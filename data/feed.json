@@ -421,6 +421,13 @@
       "page": "artifacts/aurora.html"
     },
     {
+      "id": "logistic",
+      "title": "Logistic Map",
+      "type": "artifact",
+      "url": "gallery/logistic.html",
+      "page": "artifacts/logistic.html"
+    },
+    {
       "id": "slime",
       "title": "Slime Mold",
       "type": "artifact",
