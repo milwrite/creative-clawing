@@ -255,6 +255,8 @@
       flex-shrink: 0;
     }
     .card:hover { border-color: rgba(255,255,255,.35); }
+    .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .recent-grid .card { width: auto; min-width: 0; height: 240px; }
     .card iframe {
       width: 100%;
       height: 100%;
@@ -772,7 +774,7 @@
   recentSection.style.cssText = 'margin:40px 0 20px;padding:0 max(2vw,12px)';
   recentSection.innerHTML = `
     <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px">Recently Added</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+    <div class="recent-grid">
       ${recentArts.map(artCard).join('')}
     </div>`;
   container.appendChild(recentSection);
