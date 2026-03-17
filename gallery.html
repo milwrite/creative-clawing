@@ -317,8 +317,8 @@ const artifacts=[
   {file:'slime',name:'Slime Mold',tag:'simulation'},
 ];
 
-const tags=['all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='all'?-1:b==='all'?1:a.localeCompare(b));
-let active='all';
+const tags=['recent','all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='recent'?-1:b==='recent'?1:a==='all'?-1:b==='all'?1:a.localeCompare(b));
+let active='recent';
 
 const grid=document.getElementById('grid');
 const search=document.getElementById('search');
@@ -336,11 +336,12 @@ function renderFilters(){
 
 function render(){
   const q=search.value.trim().toLowerCase();
-  const list=artifacts.filter(a=>{
-    const tagOk=active==='all'||a.tag===active;
+  let list=artifacts.filter(a=>{
+    const tagOk=active==='all'||active==='recent'||a.tag===active;
     const textOk=!q||(a.name+' '+a.tag).toLowerCase().includes(q);
     return tagOk&&textOk;
   });
+  if(active==='recent') list=[...list].reverse();
   countEl.textContent=list.length+' artifact'+(list.length!==1?'s':'');
   if(!list.length){
     grid.innerHTML='<p class="empty">no artifacts match.</p>';return;
