@@ -162,7 +162,10 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     console.warn('manifest load failed', e);
   }
 
-  const tags=['recent','all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='recent'?-1:b==='recent'?1:a==='all'?-1:b==='all'?1:a.localeCompare(b));
+  // Only show tags used by 2+ artifacts
+  const tagCounts={};
+  artifacts.forEach(a=>{tagCounts[a.tag]=(tagCounts[a.tag]||0)+1;});
+  const tags=['recent','all',...new Set(artifacts.map(a=>a.tag).filter(t=>tagCounts[t]>=2))].sort((a,b)=>a==='recent'?-1:b==='recent'?1:a==='all'?-1:b==='all'?1:a.localeCompare(b));
   let active='recent';
 
   const grid=document.getElementById('grid');
