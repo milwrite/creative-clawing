@@ -17,12 +17,12 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <body>
 <a href="../" class="back-btn" id="backBtn">← Gallery</a>
 <canvas id="c"></canvas>
-<div id="info" id="infoEl">Procedural terrain · move mouse for parallax</div>
+<div id="info">Procedural terrain · move mouse for parallax</div>
 <script>
 // Hide controls when embedded in iframe
 if(window.self!==window.top){
   document.getElementById('backBtn').style.display='none';
-  document.getElementById('infoEl').style.display='none';
+  document.getElementById('info').style.display='none';
 }
 
 const c=document.getElementById('c'),ctx=c.getContext('2d');
