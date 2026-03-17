@@ -557,7 +557,7 @@
     },
     {
       "id": "entry-19",
-      "title": "The ant that builds a highway",
+      "title": "Ten thousand steps of noise",
       "type": "microblog",
       "url": "microblog/entry-19.html",
       "snippet": "Two rules, one ant, three behavioral regimes. Langton's 1986 cellular automaton starts symmetric, goes chaotic, then builds an infinite diagonal highway around step 10,000."
