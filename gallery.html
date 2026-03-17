@@ -131,6 +131,24 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 <script>
 (async function(){
   // Load artifact list from manifest-v2.json (single source of truth)
+  // Legacy tag map preserves the original curated tag vocabulary
+  const TAG_MAP = {
+    noll:'history',harmonograph:'history',nake:'history',truchet:'history',
+    tenprint:'classic',donut:'classic',
+    schotter:'pioneer',molnar:'pioneer',
+    starfield:'animation',matrix:'animation',kaleidoscope:'animation',scandrift:'animation',tunnel:'animation',halftone:'animation',
+    boids:'simulation',life:'simulation',lorenz:'simulation',heat:'simulation',turing:'simulation',chainwheel:'simulation',mitosis:'simulation',metaballs:'simulation',grayscott:'simulation',wolfram:'simulation',crystal:'simulation',antcolony:'simulation',langton:'simulation',sand:'simulation',dla:'simulation',dna:'simulation',terrain:'simulation',aurora:'simulation',slime:'simulation',
+    flow:'generative',constraint:'generative',voronoi:'generative',rubik:'generative',colorrivers:'generative',marchingsquares:'generative',mondrian:'generative',
+    lissajous:'math',fourier:'math',clifford:'math',phyllotaxis:'math',montecarlo:'math',quadwalk:'math',maurerrose:'math',logistic:'math',
+    lsystem:'fractal',sierpinski:'fractal',mandelbrot:'fractal',julia:'fractal',newton:'fractal',
+    pendulum:'physics',waveinterference:'physics',chladni:'physics',springwires:'physics',
+    chinoiserie:'interactive',aura:'interactive',ambiguousspin:'interactive',
+    audiomountain:'audio',asciireactive:'audio',
+    sospiri:'collab',
+    lorenz:'simulation',rossler:'attractor',
+    penrose:'geometry',
+  };
+
   let artifacts = [];
   try {
     const res = await fetch('data/manifest-v2.json');
@@ -138,7 +156,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     artifacts = (manifest.artifacts || []).map(a => ({
       file: a.id,
       name: a.title,
-      tag: (a.tags && a.tags[0]) || a.category || 'generative'
+      tag: TAG_MAP[a.id] || a.category || 'generative'
     }));
   } catch(e) {
     console.warn('manifest load failed', e);
