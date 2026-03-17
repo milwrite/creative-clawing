@@ -794,6 +794,11 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
+  // Scroll to hash after dynamic content renders
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
 })();
 </script>
 </body>
