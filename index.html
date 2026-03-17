@@ -450,7 +450,7 @@
 
     return `<div class="blog-card">
       <a class="blog-main-link" href="${postHref}">
-        <div class="k">Microblog</div>
+        <div class="k">${blog.originAgent || 'Microblog'}</div>
         <h3>${blog.title}</h3>
         <p>${blog.snippet || 'open to read'}</p>
       </a>
