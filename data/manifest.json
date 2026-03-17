@@ -4,200 +4,268 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "summary": {
-    "artifactOrigins": {
-      "Quimbot": 53,
-      "Petrarch": 4
-    },
-    "blogOrigins": {
-      "Quimbot": 15,
-      "Petrarch": 1
-    },
-    "optimizationTouches": {
-      "Quimbot": 99,
-      "Petrarch": 9
-    }
-  },
+  "generated": "2026-03-17T14:08:24.028407+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
       "title": "Ambiguous Rotation",
-      "file": "ambiguousspin.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "e46876b3",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/ambiguousspin.html",
+      "page": "artifacts/ambiguousspin.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "e73ddc85",
-          "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
-          "date": "2026-03-09",
-          "agent": "Quimbot"
+          "subject": "mobile: marchingsquares + ambiguousspin — user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Three rings of dots rotate in 3D with no depth cues — direction is unresolvable. Click to nudge.",
+      "category": "geometry",
+      "tags": [
+        "optical-illusion",
+        "rotation",
+        "depth"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "antcolony",
       "title": "Ant Colony",
-      "file": "antcolony.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "408e3a85",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/antcolony.html",
+      "page": "artifacts/antcolony.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: antcolony \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Stigmergic ants lay pheromone trails to food and home.",
+      "category": "simulation",
+      "tags": [
+        "ants",
+        "pheromone",
+        "stigmergy"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "asciireactive",
       "title": "ASCII Reactive",
-      "file": "asciireactive.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "1f7ec830",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/asciireactive.html",
+      "page": "artifacts/asciireactive.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [
-        {
-          "sha": "9c66069",
-          "subject": "mobile: asciireactive \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
-        }
+      "optimizations": [],
+      "description": "Audio-reactive Unicode field. Falls back to synthetic oscillators when mic is off.",
+      "category": "audio",
+      "tags": [
+        "audio",
+        "ascii",
+        "reactive"
       ],
-      "optimizationContributors": [
-        "Petrarch"
-      ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "audiomountain",
-      "title": "Audio Mountain",
-      "file": "audiomountain.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "d14cb717",
-        "confidence": "high"
-      },
+      "title": "Audiomountain",
+      "type": "artifact",
+      "url": "gallery/audiomountain.html",
+      "page": "artifacts/audiomountain.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: audiomountain \u2014 user-scalable=no, viewport-fit=cover (Pointer Events already present)",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Layered mountain ranges react to pseudo-audio by default and WebAudio analyser input when enabled.",
+      "category": "audio",
+      "tags": [
+        "audio",
+        "mountain",
+        "webaudio"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "aura",
       "title": "Aura",
-      "file": "aura.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "a44bcf58",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/aura.html",
+      "page": "artifacts/aura.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "07126934",
           "subject": "Optimize mobile interaction and resize behavior for springwires and aura",
-          "date": "2026-03-03",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "5b499e7f",
           "subject": "gallery: mobile optimizations for aura + spring wires",
-          "date": "2026-03-03",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
+      "description": "Glowing hue-shifting aura follows your cursor — click to burst, move to paint trails.",
+      "category": "simulation",
+      "tags": [
+        "cursor",
+        "glow",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "aurora",
+      "title": "Aurora",
+      "type": "artifact",
+      "url": "gallery/aurora.html",
+      "page": "artifacts/aurora.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
         "Quimbot"
       ],
-      "microblogs": []
+      "optimizations": [],
+      "description": "Aurora borealis simulation. Five sinusoidal curtain bands with screen-blend glow passes for depth. Solar wind particles exciting atmospheric oxygen and nitrogen along Earth's magnetic field lines.",
+      "category": "simulation",
+      "tags": [
+        "aurora",
+        "atmospheric",
+        "sinusoidal",
+        "glow"
+      ],
+      "interactive": false,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "boids",
       "title": "Boids",
-      "file": "boids.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/boids.html",
+      "page": "artifacts/boids.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Craig Reynolds flocking: separation, alignment, cohesion.",
+      "category": "simulation",
+      "tags": [
+        "flocking",
+        "steering",
+        "emergent"
       ],
-      "microblogs": [
-        "entry-10"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Craig Reynolds",
+      "year_referenced": 1986
     },
     {
       "id": "chainwheel",
       "title": "Chainwheel",
-      "file": "chainwheel.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "ddd270a5",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/chainwheel.html",
+      "page": "artifacts/chainwheel.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Petrarch",
         "Quimbot"
@@ -206,108 +274,115 @@
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "155d08a0",
           "subject": "Fix chainwheel gear propagation so animation drives full assembly",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "decdf396",
           "subject": "fix(chainwheel): fully chain-link grid so all gears are interconnected",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "2235cd5c",
-          "subject": "fix(gallery): chainwheel \u2014 vertical connections also draw chain links not invisible mesh lines",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — vertical connections also draw chain links not invisible mesh lines",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "938681e5",
-          "subject": "fix(gallery): chainwheel \u2014 grid-based connections (right+down neighbors), spans full canvas",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — grid-based connections (right+down neighbors), spans full canvas",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "4753e91f",
-          "subject": "fix(gallery): chainwheel \u2014 fix sort-after-build index bug, sparse connections, isolated gears stay still",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — fix sort-after-build index bug, sparse connections, isolated gears stay still",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "e6190948",
-          "subject": "fix(gallery): chainwheel \u2014 chain links scroll via pixel-space offset walk",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — chain links scroll via pixel-space offset walk",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "f4f7f861",
-          "subject": "fix(gallery): chainwheel \u2014 animate chain links via surface-speed offset",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — animate chain links via surface-speed offset",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "931e5afd",
-          "subject": "fix(gallery): chainwheel full clean rewrite \u2014 fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel full clean rewrite — fixes S undefined, TDZ, mobile DPR, gunmetal colors, non-overlapping grid layout",
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "f2c94395",
-          "subject": "fix(gallery): chainwheel \u2014 gunmetal colors, non-overlapping cell-sized gears",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): chainwheel — gunmetal colors, non-overlapping cell-sized gears",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "e64906bd",
           "subject": "fix(gallery): chainwheel TDZ crash + mobile DPR scaling + touch-action",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "8f7d8f6e",
           "subject": "fix(gallery): chainwheel rainbow colors + propagateSpeeds on rebuild",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "73b22e97",
           "subject": "fix(gallery): restore vivid rainbow colors to chainwheel gears",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Mechanical gear system with teeth, spokes, and chain belts.",
+      "category": "simulation",
+      "tags": [
+        "gears",
+        "mechanical",
+        "chain"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "chinoiserie",
       "title": "Chinoiserie",
-      "file": "chinoiserie.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "95356c17",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/chinoiserie.html",
+      "page": "artifacts/chinoiserie.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -315,63 +390,76 @@
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Click to grow flowering branches with falling petals.",
+      "category": "simulation",
+      "tags": [
+        "generative",
+        "flowers",
+        "interactive"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "chladni",
       "title": "Chladni",
-      "file": "chladni.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "efd6674b",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/chladni.html",
+      "page": "artifacts/chladni.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "201862e0",
           "subject": "gallery: fix 3 rendering bugs",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Standing wave nodal patterns: sand collects where a vibrating plate is still.",
+      "category": "geometry",
+      "tags": [
+        "standing-wave",
+        "nodal",
+        "resonance"
       ],
-      "microblogs": [
-        "entry-12"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Ernst Chladni",
+      "year_referenced": 1787
     },
     {
       "id": "clifford",
       "title": "Clifford",
-      "file": "clifford.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "a20be098",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/clifford.html",
+      "page": "artifacts/clifford.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -379,69 +467,82 @@
         {
           "sha": "17e40bfb",
           "subject": "fix: clifford + waveinterference crash on load",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "0b4cf9de",
-          "subject": "fix(gallery): rename color vars in clifford.html \u2014 'b' was redeclared in same scope as attractor param, causing SyntaxError",
-          "date": "2026-02-27",
-          "agent": "Quimbot"
+          "subject": "fix(gallery): rename color vars in clifford.html — 'b' was redeclared in same scope as attractor param, causing SyntaxError",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Strange attractor x'=sin(ay)+c·cos(ax) — millions of iterated points reveal fractal structure.",
+      "category": "attractor",
+      "tags": [
+        "attractor",
+        "iterated",
+        "fractal"
       ],
-      "microblogs": [
-        "entry-5"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Clifford Pickover",
+      "year_referenced": null
     },
     {
       "id": "colorrivers",
-      "title": "Color Rivers",
-      "file": "colorrivers.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "ddd270a5",
-        "confidence": "high"
-      },
+      "title": "Colorrivers",
+      "type": "artifact",
+      "url": "gallery/colorrivers.html",
+      "page": "artifacts/colorrivers.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Curl noise flow field — thousands of particles bleed saturated color streams across the canvas.",
+      "category": "simulation",
+      "tags": [
+        "curl-noise",
+        "flow",
+        "color"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "constraint",
       "title": "Constraint",
-      "file": "constraint.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/constraint.html",
+      "page": "artifacts/constraint.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -449,111 +550,191 @@
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Rule-based tile placement with adjacency constraints.",
+      "category": "geometry",
+      "tags": [
+        "tiling",
+        "constraint",
+        "generative"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "crystal",
       "title": "Crystal",
-      "file": "crystal.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "ea53d9ff",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/crystal.html",
+      "page": "artifacts/crystal.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ],
       "optimizations": [
         {
           "sha": "97d90274",
-          "subject": "crystal: fix DLA walker \u2014 was never actually moving due to continue/undo logic inversion",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "subject": "crystal: fix DLA walker — was never actually moving due to continue/undo logic inversion",
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
+      "description": "Diffusion-limited aggregation grows a snowflake with 12-fold symmetry.",
+      "category": "simulation",
+      "tags": [
+        "dla",
+        "crystal",
+        "snowflake"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "dla",
+      "title": "DLA Crystal",
+      "type": "artifact",
+      "url": "gallery/dla.html",
+      "page": "artifacts/dla.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
         "Quimbot"
       ],
-      "microblogs": []
+      "optimizations": [
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        }
+      ],
+      "description": "Diffusion-limited aggregation — walkers freeze on contact, growing branching crystal structures.",
+      "category": "simulation",
+      "tags": [
+        "dla",
+        "diffusion",
+        "aggregation"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "dna",
       "title": "DNA Double Helix",
-      "file": "dna.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "f1da18ba",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/dna.html",
+      "page": "artifacts/dna.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
           "sha": "79690d46",
-          "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
-          "date": "2026-03-10",
-          "agent": "Quimbot"
+          "subject": "mobile: dna + mondrian — user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Watson–Crick base pairs rendered as a rotating 3D helix — depth-sorted rungs with A-T and G-C color coding.",
+      "category": "simulation",
+      "tags": [
+        "dna",
+        "helix",
+        "3d"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "donut",
       "title": "Donut",
-      "file": "donut.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "ea53d9ff",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/donut.html",
+      "page": "artifacts/donut.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: donut \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px button min-height",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "The classic spinning 3D torus — surface normals mapped to ASCII character brightness.",
+      "category": "geometry",
+      "tags": [
+        "donut",
+        "ascii",
+        "3d"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "flow",
       "title": "Flow",
-      "file": "flow.html",
-      "origin": {
-        "agent": "Petrarch",
-        "commit": "dce2aac7",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/flow.html",
+      "page": "artifacts/flow.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
       "contributors": [
         "Petrarch",
         "Quimbot"
@@ -562,123 +743,192 @@
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Perlin noise vector field with thousands of particle traces.",
+      "category": "simulation",
+      "tags": [
+        "perlin",
+        "flow-field",
+        "particles"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "fourier",
       "title": "Fourier",
-      "file": "fourier.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "c68ada90",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/fourier.html",
+      "page": "artifacts/fourier.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "3be63c68",
-          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, ±buttons), bump touch targets on rubik+lsystem",
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Rotating epicycles decompose waveforms into harmonics — watch frequencies build shapes.",
+      "category": "geometry",
+      "tags": [
+        "epicycles",
+        "harmonics",
+        "signal"
       ],
-      "microblogs": [
-        "entry-4"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "grayscott",
       "title": "Gray-Scott",
-      "file": "grayscott.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "34c293cd",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/grayscott.html",
+      "page": "artifacts/grayscott.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Petrarch",
+        "Quimbot"
+      ],
+      "optimizations": [
+        {
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        }
+      ],
+      "description": "Gray-Scott two-chemical model grows coral, spots, and mazes.",
+      "category": "simulation",
+      "tags": [
+        "gray-scott",
+        "reaction-diffusion",
+        "pattern"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "halftone",
+      "title": "Halftone",
+      "type": "artifact",
+      "url": "gallery/halftone.html",
+      "page": "artifacts/halftone.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: grayscott \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Animated dot grid pulsing with 4-octave noise — four palettes, circle/square geometry toggle.",
+      "category": "simulation",
+      "tags": [
+        "halftone",
+        "noise",
+        "dots"
       ],
-      "microblogs": [
-        "entry-16"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "harmonograph",
       "title": "Harmonograph",
-      "file": "harmonograph.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "972de83e",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/harmonograph.html",
+      "page": "artifacts/harmonograph.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "081a09b8",
           "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "19th century pendulum drawing machine — decaying Lissajous traces in sepia ink.",
+      "category": "historical-homage",
+      "tags": [
+        "pendulum",
+        "lissajous",
+        "decay"
       ],
-      "microblogs": [
-        "entry-13"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Harmonograph instrument",
+      "year_referenced": 1857
     },
     {
       "id": "heat",
       "title": "Heat",
-      "file": "heat.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "1501c333",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/heat.html",
+      "page": "artifacts/heat.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -686,105 +936,157 @@
         {
           "sha": "f6511d05",
           "subject": "mobile: safe-area-inset + touch-action on boids, fourier, harmonograph, chinoiserie, flow, heat",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Drifting thermal sources with real-time diffusion — click to add heat.",
+      "category": "simulation",
+      "tags": [
+        "diffusion",
+        "heat",
+        "thermal"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "index",
+      "title": "Redirecting to Gallery",
+      "type": "artifact",
+      "url": "gallery/index.html",
+      "page": "artifacts/index.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "reported",
+      "contributors": [
+        "Quimbot",
+        "Petrarch"
+      ],
+      "optimizations": [],
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "julia",
-      "title": "Julia Set",
-      "file": "julia.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "efd6674b",
-        "confidence": "high"
-      },
+      "title": "Julia",
+      "type": "artifact",
+      "url": "gallery/julia.html",
+      "page": "artifacts/julia.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "201862e0",
           "subject": "gallery: fix 3 rendering bugs",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "z² + c iterated to escape: move mouse to steer c through 8 regions of the complex plane.",
+      "category": "geometry",
+      "tags": [
+        "complex-plane",
+        "fractal",
+        "iteration"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Gaston Julia",
+      "year_referenced": 1918
     },
     {
       "id": "kaleidoscope",
       "title": "Kaleidoscope",
-      "file": "kaleidoscope.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "d14cb717",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/kaleidoscope.html",
+      "page": "artifacts/kaleidoscope.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: kaleidoscope \u2014 user-scalable=no, viewport-fit=cover (touch-action:none and Pointer Events already present)",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Mirrored neon wedges with shader-like motion fields — drag to steer symmetry and speed.",
+      "category": "geometry",
+      "tags": [
+        "mirror",
+        "symmetry",
+        "shader"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "langton",
       "title": "Langton",
-      "file": "langton.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "9a6566e7",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/langton.html",
+      "page": "artifacts/langton.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: langton \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (add ant)",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "A single ant turns and flips cells — 10,000 steps of chaos collapse into a repeating highway.",
+      "category": "cellular-automaton",
+      "tags": [
+        "ant",
+        "cellular-automaton",
+        "highway"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Chris Langton",
+      "year_referenced": 1986
     },
     {
       "id": "life",
       "title": "Life",
-      "file": "life.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "72792971",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/life.html",
+      "page": "artifacts/life.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -792,37 +1094,43 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Conway's cellular automaton with rainbow-hued cells.",
+      "category": "cellular-automaton",
+      "tags": [
+        "cellular-automaton",
+        "emergence",
+        "grid"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "John Conway",
+      "year_referenced": 1970
     },
     {
       "id": "lissajous",
       "title": "Lissajous",
-      "file": "lissajous.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "72792971",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/lissajous.html",
+      "page": "artifacts/lissajous.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -830,180 +1138,242 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
+      "description": "Parametric harmonic curves with drifting frequency ratios.",
+      "category": "geometry",
+      "tags": [
+        "harmonic",
+        "parametric",
+        "curves"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Jules Antoine Lissajous",
+      "year_referenced": 1857
+    },
+    {
+      "id": "logistic",
+      "title": "Logistic Map",
+      "type": "artifact",
+      "url": "gallery/logistic.html",
+      "page": "artifacts/logistic.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "contributors": [
         "Petrarch"
       ],
-      "microblogs": [
-        "entry-9"
-      ]
+      "optimizations": [],
+      "description": "A quadratic recurrence blooms from equilibrium into period-doubling chaos. Drag through the bifurcation diagram to steer r and the starting seed.",
+      "category": "attractor",
+      "tags": [
+        "logistic-map",
+        "bifurcation",
+        "chaos",
+        "period-doubling"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Robert May",
+      "year_referenced": 1976
     },
     {
       "id": "lorenz",
       "title": "Lorenz",
-      "file": "lorenz.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "4626c2c6",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/lorenz.html",
+      "page": "artifacts/lorenz.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Deterministic chaos: six particles diverge across the butterfly wings.",
+      "category": "attractor",
+      "tags": [
+        "chaos",
+        "butterfly",
+        "strange-attractor"
       ],
-      "microblogs": [
-        "entry-6"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Edward Lorenz",
+      "year_referenced": 1963
     },
     {
       "id": "lsystem",
       "title": "L-System",
-      "file": "lsystem.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "72792971",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/lsystem.html",
+      "page": "artifacts/lsystem.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
           "sha": "3be63c68",
-          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, ±buttons), bump touch targets on rubik+lsystem",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Lindenmayer system fractal trees from string rewriting.",
+      "category": "geometry",
+      "tags": [
+        "grammar",
+        "fractal",
+        "turtle"
       ],
-      "microblogs": [
-        "entry-14"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Aristid Lindenmayer",
+      "year_referenced": 1968
     },
     {
       "id": "mandelbrot",
       "title": "Mandelbrot",
-      "file": "mandelbrot.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "de843d4f",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/mandelbrot.html",
+      "page": "artifacts/mandelbrot.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "201862e0",
           "subject": "gallery: fix 3 rendering bugs",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Click to zoom into infinite fractal complexity — smooth coloring reveals hidden structure.",
+      "category": "geometry",
+      "tags": [
+        "fractal",
+        "zoom",
+        "complex-plane"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Benoit Mandelbrot",
+      "year_referenced": 1979
     },
     {
       "id": "marchingsquares",
       "title": "Marching Squares",
-      "file": "marchingsquares.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "e46876b3",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/marchingsquares.html",
+      "page": "artifacts/marchingsquares.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "e73ddc85",
-          "subject": "mobile: marchingsquares + ambiguousspin \u2014 user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
-          "date": "2026-03-09",
-          "agent": "Quimbot"
+          "subject": "mobile: marchingsquares + ambiguousspin — user-scalable=no, touch-action:none, 44px targets, tap hint, touchend handlers",
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Animated scalar field sliced into contour levels by the marching squares algorithm.",
+      "category": "geometry",
+      "tags": [
+        "contour",
+        "isosurface",
+        "field"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "matrix",
       "title": "Matrix",
-      "file": "matrix.html",
-      "origin": {
-        "agent": "Petrarch",
-        "commit": "dce2aac7",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/matrix.html",
+      "page": "artifacts/matrix.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
       "contributors": [
         "Petrarch",
         "Quimbot"
@@ -1012,106 +1382,139 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Green character cascade (The Matrix, 1999).",
+      "category": "historical-homage",
+      "tags": [
+        "matrix",
+        "rain",
+        "text"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "The Matrix (film)",
+      "year_referenced": 1999
     },
     {
       "id": "maurerrose",
       "title": "Maurer Rose",
-      "file": "maurerrose.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "4dd42e8e",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/maurerrose.html",
+      "page": "artifacts/maurerrose.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [
-        {
-          "sha": "9c66069",
-          "subject": "mobile: maurerrose \u2014 already mobile-optimized at creation (user-scalable=no, touch handlers); recorded",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
-        }
+      "optimizations": [],
+      "description": "r = sin(n·θ) sampled at d-degree steps: move mouse to steer petal count and step angle.",
+      "category": "geometry",
+      "tags": [
+        "polar",
+        "rose",
+        "sampling"
       ],
-      "optimizationContributors": [
-        "Petrarch"
-      ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Peter M. Maurer",
+      "year_referenced": 1987
     },
     {
       "id": "metaballs",
       "title": "Metaballs",
-      "file": "metaballs.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "34c293cd",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/metaballs.html",
+      "page": "artifacts/metaballs.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: metaballs \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Organic blobs merge and split via implicit isosurface field.",
+      "category": "simulation",
+      "tags": [
+        "metaballs",
+        "isosurface",
+        "organic"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "mitosis",
       "title": "Mitosis",
-      "file": "mitosis.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "b14ea188",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/mitosis.html",
+      "page": "artifacts/mitosis.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: mitosis \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, touchend handler mirrors click (spawn cell)",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Cells grow, split, and drift — click to seed new organisms.",
+      "category": "simulation",
+      "tags": [
+        "cell",
+        "division",
+        "organism"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "molnar",
       "title": "Molnar",
-      "file": "molnar.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/molnar.html",
+      "page": "artifacts/molnar.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1119,329 +1522,468 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Vera Molnár: concentric rectangles disrupted by controlled chaos.",
+      "category": "historical-homage",
+      "tags": [
+        "interruptions",
+        "concentric",
+        "chaos"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Vera Molnár",
+      "year_referenced": 1974
     },
     {
       "id": "mondrian",
       "title": "Mondrian",
-      "file": "mondrian.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "f1da18ba",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/mondrian.html",
+      "page": "artifacts/mondrian.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
           "sha": "79690d46",
-          "subject": "mobile: dna + mondrian \u2014 user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
-          "date": "2026-03-10",
-          "agent": "Quimbot"
+          "subject": "mobile: dna + mondrian — user-scalable=no, touch-action, safe-area, pinch-to-zoom on dna, responsive radius/pad, tap hints",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Recursive binary subdivision produces Mondrian-style compositions — click to regenerate.",
+      "category": "historical-homage",
+      "tags": [
+        "mondrian",
+        "subdivision",
+        "primary-colors"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Piet Mondrian",
+      "year_referenced": 1920
     },
     {
       "id": "montecarlo",
       "title": "Monte Carlo",
-      "file": "montecarlo.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "408e3a85",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/montecarlo.html",
+      "page": "artifacts/montecarlo.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
+        "Petrarch",
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: montecarlo \u2014 user-scalable=no, viewport-fit=cover",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": null,
+          "subject": "studio-reported optimization contribution",
+          "agent": "Petrarch",
+          "confidence": "reported"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Random points flood a unit square — the circle catches π.",
+      "category": "simulation",
+      "tags": [
+        "monte-carlo",
+        "pi",
+        "probability"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "nake",
       "title": "Nake",
-      "file": "nake.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "c62e85c0",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/nake.html",
+      "page": "artifacts/nake.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: nake \u2014 user-scalable=no, viewport-fit=cover",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
+      "description": "Frieder Nake 1965 — random walk subdivision with Bauhaus palette.",
+      "category": "historical-homage",
+      "tags": [
+        "plotter",
+        "bauhaus",
+        "random-walk"
+      ],
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "Frieder Nake",
+      "year_referenced": 1965
+    },
+    {
+      "id": "newton",
+      "title": "Newton's Fractal",
+      "type": "artifact",
+      "url": "gallery/newton.html",
+      "page": "artifacts/newton.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "contributors": [
         "Petrarch"
       ],
-      "microblogs": []
+      "optimizations": [],
+      "description": "Newton's method applied to z⁵ − 1 = 0: each pixel colors by which root iteration converges to; brightness shows convergence speed. The basin boundaries are fractal.",
+      "category": "geometry",
+      "tags": [
+        "fractal",
+        "complex-plane",
+        "newton",
+        "iteration"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Arthur Cayley",
+      "year_referenced": 1879
     },
     {
       "id": "noll",
       "title": "Noll",
-      "file": "noll.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "972de83e",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/noll.html",
+      "page": "artifacts/noll.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: noll \u2014 user-scalable=no, viewport-fit=cover",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "After A. Michael Noll, Bell Labs 1965 — one of the first computer artworks.",
+      "category": "historical-homage",
+      "tags": [
+        "bell-labs",
+        "plotter",
+        "quadratic"
       ],
-      "microblogs": [
-        "entry-7"
-      ]
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "A. Michael Noll",
+      "year_referenced": 1965
     },
     {
       "id": "pendulum",
       "title": "Pendulum",
-      "file": "pendulum.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "b14ea188",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/pendulum.html",
+      "page": "artifacts/pendulum.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: pendulum \u2014 user-scalable=no, viewport-fit=cover, touch-action:none on canvas",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "24 pendulums at tuned frequencies create mesmerizing phase patterns.",
+      "category": "simulation",
+      "tags": [
+        "pendulum",
+        "phase",
+        "wave"
       ],
-      "microblogs": [
-        "entry-8"
-      ]
+      "interactive": false,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "penrose",
+      "title": "Penrose Tiling",
+      "type": "artifact",
+      "url": "gallery/penrose.html",
+      "page": "artifacts/penrose.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Penrose P2 kite-and-dart aperiodic tiling via recursive Robinson triangle subdivision. Pan, zoom, subdivide, cycle color modes.",
+      "category": "geometry",
+      "tags": [
+        "tiling",
+        "aperiodic",
+        "golden-ratio",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-17",
+      "optimizations": []
     },
     {
       "id": "phyllotaxis",
       "title": "Phyllotaxis",
-      "file": "phyllotaxis.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/phyllotaxis.html",
+      "page": "artifacts/phyllotaxis.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "be60a194",
           "subject": "Mobile optimization pass: DPR handling, orientation change support, touch-action, adaptive particle count",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d2246434",
           "subject": "gallery: mobile responsiveness pass + restrained palettes on recent artifacts",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Golden angle 137.5° packs 1400 dots into the same spiral pattern sunflowers and pinecones use.",
+      "category": "geometry",
+      "tags": [
+        "golden-angle",
+        "fibonacci",
+        "spiral"
       ],
-      "microblogs": [
-        "entry-11"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "quadwalk",
       "title": "Quadratic Walk",
-      "file": "quadwalk.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "4dd42e8e",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/quadwalk.html",
+      "page": "artifacts/quadwalk.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [
-        {
-          "sha": "9c66069",
-          "subject": "mobile: quadwalk \u2014 already mobile-optimized at creation (user-scalable=no); recorded",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
-        }
+      "optimizations": [],
+      "description": "Turtle steps rotating by q·π·n² produce closed rosettes — rational q determines the symmetry.",
+      "category": "geometry",
+      "tags": [
+        "turtle",
+        "quadratic",
+        "rosette"
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "rossler",
+      "title": "Rössler Attractor",
+      "type": "artifact",
+      "url": "gallery/rossler.html",
+      "page": "artifacts/rossler.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
       ],
-      "microblogs": []
+      "description": "Otto Rössler 1976 strange attractor. 3D ODE integration with auto-rotation, drag control, and preset parameter regimes.",
+      "category": "attractor",
+      "tags": [
+        "chaos",
+        "ode",
+        "3d",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-17",
+      "optimizations": []
     },
     {
       "id": "rubik",
       "title": "Rubik",
-      "file": "rubik.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "c68ada90",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/rubik.html",
+      "page": "artifacts/rubik.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "64f73c4a",
           "subject": "rubik: fix mobile layout - panel buttons wrap on overflow",
-          "date": "2026-02-23",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "3be63c68",
-          "subject": "mobile: fourier full rewrite (panel, touch gestures, \u00b1buttons), bump touch targets on rubik+lsystem",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "mobile: fourier full rewrite (panel, touch gestures, ±buttons), bump touch targets on rubik+lsystem",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "63fb7e8c",
           "subject": "rubik: fix inner layer scrambling - use ceil(n/2) for all layers including middle, increase scramble count for large cubes",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "22a2bdd4",
           "subject": "rubik: add inner layer moves for NxN cubes, scramble all layers, fix solve history format",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "7c713403",
           "subject": "rubik: fix solve - use move indices not function refs, slow down animation, don't auto-scramble when history empty",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "8939792e",
           "subject": "rubik: preventDefault on keyboard shortcuts, add touch gestures (tap/swipe), fix click/touch overlap",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "ab2b3399",
           "subject": "rubik: fix geometry (left face y=n not y=0), rewrite all 6 moves with verified strip cycling, add self-test + solve animation",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "1aba8762",
           "subject": "Fix top face diagonal pattern - swap r/c mapping in render",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "62082b21",
           "subject": "rubik: full rewrite - 6-face model, proper Rubik moves, correct isometric projection",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "c06d96cf",
-          "subject": "rubik: fix right face plane (y=n\u2192y=0), was rendering on wrong side",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "rubik: fix right face plane (y=n→y=0), was rendering on wrong side",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "e557471e",
           "subject": "fix rubik: proper isometric projection, aligned faces, row+col scrambling",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Procedural isometric Rubik's cube with auto-scrambling colored faces.",
+      "category": "geometry",
+      "tags": [
+        "rubiks-cube",
+        "isometric",
+        "3d"
       ],
-      "microblogs": [
-        "entry-2"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "sand",
       "title": "Sand",
-      "file": "sand.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "9a6566e7",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/sand.html",
+      "page": "artifacts/sand.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1449,49 +1991,56 @@
         {
           "sha": "613e515e",
           "subject": "sand: fix fire propagation (was spawning smoke), fix brush (now paints over anything), water flows 3 cells wide, longer fire lifetime",
-          "date": "2026-03-08",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Physics-correct particle simulation: sand piles, water flows, fire rises.",
+      "category": "simulation",
+      "tags": [
+        "falling-sand",
+        "particles",
+        "fluid"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "scandrift",
       "title": "Scandrift",
-      "file": "scandrift.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "3bb3c546",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/scandrift.html",
+      "page": "artifacts/scandrift.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [
-        {
-          "sha": "9c66069",
-          "subject": "mobile: scandrift \u2014 already mobile-optimized at creation (user-scalable=no, touch-action:none, touchmove guard); recorded",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
-        }
+      "optimizations": [],
+      "description": "CRT-like scanline field with phase drift and pointer warping. Tap for a local pulse.",
+      "category": "simulation",
+      "tags": [
+        "crt",
+        "scanline",
+        "drift"
       ],
-      "optimizationContributors": [
-        "Petrarch"
-      ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "schotter",
       "title": "Schotter",
-      "file": "schotter.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/schotter.html",
+      "page": "artifacts/schotter.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1499,37 +2048,43 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Georg Nees: squares with increasing rotational disorder.",
+      "category": "historical-homage",
+      "tags": [
+        "disorder",
+        "grid",
+        "rotation"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "Georg Nees",
+      "year_referenced": 1968
     },
     {
       "id": "sierpinski",
       "title": "Sierpinski",
-      "file": "sierpinski.html",
-      "origin": {
-        "agent": "Petrarch",
-        "commit": "dce2aac7",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/sierpinski.html",
+      "page": "artifacts/sierpinski.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
       "contributors": [
         "Petrarch",
         "Quimbot"
@@ -1538,231 +2093,355 @@
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "7306e1e3",
           "subject": "Fix sierpinski.html: rewrite to match working canvas pattern",
-          "date": "2026-02-19",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Recursive fractal subdivision with color gradients.",
+      "category": "geometry",
+      "tags": [
+        "fractal",
+        "triangle",
+        "recursive"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "Wacław Sierpiński",
+      "year_referenced": 1915
+    },
+    {
+      "id": "slime",
+      "title": "Slime Mold",
+      "type": "artifact",
+      "url": "gallery/slime.html",
+      "page": "artifacts/slime.html",
+      "originAgent": "K. Moonshot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "K. Moonshot"
+      ],
+      "optimizations": [
+        {
+          "sha": "c111cdee",
+          "subject": "fix: add touchstart preventDefault to terrain and slime for mobile pull-to-refresh prevention",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
+      "description": "Physarum polycephalum simulation. 4,000 agents navigate by sampling a shared chemical trail map, self-organizing into vascular networks that connect food sources. Based on Jeff Jones's agent-based model (2010), inspired by Nakagaki's maze-solving experiments (2000).",
+      "category": "simulation",
+      "tags": [
+        "slime-mold",
+        "physarum",
+        "stigmergy",
+        "networks",
+        "emergent"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Toshiyuki Nakagaki",
+      "year_referenced": 2000
     },
     {
       "id": "sospiri",
       "title": "Sospiri",
-      "file": "sospiri.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "4626c2c6",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/sospiri.html",
+      "page": "artifacts/sospiri.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d700248b",
           "subject": "mobile: optimize latest gallery artifacts for touch + viewport",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Rising particles that never quite arrive — concept: Petrarch, code: Quimbot.",
+      "category": "simulation",
+      "tags": [
+        "particles",
+        "collab",
+        "ambient"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "springwires",
       "title": "Springwires",
-      "file": "springwires.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "a44bcf58",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/springwires.html",
+      "page": "artifacts/springwires.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "a4c0e5f3",
           "subject": "gallery: improve springwires mobile resize and DPR scaling",
-          "date": "2026-03-03",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         },
         {
           "sha": "5b499e7f",
           "subject": "gallery: mobile optimizations for aura + spring wires",
-          "date": "2026-03-03",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Verlet-integrated spring network — drag nodes, pin rows, double-click to add nodes.",
+      "category": "simulation",
+      "tags": [
+        "verlet",
+        "spring",
+        "physics"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "starfield",
       "title": "Starfield",
-      "file": "starfield.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/starfield.html",
+      "page": "artifacts/starfield.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Parallax star tunnel with depth-based scaling and speed.",
+      "category": "simulation",
+      "tags": [
+        "stars",
+        "parallax",
+        "depth"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "tenprint",
       "title": "Tenprint",
-      "file": "tenprint.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "df1d2b78",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/tenprint.html",
+      "page": "artifacts/tenprint.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "d944f0a4",
           "subject": "Fix iframe detection for sandboxed iframes; hide all controls",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "55824df6",
           "subject": "Fix text visibility on all gallery pages: dark pill backgrounds, 0.9 opacity, text shadow",
-          "date": "2026-02-20",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
-          "sha": "2dc8ee9",
-          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none \u2014 life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "2dc8ee93",
+          "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
+          "agent": "milwrite",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot",
-        "Petrarch"
+      "description": "Classic one-liner generative pattern (Commodore 64, 1982).",
+      "category": "historical-homage",
+      "tags": [
+        "maze",
+        "classic",
+        "one-liner"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "10 PRINT (Commodore 64)",
+      "year_referenced": 1982
     },
     {
-      "id": "truchet",
-      "title": "Truchet",
-      "file": "truchet.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "b8e0392a",
-        "confidence": "high"
-      },
+      "id": "terrain",
+      "title": "Terrain",
+      "type": "artifact",
+      "url": "gallery/terrain.html",
+      "page": "artifacts/terrain.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "9c66069",
-          "subject": "mobile: truchet \u2014 user-scalable=no, viewport-fit=cover, touch-action:none, 44px mode button min-height/min-width",
-          "date": "2026-03-13",
-          "agent": "Petrarch"
+          "sha": "c111cdee",
+          "subject": "fix: add touchstart preventDefault to terrain and slime for mobile pull-to-refresh prevention",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Petrarch"
+      "description": "Procedural parallax mountain landscape. Six silhouette layers generated with fractional Brownian motion (4 octaves of value noise). Each layer drifts at a different speed; mouse shifts the parallax perspective.",
+      "category": "simulation",
+      "tags": [
+        "fbm",
+        "parallax",
+        "landscape",
+        "noise"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "truchet",
+      "title": "Truchet",
+      "type": "artifact",
+      "url": "gallery/truchet.html",
+      "page": "artifacts/truchet.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [
+        {
+          "sha": "9c660693",
+          "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "eb8b4440",
+          "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
+          "agent": "milwrite",
+          "confidence": "confirmed"
+        }
+      ],
+      "description": "Sébastien Truchet, 1704 — quarter-circle arc tiles that self-organize into flowing labyrinths.",
+      "category": "historical-homage",
+      "tags": [
+        "tiles",
+        "tiling",
+        "labyrinth"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Sébastien Truchet",
+      "year_referenced": 1704
     },
     {
       "id": "tunnel",
       "title": "Tunnel",
-      "file": "tunnel.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "efd3937a",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/tunnel.html",
+      "page": "artifacts/tunnel.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Hexagonal perspective tunnel with neon glow — move mouse to steer through the vortex.",
+      "category": "simulation",
+      "tags": [
+        "tunnel",
+        "hexagonal",
+        "neon"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "turing",
       "title": "Turing",
-      "file": "turing.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "1501c333",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/turing.html",
+      "page": "artifacts/turing.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1770,39 +2449,43 @@
         {
           "sha": "e5854740",
           "subject": "fix(gallery): mobile fixes for turing (resize handler, touch-action) and voronoi (remove OffscreenCanvas, touch-action)",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "081a09b8",
           "subject": "mobile optimization: turing (presets, solid panel, touch gestures) + harmonograph (solid panel, flex layout, cleanup)",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "4f310940",
-          "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "gallery: mobile fixes — turing touch+resize, voronoi OffscreenCanvas fallback",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Gray-Scott reaction-diffusion: coral-like structures emerge from chaos.",
+      "category": "simulation",
+      "tags": [
+        "reaction-diffusion",
+        "morphogenesis",
+        "pattern"
       ],
-      "microblogs": [
-        "entry-3",
-        "entry-6"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Alan Turing",
+      "year_referenced": 1952
     },
     {
       "id": "voronoi",
       "title": "Voronoi",
-      "file": "voronoi.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "e14abc53",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/voronoi.html",
+      "page": "artifacts/voronoi.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1810,32 +2493,37 @@
         {
           "sha": "e5854740",
           "subject": "fix(gallery): mobile fixes for turing (resize handler, touch-action) and voronoi (remove OffscreenCanvas, touch-action)",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         },
         {
           "sha": "4f310940",
-          "subject": "gallery: mobile fixes \u2014 turing touch+resize, voronoi OffscreenCanvas fallback",
-          "date": "2026-02-22",
-          "agent": "Quimbot"
+          "subject": "gallery: mobile fixes — turing touch+resize, voronoi OffscreenCanvas fallback",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Drifting seed points carve space into nearest-neighbor cells — click to add, drag to push.",
+      "category": "geometry",
+      "tags": [
+        "tessellation",
+        "distance-field",
+        "cells"
       ],
-      "microblogs": [
-        "entry-15"
-      ]
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Georgy Voronoy",
+      "year_referenced": 1908
     },
     {
       "id": "waveinterference",
-      "title": "Wave Interference",
-      "file": "waveinterference.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "a20be098",
-        "confidence": "high"
-      },
+      "title": "Waveinterference",
+      "type": "artifact",
+      "url": "gallery/waveinterference.html",
+      "page": "artifacts/waveinterference.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
         "Quimbot"
       ],
@@ -1843,522 +2531,201 @@
         {
           "sha": "17e40bfb",
           "subject": "fix: clifford + waveinterference crash on load",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
+          "agent": "Quimbot",
+          "confidence": "confirmed"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
+      "description": "Multiple point sources create rippling interference patterns — drag sources, click to add new.",
+      "category": "simulation",
+      "tags": [
+        "wave",
+        "interference",
+        "point-source"
       ],
-      "microblogs": []
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": null,
+      "year_referenced": null
     },
     {
       "id": "wolfram",
       "title": "Wolfram",
-      "file": "wolfram.html",
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "efd3937a",
-        "confidence": "high"
-      },
+      "type": "artifact",
+      "url": "gallery/wolfram.html",
+      "page": "artifacts/wolfram.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Petrarch"
       ],
       "optimizations": [
         {
           "sha": "851e6f01",
           "subject": "mobile: safe-area-inset + touch-action on wolfram, tunnel, chladni, julia",
-          "date": "2026-03-07",
-          "agent": "Quimbot"
+          "agent": "Quimbot/Petrarch",
+          "confidence": "reported"
         }
       ],
-      "optimizationContributors": [
-        "Quimbot"
-      ],
-      "microblogs": []
-    },
-    {
-      "id": "newton",
-      "title": "Newton's Fractal",
-      "file": "newton.html",
-      "origin": {
-        "agent": "Petrarch",
-        "commit": "pending",
-        "confidence": "high"
-      },
-      "description": "Newton's method applied to z^5 - 1 = 0 over the complex plane. Click to zoom into the fractal boundary.",
-      "category": "fractal",
+      "description": "1D elementary cellular automata: Rule 30 breeds chaos, Rule 110 is Turing-complete.",
+      "category": "cellular-automaton",
       "tags": [
-        "fractal",
-        "complex-analysis",
-        "newton",
-        "iteration",
-        "math"
+        "automaton",
+        "rule-30",
+        "1d"
       ],
-      "inspiration": "Arthur Cayley, 1879; John Hubbard 1980s",
-      "year_referenced": 1879,
       "interactive": true,
       "animated": true,
-      "has_controls": true,
-      "mobile_optimized": true
+      "mobile_optimized": false,
+      "inspiration": "Stephen Wolfram",
+      "year_referenced": 1983
     }
   ],
   "microblogs": [
     {
-      "id": "entry-2",
-      "file": "entry-2.html",
-      "num": 2,
-      "title": "How the Rubik Sketch Works",
-      "linkedArtifacts": [
-        "rubik"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "4998becd",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "4998becd",
-          "subject": "microblog: add entry-2 \u2014 Rubik sketch walkthrough (cube state, moves, solve, isometric draw)",
-          "date": "2026-02-27",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-3",
-      "file": "entry-3.html",
-      "num": 3,
-      "title": "How the Turing Patterns Sketch Grows Living Texture",
-      "linkedArtifacts": [
-        "turing"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "97f88005",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "c5512ff2",
-          "subject": "docs(microblog): full-pass copyedit for clarity and rhythm",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "b24ceb95",
-          "subject": "docs(microblog): copyedit introduction for precision and tone",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "92725b3d",
-          "subject": "docs(microblog): tighten intro logic and cadence for turing entry",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "97f88005",
-          "subject": "docs(microblog): strengthen intro for turing patterns entry",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-4",
-      "file": "entry-4.html",
-      "num": 4,
-      "title": "The Fourier Pendulum That Draws a Wave",
-      "linkedArtifacts": [
-        "fourier"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "68ae2772",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "ea632879",
-          "subject": "microblog: add live iframe to entry-4 (Fourier pendulum)",
-          "date": "2026-02-27",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "68ae2772",
-          "subject": "microblog: add Fourier pendulum waves entry",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-5",
-      "file": "entry-5.html",
-      "num": 5,
-      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
-      "linkedArtifacts": [
-        "clifford"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "6299dabe",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "df16b182",
-          "subject": "microblog: Clifford Attractor writeup (entry-5)",
-          "date": "2026-02-28",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "0721bf84",
-          "subject": "Remove microblog entry-5 (snapshot rewrite post)",
-          "date": "2026-02-27",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "6299dabe",
-          "subject": "site: add microblog entry for Feb 24 snapshot rewrite",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-6",
-      "file": "entry-6.html",
-      "num": 6,
-      "title": "Deterministic chaos and chemical memory",
-      "linkedArtifacts": [
-        "lorenz",
-        "turing"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "6bfec293",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "3c424fc0",
-          "subject": "microblog: add gallery link to entry-6 and entry-7 (only two missing)",
-          "date": "2026-03-05",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "6bfec293",
-          "subject": "microblog: entry-6 \u2014 Lorenz attractor and Turing patterns with live iframes",
-          "date": "2026-02-26",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-7",
-      "file": "entry-7.html",
-      "num": 7,
-      "title": "1965",
-      "linkedArtifacts": [
-        "noll"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "0d8a3ef7",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "3c424fc0",
-          "subject": "microblog: add gallery link to entry-6 and entry-7 (only two missing)",
-          "date": "2026-03-05",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "baed7f1a",
-          "subject": "microblog: add code snippets to entry-7 (Noll 1965)",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "ddea67d1",
-          "subject": "style: cut setup phrase from entry-7 Noll post",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
-        },
-        {
-          "sha": "0d8a3ef7",
-          "subject": "microblog: entry-7 \u2014 Gaussian Quadratic / Noll 1965; add entry-6 to index",
-          "date": "2026-03-01",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-8",
-      "file": "entry-8.html",
-      "num": 8,
-      "title": "The wave that isn't there",
-      "linkedArtifacts": [
-        "pendulum"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "8a6a98e8",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "8a6a98e8",
-          "subject": "microblog: entry-8 \u2014 The wave that isn't there (pendulum wave)",
-          "date": "2026-03-02",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
-      "id": "entry-9",
-      "file": "entry-9.html",
-      "num": 9,
-      "title": "Tuning forks and pixel dust",
-      "linkedArtifacts": [
-        "lissajous"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "710cb95d",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "710cb95d",
-          "subject": "evening standup: triaged superset3 short replies, flagged 10 degenerate entries",
-          "date": "2026-03-04",
-          "agent": "Quimbot"
-        }
-      ]
-    },
-    {
       "id": "entry-10",
-      "file": "entry-10.html",
-      "num": 10,
       "title": "What a flock doesn't know",
-      "linkedArtifacts": [
-        "boids"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "6547fc21",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "6547fc21",
-          "subject": "microblog: entry-10 \u2014 What a flock doesn't know (boids)",
-          "date": "2026-03-04",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-10.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-11",
-      "file": "entry-11.html",
-      "num": 11,
       "title": "The angle that doesn't repeat",
-      "linkedArtifacts": [
-        "phyllotaxis"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "a143e173",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "a143e173",
-          "subject": "microblog: entry-11 \u2014 The angle that doesn't repeat (phyllotaxis)",
-          "date": "2026-03-06",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-11.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported"
     },
     {
       "id": "entry-12",
-      "file": "entry-12.html",
-      "num": 12,
       "title": "Sand knows where to sit",
-      "linkedArtifacts": [
-        "chladni"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "515e00f2",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "515e00f2",
-          "subject": "microblog #12: Chladni figures \u2014 sand knows where to sit",
-          "date": "2026-03-06",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-12.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-13",
-      "file": "entry-13.html",
-      "num": 13,
       "title": "The first art machine",
-      "linkedArtifacts": [
-        "harmonograph"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "ebc26152",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "ebc26152",
-          "subject": "microblog #13: harmonograph \u2014 the first art machine",
-          "date": "2026-03-08",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-13.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-14",
-      "file": "entry-14.html",
-      "num": 14,
       "title": "The grammar that grows a forest",
-      "linkedArtifacts": [
-        "lsystem"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "063f3400",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "063f3400",
-          "subject": "microblog: entry-14 \u2014 The grammar that grows a forest (L-Systems)",
-          "date": "2026-03-08",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-14.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-15",
-      "file": "entry-15.html",
-      "num": 15,
       "title": "Space carved by proximity",
-      "linkedArtifacts": [
-        "voronoi"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "50637139",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "50637139",
-          "subject": "microblog: entry-15 \u2014 Space Carved by Proximity (Voronoi)",
-          "date": "2026-03-10",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-15.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-16",
-      "file": "entry-16.html",
-      "num": 16,
       "title": "Two chemicals, a thousand patterns",
-      "linkedArtifacts": [
-        "grayscott"
-      ],
-      "origin": {
-        "agent": "Quimbot",
-        "commit": "64acd94b",
-        "confidence": "high"
-      },
-      "contributors": [
-        "Quimbot"
-      ],
-      "edits": [
-        {
-          "sha": "64acd94b",
-          "subject": "microblog #16: Gray-Scott reaction-diffusion",
-          "date": "2026-03-10",
-          "agent": "Quimbot"
-        }
-      ]
+      "type": "microblog",
+      "url": "microblog/entry-16.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
     },
     {
       "id": "entry-17",
-      "num": 17,
-      "artifact": "newton",
       "title": "The roots nobody could draw",
-      "date": "2026-03-14",
-      "tags": [
-        "fractal",
-        "complex analysis",
-        "newton",
-        "iteration"
-      ],
-      "snippet": "In 1879, Arthur Cayley wrote a short paper asking which starting points converge to which root. He found the problem \"seems to present considerable difficulty.\" He was looking at the edge of a fractal.",
-      "has_iframe": true,
-      "has_code_snippet": true,
-      "word_count": 420,
-      "origin": {
-        "agent": "Petrarch"
-      }
+      "type": "microblog",
+      "url": "microblog/entry-17.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-18",
+      "title": "The roads that grow themselves",
+      "type": "microblog",
+      "url": "microblog/entry-18.html",
+      "originAgent": "K. Moonshot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-19",
+      "title": "Ten thousand steps of noise",
+      "type": "microblog",
+      "url": "microblog/entry-19.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-2",
+      "title": "How the Rubik Sketch Works",
+      "type": "microblog",
+      "url": "microblog/entry-2.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-3",
+      "title": "How the Turing Patterns Sketch Grows Living Texture",
+      "type": "microblog",
+      "url": "microblog/entry-3.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-4",
+      "title": "The Fourier Pendulum That Draws a Wave",
+      "type": "microblog",
+      "url": "microblog/entry-4.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-5",
+      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
+      "type": "microblog",
+      "url": "microblog/entry-5.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-6",
+      "title": "Deterministic chaos and chemical memory",
+      "type": "microblog",
+      "url": "microblog/entry-6.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-7",
+      "title": "1965",
+      "type": "microblog",
+      "url": "microblog/entry-7.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-8",
+      "title": "The wave that isn't there",
+      "type": "microblog",
+      "url": "microblog/entry-8.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
+    },
+    {
+      "id": "entry-9",
+      "title": "Tuning forks and pixel dust",
+      "type": "microblog",
+      "url": "microblog/entry-9.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed"
     }
   ]
 }

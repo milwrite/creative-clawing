@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Penrose Tiling</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050508;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(5,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#0a0a10;border-top:1px solid #1a1a28;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#70a4d4}
+.panel .hint{color:#354565}
+.panel .params{display:flex;align-items:center;gap:0.4rem;color:#5578aa;font-size:0.7rem}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #20354a;color:#70a4c4;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#a0d0f0;border-color:#40608a}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}.panel .params{font-size:0.65rem}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Penrose Tiling (P2)</span>
+    <span class="hint">kite & dart &nbsp;|&nbsp; φ = (1+√5)/2</span>
+  </div>
+  <div class="controls">
+    <span class="params" id="paramDisplay">depth: 6</span>
+    <button id="subdivBtn">subdivide</button>
+    <button id="resetBtn">reset</button>
+    <button id="colorBtn">color</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W=0,H=0;
+
+const PHI=(1+Math.sqrt(5))/2;
+
+// Robinson triangle types
+const ACUTE=0;   // "kite half"
+const OBTUSE=1;  // "dart half"
+
+// A triangle is {type, A, B, C} where A,B,C are [x,y]
+let triangles=[];
+let depth=0;
+let colorMode=0;
+const COLOR_MODES=3;
+
+// Kite palette
+const KITE_COLORS=[
+  ['#1a3a5c','#1e4570','#224f84'],  // blue
+  ['#3a1a5c','#451e70','#4f2284'],  // purple
+  ['#1a5c3a','#1e7045','#22844f'],  // green
+];
+// Dart palette
+const DART_COLORS=[
+  ['#5c3a1a','#70451e','#844f22'],
+  ['#5c1a3a','#701e45','#84224f'],
+  ['#5c5c1a','#70701e','#848422'],
+];
+
+function mid(a,b,t){
+  return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t];
+}
+
+function initSunDecagon(){
+  triangles=[];
+  const cx=W/2, cy=H/2;
+  const r=Math.min(W,H)*0.48;
+
+  // Create a "sun" of 10 acute triangles
+  for(let i=0;i<10;i++){
+    const a1=((2*i-1)*Math.PI)/5;
+    const a2=((2*i+1)*Math.PI)/5;
+    const B=[cx+r*Math.cos(a1), cy+r*Math.sin(a1)];
+    const C=[cx+r*Math.cos(a2), cy+r*Math.sin(a2)];
+    const A=[cx,cy];
+
+    if(i%2===0){
+      triangles.push({type:ACUTE, A:A, B:B, C:C});
+    } else {
+      triangles.push({type:ACUTE, A:A, B:C, C:B});
+    }
+  }
+}
+
+function subdivide(tris){
+  const result=[];
+  for(const t of tris){
+    if(t.type===ACUTE){
+      // Subdivide acute (kite-half) into 2 acute + 1 obtuse
+      const P=mid(t.A,t.B,1/PHI);
+      result.push({type:ACUTE, A:t.C, B:P, C:t.A});
+      result.push({type:ACUTE, A:P, B:t.C, C:t.B});
+      // Actually Penrose P2 subdivision for acute Robinson triangle:
+      // Split into one smaller acute and one obtuse
+    } else {
+      // Subdivide obtuse (dart-half) into 1 acute + 1 obtuse
+      const Q=mid(t.B,t.A,1/PHI);
+      result.push({type:OBTUSE, A:Q, B:t.C, C:t.A});
+      result.push({type:ACUTE, A:t.C, B:Q, C:t.B});
+    }
+  }
+  return result;
+}
+
+// Correct Penrose P2 kite-dart decomposition via Robinson triangles
+function subdivideCorrect(tris){
+  const result=[];
+  for(const t of tris){
+    const {A,B,C}=t;
+    if(t.type===ACUTE){
+      // Acute (golden gnomon / kite-half):
+      // P divides BC in ratio 1:phi from B
+      const P=mid(B,C,1/PHI);
+      // Q divides BA in ratio 1:phi from B
+      const Q=mid(B,A,1/PHI);
+      result.push({type:ACUTE, A:Q, B:P, C:B});
+      result.push({type:ACUTE, A:P, B:Q, C:A});
+      result.push({type:OBTUSE, A:P, B:A, C:C});
+    } else {
+      // Obtuse (golden triangle / dart-half):
+      // P divides AC in ratio 1:phi from A
+      const P=mid(A,C,1/PHI);
+      result.push({type:OBTUSE, A:P, B:C, C:B});
+      result.push({type:ACUTE, A:P, B:B, C:A});
+    }
+  }
+  return result;
+}
+
+function drawTiling(){
+  ctx.fillStyle='#050508';
+  ctx.fillRect(0,0,W,H);
+
+  for(let i=0;i<triangles.length;i++){
+    const t=triangles[i];
+
+    // Color by type and variation
+    let fill;
+    if(colorMode===0){
+      fill=t.type===ACUTE?'#14304a':'#4a2814';
+    } else if(colorMode===1){
+      const h=t.type===ACUTE?210:30;
+      const l=30+((i*7)%20);
+      fill=`hsl(${h},50%,${l}%)`;
+    } else {
+      // Golden ratio color
+      const angle=(i*PHI*360)%360;
+      fill=`hsl(${angle},45%,${28+((i*3)%15)}%)`;
+    }
+
+    ctx.fillStyle=fill;
+    ctx.strokeStyle='rgba(150,180,220,0.25)';
+    ctx.lineWidth=0.5;
+
+    ctx.beginPath();
+    ctx.moveTo(t.A[0],t.A[1]);
+    ctx.lineTo(t.B[0],t.B[1]);
+    ctx.lineTo(t.C[0],t.C[1]);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
+}
+
+function resize(){
+  const nw=canvas.offsetWidth, nh=canvas.offsetHeight;
+  if(nw<1||nh<1) return;
+  if(nw===W&&nh===H) return;
+  W=nw; H=nh;
+  canvas.width=W; canvas.height=H;
+  reset();
+}
+
+function reset(){
+  depth=0;
+  initSunDecagon();
+  // Auto-subdivide to depth 6
+  for(let i=0;i<6;i++){
+    triangles=subdivideCorrect(triangles);
+    depth++;
+  }
+  updateDisplay();
+  drawTiling();
+}
+
+function updateDisplay(){
+  document.getElementById('paramDisplay').textContent=
+    'depth: '+depth+' | '+triangles.length+' triangles';
+}
+
+document.getElementById('subdivBtn').addEventListener('click',function(){
+  if(depth>=9) return; // safety limit
+  triangles=subdivideCorrect(triangles);
+  depth++;
+  updateDisplay();
+  drawTiling();
+});
+
+document.getElementById('resetBtn').addEventListener('click',function(){
+  reset();
+});
+
+document.getElementById('colorBtn').addEventListener('click',function(){
+  colorMode=(colorMode+1)%COLOR_MODES;
+  drawTiling();
+});
+
+// Pan and zoom
+let panX=0, panY=0, zoom=1;
+let dragging=false, lastX=0, lastY=0;
+let pinchDist=0;
+
+canvas.addEventListener('pointerdown',function(e){
+  dragging=true;
+  lastX=e.clientX; lastY=e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove',function(e){
+  if(!dragging) return;
+  const dx=e.clientX-lastX, dy=e.clientY-lastY;
+  // Shift all triangle points
+  for(const t of triangles){
+    t.A[0]+=dx; t.A[1]+=dy;
+    t.B[0]+=dx; t.B[1]+=dy;
+    t.C[0]+=dx; t.C[1]+=dy;
+  }
+  lastX=e.clientX; lastY=e.clientY;
+  drawTiling();
+});
+canvas.addEventListener('pointerup',function(){dragging=false;});
+canvas.addEventListener('pointercancel',function(){dragging=false;});
+
+// Wheel zoom
+canvas.addEventListener('wheel',function(e){
+  e.preventDefault();
+  const factor=e.deltaY>0?0.92:1.08;
+  const cx=e.clientX, cy=e.clientY;
+  for(const t of triangles){
+    t.A[0]=(t.A[0]-cx)*factor+cx;
+    t.A[1]=(t.A[1]-cy)*factor+cy;
+    t.B[0]=(t.B[0]-cx)*factor+cx;
+    t.B[1]=(t.B[1]-cy)*factor+cy;
+    t.C[0]=(t.C[0]-cx)*factor+cx;
+    t.C[1]=(t.C[1]-cy)*factor+cy;
+  }
+  drawTiling();
+},{passive:false});
+
+// Pinch zoom
+let lastPinch=0;
+canvas.addEventListener('touchstart',function(e){
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    lastPinch=Math.sqrt(dx*dx+dy*dy);
+  }
+},{passive:true});
+canvas.addEventListener('touchmove',function(e){
+  if(e.touches.length===2){
+    e.preventDefault();
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(lastPinch>0){
+      const factor=dist/lastPinch;
+      const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+      const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+      for(const t of triangles){
+        t.A[0]=(t.A[0]-cx)*factor+cx; t.A[1]=(t.A[1]-cy)*factor+cy;
+        t.B[0]=(t.B[0]-cx)*factor+cx; t.B[1]=(t.B[1]-cy)*factor+cy;
+        t.C[0]=(t.C[0]-cx)*factor+cx; t.C[1]=(t.C[1]-cy)*factor+cy;
+      }
+      drawTiling();
+    }
+    lastPinch=dist;
+  }
+},{passive:false});
+
+requestAnimationFrame(function(){
+  resize();
+});
+window.addEventListener('resize',function(){resize();});
+</script>
+</body>
+</html>

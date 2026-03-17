@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Rössler Attractor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050508;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(5,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#0a0a10;border-top:1px solid #1a1a28;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#d47070}
+.panel .hint{color:#653535}
+.panel .params{display:flex;align-items:center;gap:0.4rem;color:#aa5555;font-size:0.7rem}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #4a2020;color:#c47070;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#f0a0a0;border-color:#8a4040}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}.panel .params{font-size:0.65rem}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Rössler Attractor</span>
+    <span class="hint">dx/dt = −y − z &nbsp;|&nbsp; dy/dt = x + ay &nbsp;|&nbsp; dz/dt = b + z(x − c)</span>
+  </div>
+  <div class="controls">
+    <span class="params" id="paramDisplay">a=0.20 b=0.20 c=5.70</span>
+    <button id="resetBtn">reset</button>
+    <button id="presetBtn">preset</button>
+    <button id="viewBtn">rotate</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W=0,H=0;
+
+const PRESETS=[
+  {a:0.2, b:0.2, c:5.7, label:'classic'},
+  {a:0.1, b:0.1, c:14, label:'funnel'},
+  {a:0.2, b:0.2, c:9, label:'screw'},
+  {a:0.35,b:0.3, c:9.3, label:'spiral'},
+  {a:0.2, b:0.2, c:3.5, label:'period-1'},
+  {a:0.25,b:0.2, c:7.5, label:'band'},
+];
+let presetIdx=0;
+
+let pa=0.2, pb=0.2, pc=5.7;
+let dt=0.005;
+
+// Trail storage
+const MAX_POINTS=60000;
+let points=[];
+let x=0.1, y=0, z=0;
+
+// View rotation
+let rotY=0;
+let rotX=-0.3;
+let autoRotate=true;
+let dragging=false;
+let lastMX=0, lastMY=0;
+
+function resize(){
+  const nw=canvas.offsetWidth, nh=canvas.offsetHeight;
+  if(nw<1||nh<1) return;
+  if(nw===W&&nh===H) return;
+  W=nw; H=nh;
+  canvas.width=W; canvas.height=H;
+}
+
+function step(){
+  const dx=-y-z;
+  const dy=x+pa*y;
+  const dz=pb+z*(x-pc);
+  x+=dx*dt; y+=dy*dt; z+=dz*dt;
+  // Divergence check
+  if(Math.abs(x)>500||Math.abs(y)>500||Math.abs(z)>500){
+    x=0.1; y=0; z=0; points=[];
+  }
+  points.push({x:x,y:y,z:z});
+  if(points.length>MAX_POINTS) points.shift();
+}
+
+function project(px,py,pz){
+  // Rotate around Y axis
+  const cosY=Math.cos(rotY), sinY=Math.sin(rotY);
+  let rx=px*cosY-pz*sinY;
+  let rz=px*sinY+pz*cosY;
+  // Rotate around X axis
+  const cosX=Math.cos(rotX), sinX=Math.sin(rotX);
+  let ry=py*cosX-rz*sinX;
+  rz=py*sinX+rz*cosX;
+
+  const scale=Math.min(W,H)/40;
+  return {
+    x: W/2+rx*scale,
+    y: H/2+ry*scale,
+    z: rz
+  };
+}
+
+function draw(){
+  ctx.fillStyle='rgba(5,5,8,0.15)';
+  ctx.fillRect(0,0,W,H);
+
+  if(points.length<2) return;
+
+  const len=points.length;
+  for(let i=1;i<len;i++){
+    const p0=project(points[i-1].x,points[i-1].y,points[i-1].z);
+    const p1=project(points[i].x,points[i].y,points[i].z);
+
+    const age=i/len;
+    const alpha=age*age*0.9;
+    // Color: depth-mapped warm palette
+    const hue=200+(p1.z+20)*4;
+    ctx.strokeStyle=`hsla(${hue},70%,${45+age*20}%,${alpha})`;
+    ctx.lineWidth=0.5+age*1.5;
+    ctx.beginPath();
+    ctx.moveTo(p0.x,p0.y);
+    ctx.lineTo(p1.x,p1.y);
+    ctx.stroke();
+  }
+
+  // Draw current point
+  const cur=project(x,y,z);
+  ctx.fillStyle='#ff6060';
+  ctx.beginPath();
+  ctx.arc(cur.x,cur.y,3,0,Math.PI*2);
+  ctx.fill();
+}
+
+function loop(){
+  resize();
+  if(autoRotate) rotY+=0.003;
+  for(let i=0;i<8;i++) step();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function resetSim(){
+  x=0.1; y=0; z=0;
+  points=[];
+  ctx.fillStyle='#050508';
+  ctx.fillRect(0,0,W,H);
+}
+
+function updateDisplay(){
+  document.getElementById('paramDisplay').textContent=
+    'a='+pa.toFixed(2)+' b='+pb.toFixed(2)+' c='+pc.toFixed(2);
+}
+
+document.getElementById('resetBtn').addEventListener('click',function(){
+  resetSim();
+});
+
+document.getElementById('presetBtn').addEventListener('click',function(){
+  presetIdx=(presetIdx+1)%PRESETS.length;
+  const p=PRESETS[presetIdx];
+  pa=p.a; pb=p.b; pc=p.c;
+  updateDisplay();
+  resetSim();
+});
+
+document.getElementById('viewBtn').addEventListener('click',function(){
+  autoRotate=!autoRotate;
+  this.textContent=autoRotate?'rotate':'manual';
+});
+
+// Pointer drag for manual rotation
+canvas.addEventListener('pointerdown',function(e){
+  if(e.button!==0) return;
+  dragging=true;
+  lastMX=e.clientX; lastMY=e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+  autoRotate=false;
+  document.getElementById('viewBtn').textContent='manual';
+});
+canvas.addEventListener('pointermove',function(e){
+  if(!dragging) return;
+  rotY+=(e.clientX-lastMX)*0.005;
+  rotX+=(e.clientY-lastMY)*0.005;
+  rotX=Math.max(-Math.PI/2,Math.min(Math.PI/2,rotX));
+  lastMX=e.clientX; lastMY=e.clientY;
+});
+canvas.addEventListener('pointerup',function(){dragging=false;});
+canvas.addEventListener('pointercancel',function(){dragging=false;});
+
+requestAnimationFrame(function(){requestAnimationFrame(loop);});
+</script>
+</body>
+</html>

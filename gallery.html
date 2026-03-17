@@ -316,6 +316,8 @@ const artifacts=[
   {file:'terrain',name:'Terrain',tag:'simulation'},
   {file:'aurora',name:'Aurora',tag:'simulation'},
   {file:'slime',name:'Slime Mold',tag:'simulation'},
+  {file:'rossler',name:'Rössler Attractor',tag:'attractor'},
+  {file:'penrose',name:'Penrose Tiling',tag:'geometry'},
 ];
 
 const tags=['recent','all',...new Set(artifacts.map(a=>a.tag))].sort((a,b)=>a==='recent'?-1:b==='recent'?1:a==='all'?-1:b==='all'?1:a.localeCompare(b));
