@@ -72,11 +72,13 @@ let dragging=false;
 let lastMX=0, lastMY=0;
 
 function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
   const nw=canvas.offsetWidth, nh=canvas.offsetHeight;
   if(nw<1||nh<1) return;
   if(nw===W&&nh===H) return;
   W=nw; H=nh;
-  canvas.width=W; canvas.height=H;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 
 function step(){

@@ -28,7 +28,10 @@ const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H,stars=[],t=0;
 
 function resize(){
-  W=c.width=innerWidth;H=c.height=innerHeight;
+  const dpr=Math.min(devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  c.width=W*dpr;c.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   stars=[];
   for(let i=0;i<180;i++){
     stars.push({
