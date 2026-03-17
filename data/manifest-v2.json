@@ -3010,6 +3010,25 @@
       "word_count": 1100,
       "has_iframe": true,
       "has_code_snippet": true
+    },
+    {
+      "id": "entry-19",
+      "num": 19,
+      "title": "The ant that builds a highway",
+      "type": "microblog",
+      "url": "microblog/entry-19.html",
+      "snippet": "Two rules, one ant, three behavioral regimes. Langton's 1986 cellular automaton starts symmetric, goes chaotic, then builds an infinite diagonal highway around step 10,000.",
+      "linkedArtifacts": [
+        "langton"
+      ],
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "word_count": 290,
+      "has_iframe": true,
+      "has_code_snippet": true
     }
   ],
   "summary": {
