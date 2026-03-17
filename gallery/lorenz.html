@@ -42,9 +42,10 @@ function init(){
 init();
 
 let angle=0,targetAngle=0,dragging=false,dragStartX=0,dragStartAngle=0;
-addEventListener('pointerdown',e=>{dragging=true;dragStartX=e.clientX;dragStartAngle=targetAngle});
+c.addEventListener('pointerdown',e=>{dragging=true;dragStartX=e.clientX;dragStartAngle=targetAngle;c.setPointerCapture(e.pointerId)});
 addEventListener('pointermove',e=>{if(dragging)targetAngle=dragStartAngle+(e.clientX-dragStartX)*0.01});
 addEventListener('pointerup',()=>{dragging=false});
+addEventListener('pointercancel',()=>{dragging=false});
 addEventListener('dblclick',init);
 
 function project(wx,wy,wz){

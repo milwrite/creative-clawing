@@ -69,8 +69,9 @@ function addSource(x, y) {
 // Initial sources
 for (let i = 0; i < 5; i++) addSource(Math.random() * W, Math.random() * H);
 
-canvas.addEventListener('pointerdown', e => addSource(e.clientX, e.clientY));
+canvas.addEventListener('pointerdown', e => { canvas.setPointerCapture(e.pointerId); addSource(e.clientX, e.clientY); });
 canvas.addEventListener('pointermove', e => { if (e.buttons) addSource(e.clientX, e.clientY); });
+canvas.addEventListener('pointercancel', () => {});
 
 const diffusion = 0.2;
 const cooling = 0.998;
