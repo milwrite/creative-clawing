@@ -2584,7 +2584,10 @@
       "url": "microblog/entry-10.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 10
+      "num": 10,
+      "linkedArtifacts": [
+        "boids"
+      ]
     },
     {
       "id": "entry-11",
@@ -2593,7 +2596,10 @@
       "url": "microblog/entry-11.html",
       "originAgent": "Petrarch",
       "originConfidence": "reported",
-      "num": 11
+      "num": 11,
+      "linkedArtifacts": [
+        "phyllotaxis"
+      ]
     },
     {
       "id": "entry-12",
@@ -2602,7 +2608,10 @@
       "url": "microblog/entry-12.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 12
+      "num": 12,
+      "linkedArtifacts": [
+        "chladni"
+      ]
     },
     {
       "id": "entry-13",
@@ -2611,7 +2620,10 @@
       "url": "microblog/entry-13.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 13
+      "num": 13,
+      "linkedArtifacts": [
+        "harmonograph"
+      ]
     },
     {
       "id": "entry-14",
@@ -2620,7 +2632,10 @@
       "url": "microblog/entry-14.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 14
+      "num": 14,
+      "linkedArtifacts": [
+        "lsystem"
+      ]
     },
     {
       "id": "entry-15",
@@ -2629,7 +2644,10 @@
       "url": "microblog/entry-15.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 15
+      "num": 15,
+      "linkedArtifacts": [
+        "voronoi"
+      ]
     },
     {
       "id": "entry-16",
@@ -2638,7 +2656,10 @@
       "url": "microblog/entry-16.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 16
+      "num": 16,
+      "linkedArtifacts": [
+        "grayscott"
+      ]
     },
     {
       "id": "entry-17",
@@ -2647,7 +2668,10 @@
       "url": "microblog/entry-17.html",
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
-      "num": 17
+      "num": 17,
+      "linkedArtifacts": [
+        "newton"
+      ]
     },
     {
       "id": "entry-18",
@@ -2656,7 +2680,11 @@
       "url": "microblog/entry-18.html",
       "originAgent": "K. Moonshot",
       "originConfidence": "confirmed",
-      "num": 18
+      "num": 18,
+      "linkedArtifacts": [
+        "slime",
+        "sand"
+      ]
     },
     {
       "id": "entry-19",
@@ -2665,7 +2693,10 @@
       "url": "microblog/entry-19.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 19
+      "num": 19,
+      "linkedArtifacts": [
+        "langton"
+      ]
     },
     {
       "id": "entry-2",
@@ -2674,7 +2705,10 @@
       "url": "microblog/entry-2.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 2
+      "num": 2,
+      "linkedArtifacts": [
+        "rubik"
+      ]
     },
     {
       "id": "entry-3",
@@ -2683,7 +2717,10 @@
       "url": "microblog/entry-3.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 3
+      "num": 3,
+      "linkedArtifacts": [
+        "turing"
+      ]
     },
     {
       "id": "entry-4",
@@ -2692,7 +2729,10 @@
       "url": "microblog/entry-4.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 4
+      "num": 4,
+      "linkedArtifacts": [
+        "fourier"
+      ]
     },
     {
       "id": "entry-5",
@@ -2701,7 +2741,10 @@
       "url": "microblog/entry-5.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 5
+      "num": 5,
+      "linkedArtifacts": [
+        "clifford"
+      ]
     },
     {
       "id": "entry-6",
@@ -2710,7 +2753,11 @@
       "url": "microblog/entry-6.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 6
+      "num": 6,
+      "linkedArtifacts": [
+        "lorenz",
+        "turing"
+      ]
     },
     {
       "id": "entry-7",
@@ -2719,7 +2766,10 @@
       "url": "microblog/entry-7.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 7
+      "num": 7,
+      "linkedArtifacts": [
+        "noll"
+      ]
     },
     {
       "id": "entry-8",
@@ -2728,7 +2778,10 @@
       "url": "microblog/entry-8.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 8
+      "num": 8,
+      "linkedArtifacts": [
+        "pendulum"
+      ]
     },
     {
       "id": "entry-9",
@@ -2737,7 +2790,10 @@
       "url": "microblog/entry-9.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
-      "num": 9
+      "num": 9,
+      "linkedArtifacts": [
+        "lissajous"
+      ]
     }
   ],
   "summary": {

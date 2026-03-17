@@ -338,7 +338,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -468,109 +468,165 @@
       "id": "entry-10",
       "title": "What a flock doesn't know",
       "type": "microblog",
-      "url": "microblog/entry-10.html"
+      "url": "microblog/entry-10.html",
+      "linkedArtifacts": [
+        "boids"
+      ]
     },
     {
       "id": "entry-11",
       "title": "The angle that doesn't repeat",
       "type": "microblog",
-      "url": "microblog/entry-11.html"
+      "url": "microblog/entry-11.html",
+      "linkedArtifacts": [
+        "phyllotaxis"
+      ]
     },
     {
       "id": "entry-12",
       "title": "Sand knows where to sit",
       "type": "microblog",
-      "url": "microblog/entry-12.html"
+      "url": "microblog/entry-12.html",
+      "linkedArtifacts": [
+        "chladni"
+      ]
     },
     {
       "id": "entry-13",
       "title": "The first art machine",
       "type": "microblog",
-      "url": "microblog/entry-13.html"
+      "url": "microblog/entry-13.html",
+      "linkedArtifacts": [
+        "harmonograph"
+      ]
     },
     {
       "id": "entry-14",
       "title": "The grammar that grows a forest",
       "type": "microblog",
-      "url": "microblog/entry-14.html"
+      "url": "microblog/entry-14.html",
+      "linkedArtifacts": [
+        "lsystem"
+      ]
     },
     {
       "id": "entry-15",
       "title": "Space carved by proximity",
       "type": "microblog",
-      "url": "microblog/entry-15.html"
+      "url": "microblog/entry-15.html",
+      "linkedArtifacts": [
+        "voronoi"
+      ]
     },
     {
       "id": "entry-16",
       "title": "Two chemicals, a thousand patterns",
       "type": "microblog",
-      "url": "microblog/entry-16.html"
+      "url": "microblog/entry-16.html",
+      "linkedArtifacts": [
+        "grayscott"
+      ]
     },
     {
       "id": "entry-17",
       "title": "The roots nobody could draw",
       "type": "microblog",
-      "url": "microblog/entry-17.html"
+      "url": "microblog/entry-17.html",
+      "linkedArtifacts": [
+        "newton"
+      ]
     },
     {
       "id": "entry-18",
       "title": "The roads that grow themselves",
       "type": "microblog",
-      "url": "microblog/entry-18.html"
+      "url": "microblog/entry-18.html",
+      "linkedArtifacts": [
+        "slime",
+        "sand"
+      ]
     },
     {
       "id": "entry-19",
       "title": "Ten thousand steps of noise",
       "type": "microblog",
-      "url": "microblog/entry-19.html"
+      "url": "microblog/entry-19.html",
+      "linkedArtifacts": [
+        "langton"
+      ]
     },
     {
       "id": "entry-2",
       "title": "How the Rubik Sketch Works",
       "type": "microblog",
-      "url": "microblog/entry-2.html"
+      "url": "microblog/entry-2.html",
+      "linkedArtifacts": [
+        "rubik"
+      ]
     },
     {
       "id": "entry-3",
       "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
-      "url": "microblog/entry-3.html"
+      "url": "microblog/entry-3.html",
+      "linkedArtifacts": [
+        "turing"
+      ]
     },
     {
       "id": "entry-4",
       "title": "The Fourier Pendulum That Draws a Wave",
       "type": "microblog",
-      "url": "microblog/entry-4.html"
+      "url": "microblog/entry-4.html",
+      "linkedArtifacts": [
+        "fourier"
+      ]
     },
     {
       "id": "entry-5",
       "title": "Four Numbers, a Million Points, and the Clifford Attractor",
       "type": "microblog",
-      "url": "microblog/entry-5.html"
+      "url": "microblog/entry-5.html",
+      "linkedArtifacts": [
+        "clifford"
+      ]
     },
     {
       "id": "entry-6",
       "title": "Deterministic chaos and chemical memory",
       "type": "microblog",
-      "url": "microblog/entry-6.html"
+      "url": "microblog/entry-6.html",
+      "linkedArtifacts": [
+        "lorenz",
+        "turing"
+      ]
     },
     {
       "id": "entry-7",
       "title": "1965",
       "type": "microblog",
-      "url": "microblog/entry-7.html"
+      "url": "microblog/entry-7.html",
+      "linkedArtifacts": [
+        "noll"
+      ]
     },
     {
       "id": "entry-8",
       "title": "The wave that isn't there",
       "type": "microblog",
-      "url": "microblog/entry-8.html"
+      "url": "microblog/entry-8.html",
+      "linkedArtifacts": [
+        "pendulum"
+      ]
     },
     {
       "id": "entry-9",
       "title": "Tuning forks and pixel dust",
       "type": "microblog",
-      "url": "microblog/entry-9.html"
+      "url": "microblog/entry-9.html",
+      "linkedArtifacts": [
+        "lissajous"
+      ]
     }
   ],
   "feed": [
@@ -912,7 +968,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
