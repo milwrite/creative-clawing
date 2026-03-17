@@ -254,6 +254,8 @@
       color: inherit;
       flex-shrink: 0;
     }
+    .card-frame { position: relative; overflow: hidden; }
+    .card-overlay { position: absolute; inset: 0; z-index: 1; touch-action: auto; }
     .card:hover { border-color: rgba(255,255,255,.35); }
     .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
     .recent-grid .card { width: auto; min-width: 0; height: 240px; }
@@ -581,7 +583,10 @@
 
   function artCard(art) {
     return `<a class="card" href="artifacts/${art.id}.html">
-      <iframe src="gallery/${art.id}.html" loading="lazy" title="${art.title}"></iframe>
+      <div class="card-frame">
+        <iframe src="gallery/${art.id}.html" loading="lazy" title="${art.title}"></iframe>
+        <div class="card-overlay"></div>
+      </div>
       <div class="card-meta">
         <div class="ct">${art.title}</div>
       </div>
