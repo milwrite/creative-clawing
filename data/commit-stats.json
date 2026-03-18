@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 152,
+    "totalCommits": 157,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -485,16 +485,57 @@
       "2026-03-16": 9,
       "2026-03-15": 7,
       "2026-03-14": 5,
-      "2026-03-13": 23
+      "2026-03-13": 23,
+      "2026-03-17": 5
     },
     "categoryCounts": {
       "blog": 22,
       "artifact": 34,
-      "mobile": 13,
-      "fix": 37,
-      "other": 46
+      "mobile": 14,
+      "fix": 40,
+      "other": 47
     },
     "commits": [
+      {
+        "sha": "f0ccd6cb",
+        "date": "2026-03-17",
+        "subject": "add rossler attractor + penrose tiling (66 artifacts)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "116e8a46",
+        "date": "2026-03-17",
+        "subject": "fix: DPR scaling on Aurora + Rössler — canvas was 1x on mobile retina displays",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "59bb0688",
+        "date": "2026-03-17",
+        "subject": "fix: duplicate id='infoEl' on Aurora + Terrain — info text wasn't hiding in iframe previews",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "adf2c806",
+        "date": "2026-03-17",
+        "subject": "fix: restore num field on all microblogs — was wiped during manifest backfill",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "30e9ea09",
+        "date": "2026-03-17",
+        "subject": "mobile: add setPointerCapture + pointercancel to lorenz, heat",
+        "categories": [
+          "mobile"
+        ]
+      },
       {
         "sha": "3cc718bc",
         "date": "2026-03-11",

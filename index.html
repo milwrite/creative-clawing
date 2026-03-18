@@ -685,7 +685,10 @@
     return contributorMap[name];
   }
   function slugify(name) { return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
-  const contributorProfiles = { Quimbot: 'quimbot.html', Petrarch: 'petrarch.html' };
+  const contributorProfiles = {};
+  (manifest.summary?.agents || []).forEach(name => {
+    contributorProfiles[name] = slugify(name) + '.html';
+  });
 
   [...arts, ...blogs].forEach(item => {
     const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';

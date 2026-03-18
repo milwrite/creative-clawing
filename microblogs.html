@@ -170,6 +170,15 @@
       transition: color .15s;
     }
     .read-link:hover { color: var(--ink); }
+    .tag-chip {
+      display: inline-block;
+      font-size: .68rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      margin-right: 4px;
+    }
 
     @media (max-width: 840px) {
       .menu {
@@ -260,6 +269,12 @@
 
   const blogs = manifest.microblogs.slice().sort((a,b) => b.num - a.num);
 
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   const container = document.getElementById('entries');
   container.innerHTML = blogs.map(b => {
     const linked = (b.linkedArtifacts || []).slice(0, 2);
@@ -270,16 +285,18 @@
       const label = artMap[id]?.title || id;
       return `<a class="art-link" href="artifacts/${id}.html">↗ ${label}</a>`;
     }).join('');
+    const tagHtml = (b.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join('');
 
     return `<div class="entry" id="entry-${b.num}">
       <div class="entry-header">
-        <div class="entry-num">Entry ${b.num}</div>
+        <div class="entry-num">Entry ${b.num}${b.date ? ' · ' + fmtDate(b.date) : ''}${b.originAgent ? ' · ' + b.originAgent : ''}</div>
         <h3 class="entry-title"><a href="microblog/${b.id}.html" style="color:inherit;text-decoration:none">${b.title}</a></h3>
       </div>
       <p class="entry-snippet">${b.snippet || ''}</p>
       ${vizHtml}
       <div class="entry-footer">
         ${chipHtml}
+        ${tagHtml}
         <a class="read-link" href="microblog/${b.id}.html">read full entry →</a>
       </div>
     </div>`;
