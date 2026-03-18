@@ -284,24 +284,23 @@
     }
 
     .blog-stack {
-      column-gap: 12px;
-      column-count: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
     @media (min-width: 900px) {
-      .blog-stack { column-count: 2; }
+      .blog-stack { grid-template-columns: repeat(2, 1fr); }
     }
     @media (min-width: 1280px) {
-      .blog-stack { column-count: 3; }
+      .blog-stack { grid-template-columns: repeat(3, 1fr); }
     }
     .blog-card {
       border: 1px solid var(--line);
       background: var(--panel);
-      display: inline-flex;
+      display: flex;
       width: 100%;
       flex-direction: column;
       overflow: hidden;
-      break-inside: avoid;
-      margin: 0 0 12px;
     }
     .blog-card:hover { border-color: rgba(255,255,255,.35); }
     .blog-main-link {
@@ -747,9 +746,13 @@
   const blogGroups = [];
   for (let i = 0; i < blogs.length; i += 4) blogGroups.push(blogs.slice(i, i + 4));
 
+  // Contributors at the top
+  const contribTemp = document.createElement('div');
+  contribTemp.innerHTML = contributorHTML();
+  container.appendChild(contribTemp.firstElementChild);
+
   const speeds = [0.15, 0.12, 0.18, 0.14];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
-  let contributorsPlaced = false;
 
   while (artIdx < artGroups.length || blogIdx < blogGroups.length) {
     // 2 artifact lanes
@@ -761,7 +764,7 @@
       container.appendChild(wrap);
     }
 
-    // 2 blog cards
+    // blog cards
     if (blogIdx < blogGroups.length) {
       const blogWrap = document.createElement('div');
       blogWrap.className = 'blog-stack';
@@ -769,14 +772,6 @@
       blogWrap.innerHTML = blogGroups[blogIdx].map(blogCard).join('');
       blogIdx++;
       container.appendChild(blogWrap);
-    }
-
-    // Contributors after first cycle
-    if (!contributorsPlaced) {
-      const temp = document.createElement('div');
-      temp.innerHTML = contributorHTML();
-      container.appendChild(temp.firstElementChild);
-      contributorsPlaced = true;
     }
   }
 
