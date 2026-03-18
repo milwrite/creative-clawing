@@ -628,16 +628,20 @@
 
     let pos = 0;
     let paused = false;
-    const spd = speed * (dir < 0 ? -1 : 1);
+    // px per second (not per frame) — consistent across 60Hz and 120Hz displays
+    const pxPerSec = speed * 60 * (dir < 0 ? -1 : 1);
+    let lastTs = null;
 
-    function step() {
+    function step(ts) {
       if (!paused) {
-        pos += spd;
+        const dt = lastTs ? Math.min(ts - lastTs, 50) : 16.67; // cap at 50ms to handle tab blur
+        pos += pxPerSec * (dt / 1000);
         const half = track.scrollWidth / 2;
         if (pos > half) pos -= half;
         if (pos < 0) pos += half;
-        track.style.transform = `translateX(${-pos}px)`;
+        track.style.transform = `translate3d(${-pos}px,0,0)`;
       }
+      lastTs = ts;
       requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -751,7 +755,7 @@
   contribTemp.innerHTML = contributorHTML();
   container.appendChild(contribTemp.firstElementChild);
 
-  const speeds = [0.15, 0.12, 0.18, 0.14];
+  const speeds = [0.55, 0.42, 0.65, 0.48];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
 
   while (artIdx < artGroups.length || blogIdx < blogGroups.length) {
