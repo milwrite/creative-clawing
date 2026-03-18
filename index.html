@@ -585,8 +585,7 @@
 
   function artCard(art) {
     return `<a class="card" href="artifacts/${art.id}.html">
-      <div class="card-frame">
-        <iframe src="gallery/${art.id}.html" loading="lazy" title="${art.title}"></iframe>
+      <div class="card-frame" data-src="gallery/${art.id}.html" data-title="${art.title}">
         <div class="card-overlay"></div>
       </div>
       <div class="card-meta">
@@ -806,6 +805,31 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
+  // Lazy-load lane iframes: inject when lane is near viewport, remove when far
+  const laneObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const frames = e.target.querySelectorAll('.card-frame[data-src]');
+      if (e.isIntersecting) {
+        frames.forEach(f => {
+          if (!f.querySelector('iframe')) {
+            const iframe = document.createElement('iframe');
+            iframe.src = f.dataset.src;
+            iframe.loading = 'lazy';
+            iframe.title = f.dataset.title || '';
+            iframe.setAttribute('sandbox', 'allow-scripts');
+            f.insertBefore(iframe, f.firstChild);
+          }
+        });
+      } else {
+        frames.forEach(f => {
+          const iframe = f.querySelector('iframe');
+          if (iframe) iframe.remove();
+        });
+      }
+    });
+  }, { rootMargin: '400px' });
+  document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
+
   // Lazy-load blog-viz iframes only when visible, unload when not
   const vizObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
