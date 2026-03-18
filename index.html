@@ -623,6 +623,7 @@
 
     const track = document.createElement('div');
     track.className = 'lane-track';
+    // Duplicate cards for seamless infinite scroll
     track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
@@ -727,8 +728,15 @@
 
   // Staggered layout: 2 art lanes, 2 blog cards, contributors, repeat
   const container = document.getElementById('staggered');
+
+  // Shuffle all artifacts then deal into groups of 8 — no repeats across lanes
+  const shuffled = [...arts];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   const artGroups = [];
-  for (let i = 0; i < arts.length; i += 8) artGroups.push(arts.slice(i, i + 8));
+  for (let i = 0; i < shuffled.length; i += 8) artGroups.push(shuffled.slice(i, i + 8));
 
   // Shuffle blogs for variety on each visit
   for (let i = blogs.length - 1; i > 0; i--) {
@@ -739,7 +747,7 @@
   const blogGroups = [];
   for (let i = 0; i < blogs.length; i += 4) blogGroups.push(blogs.slice(i, i + 4));
 
-  const speeds = [0.4, 0.3, 0.48, 0.35];
+  const speeds = [0.15, 0.12, 0.18, 0.14];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
   let contributorsPlaced = false;
 
