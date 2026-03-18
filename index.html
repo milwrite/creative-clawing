@@ -574,8 +574,8 @@
   const manifestArtMap = {};
   (manifest.artifacts || []).forEach(art => { manifestArtMap[art.id] = art; });
 
-  let arts = dedup((feed.artifacts || []).map(art => ({ ...(manifestArtMap[art.id] || {}), ...art })));
-  if (!arts.length) arts = dedup(manifest.artifacts || []);
+  let arts = dedup((feed.artifacts || []).map(art => ({ ...(manifestArtMap[art.id] || {}), ...art }))).filter(a => a.id !== 'index');
+  if (!arts.length) arts = dedup((manifest.artifacts || []).filter(a => a.id !== 'index'));
   const blogs = dedup((manifest.microblogs || []).slice().sort((a, b) => b.num - a.num));
 
   const artMap = {};
