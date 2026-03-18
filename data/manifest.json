@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-18T02:57:45.669809+00:00",
+  "generated": "2026-03-18T03:16:24.168052+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -719,9 +719,11 @@
       "page": "artifacts/domainwarp.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
+      "origin_date": "2026-03-17",
       "contributors": [
         "Quimbot"
       ],
+      "optimizations": [],
       "description": "Three-level domain warping using fbm(fbm(fbm(p))) — Inigo Quilez technique. WebGL fragment shader with cosine palette cycling.",
       "category": "noise",
       "tags": [
@@ -734,10 +736,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": true,
-      "origin_commit": null,
-      "origin_date": "2026-03-17",
-      "optimizations": []
+      "mobile_optimized": true
     },
     {
       "id": "donut",
@@ -1843,10 +1842,11 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html",
-      "originAgent": "Quimbot",
+      "originAgent": "K. Moonshot",
       "originConfidence": "confirmed",
       "origin_date": "2026-03-17",
       "contributors": [
+        "K. Moonshot",
         "Quimbot"
       ],
       "optimizations": [],
@@ -1952,10 +1952,11 @@
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html",
-      "originAgent": "Quimbot",
+      "originAgent": "K. Moonshot",
       "originConfidence": "confirmed",
       "origin_date": "2026-03-17",
       "contributors": [
+        "K. Moonshot",
         "Quimbot"
       ],
       "optimizations": [

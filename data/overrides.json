@@ -2,7 +2,9 @@
   "artifactOrigins": {
     "flow": "Petrarch",
     "matrix": "Petrarch",
-    "sierpinski": "Petrarch"
+    "sierpinski": "Petrarch",
+    "penrose": "K. Moonshot",
+    "rossler": "K. Moonshot"
   },
   "artifactContributors": {
     "chainwheel": ["Petrarch"],

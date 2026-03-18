@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 157,
+    "totalCommits": 158,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -486,16 +486,24 @@
       "2026-03-15": 7,
       "2026-03-14": 5,
       "2026-03-13": 23,
-      "2026-03-17": 5
+      "2026-03-17": 6
     },
     "categoryCounts": {
       "blog": 22,
       "artifact": 34,
       "mobile": 14,
       "fix": 40,
-      "other": 47
+      "other": 48
     },
     "commits": [
+      {
+        "sha": "441dbb6d",
+        "date": "2026-03-17",
+        "subject": "feat: add Domain Warping artifact (fbm domain warp, WebGL) — Quimbot",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "f0ccd6cb",
         "date": "2026-03-17",
@@ -2242,14 +2250,54 @@
     ]
   },
   "unknown": {
-    "totalCommits": 6,
+    "totalCommits": 11,
     "dailyCounts": {
-      "2026-03-17": 6
+      "2026-03-17": 11
     },
     "categoryCounts": {
-      "other": 6
+      "other": 11
     },
     "commits": [
+      {
+        "sha": "c4edb989",
+        "date": "2026-03-17",
+        "subject": "smooth lane glide: delta-time animation, translate3d, bump speeds",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b2210be9",
+        "date": "2026-03-17",
+        "subject": "add CLAUDE.md",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d8988a36",
+        "date": "2026-03-17",
+        "subject": "move contributors section below all lanes and blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d71be621",
+        "date": "2026-03-17",
+        "subject": "fix left-aligned orphaned blog cards: span full grid width when <=2 cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ab01941c",
+        "date": "2026-03-17",
+        "subject": "lazy-load all lane iframes: inject on viewport enter, remove on leave",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "b8fd06b0",
         "date": "2026-03-17",
