@@ -113,6 +113,13 @@
       "page": "artifacts/dna.html"
     },
     {
+      "id": "domainwarp",
+      "title": "Domain Warping",
+      "type": "artifact",
+      "url": "gallery/domainwarp.html",
+      "page": "artifacts/domainwarp.html"
+    },
+    {
       "id": "donut",
       "title": "Donut",
       "type": "artifact",
@@ -685,6 +692,13 @@
       "type": "artifact",
       "url": "gallery/dna.html",
       "page": "artifacts/dna.html"
+    },
+    {
+      "id": "domainwarp",
+      "title": "Domain Warping",
+      "type": "artifact",
+      "url": "gallery/domainwarp.html",
+      "page": "artifacts/domainwarp.html"
     },
     {
       "id": "donut",

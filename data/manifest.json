@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-18T02:46:40.953439+00:00",
+  "generated": "2026-03-18T02:57:45.669809+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -710,6 +710,34 @@
       "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "domainwarp",
+      "title": "Domain Warping",
+      "type": "artifact",
+      "url": "gallery/domainwarp.html",
+      "page": "artifacts/domainwarp.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Three-level domain warping using fbm(fbm(fbm(p))) — Inigo Quilez technique. WebGL fragment shader with cosine palette cycling.",
+      "category": "noise",
+      "tags": [
+        "noise",
+        "flow",
+        "glsl",
+        "webgl",
+        "fbm",
+        "domain-warp"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_commit": null,
+      "origin_date": "2026-03-17",
+      "optimizations": []
     },
     {
       "id": "donut",

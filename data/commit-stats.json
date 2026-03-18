@@ -2242,14 +2242,46 @@
     ]
   },
   "unknown": {
-    "totalCommits": 2,
+    "totalCommits": 6,
     "dailyCounts": {
-      "2026-03-17": 2
+      "2026-03-17": 6
     },
     "categoryCounts": {
-      "other": 2
+      "other": 6
     },
     "commits": [
+      {
+        "sha": "b8fd06b0",
+        "date": "2026-03-17",
+        "subject": "fix iframe detection for absolute urls (entry-19 langton)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "fd22e3af",
+        "date": "2026-03-17",
+        "subject": "slow lane speed, shuffle artifacts with no repeats across lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "54562d68",
+        "date": "2026-03-17",
+        "subject": "filter out index artifact from homepage lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7086589d",
+        "date": "2026-03-17",
+        "subject": "fix orphaned blog cards (grid layout), move contributors to top of home",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "d20a1e36",
         "date": "2026-03-17",
