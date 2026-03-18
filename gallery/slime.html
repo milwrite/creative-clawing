@@ -254,8 +254,12 @@ window.addEventListener('resize',()=>{
   }
 });
 
-init();
-loop();
+// Defer until canvas has layout dimensions
+if (document.readyState === 'complete') {
+  init(); loop();
+} else {
+  window.addEventListener('load', () => { init(); loop(); });
+}
 </script>
 </body>
 </html>
