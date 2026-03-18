@@ -2587,7 +2587,8 @@
       "num": 10,
       "linkedArtifacts": [
         "boids"
-      ]
+      ],
+      "snippet": "120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the\u2026"
     },
     {
       "id": "entry-11",
@@ -2599,7 +2600,8 @@
       "num": 11,
       "linkedArtifacts": [
         "phyllotaxis"
-      ]
+      ],
+      "snippet": "1,400 dots placed at 137.5\u00b0 increments, radius scaling as \u221aindex. Click to pulse. Move mouse to slow the\u2026"
     },
     {
       "id": "entry-12",
@@ -2611,7 +2613,8 @@
       "num": 12,
       "linkedArtifacts": [
         "chladni"
-      ]
+      ],
+      "snippet": "Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic\u2026"
     },
     {
       "id": "entry-13",
@@ -2623,7 +2626,8 @@
       "num": 13,
       "linkedArtifacts": [
         "harmonograph"
-      ]
+      ],
+      "snippet": "Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new\u2026"
     },
     {
       "id": "entry-14",
@@ -2635,7 +2639,8 @@
       "num": 14,
       "linkedArtifacts": [
         "lsystem"
-      ]
+      ],
+      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpi\u0144ski triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and\u2026"
     },
     {
       "id": "entry-15",
@@ -2647,7 +2652,8 @@
       "num": 15,
       "linkedArtifacts": [
         "voronoi"
-      ]
+      ],
+      "snippet": "30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to\u2026"
     },
     {
       "id": "entry-16",
@@ -2659,7 +2665,8 @@
       "num": 16,
       "linkedArtifacts": [
         "grayscott"
-      ]
+      ],
+      "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze,\u2026"
     },
     {
       "id": "entry-17",
@@ -2671,7 +2678,8 @@
       "num": 17,
       "linkedArtifacts": [
         "newton"
-      ]
+      ],
+      "snippet": "Newton's method applied to z\u2075 \u2212 1 = 0 over the complex plane. Each pixel's color shows which of the five roots the iteration converged to; brightness reflects\u2026"
     },
     {
       "id": "entry-18",
@@ -2684,7 +2692,8 @@
       "linkedArtifacts": [
         "slime",
         "sand"
-      ]
+      ],
+      "snippet": "4,000 agents navigate by sampling a shared chemical trail map. Each agent deposits as it moves, creating feedback loops that self-organize into vascular\u2026"
     },
     {
       "id": "entry-19",
@@ -2696,7 +2705,8 @@
       "num": 19,
       "linkedArtifacts": [
         "langton"
-      ]
+      ],
+      "snippet": "Christopher Langton introduced this system in a 1986 Physica D paper titled \"Studying Artificial Life with Cellular Automata.\" The rules fit in a single\u2026"
     },
     {
       "id": "entry-2",
@@ -2708,7 +2718,8 @@
       "num": 2,
       "linkedArtifacts": [
         "rubik"
-      ]
+      ],
+      "snippet": "Click scramble, then solve. Swipe to change grid size (2\u00d72 \u2192\u2026"
     },
     {
       "id": "entry-3",
@@ -2720,7 +2731,8 @@
       "num": 3,
       "linkedArtifacts": [
         "turing"
-      ]
+      ],
+      "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each\u2026"
     },
     {
       "id": "entry-4",
@@ -2732,7 +2744,8 @@
       "num": 4,
       "linkedArtifacts": [
         "fourier"
-      ]
+      ],
+      "snippet": "Tap to switch harmonic families \u00b7 swipe up/down to change harmonic\u2026"
     },
     {
       "id": "entry-5",
@@ -2744,7 +2757,8 @@
       "num": 5,
       "linkedArtifacts": [
         "clifford"
-      ]
+      ],
+      "snippet": "Pick four decimal numbers. Call them a, b, c, d. Start at the origin. Run this loop 800,000\u2026"
     },
     {
       "id": "entry-6",
@@ -2757,7 +2771,8 @@
       "linkedArtifacts": [
         "lorenz",
         "turing"
-      ]
+      ],
+      "snippet": "Two visualizations from the gallery that sit at opposite ends of the same idea: systems that remember nothing, yet produce structures that look\u2026"
     },
     {
       "id": "entry-7",
@@ -2769,7 +2784,8 @@
       "num": 7,
       "linkedArtifacts": [
         "noll"
-      ]
+      ],
+      "snippet": "In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then\u2026"
     },
     {
       "id": "entry-8",
@@ -2781,7 +2797,8 @@
       "num": 8,
       "linkedArtifacts": [
         "pendulum"
-      ]
+      ],
+      "snippet": "24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your\u2026"
     },
     {
       "id": "entry-9",
@@ -2793,7 +2810,8 @@
       "num": 9,
       "linkedArtifacts": [
         "lissajous"
-      ]
+      ],
+      "snippet": "In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected\u2026"
     }
   ],
   "summary": {

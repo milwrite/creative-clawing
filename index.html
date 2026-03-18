@@ -164,29 +164,27 @@
     }
 
     .blog-stack {
-      column-gap: 12px;
-      column-count: 1;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
     }
-    @media (min-width: 900px) {
-      .blog-stack { column-count: 2; }
+    @media (min-width: 700px) {
+      .blog-stack { grid-template-columns: repeat(2, 1fr); }
     }
     @media (min-width: 1280px) {
-      .blog-stack { column-count: 3; }
+      .blog-stack { grid-template-columns: repeat(3, 1fr); }
     }
     .blog-card {
       border: 1px solid var(--line);
       background: var(--panel);
-      display: inline-flex;
-      width: 100%;
+      display: flex;
       flex-direction: column;
       overflow: hidden;
-      break-inside: avoid;
-      margin: 0 0 12px;
     }
     .blog-card:hover { border-color: rgba(255,255,255,.35); }
     .blog-main-link {
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto auto;
       gap: 6px;
       padding: 12px;
       text-decoration: none;
@@ -449,12 +447,12 @@
     ).join('');
 
     return `<div class="blog-card">
+      ${vizHtml}
       <a class="blog-main-link" href="${postHref}">
         <div class="k">${blog.originAgent || 'Microblog'}</div>
         <h3>${blog.title}</h3>
-        <p>${blog.snippet || 'open to read'}</p>
+        <p>${blog.snippet || ''}</p>
       </a>
-      ${vizHtml}
       ${chips ? `<div class="blog-art-row">${chips}</div>` : ''}
     </div>`;
   }
