@@ -279,7 +279,7 @@
   container.innerHTML = blogs.map(b => {
     const linked = (b.linkedArtifacts || []).slice(0, 2);
     const vizHtml = linked.length ? linked.map(id =>
-      `<div class="entry-viz"><iframe src="gallery/${id}.html" loading="lazy" sandbox="allow-scripts" title="${artMap[id]?.title || id}"></iframe></div>`
+      `<div class="entry-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
     ).join('') : '';
     const chipHtml = linked.map(id => {
       const label = artMap[id]?.title || id;
@@ -301,6 +301,20 @@
       </div>
     </div>`;
   }).join('');
+
+  // Lazy-load entry-viz iframes only when visible, unload when not
+  const vizObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !e.target.querySelector('iframe')) {
+        const src = e.target.dataset.iframeSrc;
+        const title = e.target.dataset.iframeTitle || '';
+        if (src) e.target.innerHTML = `<iframe src="${src}" loading="lazy" sandbox="allow-scripts" title="${title}"></iframe>`;
+      } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
+        e.target.innerHTML = '';
+      }
+    });
+  }, { rootMargin: '300px' });
+  document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => vizObserver.observe(el));
 })();
 </script>
 <script>

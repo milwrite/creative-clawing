@@ -203,14 +203,14 @@ def extract_microblog_metadata(path):
         result["tags"] = [t.strip() for t in tags]
 
     # Snippet: first <p> after meta/tags that isn't .caption or .meta
-    # Find all <p> elements, skip caption/meta ones, take first substantial one
-    paragraphs = re.findall(r"<p(?:\s[^>]*)?>(.+?)</p>", content, re.DOTALL)
-    for p_html in paragraphs:
-        # Skip if it's a caption or meta paragraph
-        if any(cls in p_html for cls in ('class="caption"', 'class="meta"')):
+    # Match full <p ...>...</p> including attributes on the tag
+    paragraphs = re.findall(r"<p(\s[^>]*)?>(.+?)</p>", content, re.DOTALL)
+    for p_attrs, p_body in paragraphs:
+        # Skip if class="caption" or class="meta" on the <p> tag itself
+        if p_attrs and re.search(r'class="[^"]*(?:caption|meta)[^"]*"', p_attrs):
             continue
         # Strip HTML tags
-        text = re.sub(r"<[^>]+>", "", p_html).strip()
+        text = re.sub(r"<[^>]+>", "", p_body).strip()
         if len(text) > 30:
             if len(text) > 200:
                 text = text[:197].rsplit(" ", 1)[0] + "..."

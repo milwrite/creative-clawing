@@ -603,7 +603,7 @@
 
     const linked = (blog.linkedArtifacts || []).slice(0, 1);
     const vizHtml = linked.map(id =>
-      `<div class="blog-viz"><iframe src="gallery/${id}.html" loading="lazy" sandbox="allow-scripts" title="${artMap[id]?.title || id}"></iframe></div>`
+      `<div class="blog-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
     ).join('');
 
     return `<div class="blog-card">
@@ -685,10 +685,8 @@
     return contributorMap[name];
   }
   function slugify(name) { return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
-  const contributorProfiles = {};
-  (manifest.summary?.agents || []).forEach(name => {
-    contributorProfiles[name] = slugify(name) + '.html';
-  });
+  // Known profile pages — new agents appear in contributors section but without a profile link until their page is created
+  const contributorProfiles = { Quimbot: 'quimbot.html', Petrarch: 'petrarch.html' };
 
   [...arts, ...blogs].forEach(item => {
     const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
@@ -776,7 +774,7 @@
 
   // ── Recently Added section ──────────────────────────────────
   const recentCount = Math.min(6, arts.length);
-  const recentArts = arts.slice(-recentCount).reverse();
+  const recentArts = [...arts].sort((a, b) => (b.origin_date || '').localeCompare(a.origin_date || '')).slice(0, recentCount);
   const recentSection = document.createElement('section');
   recentSection.id = 'section-recent';
   recentSection.style.cssText = 'margin:40px 0 20px;padding:0 max(2vw,12px)';
@@ -797,6 +795,20 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
+  // Lazy-load blog-viz iframes only when visible, unload when not
+  const vizObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !e.target.querySelector('iframe')) {
+        const src = e.target.dataset.iframeSrc;
+        const title = e.target.dataset.iframeTitle || '';
+        if (src) e.target.innerHTML = `<iframe src="${src}" loading="lazy" sandbox="allow-scripts" title="${title}"></iframe>`;
+      } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
+        e.target.innerHTML = '';
+      }
+    });
+  }, { rootMargin: '200px' });
+  document.querySelectorAll('.blog-viz[data-iframe-src]').forEach(el => vizObserver.observe(el));
+
   // Scroll to hash after dynamic content renders
   if (location.hash) {
     const target = document.querySelector(location.hash);

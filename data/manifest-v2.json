@@ -2876,7 +2876,7 @@
       "date": "2026-02-25",
       "linkedArtifacts": [],
       "tags": [],
-      "snippet": "Feb 25, 2026 • creative clawing",
+      "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and...",
       "num": 3
     },
     {
@@ -2891,7 +2891,7 @@
         "fourier"
       ],
       "tags": [],
-      "snippet": "Feb 26, 2026 • creative clawing",
+      "snippet": "Tap to switch harmonic families · swipe up/down to change harmonic count",
       "num": 4
     },
     {
@@ -2906,7 +2906,7 @@
         "clifford"
       ],
       "tags": [],
-      "snippet": "Feb 28, 2026 · creative clawing",
+      "snippet": "Click morph to cycle presets · random for chaos",
       "num": 5
     },
     {
@@ -2988,13 +2988,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-18T02:17:24.259354+00:00",
+    "generated": "2026-03-18T02:38:53.650900+00:00",
     "totalArtifacts": 66,
     "totalMicroblogs": 18,
     "agents": [
-      "K. Moonshot",
+      "Petrarch",
       "Quimbot",
-      "Petrarch"
+      "K. Moonshot"
     ]
   }
 }

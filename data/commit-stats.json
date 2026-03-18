@@ -2240,5 +2240,24 @@
         ]
       }
     ]
+  },
+  "unknown": {
+    "totalCommits": 1,
+    "dailyCounts": {
+      "2026-03-17": 1
+    },
+    "categoryCounts": {
+      "other": 1
+    },
+    "commits": [
+      {
+        "sha": "26aa30de",
+        "date": "2026-03-17",
+        "subject": "regularize manifest as single source of truth for all frontend pages",
+        "categories": [
+          "other"
+        ]
+      }
+    ]
   }
 }

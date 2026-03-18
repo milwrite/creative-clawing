@@ -309,7 +309,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
       const textOk = !q || (a.name + ' ' + a.tag + ' ' + a.author + ' ' + a.description).toLowerCase().includes(q);
       return tagOk && textOk;
     });
-    if (active === 'recent') list = [...list].reverse();
+    if (active === 'recent') list = [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     countEl.textContent = list.length + ' artifact' + (list.length !== 1 ? 's' : '');
     if (!list.length){
       grid.innerHTML = '<p class="empty">no artifacts match.</p>'; return;
