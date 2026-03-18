@@ -750,11 +750,6 @@
   const blogGroups = [];
   for (let i = 0; i < blogs.length; i += 4) blogGroups.push(blogs.slice(i, i + 4));
 
-  // Contributors at the top
-  const contribTemp = document.createElement('div');
-  contribTemp.innerHTML = contributorHTML();
-  container.appendChild(contribTemp.firstElementChild);
-
   const speeds = [0.55, 0.42, 0.65, 0.48];
   let artIdx = 0, blogIdx = 0, laneIdx = 0;
 
@@ -778,6 +773,11 @@
       container.appendChild(blogWrap);
     }
   }
+
+  // Contributors after all lanes and blog cards
+  const contribTemp = document.createElement('div');
+  contribTemp.innerHTML = contributorHTML();
+  container.appendChild(contribTemp.firstElementChild);
 
   // ── Recently Added section ──────────────────────────────────
   const recentCount = Math.min(6, arts.length);
