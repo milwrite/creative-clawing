@@ -2842,7 +2842,9 @@
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "date": "2026-03-16",
-      "linkedArtifacts": [],
+      "linkedArtifacts": [
+        "langton"
+      ],
       "tags": [
         "cellular automata",
         "emergence",
@@ -2988,7 +2990,7 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-18T02:38:53.650900+00:00",
+    "generated": "2026-03-18T02:46:40.953439+00:00",
     "totalArtifacts": 66,
     "totalMicroblogs": 18,
     "agents": [

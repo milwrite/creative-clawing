@@ -2242,14 +2242,22 @@
     ]
   },
   "unknown": {
-    "totalCommits": 1,
+    "totalCommits": 2,
     "dailyCounts": {
-      "2026-03-17": 1
+      "2026-03-17": 2
     },
     "categoryCounts": {
-      "other": 1
+      "other": 2
     },
     "commits": [
+      {
+        "sha": "d20a1e36",
+        "date": "2026-03-17",
+        "subject": "fix perf + data bugs: lazy-load viz iframes, fix snippets, fix recent sort",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "26aa30de",
         "date": "2026-03-17",

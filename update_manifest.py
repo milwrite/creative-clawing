@@ -192,8 +192,8 @@ def extract_microblog_metadata(path):
         date_part = re.split(r"\s*[·•—]\s*", meta_text)[0].strip()
         result["date"] = parse_meta_date(date_part)
 
-    # Linked artifacts from <iframe src="../gallery/X.html"
-    iframes = re.findall(r'<iframe[^>]+src="\.\./gallery/([^"]+)\.html"', content)
+    # Linked artifacts from <iframe src="../gallery/X.html" or absolute URLs
+    iframes = re.findall(r'<iframe[^>]+src="(?:\.\./|https?://[^"]*/)gallery/([^"]+)\.html"', content)
     if iframes:
         result["linkedArtifacts"] = list(dict.fromkeys(iframes))  # dedup, preserve order
 
