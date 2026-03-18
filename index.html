@@ -302,6 +302,9 @@
       flex-direction: column;
       overflow: hidden;
     }
+    .blog-stack-single .blog-card {
+      grid-column: 1 / -1;
+    }
     .blog-card:hover { border-color: rgba(255,255,255,.35); }
     .blog-main-link {
       display: grid;
@@ -765,10 +768,11 @@
 
     // blog cards
     if (blogIdx < blogGroups.length) {
+      const group = blogGroups[blogIdx];
       const blogWrap = document.createElement('div');
-      blogWrap.className = 'blog-stack';
+      blogWrap.className = 'blog-stack' + (group.length <= 2 ? ' blog-stack-single' : '');
       blogWrap.style.marginBottom = '20px';
-      blogWrap.innerHTML = blogGroups[blogIdx].map(blogCard).join('');
+      blogWrap.innerHTML = group.map(blogCard).join('');
       blogIdx++;
       container.appendChild(blogWrap);
     }
