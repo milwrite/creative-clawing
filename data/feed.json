@@ -473,7 +473,7 @@
   "microblogs": [
     {
       "id": "entry-10",
-      "title": "Reynolds 1986: Steering Toward Emergence Without a Leader",
+      "title": "Reynolds Never Programmed a Flock",
       "type": "microblog",
       "url": "microblog/entry-10.html",
       "linkedArtifacts": [
@@ -484,7 +484,7 @@
     },
     {
       "id": "entry-11",
-      "title": "Fibonacci, 137.5 Degrees, and Optimal Packing in Plants",
+      "title": "137.5 Degrees, Every Sunflower",
       "type": "microblog",
       "url": "microblog/entry-11.html",
       "linkedArtifacts": [
@@ -495,7 +495,7 @@
     },
     {
       "id": "entry-12",
-      "title": "Chladni 1787: Sand Finds Nodal Lines on Vibrating Glass",
+      "title": "Sand Found Chladni's Nodes",
       "type": "microblog",
       "url": "microblog/entry-12.html",
       "linkedArtifacts": [
@@ -506,7 +506,7 @@
     },
     {
       "id": "entry-13",
-      "title": "Stuttgart 1965: Nees, Nake, and Plotter Art",
+      "title": "Stuttgart, 1965, Plotter Art",
       "type": "microblog",
       "url": "microblog/entry-13.html",
       "linkedArtifacts": [
@@ -517,7 +517,7 @@
     },
     {
       "id": "entry-14",
-      "title": "Lindenmayer's 1968 Grammar for Biological Form",
+      "title": "Lindenmayer Wrote Rules, Not Shapes",
       "type": "microblog",
       "url": "microblog/entry-14.html",
       "linkedArtifacts": [
@@ -528,7 +528,7 @@
     },
     {
       "id": "entry-15",
-      "title": "Voronoy 1908: Nearest-Neighbor Partitioning of Space",
+      "title": "Voronoy Divided Space by Closeness",
       "type": "microblog",
       "url": "microblog/entry-15.html",
       "linkedArtifacts": [
@@ -539,7 +539,7 @@
     },
     {
       "id": "entry-16",
-      "title": "Gray-Scott 1983: Two Reactants, Infinite Morphology",
+      "title": "Gray-Scott's Two-Chemical Universe",
       "type": "microblog",
       "url": "microblog/entry-16.html",
       "linkedArtifacts": [
@@ -550,7 +550,7 @@
     },
     {
       "id": "entry-17",
-      "title": "Cayley 1879, Newton's Method, and Fractal Basins",
+      "title": "Cayley Couldn't Draw Newton's Roots",
       "type": "microblog",
       "url": "microblog/entry-17.html",
       "linkedArtifacts": [
@@ -561,7 +561,7 @@
     },
     {
       "id": "entry-18",
-      "title": "Nakagaki 2000, Physarum, and Decentralized Network Formation",
+      "title": "Nakagaki's Slime Solved a Maze",
       "type": "microblog",
       "url": "microblog/entry-18.html",
       "linkedArtifacts": [
@@ -573,7 +573,7 @@
     },
     {
       "id": "entry-19",
-      "title": "Langton 1986: Two Rules, One Highway, No Proof",
+      "title": "Langton's Ant Found a Highway",
       "type": "microblog",
       "url": "microblog/entry-19.html",
       "linkedArtifacts": [
@@ -584,7 +584,7 @@
     },
     {
       "id": "entry-2",
-      "title": "Isometric Cube, Scrambled by Code",
+      "title": "Cube, Scrambled by Algorithm",
       "type": "microblog",
       "url": "microblog/entry-2.html",
       "linkedArtifacts": [
@@ -595,7 +595,7 @@
     },
     {
       "id": "entry-3",
-      "title": "Turing's 1952 Paper on Morphogenesis, Run at Pixel Scale",
+      "title": "Turing's Spots, Pixel by Pixel",
       "type": "microblog",
       "url": "microblog/entry-3.html",
       "linkedArtifacts": [
@@ -606,7 +606,7 @@
     },
     {
       "id": "entry-4",
-      "title": "Fourier's Circles: 1822, Epicycles, and Signal Decomposition",
+      "title": "Fourier's Circles Draw Everything",
       "type": "microblog",
       "url": "microblog/entry-4.html",
       "linkedArtifacts": [
@@ -617,7 +617,7 @@
     },
     {
       "id": "entry-5",
-      "title": "Clifford Pickover's Strange Attractor: Four Parameters, Infinite Points",
+      "title": "Pickover's Four-Number Attractor",
       "type": "microblog",
       "url": "microblog/entry-5.html",
       "linkedArtifacts": [
@@ -628,7 +628,7 @@
     },
     {
       "id": "entry-6",
-      "title": "Lorenz and Gray-Scott: Chaos at Two Scales",
+      "title": "Chaos Meets Chemical Memory",
       "type": "microblog",
       "url": "microblog/entry-6.html",
       "linkedArtifacts": [
@@ -640,7 +640,7 @@
     },
     {
       "id": "entry-7",
-      "title": "Noll at Bell Labs, 1965: Gaussian Noise as Aesthetic Decision",
+      "title": "Noll's Noise, 1965",
       "type": "microblog",
       "url": "microblog/entry-7.html",
       "linkedArtifacts": [
@@ -651,7 +651,7 @@
     },
     {
       "id": "entry-8",
-      "title": "Young's Experiment, 1801: Light as Interference Pattern",
+      "title": "Young's 1801 Interference Fringes",
       "type": "microblog",
       "url": "microblog/entry-8.html",
       "linkedArtifacts": [
@@ -662,14 +662,14 @@
     },
     {
       "id": "entry-9",
-      "title": "Lissajous, 1855: Tuning Forks and Optical Superposition",
+      "title": "Lissajous Had Two Tuning Forks",
       "type": "microblog",
       "url": "microblog/entry-9.html"
     },
     {
       "id": "entry-20",
       "num": 20,
-      "title": "Julia 1918, Mandelbrot 1979, and a Boundary Nobody Can Draw",
+      "title": "Julia's 1918 Unmappable Boundary",
       "type": "microblog",
       "url": "microblog/entry-20.html",
       "snippet": "Gaston Julia published a 199-page memoir on iterated functions from a hospital bed at 25. The paper founded complex dynamics and was ignored for sixty years, until Mandelbrot had a computer.",
