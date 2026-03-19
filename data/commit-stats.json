@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 158,
+    "totalCommits": 170,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -486,16 +486,113 @@
       "2026-03-15": 7,
       "2026-03-14": 5,
       "2026-03-13": 23,
-      "2026-03-17": 6
+      "2026-03-17": 6,
+      "2026-03-18": 12
     },
     "categoryCounts": {
-      "blog": 22,
+      "blog": 25,
       "artifact": 34,
       "mobile": 14,
-      "fix": 40,
-      "other": 48
+      "fix": 44,
+      "other": 53
     },
     "commits": [
+      {
+        "sha": "fba8ca44",
+        "date": "2026-03-18",
+        "subject": "fix: slime canvas uses clientWidth/Height so it fills iframe correctly without stretching",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e90fe1de",
+        "date": "2026-03-18",
+        "subject": "fix: defer slime init to window load so canvas has layout dimensions before sizing",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c5816d39",
+        "date": "2026-03-18",
+        "subject": "fix: defer dna helix loop start until load — prevents blank canvas in sandboxed iframes",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "119890cf",
+        "date": "2026-03-18",
+        "subject": "microblog: entry-20 — A boundary that never repeats (Julia Set)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "ba8aa73a",
+        "date": "2026-03-18",
+        "subject": "microblog: entry-20 — normalize to site style (match entry-19 template)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "27a69b72",
+        "date": "2026-03-18",
+        "subject": "feat: move Recently Added to top of home page, limit to 3 artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ae5c577a",
+        "date": "2026-03-18",
+        "subject": "retitle: all 19 microblogs — historical/algorithmic focus, no 'the' or 'themselves'",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6d305bbe",
+        "date": "2026-03-18",
+        "subject": "retitle: microblogs — short, mixed, historical (≤5 words each)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "85ef43b6",
+        "date": "2026-03-18",
+        "subject": "retitle: microblogs — no colons",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "909a26a8",
+        "date": "2026-03-18",
+        "subject": "retitle: microblogs — 5 varied patterns (named action, dateline, imperative, phenomenon, provocation)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6f8c7d1e",
+        "date": "2026-03-18",
+        "subject": "fix: normalize microblogs.html nav-brand — remove h1 wrapper to match gallery.html",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "b2b85d89",
+        "date": "2026-03-18",
+        "subject": "microblog entry-21: harmonograph — parlor machine that drew decay",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "441dbb6d",
         "date": "2026-03-17",
@@ -2250,14 +2347,123 @@
     ]
   },
   "unknown": {
-    "totalCommits": 11,
+    "totalCommits": 24,
     "dailyCounts": {
-      "2026-03-17": 11
+      "2026-03-17": 21,
+      "2026-03-18": 3
     },
     "categoryCounts": {
-      "other": 11
+      "other": 15,
+      "fix": 5,
+      "blog": 1,
+      "chore": 1,
+      "refactor": 2
     },
     "commits": [
+      {
+        "sha": "254feef0",
+        "date": "2026-03-17",
+        "subject": "refactor: shared CSS, consistent nav, K. Moonshot contributor profile, dynamic gallery, artifact page upgrades",
+        "categories": [
+          "refactor"
+        ]
+      },
+      {
+        "sha": "747f39c7",
+        "date": "2026-03-17",
+        "subject": "refactor: shared CSS, consistent nav, K. Moonshot contributor, dynamic gallery, artifact detail upgrades",
+        "categories": [
+          "refactor"
+        ]
+      },
+      {
+        "sha": "5310f90e",
+        "date": "2026-03-17",
+        "subject": "chore: add .gitignore (excludes CHANGELOG.md)",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "528918fe",
+        "date": "2026-03-17",
+        "subject": "data: backfill linkedArtifacts on all microblogs — enables iframe previews on homepage blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c3ed5301",
+        "date": "2026-03-17",
+        "subject": "ui: show author name on homepage blog cards (was generic 'Microblog' label)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9ead264b",
+        "date": "2026-03-17",
+        "subject": "fix: add full Contributors dropdown to all microblog entry navs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "45eec42d",
+        "date": "2026-03-17",
+        "subject": "fix: restore original curated tag vocabulary in gallery filter chips",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "95052e7a",
+        "date": "2026-03-17",
+        "subject": "fix: hide gallery filter chips with fewer than 2 artifacts",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c819b5c3",
+        "date": "2026-03-17",
+        "subject": "fix: blog cards — backfill snippets+linkedArtifacts, viz-first layout, CSS columns -> grid",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "315f992b",
+        "date": "2026-03-17",
+        "subject": "attribute penrose + rossler to k. moonshot",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6cf9902c",
+        "date": "2026-03-18",
+        "subject": "Merge remote-tracking branch 'origin/main'",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9e14e223",
+        "date": "2026-03-18",
+        "subject": "microblog: entry-21 — The set that contains everything (Mandelbrot)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "2903e65d",
+        "date": "2026-03-18",
+        "subject": "fix: normalize microblogs nav — kicker + brand match gallery/index",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "c4edb989",
         "date": "2026-03-17",
