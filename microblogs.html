@@ -188,10 +188,13 @@
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
+  const latestNum = blogs.length ? blogs[0].num : -1;
+
   const container = document.getElementById('entries');
   container.innerHTML = blogs.map(b => {
     const linked = (b.linkedArtifacts || []).slice(0, 2);
-    const vizHtml = linked.length ? linked.map(id =>
+    const isLatest = b.num === latestNum;
+    const vizHtml = isLatest && linked.length ? linked.map(id =>
       `<div class="entry-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
     ).join('') : '';
     const chipHtml = linked.map(id => {
