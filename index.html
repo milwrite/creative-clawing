@@ -576,6 +576,20 @@
   // Staggered layout: 2 art lanes, 2 blog cards, contributors, repeat
   const container = document.getElementById('staggered');
 
+  // ── Recently Added — top of page, 3 items ───────────────────
+  const recentArts = [...arts]
+    .sort((a, b) => (b.origin_date || '').localeCompare(a.origin_date || ''))
+    .slice(0, 3);
+  const recentSection = document.createElement('section');
+  recentSection.id = 'section-recent';
+  recentSection.style.cssText = 'margin:0 0 32px;padding:0 max(2vw,12px)';
+  recentSection.innerHTML = `
+    <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px">Recently Added</h2>
+    <div class="recent-grid">
+      ${recentArts.map(artCard).join('')}
+    </div>`;
+  container.appendChild(recentSection);
+
   // Shuffle all artifacts then deal into groups of 8 — no repeats across lanes
   const shuffled = [...arts];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -624,18 +638,7 @@
   contribTemp.innerHTML = contributorHTML();
   container.appendChild(contribTemp.firstElementChild);
 
-  // ── Recently Added section ──────────────────────────────────
-  const recentCount = Math.min(6, arts.length);
-  const recentArts = [...arts].sort((a, b) => (b.origin_date || '').localeCompare(a.origin_date || '')).slice(0, recentCount);
-  const recentSection = document.createElement('section');
-  recentSection.id = 'section-recent';
-  recentSection.style.cssText = 'margin:40px 0 20px;padding:0 max(2vw,12px)';
-  recentSection.innerHTML = `
-    <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px">Recently Added</h2>
-    <div class="recent-grid">
-      ${recentArts.map(artCard).join('')}
-    </div>`;
-  container.appendChild(recentSection);
+
 
   // Close contributor menu on outside click
   const contributorMenu = document.querySelector('.menu-group');
