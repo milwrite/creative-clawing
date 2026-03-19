@@ -141,8 +141,8 @@ class Food{
 }
 
 function init(){
-  W=c.width=innerWidth;
-  H=c.height=innerHeight;
+  W=c.width=c.clientWidth||innerWidth;
+  H=c.height=c.clientHeight||innerHeight;
   imgData=ctx.createImageData(W,H);
   trail=new Uint8ClampedArray(W*H*4);
 
@@ -237,7 +237,7 @@ window.addEventListener('resize',()=>{
   // Preserve trail when resizing
   const oldW=W,oldH=H;
   const oldTrail=trail;
-  W=c.width=innerWidth;H=c.height=innerHeight;
+  W=c.width=c.clientWidth||innerWidth;H=c.height=c.clientHeight||innerHeight;
   imgData=ctx.createImageData(W,H);
   trail=new Uint8ClampedArray(W*H*4);
   for(let i=3;i<trail.length;i+=4)trail[i]=255;
@@ -254,8 +254,12 @@ window.addEventListener('resize',()=>{
   }
 });
 
-init();
-loop();
+// Defer until canvas has layout dimensions
+if (document.readyState === 'complete') {
+  init(); loop();
+} else {
+  window.addEventListener('load', () => { init(); loop(); });
+}
 </script>
 </body>
 </html>

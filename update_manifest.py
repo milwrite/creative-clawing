@@ -147,6 +147,78 @@ def id_from_path(path):
     """Derive artifact/microblog id from filename."""
     return path.stem.lower()
 
+# Month name → number mapping for date parsing
+MONTH_MAP = {
+    "jan": 1, "january": 1, "feb": 2, "february": 2,
+    "mar": 3, "march": 3, "apr": 4, "april": 4,
+    "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+    "aug": 8, "august": 8, "sep": 9, "september": 9,
+    "oct": 10, "october": 10, "nov": 11, "november": 11,
+    "dec": 12, "december": 12,
+}
+
+def parse_meta_date(text):
+    """Parse date strings like 'Feb 2026', 'Feb 25, 2026', 'March 2, 2026' → YYYY-MM-DD."""
+    if not text:
+        return None
+    # Try: Month Day, Year  (e.g. "Feb 25, 2026", "March 2, 2026")
+    m = re.match(r"([A-Za-z]+)\.?\s+(\d{1,2}),?\s+(\d{4})", text.strip())
+    if m:
+        month = MONTH_MAP.get(m.group(1).lower())
+        if month:
+            return f"{m.group(3)}-{month:02d}-{int(m.group(2)):02d}"
+    # Try: Month Year  (e.g. "Feb 2026" — no day, default to 01)
+    m = re.match(r"([A-Za-z]+)\.?\s+(\d{4})", text.strip())
+    if m:
+        month = MONTH_MAP.get(m.group(1).lower())
+        if month:
+            return f"{m.group(2)}-{month:02d}-01"
+    return None
+
+def extract_microblog_metadata(path):
+    """Parse a microblog HTML file for date, linkedArtifacts, tags, and snippet."""
+    try:
+        content = path.read_text(errors="replace")
+    except Exception:
+        return {}
+
+    result = {}
+
+    # Date from <p class="meta"> or <div class="meta">
+    meta_match = re.search(r'class="meta"[^>]*>\s*(.+?)</(?:p|div)>', content, re.DOTALL)
+    if meta_match:
+        meta_text = re.sub(r"<[^>]+>", "", meta_match.group(1)).strip()
+        # Extract the date portion (before the first separator · • —)
+        date_part = re.split(r"\s*[·•—]\s*", meta_text)[0].strip()
+        result["date"] = parse_meta_date(date_part)
+
+    # Linked artifacts from <iframe src="../gallery/X.html" or absolute URLs
+    iframes = re.findall(r'<iframe[^>]+src="(?:\.\./|https?://[^"]*/)gallery/([^"]+)\.html"', content)
+    if iframes:
+        result["linkedArtifacts"] = list(dict.fromkeys(iframes))  # dedup, preserve order
+
+    # Tags from <span class="tag">
+    tags = re.findall(r'<span class="tag">([^<]+)</span>', content)
+    if tags:
+        result["tags"] = [t.strip() for t in tags]
+
+    # Snippet: first <p> after meta/tags that isn't .caption or .meta
+    # Match full <p ...>...</p> including attributes on the tag
+    paragraphs = re.findall(r"<p(\s[^>]*)?>(.+?)</p>", content, re.DOTALL)
+    for p_attrs, p_body in paragraphs:
+        # Skip if class="caption" or class="meta" on the <p> tag itself
+        if p_attrs and re.search(r'class="[^"]*(?:caption|meta)[^"]*"', p_attrs):
+            continue
+        # Strip HTML tags
+        text = re.sub(r"<[^>]+>", "", p_body).strip()
+        if len(text) > 30:
+            if len(text) > 200:
+                text = text[:197].rsplit(" ", 1)[0] + "..."
+            result["snippet"] = text
+            break
+
+    return result
+
 def load_json(path):
     if path.exists():
         return json.loads(path.read_text())
@@ -271,10 +343,12 @@ def main():
 
         # Find the creating commit (last in log = oldest)
         origin_agent = "Unknown"
+        origin_date = None
         for c in reversed(commits):
             cfiles = files_in_commit(c["sha_full"])
             if any(f.endswith(f"gallery/{art_id}.html") for f in cfiles):
                 origin_agent = detect_agent(c)
+                origin_date = c["date"]
                 break
 
         final_origin, origin_conf = resolve_origin(art_id, origin_agent, art_overrides)
@@ -322,6 +396,7 @@ def main():
             "page": f"artifacts/{art_id}.html",
             "originAgent": existing.get("originAgent") or final_origin,
             "originConfidence": existing.get("originConfidence") or origin_conf,
+            "origin_date": existing.get("origin_date") or origin_date,
             "contributors": existing.get("contributors") or contributors,
             "optimizations": existing.get("optimizations") or optimizations,
         }
@@ -361,6 +436,7 @@ def main():
         origin_conf = "confirmed" if blog_id in bo else "reported"
 
         existing = microblog_idx.get(blog_id, {})
+        meta = extract_microblog_metadata(blog_path)
         entry = {
             "id": blog_id,
             "title": existing.get("title") or title,
@@ -368,8 +444,19 @@ def main():
             "url": f"microblog/{blog_id}.html",
             "originAgent": existing.get("originAgent") or final_origin,
             "originConfidence": existing.get("originConfidence") or origin_conf,
+            "date": existing.get("date") or meta.get("date"),
+            "linkedArtifacts": existing.get("linkedArtifacts") or meta.get("linkedArtifacts", []),
+            "tags": existing.get("tags") or meta.get("tags", []),
+            "snippet": existing.get("snippet") or meta.get("snippet", ""),
         }
-        for field in ("description", "tags", "artifact_ref"):
+        # Auto-derive num from entry ID (entry-6 → 6)
+        if existing.get("num"):
+            entry["num"] = existing["num"]
+        else:
+            num_match = re.search(r"(\d+)$", blog_id)
+            if num_match:
+                entry["num"] = int(num_match.group(1))
+        for field in ("description", "artifact_ref"):
             if field in existing:
                 entry[field] = existing[field]
 

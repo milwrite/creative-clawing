@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 152,
+    "totalCommits": 158,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -485,16 +485,65 @@
       "2026-03-16": 9,
       "2026-03-15": 7,
       "2026-03-14": 5,
-      "2026-03-13": 23
+      "2026-03-13": 23,
+      "2026-03-17": 6
     },
     "categoryCounts": {
       "blog": 22,
       "artifact": 34,
-      "mobile": 13,
-      "fix": 37,
-      "other": 46
+      "mobile": 14,
+      "fix": 40,
+      "other": 48
     },
     "commits": [
+      {
+        "sha": "441dbb6d",
+        "date": "2026-03-17",
+        "subject": "feat: add Domain Warping artifact (fbm domain warp, WebGL) — Quimbot",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f0ccd6cb",
+        "date": "2026-03-17",
+        "subject": "add rossler attractor + penrose tiling (66 artifacts)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "116e8a46",
+        "date": "2026-03-17",
+        "subject": "fix: DPR scaling on Aurora + Rössler — canvas was 1x on mobile retina displays",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "59bb0688",
+        "date": "2026-03-17",
+        "subject": "fix: duplicate id='infoEl' on Aurora + Terrain — info text wasn't hiding in iframe previews",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "adf2c806",
+        "date": "2026-03-17",
+        "subject": "fix: restore num field on all microblogs — was wiped during manifest backfill",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "30e9ea09",
+        "date": "2026-03-17",
+        "subject": "mobile: add setPointerCapture + pointercancel to lorenz, heat",
+        "categories": [
+          "mobile"
+        ]
+      },
       {
         "sha": "3cc718bc",
         "date": "2026-03-11",
@@ -2194,6 +2243,105 @@
         "sha": "97f8f0be",
         "date": "2026-03-13",
         "subject": "Add agent profile pages + authorship attribution audit",
+        "categories": [
+          "other"
+        ]
+      }
+    ]
+  },
+  "unknown": {
+    "totalCommits": 11,
+    "dailyCounts": {
+      "2026-03-17": 11
+    },
+    "categoryCounts": {
+      "other": 11
+    },
+    "commits": [
+      {
+        "sha": "c4edb989",
+        "date": "2026-03-17",
+        "subject": "smooth lane glide: delta-time animation, translate3d, bump speeds",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b2210be9",
+        "date": "2026-03-17",
+        "subject": "add CLAUDE.md",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d8988a36",
+        "date": "2026-03-17",
+        "subject": "move contributors section below all lanes and blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d71be621",
+        "date": "2026-03-17",
+        "subject": "fix left-aligned orphaned blog cards: span full grid width when <=2 cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ab01941c",
+        "date": "2026-03-17",
+        "subject": "lazy-load all lane iframes: inject on viewport enter, remove on leave",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b8fd06b0",
+        "date": "2026-03-17",
+        "subject": "fix iframe detection for absolute urls (entry-19 langton)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "fd22e3af",
+        "date": "2026-03-17",
+        "subject": "slow lane speed, shuffle artifacts with no repeats across lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "54562d68",
+        "date": "2026-03-17",
+        "subject": "filter out index artifact from homepage lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7086589d",
+        "date": "2026-03-17",
+        "subject": "fix orphaned blog cards (grid layout), move contributors to top of home",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d20a1e36",
+        "date": "2026-03-17",
+        "subject": "fix perf + data bugs: lazy-load viz iframes, fix snippets, fix recent sort",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "26aa30de",
+        "date": "2026-03-17",
+        "subject": "regularize manifest as single source of truth for all frontend pages",
         "categories": [
           "other"
         ]

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<title>Domain Warping · Creative Clawing</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#ui{
+  position:fixed;top:max(env(safe-area-inset-top),14px);right:max(env(safe-area-inset-right),14px);
+  display:flex;flex-direction:column;gap:8px;align-items:flex-end;z-index:10;
+}
+.btn{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;font:12px/1 ui-monospace,monospace;letter-spacing:.06em;
+  padding:7px 13px;cursor:pointer;border-radius:3px;min-height:36px;min-width:72px;text-align:center;
+  transition:background .15s;
+}
+.btn:hover{background:rgba(255,255,255,.22)}
+#label{
+  position:fixed;bottom:max(env(safe-area-inset-bottom),14px);left:max(env(safe-area-inset-left),14px);
+  color:rgba(255,255,255,.35);font:11px/1 ui-monospace,monospace;letter-spacing:.08em;pointer-events:none;
+}
+#back{
+  position:fixed;bottom:max(env(safe-area-inset-bottom),14px);right:max(env(safe-area-inset-right),14px);
+  color:rgba(255,255,255,.35);font:11px/1 ui-monospace,monospace;letter-spacing:.08em;
+  text-decoration:none;
+  transition:color .15s;
+}
+#back:hover{color:rgba(255,255,255,.7)}
+.iframe-hidden{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <button class="btn" id="btnPalette">palette</button>
+  <button class="btn" id="btnOctaves">octaves: 6</button>
+  <button class="btn" id="btnSpeed">speed: 1×</button>
+</div>
+<div id="label">domain warping · fbm(fbm(fbm(p)))</div>
+<a id="back" href="../gallery.html">← gallery</a>
+
+<script>
+// Hide UI when running inside an iframe
+if (window.self !== window.top) {
+  document.getElementById('ui').classList.add('iframe-hidden');
+  document.getElementById('label').classList.add('iframe-hidden');
+  document.getElementById('back').classList.add('iframe-hidden');
+}
+
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+if (!gl) { document.body.innerHTML = '<p style="color:#fff;padding:40px">WebGL not supported</p>'; }
+
+// ── Shader sources ────────────────────────────────────────────────────────────
+const VS = `#version 300 es
+in vec2 a_pos;
+out vec2 v_uv;
+void main(){v_uv=a_pos*.5+.5;gl_Position=vec4(a_pos,0,1);}
+`;
+
+const FS = `#version 300 es
+precision highp float;
+in vec2 v_uv;
+out vec4 fragColor;
+
+uniform float u_time;
+uniform vec2  u_res;
+uniform int   u_octaves;
+uniform int   u_palette;
+
+// ── hash / noise ─────────────────────────────────────────────────────────────
+vec2 hash2(vec2 p){
+  p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+  return -1.0+2.0*fract(sin(p)*43758.5453123);
+}
+
+float noise(vec2 p){
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f*f*(3.0-2.0*f);
+  return mix(mix(dot(hash2(i+vec2(0,0)),f-vec2(0,0)),
+                 dot(hash2(i+vec2(1,0)),f-vec2(1,0)),u.x),
+             mix(dot(hash2(i+vec2(0,1)),f-vec2(0,1)),
+                 dot(hash2(i+vec2(1,1)),f-vec2(1,1)),u.x),u.y);
+}
+
+// ── fbm ──────────────────────────────────────────────────────────────────────
+float fbm(vec2 p, int oct){
+  float v=0.0, a=0.5;
+  mat2 rot = mat2(1.6,1.2,-1.2,1.6);
+  for(int i=0;i<8;i++){
+    if(i>=oct) break;
+    v += a*noise(p);
+    p  = rot*p;
+    a *= 0.5;
+  }
+  return v;
+}
+
+// ── palette (Inigo Quilez cosine) ─────────────────────────────────────────────
+vec3 palette(float t, int pid){
+  vec3 a,b,c,d;
+  if(pid==0){
+    a=vec3(.5,.5,.5);b=vec3(.5,.5,.5);c=vec3(1,1,1);d=vec3(0,.1,.2);
+  } else if(pid==1){
+    a=vec3(.5,.5,.5);b=vec3(.5,.5,.5);c=vec3(1,1,.5);d=vec3(.8,.9,0);
+  } else if(pid==2){
+    a=vec3(.5,.5,.5);b=vec3(.5,.5,.5);c=vec3(2,1,0);d=vec3(.5,.2,.25);
+  } else if(pid==3){
+    a=vec3(.5,.4,.3);b=vec3(.5,.4,.3);c=vec3(.8,.7,.6);d=vec3(0,.15,.3);
+  } else {
+    a=vec3(.5,.5,.5);b=vec3(.5,.5,.5);c=vec3(1,.7,.4);d=vec3(0,.3,.7);
+  }
+  return a + b*cos(6.28318*(c*t+d));
+}
+
+// ── main ─────────────────────────────────────────────────────────────────────
+void main(){
+  vec2 uv = (v_uv - 0.5) * vec2(u_res.x/u_res.y, 1.0) * 2.0;
+
+  float t  = u_time * 0.08;
+
+  // Three-level domain warp: p → q = fbm(p) → r = fbm(q) → fbm(r)
+  vec2 p = uv * 2.0;
+
+  vec2 q = vec2(fbm(p + vec2(0.0,0.0) + t, u_octaves),
+                fbm(p + vec2(5.2,1.3) + t, u_octaves));
+
+  vec2 r = vec2(fbm(p + 4.0*q + vec2(1.7,9.2) + 0.15*t, u_octaves),
+                fbm(p + 4.0*q + vec2(8.3,2.8) + 0.15*t, u_octaves));
+
+  float f = fbm(p + 4.0*r + 0.05*t, u_octaves);
+
+  // map to [0,1] then to color
+  float s = (f + 1.0) * 0.5;
+  // mix a small position-dependent offset for color variety
+  float s2 = s + 0.3*length(r) - 0.1*length(q);
+
+  vec3 col = palette(s2, u_palette);
+
+  // subtle vignette
+  float vig = 1.0 - 0.35*dot(uv*0.5,uv*0.5);
+  col *= vig;
+
+  fragColor = vec4(col, 1.0);
+}
+`;
+
+// ── WebGL setup ───────────────────────────────────────────────────────────────
+function compile(type, src){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+const prog = gl.createProgram();
+gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+gl.linkProgram(prog);
+if (!gl.getProgramParameter(prog, gl.LINK_STATUS))
+  console.error(gl.getProgramInfoLog(prog));
+gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+const aPos = gl.getAttribLocation(prog, 'a_pos');
+gl.enableVertexAttribArray(aPos);
+gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+const uTime    = gl.getUniformLocation(prog, 'u_time');
+const uRes     = gl.getUniformLocation(prog, 'u_res');
+const uOctaves = gl.getUniformLocation(prog, 'u_octaves');
+const uPalette = gl.getUniformLocation(prog, 'u_palette');
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let octaves = 6;
+let palette = 0;
+const PALETTES = 5;
+const speeds   = [0.5, 1, 2, 4];
+const speedLabels = ['0.5×','1×','2×','4×'];
+let speedIdx = 1;
+
+function resize(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  canvas.width  = Math.floor(window.innerWidth  * dpr);
+  canvas.height = Math.floor(window.innerHeight * dpr);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+document.getElementById('btnPalette').addEventListener('click', ()=>{
+  palette = (palette+1) % PALETTES;
+});
+document.getElementById('btnOctaves').addEventListener('click', ()=>{
+  octaves = octaves < 8 ? octaves+1 : 3;
+  document.getElementById('btnOctaves').textContent = 'octaves: '+octaves;
+});
+document.getElementById('btnSpeed').addEventListener('click', ()=>{
+  speedIdx = (speedIdx+1) % speeds.length;
+  document.getElementById('btnSpeed').textContent = 'speed: '+speedLabels[speedIdx];
+});
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+let t0 = null;
+let elapsed = 0;
+let lastTs = null;
+function frame(ts){
+  if (t0 === null) t0 = ts;
+  const dt = lastTs === null ? 0 : (ts - lastTs) / 1000;
+  lastTs = ts;
+  elapsed += dt * speeds[speedIdx];
+
+  gl.uniform1f(uTime, elapsed);
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.uniform1i(uOctaves, octaves);
+  gl.uniform1i(uPalette, palette);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

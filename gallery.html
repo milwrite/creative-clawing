@@ -83,6 +83,16 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   font-weight:500;
 }
 .card-tag{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em}
+.card-desc{
+  color:var(--muted);
+  font-size:.7rem;
+  line-height:1.3;
+  margin-top:4px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
 
 .empty{color:var(--muted);font-size:.85rem;padding:40px 0}
 
@@ -119,7 +129,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
 <main>
   <div class="toolbar">
-    <span class="count" id="count">59 artifacts</span>
+    <span class="count" id="count">loading…</span>
     <div class="search-wrap">
       <input class="search" id="search" type="search" placeholder="Search artifacts…" autocomplete="off"/>
     </div>
@@ -130,71 +140,58 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
 <script>
 (async function(){
-  // Load artifact list from manifest-v2.json (single source of truth)
-  // Legacy tag map preserves the original curated tag vocabulary
-  const TAG_MAP = {
-    noll:'history',harmonograph:'history',nake:'history',truchet:'history',
-    tenprint:'classic',donut:'classic',
-    schotter:'pioneer',molnar:'pioneer',
-    starfield:'animation',matrix:'animation',kaleidoscope:'animation',scandrift:'animation',tunnel:'animation',halftone:'animation',
-    boids:'simulation',life:'simulation',lorenz:'simulation',heat:'simulation',turing:'simulation',chainwheel:'simulation',mitosis:'simulation',metaballs:'simulation',grayscott:'simulation',wolfram:'simulation',crystal:'simulation',antcolony:'simulation',langton:'simulation',sand:'simulation',dla:'simulation',dna:'simulation',terrain:'simulation',aurora:'simulation',slime:'simulation',
-    flow:'generative',constraint:'generative',voronoi:'generative',rubik:'generative',colorrivers:'generative',marchingsquares:'generative',mondrian:'generative',
-    lissajous:'math',fourier:'math',clifford:'math',phyllotaxis:'math',montecarlo:'math',quadwalk:'math',maurerrose:'math',logistic:'math',
-    lsystem:'fractal',sierpinski:'fractal',mandelbrot:'fractal',julia:'fractal',newton:'fractal',
-    pendulum:'physics',waveinterference:'physics',chladni:'physics',springwires:'physics',
-    chinoiserie:'interactive',aura:'interactive',ambiguousspin:'interactive',
-    audiomountain:'audio',asciireactive:'audio',
-    sospiri:'collab',
-    lorenz:'simulation',rossler:'attractor',
-    penrose:'geometry',
-  };
-
-  let artifacts = [];
-  try {
-    const res = await fetch('data/manifest-v2.json');
-    const manifest = await res.json();
-    artifacts = (manifest.artifacts || []).map(a => ({
+  const res = await fetch('data/manifest-v2.json');
+  const manifest = await res.json();
+  const artifacts = manifest.artifacts
+    .filter(a => a.id !== 'index')
+    .map(a => ({
       file: a.id,
       name: a.title,
-      tag: TAG_MAP[a.id] || a.category || 'generative'
+      tag: a.category || (a.tags && a.tags[0]) || 'other',
+      description: a.description || '',
+      author: a.originAgent || '',
+      date: a.origin_date || '',
+      contributors: a.contributors || []
     }));
-  } catch(e) {
-    console.warn('manifest load failed', e);
-  }
 
-  // Only show tags used by 2+ artifacts
-  const tagCounts={};
-  artifacts.forEach(a=>{tagCounts[a.tag]=(tagCounts[a.tag]||0)+1;});
-  const tags=['recent','all',...new Set(artifacts.map(a=>a.tag).filter(t=>tagCounts[t]>=2))].sort((a,b)=>a==='recent'?-1:b==='recent'?1:a==='all'?-1:b==='all'?1:a.localeCompare(b));
-  let active='recent';
+  // Collect unique tags + author/agent filter chips
+  const tagSet = new Set(artifacts.map(a => a.tag));
+  const agentSet = new Set(artifacts.map(a => a.author).filter(Boolean));
+  const tags = ['recent','all',...[...tagSet].sort()];
+  // Add agent filters prefixed with @ to distinguish from category tags
+  agentSet.forEach(agent => tags.push('@' + agent));
+  let active = 'recent';
 
-  const grid=document.getElementById('grid');
-  const search=document.getElementById('search');
-  const filtersEl=document.getElementById('filters');
-  const countEl=document.getElementById('count');
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('search');
+  const filtersEl = document.getElementById('filters');
+  const countEl = document.getElementById('count');
 
   function renderFilters(){
-    filtersEl.innerHTML=tags.map(t=>
-      `<button class="chip${t===active?' active':''}" data-tag="${t}">${t}</button>`
+    filtersEl.innerHTML = tags.map(t =>
+      `<button class="chip${t===active?' active':''}" data-tag="${t}">${t.startsWith('@') ? t.slice(1) : t}</button>`
     ).join('');
-    filtersEl.querySelectorAll('.chip').forEach(b=>{
-      b.addEventListener('click',()=>{active=b.dataset.tag;renderFilters();render()});
+    filtersEl.querySelectorAll('.chip').forEach(b => {
+      b.addEventListener('click', () => { active = b.dataset.tag; renderFilters(); render(); });
     });
   }
 
   function render(){
-    const q=search.value.trim().toLowerCase();
-    let list=artifacts.filter(a=>{
-      const tagOk=active==='all'||active==='recent'||a.tag===active;
-      const textOk=!q||(a.name+' '+a.tag).toLowerCase().includes(q);
-      return tagOk&&textOk;
+    const q = search.value.trim().toLowerCase();
+    let list = artifacts.filter(a => {
+      let tagOk;
+      if (active === 'all' || active === 'recent') tagOk = true;
+      else if (active.startsWith('@')) tagOk = a.author === active.slice(1);
+      else tagOk = a.tag === active;
+      const textOk = !q || (a.name + ' ' + a.tag + ' ' + a.author + ' ' + a.description).toLowerCase().includes(q);
+      return tagOk && textOk;
     });
-    if(active==='recent') list=[...list].reverse();
-    countEl.textContent=list.length+' artifact'+(list.length!==1?'s':'');
-    if(!list.length){
-      grid.innerHTML='<p class="empty">no artifacts match.</p>';return;
+    if (active === 'recent') list = [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    countEl.textContent = list.length + ' artifact' + (list.length !== 1 ? 's' : '');
+    if (!list.length){
+      grid.innerHTML = '<p class="empty">no artifacts match.</p>'; return;
     }
-    grid.innerHTML=list.map(a=>`
+    grid.innerHTML = list.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
         <div class="card-preview">
           <iframe src="gallery/${a.file}.html" loading="lazy" sandbox="allow-scripts" title="${a.name}"></iframe>
@@ -202,23 +199,24 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
         </div>
         <div class="card-meta">
           <div class="card-name">${a.name}</div>
-          <div class="card-tag">${a.tag}</div>
+          <div class="card-tag">${a.tag}${a.author ? ' · ' + a.author : ''}</div>
+          ${a.description ? `<div class="card-desc">${a.description}</div>` : ''}
         </div>
       </a>`).join('');
   }
 
-  search.addEventListener('input',render);
+  search.addEventListener('input', render);
   renderFilters();
   render();
 
-  const contributorMenu=document.querySelector('.menu-group');
-  if(contributorMenu){
-    contributorMenu.querySelectorAll('a').forEach(link=>{
-      link.addEventListener('click',()=>{contributorMenu.open=false;});
+  const contributorMenu = document.querySelector('.menu-group');
+  if (contributorMenu){
+    contributorMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => { contributorMenu.open = false; });
     });
-    document.addEventListener('click',event=>{
-      if(contributorMenu.open&&!contributorMenu.contains(event.target)){
-        contributorMenu.open=false;
+    document.addEventListener('click', event => {
+      if (contributorMenu.open && !contributorMenu.contains(event.target)){
+        contributorMenu.open = false;
       }
     });
   }

@@ -78,6 +78,57 @@
       transition: color .15s;
     }
     .read-link:hover { color: var(--ink); }
+    .tag-chip {
+      display: inline-block;
+      font-size: .68rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    @media (max-width: 840px) {
+      .menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+      .menu > a,
+      .menu > details,
+      .menu-group {
+        width: 100%;
+      }
+      .menu a,
+      .menu summary {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .menu-group[open] {
+        grid-column: 1 / -1;
+      }
+      .submenu {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        margin-top: 6px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .nav-inner {
+        gap: 8px;
+        padding-left: max(env(safe-area-inset-left),10px);
+        padding-right: max(env(safe-area-inset-right),10px);
+      }
+      .menu { gap: 6px; }
+      .menu a,
+      .menu summary {
+        font-size: .68rem;
+        padding: 5px 8px;
+        min-height: 38px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -130,30 +181,52 @@
   const feedCountEl = document.getElementById('feed-count');
   if (feedCountEl) feedCountEl.textContent = blogs.length + ' entr' + (blogs.length !== 1 ? 'ies' : 'y');
 
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   const container = document.getElementById('entries');
   container.innerHTML = blogs.map(b => {
     const linked = (b.linkedArtifacts || []).slice(0, 2);
     const vizHtml = linked.length ? linked.map(id =>
-      `<div class="entry-viz"><iframe src="gallery/${id}.html" loading="lazy" sandbox="allow-scripts" title="${artMap[id]?.title || id}"></iframe></div>`
+      `<div class="entry-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
     ).join('') : '';
     const chipHtml = linked.map(id => {
       const label = artMap[id]?.title || id;
       return `<a class="art-link" href="artifacts/${id}.html">↗ ${label}</a>`;
     }).join('');
+    const tagHtml = (b.tags || []).map(t => `<span class="tag-chip">${t}</span>`).join('');
 
     return `<div class="entry" id="entry-${b.num}">
       <div class="entry-header">
-        <div class="entry-num">Entry ${b.num}</div>
+        <div class="entry-num">Entry ${b.num}${b.date ? ' · ' + fmtDate(b.date) : ''}${b.originAgent ? ' · ' + b.originAgent : ''}</div>
         <h3 class="entry-title"><a href="microblog/${b.id}.html" style="color:inherit;text-decoration:none">${b.title}</a></h3>
       </div>
       <p class="entry-snippet">${b.snippet || ''}</p>
       ${vizHtml}
       <div class="entry-footer">
         ${chipHtml}
+        ${tagHtml}
         <a class="read-link" href="microblog/${b.id}.html">read full entry →</a>
       </div>
     </div>`;
   }).join('');
+
+  // Lazy-load entry-viz iframes only when visible, unload when not
+  const vizObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !e.target.querySelector('iframe')) {
+        const src = e.target.dataset.iframeSrc;
+        const title = e.target.dataset.iframeTitle || '';
+        if (src) e.target.innerHTML = `<iframe src="${src}" loading="lazy" sandbox="allow-scripts" title="${title}"></iframe>`;
+      } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
+        e.target.innerHTML = '';
+      }
+    });
+  }, { rootMargin: '300px' });
+  document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => vizObserver.observe(el));
 })();
 </script>
 <script>
