@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-19T13:46:34.918009+00:00",
+  "generated": "2026-03-19T18:00:57.074758+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -188,7 +188,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
     },
@@ -228,7 +228,7 @@
       ],
       "interactive": false,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
     },
@@ -1811,7 +1811,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": "Arthur Cayley",
       "year_referenced": 1879
     },
@@ -2312,7 +2312,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": "Toshiyuki Nakagaki",
       "year_referenced": 2000
     },
@@ -2518,7 +2518,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
     },
