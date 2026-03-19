@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 171,
+    "totalCommits": 174,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -487,16 +487,40 @@
       "2026-03-14": 5,
       "2026-03-13": 23,
       "2026-03-17": 6,
-      "2026-03-18": 13
+      "2026-03-18": 16
     },
     "categoryCounts": {
-      "blog": 26,
+      "blog": 27,
       "artifact": 34,
       "mobile": 14,
       "fix": 44,
-      "other": 53
+      "other": 55
     },
     "commits": [
+      {
+        "sha": "a049fe3a",
+        "date": "2026-03-18",
+        "subject": "microblog: entry-22 DLA Random Walk That Builds Coral",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "cd927a2a",
+        "date": "2026-03-18",
+        "subject": "data: regenerate manifests + feed with entry-22 DLA microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "13690f72",
+        "date": "2026-03-18",
+        "subject": "titles: remove 'that' from entry-21 and entry-22 per milwrite rule",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "c65d8f91",
         "date": "2026-03-18",
@@ -2355,19 +2379,27 @@
     ]
   },
   "unknown": {
-    "totalCommits": 24,
+    "totalCommits": 25,
     "dailyCounts": {
       "2026-03-17": 21,
-      "2026-03-18": 3
+      "2026-03-18": 4
     },
     "categoryCounts": {
-      "other": 15,
+      "other": 16,
       "fix": 5,
       "blog": 1,
       "chore": 1,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "82267015",
+        "date": "2026-03-18",
+        "subject": "feat: show iframe only for latest microblog entry",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "254feef0",
         "date": "2026-03-17",

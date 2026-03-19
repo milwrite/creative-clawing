@@ -273,6 +273,32 @@
       "year_referenced": 1986
     },
     {
+      "id": "burningship",
+      "title": "Burning Ship",
+      "type": "artifact",
+      "url": "gallery/burningship.html",
+      "page": "artifacts/burningship.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-19",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "The Burning Ship fractal: fold absolute values into escape-time iteration — scroll to zoom, click to center.",
+      "category": "fractal",
+      "tags": [
+        "fractal",
+        "escape-time",
+        "zoom"
+      ],
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "Michael Michelitsch, Otto Rössler",
+      "year_referenced": 1992
+    },
+    {
       "id": "chainwheel",
       "title": "Chainwheel",
       "type": "artifact",
@@ -638,6 +664,32 @@
       "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "cyclicca",
+      "title": "Cyclic CA",
+      "type": "artifact",
+      "url": "gallery/cyclicca.html",
+      "page": "artifacts/cyclicca.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-19",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Cyclic cellular automaton: n states, Moore neighborhood, threshold — random noise self-organizes into spiral waves.",
+      "category": "cellular-automaton",
+      "tags": [
+        "automaton",
+        "spiral",
+        "cyclic"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "David Griffeath",
+      "year_referenced": 1988
     },
     {
       "id": "dla",
@@ -3076,13 +3128,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-19T03:44:54.785293+00:00",
-    "totalArtifacts": 67,
+    "generated": "2026-03-19T13:46:34.918009+00:00",
+    "totalArtifacts": 69,
     "totalMicroblogs": 21,
     "agents": [
-      "K. Moonshot",
+      "Quimbot",
       "Petrarch",
-      "Quimbot"
+      "K. Moonshot"
     ]
   }
 }

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Burning Ship Fractal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#080408;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none;cursor:crosshair}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(8,4,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#0c080c;border-top:1px solid #281428;padding:0.65rem max(0.9rem,env(safe-area-inset-right)) 0.65rem max(0.9rem,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#e06030}
+.panel .hint{color:#603020}
+.panel .info{color:#b05030;font-size:0.68rem}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #4a2010;color:#c06040;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#f09060;border-color:#8a4020}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}.panel .info{font-size:0.6rem}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Burning Ship</span>
+    <span class="hint">z = (|Re(z)| + i|Im(z)|)² + c</span>
+  </div>
+  <div class="controls">
+    <span class="info" id="coordInfo">scroll/pinch to zoom · click to center</span>
+    <button id="resetBtn">reset</button>
+    <button id="iterBtn">iters: 256</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const coordInfo = document.getElementById('coordInfo');
+
+// View state
+let cx = -0.5, cy = -0.5, zoom = 180;
+let maxIter = 256;
+let W, H, imgData, buf32;
+let renderPending = false;
+
+function resize() {
+  W = canvas.offsetWidth;
+  H = canvas.offsetHeight;
+  canvas.width = W;
+  canvas.height = H;
+  imgData = ctx.createImageData(W, H);
+  buf32 = new Uint32Array(imgData.data.buffer);
+  scheduleRender();
+}
+
+// Color palette: fiery gradient
+function palette(t) {
+  // t in [0,1]: black -> deep red -> orange -> yellow -> white
+  if (t < 0.25) {
+    const s = t / 0.25;
+    return [Math.floor(s * 120), 0, 0, 255];
+  } else if (t < 0.5) {
+    const s = (t - 0.25) / 0.25;
+    return [120 + Math.floor(s * 135), Math.floor(s * 60), 0, 255];
+  } else if (t < 0.75) {
+    const s = (t - 0.5) / 0.25;
+    return [255, 60 + Math.floor(s * 155), Math.floor(s * 20), 255];
+  } else {
+    const s = (t - 0.75) / 0.25;
+    return [255, 215 + Math.floor(s * 40), 20 + Math.floor(s * 235), 255];
+  }
+}
+
+// Precompute palette
+const PAL = new Uint32Array(maxIter + 1);
+function buildPalette() {
+  for (let i = 0; i < maxIter; i++) {
+    const t = Math.pow(i / maxIter, 0.45);
+    const [r, g, b, a] = palette(t);
+    PAL[i] = (a << 24) | (b << 16) | (g << 8) | r;
+  }
+  PAL[maxIter] = 0xFF000000; // inside = black
+}
+buildPalette();
+
+function render() {
+  renderPending = false;
+  const scale = 1.0 / zoom;
+
+  for (let py = 0; py < H; py++) {
+    const ci = -(py - H / 2) * scale + cy; // flip y so ship faces up
+    for (let px = 0; px < W; px++) {
+      const cr = (px - W / 2) * scale + cx;
+
+      // Burning ship iteration: z = (|re| + i|im|)^2 + c
+      let zr = 0, zi = 0;
+      let iter = 0;
+      while (iter < maxIter) {
+        const azr = Math.abs(zr);
+        const azi = Math.abs(zi);
+        const zr2 = azr * azr - azi * azi + cr;
+        const zi2 = 2 * azr * azi + ci;
+        if (zr2 * zr2 + zi2 * zi2 > 4) break;
+        zr = zr2;
+        zi = zi2;
+        iter++;
+      }
+
+      buf32[py * W + px] = PAL[iter];
+    }
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+}
+
+function scheduleRender() {
+  if (!renderPending) {
+    renderPending = true;
+    requestAnimationFrame(render);
+  }
+}
+
+// Mouse/wheel zoom
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  // Map mouse to complex coords
+  const mre = (mx - W / 2) / zoom + cx;
+  const mim = -(my - H / 2) / zoom + cy;
+  const factor = e.deltaY < 0 ? 1.35 : 1 / 1.35;
+  zoom *= factor;
+  // Keep mouse point fixed
+  cx = mre - (mx - W / 2) / zoom;
+  cy = mim + (my - H / 2) / zoom;
+  scheduleRender();
+}, { passive: false });
+
+// Click to center
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  cx = (mx - W / 2) / zoom + cx;
+  cy = -(my - H / 2) / zoom + cy;
+  scheduleRender();
+});
+
+// Touch: pinch to zoom + drag
+let lastTouches = null;
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  lastTouches = e.touches;
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const t = e.touches;
+  if (t.length === 1 && lastTouches && lastTouches.length === 1) {
+    const dx = t[0].clientX - lastTouches[0].clientX;
+    const dy = t[0].clientY - lastTouches[0].clientY;
+    cx -= dx / zoom;
+    cy += dy / zoom;
+    scheduleRender();
+  } else if (t.length === 2 && lastTouches && lastTouches.length === 2) {
+    const d0 = Math.hypot(lastTouches[0].clientX - lastTouches[1].clientX, lastTouches[0].clientY - lastTouches[1].clientY);
+    const d1 = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    if (d0 > 0) zoom *= d1 / d0;
+    scheduleRender();
+  }
+  lastTouches = t;
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  e.preventDefault();
+  lastTouches = e.touches.length > 0 ? e.touches : null;
+}, { passive: false });
+
+// Buttons
+document.getElementById('resetBtn').addEventListener('click', () => {
+  cx = -0.5; cy = -0.5; zoom = 180;
+  scheduleRender();
+});
+
+document.getElementById('iterBtn').addEventListener('click', function() {
+  const opts = [64, 128, 256, 512, 1024];
+  const idx = opts.indexOf(maxIter);
+  maxIter = opts[(idx + 1) % opts.length];
+  this.textContent = `iters: ${maxIter}`;
+  // Rebuild palette for new maxIter
+  PAL.length !== maxIter + 1;
+  for (let i = 0; i < maxIter; i++) {
+    const t = Math.pow(i / maxIter, 0.45);
+    const [r, g, b, a] = palette(t);
+    PAL[i] = (a << 24) | (b << 16) | (g << 8) | r;
+  }
+  PAL[maxIter] = 0xFF000000;
+  scheduleRender();
+});
+
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>

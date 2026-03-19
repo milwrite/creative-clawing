@@ -50,6 +50,13 @@
       "page": "artifacts/boids.html"
     },
     {
+      "id": "burningship",
+      "title": "Burning Ship",
+      "type": "artifact",
+      "url": "gallery/burningship.html",
+      "page": "artifacts/burningship.html"
+    },
+    {
       "id": "chainwheel",
       "title": "Chainwheel",
       "type": "artifact",
@@ -97,6 +104,13 @@
       "type": "artifact",
       "url": "gallery/crystal.html",
       "page": "artifacts/crystal.html"
+    },
+    {
+      "id": "cyclicca",
+      "title": "Cyclic CA",
+      "type": "artifact",
+      "url": "gallery/cyclicca.html",
+      "page": "artifacts/cyclicca.html"
     },
     {
       "id": "dla",
@@ -649,6 +663,13 @@
       "page": "artifacts/boids.html"
     },
     {
+      "id": "burningship",
+      "title": "Burning Ship",
+      "type": "artifact",
+      "url": "gallery/burningship.html",
+      "page": "artifacts/burningship.html"
+    },
+    {
       "id": "chainwheel",
       "title": "Chainwheel",
       "type": "artifact",
@@ -696,6 +717,13 @@
       "type": "artifact",
       "url": "gallery/crystal.html",
       "page": "artifacts/crystal.html"
+    },
+    {
+      "id": "cyclicca",
+      "title": "Cyclic CA",
+      "type": "artifact",
+      "url": "gallery/cyclicca.html",
+      "page": "artifacts/cyclicca.html"
     },
     {
       "id": "dla",

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Cyclic Cellular Automaton</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#020408;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(2,4,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#03060c;border-top:1px solid #0a1428;padding:0.65rem max(0.9rem,env(safe-area-inset-right)) 0.65rem max(0.9rem,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#3090e0}
+.panel .hint{color:#183060}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #0a2040;color:#3070c0;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#60a0f0;border-color:#2050a0}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Cyclic CA</span>
+    <span class="hint">n states · Moore neighborhood · threshold</span>
+  </div>
+  <div class="controls">
+    <button id="statesBtn">states: 16</button>
+    <button id="threshBtn">thresh: 3</button>
+    <button id="resetBtn">reset</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+const CELL = 4; // pixels per cell
+let W, H, COLS, ROWS;
+let grid, next;
+let N = 16;     // number of states
+let THRESH = 3; // cells needed to advance state
+let running = true;
+let lastTime = 0;
+const FPS = 20;
+
+// HSL rainbow palette for N states
+let palette = [];
+function buildPalette() {
+  palette = [];
+  for (let i = 0; i < N; i++) {
+    const hue = (i / N) * 360;
+    // Convert HSL to RGB
+    const h = hue / 60;
+    const s = 0.85, l = 0.45;
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs(h % 2 - 1));
+    let r = 0, g = 0, b = 0;
+    if (h < 1)      { r = c; g = x; }
+    else if (h < 2) { r = x; g = c; }
+    else if (h < 3) { g = c; b = x; }
+    else if (h < 4) { g = x; b = c; }
+    else if (h < 5) { r = x; b = c; }
+    else            { r = c; b = x; }
+    const m = l - c / 2;
+    palette.push([
+      Math.round((r + m) * 255),
+      Math.round((g + m) * 255),
+      Math.round((b + m) * 255)
+    ]);
+  }
+}
+
+function init() {
+  COLS = Math.floor(W / CELL);
+  ROWS = Math.floor(H / CELL);
+  grid = new Uint8Array(COLS * ROWS);
+  next = new Uint8Array(COLS * ROWS);
+  for (let i = 0; i < grid.length; i++) {
+    grid[i] = Math.floor(Math.random() * N);
+  }
+  buildPalette();
+}
+
+function resize() {
+  W = canvas.offsetWidth;
+  H = canvas.offsetHeight;
+  canvas.width = W;
+  canvas.height = H;
+  init();
+}
+
+// Moore neighborhood (8 neighbors), wrapping
+function step() {
+  const succ = (v) => (v + 1) % N;
+
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const v = grid[row * COLS + col];
+      const vs = succ(v);
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          const nr = (row + dr + ROWS) % ROWS;
+          const nc = (col + dc + COLS) % COLS;
+          if (grid[nr * COLS + nc] === vs) count++;
+        }
+      }
+      next[row * COLS + col] = count >= THRESH ? vs : v;
+    }
+  }
+  const tmp = grid;
+  grid = next;
+  next = tmp;
+}
+
+function draw() {
+  const img = ctx.createImageData(W, H);
+  const d = img.data;
+  for (let row = 0; row < ROWS; row++) {
+    const [pr, pg, pb] = palette[grid[row * COLS]] || [0,0,0];
+    for (let col = 0; col < COLS; col++) {
+      const [r, g, b] = palette[grid[row * COLS + col]];
+      const px = (row * CELL) * W + (col * CELL);
+      // Fill CELL x CELL block
+      for (let dy = 0; dy < CELL; dy++) {
+        for (let dx = 0; dx < CELL; dx++) {
+          const idx = ((row * CELL + dy) * W + (col * CELL + dx)) * 4;
+          d[idx]   = r;
+          d[idx+1] = g;
+          d[idx+2] = b;
+          d[idx+3] = 255;
+        }
+      }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+function loop(ts) {
+  if (!running) return;
+  requestAnimationFrame(loop);
+  if (ts - lastTime < 1000 / FPS) return;
+  lastTime = ts;
+  step();
+  draw();
+}
+
+// Controls
+const statesBtn = document.getElementById('statesBtn');
+const threshBtn = document.getElementById('threshBtn');
+const resetBtn  = document.getElementById('resetBtn');
+
+statesBtn.addEventListener('click', () => {
+  const opts = [4, 8, 12, 16, 24, 32];
+  N = opts[(opts.indexOf(N) + 1) % opts.length];
+  statesBtn.textContent = `states: ${N}`;
+  init();
+});
+
+threshBtn.addEventListener('click', () => {
+  const opts = [1, 2, 3, 4, 5];
+  THRESH = opts[(opts.indexOf(THRESH) + 1) % opts.length];
+  threshBtn.textContent = `thresh: ${THRESH}`;
+  init();
+});
+
+resetBtn.addEventListener('click', () => {
+  init();
+});
+
+window.addEventListener('resize', resize);
+resize();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
