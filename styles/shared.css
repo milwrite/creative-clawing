@@ -13,6 +13,8 @@
   --soft: rgba(255,255,255,.09);
   --panel: rgba(0,0,0,.42);
   --accent: #d7f29b;
+  /* nav-accent is intentionally NOT overridden by per-profile themes */
+  --nav-accent: #d7f29b;
 }
 
 /* ── Reset ────────────────────────────────────────────────── */
@@ -59,10 +61,10 @@ html, body {
   text-transform: uppercase;
   letter-spacing: .12em;
 }
-.nav-kicker a { color: var(--accent); text-decoration: none; }
+.nav-kicker a { color: var(--nav-accent); text-decoration: none; }
 .nav-kicker a:hover { text-decoration: underline; }
 
-/* Brand — can be a plain h1 or an <a> wrapping one */
+/* Brand — h1.nav-brand wrapping an <a>, or a standalone element */
 .nav-brand {
   margin: 0;
   font-size: clamp(1rem, 2.4vw, 1.6rem);
