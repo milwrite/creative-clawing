@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-19T18:00:57.074758+00:00",
+  "generated": "2026-03-20T02:43:15.181323+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1800,7 +1800,14 @@
       "contributors": [
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "c1185fb2",
+          "subject": "mobile: user-scalable=no fix for newton + aura; mark 5 recent artifacts mobile_optimized",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Newton's method applied to z⁵ − 1 = 0: each pixel colors by which root iteration converges to; brightness shows convergence speed. The basin boundaries are fractal.",
       "category": "geometry",
       "tags": [
@@ -2521,6 +2528,32 @@
       "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "thomas",
+      "title": "Thomas",
+      "type": "artifact",
+      "url": "gallery/thomas.html",
+      "page": "artifacts/thomas.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-19",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "René Thomas's cyclically symmetric attractor — sin(y)−bx, sin(z)−by, sin(x)−bz — b tunes dissipation from chaos to order.",
+      "category": "attractor",
+      "tags": [
+        "attractor",
+        "3d",
+        "strange"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "René Thomas",
+      "year_referenced": 1999
     },
     {
       "id": "truchet",

@@ -442,6 +442,13 @@
       "page": "artifacts/terrain.html"
     },
     {
+      "id": "thomas",
+      "title": "Thomas",
+      "type": "artifact",
+      "url": "gallery/thomas.html",
+      "page": "artifacts/thomas.html"
+    },
+    {
       "id": "truchet",
       "title": "Truchet",
       "type": "artifact",
@@ -1053,6 +1060,13 @@
       "type": "artifact",
       "url": "gallery/terrain.html",
       "page": "artifacts/terrain.html"
+    },
+    {
+      "id": "thomas",
+      "title": "Thomas",
+      "type": "artifact",
+      "url": "gallery/thomas.html",
+      "page": "artifacts/thomas.html"
     },
     {
       "id": "truchet",

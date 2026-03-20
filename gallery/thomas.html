@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Thomas Attractor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#030508;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(3,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#04070d;border-top:1px solid #0d1a2a;padding:0.65rem max(0.9rem,env(safe-area-inset-right)) 0.65rem max(0.9rem,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#40a0d8}
+.panel .hint{color:#1a3850}
+.panel .params{color:#2878a0;font-size:0.7rem}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #102030;color:#3080b8;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#60b8e8;border-color:#205880}
+.in-iframe .back,.in-iframe .panel{display:none}
+@media(max-width:760px){.panel{padding:0.5rem}.panel .hint{display:none}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Thomas Attractor</span>
+    <span class="hint">dx/dt = sin(y) − bx &nbsp;|&nbsp; dy/dt = sin(z) − by &nbsp;|&nbsp; dz/dt = sin(x) − bz</span>
+  </div>
+  <div class="controls">
+    <span class="params" id="paramDisplay">b=0.19</span>
+    <button id="presetBtn">preset</button>
+    <button id="resetBtn">reset</button>
+    <button id="viewBtn">rotate: on</button>
+  </div>
+</div>
+<script>
+if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0;
+
+// Thomas cyclically symmetric system (René Thomas, 1999)
+// dx/dt = sin(y) - b*x
+// dy/dt = sin(z) - b*y
+// dz/dt = sin(x) - b*z
+// b controls dissipation: near 0.2 = chaotic; near 0 = conservative; >0.33 = stable
+
+const PRESETS = [
+  { b: 0.19,  label: 'classic' },
+  { b: 0.208, label: 'edge' },
+  { b: 0.16,  label: 'wild' },
+  { b: 0.32,  label: 'sparse' },
+  { b: 0.10,  label: 'dense' },
+];
+let presetIdx = 0;
+let pb = PRESETS[0].b;
+const dt = 0.06;
+
+const MAX_POINTS = 80000;
+let points = [];
+let x = 0.1, y = 0, z = -0.1;
+
+// View
+let rotY = 0, rotX = -0.25;
+let autoRotate = true;
+let dragging = false;
+let lastMX = 0, lastMY = 0;
+let pointerId = null;
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const nw = canvas.offsetWidth, nh = canvas.offsetHeight;
+  if (nw < 1 || nh < 1) return;
+  W = nw; H = nh;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function rk4Step() {
+  const f = (px, py, pz) => [
+    Math.sin(py) - pb * px,
+    Math.sin(pz) - pb * py,
+    Math.sin(px) - pb * pz
+  ];
+  const [k1x, k1y, k1z] = f(x, y, z);
+  const [k2x, k2y, k2z] = f(x + dt/2*k1x, y + dt/2*k1y, z + dt/2*k1z);
+  const [k3x, k3y, k3z] = f(x + dt/2*k2x, y + dt/2*k2y, z + dt/2*k2z);
+  const [k4x, k4y, k4z] = f(x + dt*k3x, y + dt*k3y, z + dt*k3z);
+  x += dt/6*(k1x + 2*k2x + 2*k3x + k4x);
+  y += dt/6*(k1y + 2*k2y + 2*k3y + k4y);
+  z += dt/6*(k1z + 2*k2z + 2*k3z + k4z);
+  if (!isFinite(x) || !isFinite(y) || !isFinite(z) ||
+      Math.abs(x) > 200 || Math.abs(y) > 200 || Math.abs(z) > 200) {
+    x = 0.1; y = 0; z = -0.1; points = [];
+  }
+}
+
+function project(px, py, pz) {
+  const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+  let rx = px * cosY - pz * sinY;
+  let rz = px * sinY + pz * cosY;
+  const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+  let ry = py * cosX - rz * sinX;
+  rz = py * sinX + rz * cosX;
+  const scale = Math.min(W, H) / 20;
+  return { sx: W / 2 + rx * scale, sy: H / 2 + ry * scale, depth: rz };
+}
+
+let frameCount = 0;
+function draw() {
+  frameCount++;
+  // Accumulate points
+  const STEPS_PER_FRAME = 120;
+  for (let i = 0; i < STEPS_PER_FRAME; i++) {
+    rk4Step();
+    points.push([x, y, z]);
+    if (points.length > MAX_POINTS) points.shift();
+  }
+
+  if (autoRotate) rotY += 0.003;
+
+  // Fade background
+  ctx.fillStyle = 'rgba(3,5,8,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  if (points.length < 2) return;
+
+  // Draw trail with depth coloring
+  const n = points.length;
+  const stride = Math.max(1, Math.floor(n / 4000));
+
+  ctx.lineWidth = 0.8;
+  ctx.lineCap = 'round';
+
+  let prev = null;
+  for (let i = 0; i < n; i += stride) {
+    const [px, py, pz] = points[i];
+    const proj = project(px, py, pz);
+    const age = i / n; // 0=old, 1=new
+    // Color: teal-to-cyan gradient with depth modulation
+    const depth = (proj.depth + 10) / 20; // normalize depth
+    const d = Math.max(0, Math.min(1, depth));
+    const brightness = 0.3 + age * 0.7;
+    const r = Math.floor(20 + d * 30 * brightness);
+    const g = Math.floor(120 + d * 80 * brightness);
+    const b2 = Math.floor(160 + d * 80 * brightness);
+    const alpha = 0.15 + age * 0.65;
+
+    if (prev && i > 0) {
+      ctx.strokeStyle = `rgba(${r},${g},${b2},${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(prev.sx, prev.sy);
+      ctx.lineTo(proj.sx, proj.sy);
+      ctx.stroke();
+    }
+    prev = proj;
+  }
+}
+
+// Mouse drag for manual rotation
+canvas.addEventListener('pointerdown', e => {
+  dragging = true;
+  pointerId = e.pointerId;
+  canvas.setPointerCapture(e.pointerId);
+  lastMX = e.clientX; lastMY = e.clientY;
+  autoRotate = false;
+  document.getElementById('viewBtn').textContent = 'rotate: off';
+});
+
+canvas.addEventListener('pointermove', e => {
+  if (!dragging || e.pointerId !== pointerId) return;
+  const dx = e.clientX - lastMX;
+  const dy = e.clientY - lastMY;
+  rotY += dx * 0.005;
+  rotX += dy * 0.005;
+  lastMX = e.clientX; lastMY = e.clientY;
+});
+
+canvas.addEventListener('pointerup', e => {
+  if (e.pointerId === pointerId) { dragging = false; pointerId = null; }
+});
+
+canvas.addEventListener('pointercancel', e => {
+  if (e.pointerId === pointerId) { dragging = false; pointerId = null; }
+});
+
+// Buttons
+document.getElementById('presetBtn').addEventListener('click', () => {
+  presetIdx = (presetIdx + 1) % PRESETS.length;
+  pb = PRESETS[presetIdx].b;
+  document.getElementById('paramDisplay').textContent = `b=${pb.toFixed(3)} (${PRESETS[presetIdx].label})`;
+  x = 0.1; y = 0; z = -0.1; points = [];
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  x = 0.1; y = 0; z = -0.1; points = [];
+  rotY = 0; rotX = -0.25;
+});
+
+document.getElementById('viewBtn').addEventListener('click', function() {
+  autoRotate = !autoRotate;
+  this.textContent = autoRotate ? 'rotate: on' : 'rotate: off';
+});
+
+window.addEventListener('resize', resize);
+resize();
+
+(function loop() {
+  requestAnimationFrame(loop);
+  draw();
+})();
+</script>
+</body>
+</html>
