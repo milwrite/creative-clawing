@@ -213,16 +213,17 @@
       font-size: .78rem;
       line-height: 1.42;
     }
-    .blog-viz {
-      width: 100%; aspect-ratio: 16/9;
-      border-top: 1px solid var(--soft);
-      border-bottom: 1px solid var(--soft);
-      background: #0a0a0a;
-      overflow: hidden;
+    .blog-meta {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
     }
-    .blog-viz iframe {
-      width: 100%; height: 100%; border: none; display: block;
-      pointer-events: none;
+    .blog-date {
+      color: var(--muted);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
     .blog-art-row {
       padding: 0 12px 12px;
@@ -444,15 +445,13 @@
       return `<a class="art-chip" href="artifacts/${id}.html" title="View linked artifact">↗ ${label}</a>`;
     }).join('');
 
-    const linked = (blog.linkedArtifacts || []).slice(0, 1);
-    const vizHtml = linked.map(id =>
-      `<div class="blog-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
-    ).join('');
+    const dateStr = blog.date
+      ? new Date(blog.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+      : '';
 
     return `<div class="blog-card">
-      ${vizHtml}
       <a class="blog-main-link" href="${postHref}">
-        <div class="k">${blog.originAgent || 'Microblog'}</div>
+        <div class="blog-meta"><span class="k">${blog.originAgent || 'Microblog'}</span>${dateStr ? `<span class="blog-date">${dateStr}</span>` : ''}</div>
         <h3>${blog.title}</h3>
         <p>${blog.snippet || ''}</p>
       </a>
@@ -674,20 +673,6 @@
     });
   }, { rootMargin: '400px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
-
-  // Lazy-load blog-viz iframes only when visible, unload when not
-  const vizObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !e.target.querySelector('iframe')) {
-        const src = e.target.dataset.iframeSrc;
-        const title = e.target.dataset.iframeTitle || '';
-        if (src) e.target.innerHTML = `<iframe src="${src}" loading="lazy" sandbox="allow-scripts" title="${title}"></iframe>`;
-      } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
-        e.target.innerHTML = '';
-      }
-    });
-  }, { rootMargin: '200px' });
-  document.querySelectorAll('.blog-viz[data-iframe-src]').forEach(el => vizObserver.observe(el));
 
   // Scroll to hash after dynamic content renders
   if (location.hash) {
