@@ -171,9 +171,6 @@
     @media (min-width: 900px) {
       .blog-stack { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (min-width: 1280px) {
-      .blog-stack { grid-template-columns: repeat(3, 1fr); }
-    }
     .blog-card {
       border: 1px solid var(--line);
       background: var(--panel);
@@ -181,9 +178,6 @@
       width: 100%;
       flex-direction: column;
       overflow: hidden;
-    }
-    .blog-stack-single .blog-card {
-      grid-column: 1 / -1;
     }
     .blog-card:hover { border-color: rgba(255,255,255,.35); }
     .blog-main-link {
@@ -624,7 +618,7 @@
     if (blogIdx < blogGroups.length) {
       const group = blogGroups[blogIdx];
       const blogWrap = document.createElement('div');
-      blogWrap.className = 'blog-stack' + (group.length <= 2 ? ' blog-stack-single' : '');
+      blogWrap.className = 'blog-stack';
       blogWrap.style.marginBottom = '20px';
       blogWrap.innerHTML = group.map(blogCard).join('');
       blogIdx++;
