@@ -190,3 +190,70 @@ a.nav-brand,
 
 /* ── Shared contributor menu close script helper ──────────── */
 /* (JS to close menu on outside-click is inlined per page) */
+
+/* ── Microblog post footer ────────────────────────────────── */
+.post-artifact {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.post-artifact-label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.post-artifact-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+.post-artifact-desc {
+  font-size: .85rem;
+  color: var(--muted);
+  margin: 2px 0 0;
+  line-height: 1.5;
+}
+.post-artifact-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--soft);
+  padding: 5px 12px;
+  transition: color .15s, border-color .15s;
+}
+.post-artifact-link:hover {
+  color: var(--ink);
+  border-color: rgba(255,255,255,.35);
+}
+
+.post-nav {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.post-nav a {
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--soft);
+  padding: 6px 14px;
+  transition: color .15s, border-color .15s;
+}
+.post-nav a:hover {
+  color: var(--ink);
+  border-color: rgba(255,255,255,.35);
+}

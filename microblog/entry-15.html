@@ -22,9 +22,9 @@
     pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
     code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
-    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
-    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
-    .back:hover{color:var(--fg)}
+    
+    
+    
   </style>
 </head>
 <body>
@@ -105,16 +105,17 @@
       What's worth noticing in the visualization is cell size variation. Seeds near the center of a dense cluster own tiny slivers; seeds near the edge own large open regions. The area a cell covers is not a property of the seed — it's an accident of where the neighbors happened to land. Every cell is locally correct (it owns exactly the points closest to its seed) and globally sensitive to the whole configuration. Move one seed and every cell boundary in the diagram shifts.
     </p>
 
-    <div class="card">
-      <h3>Voronoi</h3>
-      <p>30 drifting seeds partition the canvas by nearest-neighbor ownership, tracing the same geometry as soap bubbles and giraffe coats. <a href="../artifacts/voronoi.html">View artifact page →</a></p>
-    </div>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Voronoi</p>
+    <p class="post-artifact-desc">30 drifting seeds partition the canvas by nearest-neighbor ownership, tracing the same geometry as soap bubbles and giraffe coats.</p>
+    <a class="post-artifact-link" href="../artifacts/voronoi.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
 
   </div>
 </body>

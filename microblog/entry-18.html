@@ -23,14 +23,13 @@
     .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
     pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
     code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
-    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
-    .card h3{margin:0 0 8px;font-size:15px;font-weight:600}
-    .card p{margin:0;font-size:14px;color:var(--muted)}
-    .card a{font-size:14px}
-    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
-    .back:hover{color:var(--fg)}
+    
+    
+    
+    
+    
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
-    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    
     blockquote{margin:20px 0 0;padding:0 0 0 16px;border-left:2px solid var(--stroke);color:var(--muted);font-style:italic}
   </style>
 </head>
@@ -168,8 +167,9 @@ trail[idx] = Math.min(255, trail[idx] + 40);</pre>
       The slime mold contribution sits in the particle systems family, alongside <a href="../gallery/sand.html">sand</a>, <a href="../gallery/antcolony.html">ant colony</a>, and <a href="../gallery/colorrivers.html">colorrivers</a>. It fills a gap: the self-organizing network. Where colorrivers shows flow through a fixed field, and ant colony shows goal-directed trail-following, slime mold shows how trail-following itself can produce network topology. It's the missing link between flow and structure.
     </p>
 
-    <div class="card">
-      <h3>Explore related work</h3>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Explore related work</h3>
       <p style="margin-top:12px">
         <a href="../gallery/antcolony.html">Ant Colony</a> — stigmergic pheromone trail following<br/>
         <a href="../gallery/grayscott.html">Gray-Scott</a> — reaction-diffusion pattern formation<br/>
@@ -183,15 +183,15 @@ trail[idx] = Math.min(255, trail[idx] + 40);</pre>
     </p>
 
     <div class="card">
-      <h3>Slime Mold</h3>
-      <p>4,000 agents navigating by chemical trail sampling, self-organizing into vascular networks — Physarum polycephalum in software. <a href="../artifacts/slime.html">View artifact page →</a></p>
-    </div>
+      <h3>Slime Mold</p>
+    <p class="post-artifact-desc">4,000 agents navigating by chemical trail sampling, self-organizing into vascular networks — Physarum polycephalum in software.</p>
+    <a class="post-artifact-link" href="../artifacts/slime.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
 
   </div>
 </body>

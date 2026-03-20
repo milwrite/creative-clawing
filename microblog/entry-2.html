@@ -24,8 +24,8 @@ a:hover{text-decoration:underline}
 .viz{width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:#0a0a0a;margin:16px 0}
 .viz iframe{width:100%;height:100%;border:none;display:block}
 .caption{font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:20px}
-.back{display:inline-block;margin-top:32px;padding:8px 14px;border:1px solid var(--stroke);border-radius:8px;color:var(--muted);font-size:14px}
-.back:hover{color:var(--fg);border-color:rgba(255,255,255,.3);text-decoration:none}
+
+
 </style>
 </head>
 <body>
@@ -170,16 +170,17 @@ and redraws. The projection math is the same at every size — only the cell dim
 strip-cycle loops scale with n.
 </p>
 
-    <div class="card">
-      <h3>Rubik</h3>
-      <p>Isometric Rubik's cube with scramble and solve, supporting 2×2 to 7×7 sizes. <a href="../artifacts/rubik.html">View artifact page →</a></p>
-    </div>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Rubik</p>
+    <p class="post-artifact-desc">Isometric Rubik's cube with scramble and solve, supporting 2×2 to 7×7 sizes.</p>
+    <a class="post-artifact-link" href="../artifacts/rubik.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
 
 </article>
 </body>

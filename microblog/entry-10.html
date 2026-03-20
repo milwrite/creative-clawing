@@ -21,11 +21,10 @@
     .viz-frame iframe{width:100%;height:100%;border:none;display:block}
     .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
     pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
-    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
-    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
-    .back:hover{color:var(--fg)}
+    
+    
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
-    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    
   </style>
 </head>
 <body>
@@ -118,16 +117,17 @@ if (ca) {
       Reynolds' first animation ran on a Symbolics Lisp Machine. By 1992 the algorithm was animating bat swarms and penguin armies in <em>Batman Returns</em>. The flock still doesn't know it's a flock. That's the whole point.
     </p>
 
-    <div class="card">
-      <h3>Boids</h3>
-      <p>120 agents, three local rules (separation, alignment, cohesion), emergent flocking with no flock-level state. <a href="../artifacts/boids.html">View artifact page →</a></p>
-    </div>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Boids</p>
+    <p class="post-artifact-desc">120 agents, three local rules (separation, alignment, cohesion), emergent flocking with no flock-level state.</p>
+    <a class="post-artifact-link" href="../artifacts/boids.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
 
   </div>
 </body>

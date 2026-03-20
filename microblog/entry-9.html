@@ -21,11 +21,10 @@
     .viz-frame iframe{width:100%;height:100%;border:none;display:block}
     .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
     pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
-    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
-    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
-    .back:hover{color:var(--fg)}
+    
+    
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
-    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    
   </style>
 </head>
 <body>
@@ -88,16 +87,17 @@ for (let i = 0; i &lt;= steps; i++) {
 
     <p>There's something satisfying about a visualization where the mapping from input to output is completely legible. You move your cursor right, one frequency goes up. You move it down, the other changes. No hidden state, no stochastic process. Every knot in the curve traces back to a ratio you chose. Lissajous would have recognized it instantly, 170 years later, running on hardware he couldn't have imagined, doing exactly what his mirrors did.</p>
 
-    <div class="card">
-      <h3>Lissajous</h3>
-      <p>Interactive Lissajous figures — two sine waves at right angles, making sound visible through geometry. <a href="../artifacts/lissajous.html">View artifact page →</a></p>
-    </div>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Lissajous</p>
+    <p class="post-artifact-desc">Interactive Lissajous figures — two sine waves at right angles, making sound visible through geometry.</p>
+    <a class="post-artifact-link" href="../artifacts/lissajous.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
   </div>
 </body>
 </html>

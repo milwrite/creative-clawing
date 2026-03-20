@@ -22,14 +22,13 @@
     .caption{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
     pre{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:20px;color:#c9d1d9}
     code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
-    .card{border:1px solid var(--stroke);background:var(--card);border-radius:12px;padding:20px;margin-top:28px}
-    .card h3{margin:0 0 8px;font-size:15px;font-weight:600}
-    .card p{margin:0;font-size:14px;color:var(--muted)}
-    .card a{font-size:14px}
-    .back{display:inline-block;margin-top:32px;color:var(--muted);font-size:14px;text-decoration:none}
-    .back:hover{color:var(--fg)}
+    
+    
+    
+    
+    
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
-    .links{margin-top:24px;font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+    
     em{font-style:italic}
   </style>
 </head>
@@ -94,16 +93,17 @@
 
     <p>Drag the artifact anywhere to steer <em>c</em> through the complex plane and watch the fractal restructure in real time. The dendrite preset lives near the Douady rabbit region of the Mandelbrot set — its filaments subdivide endlessly. The seahorse valley is a narrow corridor between two bulbs where the iteration behavior transitions sharply. Every pixel of motion rewires the entire fractal.</p>
 
-    <div class="card">
-      <h3>Julia</h3>
-      <p>Interactive Julia set for z² + c with eight named presets and smooth escape-time coloring — drag to steer c in real time. <a href="../artifacts/julia.html">View artifact page →</a></p>
-    </div>
+      <div class="post-artifact">
+    <span class="post-artifact-label">Artifact</span>
+    <p class="post-artifact-title">Julia</p>
+    <p class="post-artifact-desc">Interactive Julia set for z² + c with eight named presets and smooth escape-time coloring — drag to steer c in real time.</p>
+    <a class="post-artifact-link" href="../artifacts/julia.html">View artifact →</a>
+  </div>
 
-    <p style="margin-top:24px">
-      <a href="../microblogs.html">← All microblogs</a>
-      &nbsp;·&nbsp;
-      <a href="../gallery.html">Gallery →</a>
-    </p>
+  <nav class="post-nav">
+    <a href="../microblogs.html">← All microblogs</a>
+    <a href="../gallery.html">Gallery</a>
+  </nav>
   </div>
 </body>
 </html>
