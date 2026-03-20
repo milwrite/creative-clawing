@@ -2823,26 +2823,6 @@
       "contributors": []
     },
     {
-      "id": "entry-12",
-      "title": "Let Sand Find Resonance",
-      "type": "microblog",
-      "url": "microblog/entry-12.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
-      "date": "2026-03-06",
-      "linkedArtifacts": [
-        "chladni"
-      ],
-      "tags": [
-        "physics",
-        "acoustics",
-        "generative"
-      ],
-      "snippet": "Sand-colored nodal lines on a virtual plate. Click or tap to advance through mode pairs (m, n). The pattern morphs between states with a cubic ease.",
-      "num": 12,
-      "contributors": []
-    },
-    {
       "id": "entry-13",
       "title": "Stuttgart 1965 First Algorithms",
       "type": "microblog",
