@@ -72,6 +72,11 @@ html, body {
   text-decoration: none;
   color: var(--ink);
 }
+a.nav-brand,
+.nav-brand a {
+  color: var(--ink);
+  text-decoration: none;
+}
 
 /* ── Nav links ────────────────────────────────────────────── */
 .nav-links {
