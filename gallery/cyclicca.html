@@ -127,7 +127,6 @@ function draw() {
   const img = ctx.createImageData(W, H);
   const d = img.data;
   for (let row = 0; row < ROWS; row++) {
-    const [pr, pg, pb] = palette[grid[row * COLS]] || [0,0,0];
     for (let col = 0; col < COLS; col++) {
       const [r, g, b] = palette[grid[row * COLS + col]];
       const px = (row * CELL) * W + (col * CELL);
@@ -179,8 +178,12 @@ resetBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('resize', resize);
-resize();
-requestAnimationFrame(loop);
+if (document.readyState === 'complete') {
+  resize();
+  requestAnimationFrame(loop);
+} else {
+  window.addEventListener('load', () => { resize(); requestAnimationFrame(loop); });
+}
 </script>
 </body>
 </html>
