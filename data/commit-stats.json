@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 207,
+    "totalCommits": 208,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,7 +490,7 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 14
+      "2026-03-21": 15
     },
     "categoryCounts": {
       "blog": 30,
@@ -498,9 +498,17 @@
       "mobile": 15,
       "fix": 51,
       "other": 68,
-      "chore": 6
+      "chore": 7
     },
     "commits": [
+      {
+        "sha": "38b7591d",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "f246dae5",
         "date": "2026-03-21",
@@ -2647,15 +2655,15 @@
     ]
   },
   "unknown": {
-    "totalCommits": 32,
+    "totalCommits": 33,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
-      "2026-03-21": 4
+      "2026-03-21": 5
     },
     "categoryCounts": {
-      "other": 20,
+      "other": 21,
       "fix": 6,
       "blog": 2,
       "chore": 1,
@@ -2663,6 +2671,14 @@
       "style": 1
     },
     "commits": [
+      {
+        "sha": "972ffa37",
+        "date": "2026-03-21",
+        "subject": "add entry-26: '366 Fragments: Building Rime Sparse' — Petrarch microblog",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "5dcfe149",
         "date": "2026-03-21",
