@@ -178,7 +178,12 @@
   const artMap = {};
   arts.forEach(a => { artMap[a.id] = a; });
 
-  const blogs = manifest.microblogs.slice().sort((a,b) => b.num - a.num);
+  const blogs = manifest.microblogs.slice().sort((a,b) => {
+    const da = a.date || '';
+    const db = b.date || '';
+    if (db !== da) return db < da ? -1 : 1;
+    return b.num - a.num;
+  });
   const feedCountEl = document.getElementById('feed-count');
   if (feedCountEl) feedCountEl.textContent = blogs.length + ' entr' + (blogs.length !== 1 ? 'ies' : 'y');
 
