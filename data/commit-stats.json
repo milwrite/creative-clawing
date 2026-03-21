@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 199,
+    "totalCommits": 200,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,25 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 6
+      "2026-03-21": 7
     },
     "categoryCounts": {
       "blog": 30,
-      "artifact": 36,
+      "artifact": 37,
       "mobile": 15,
       "fix": 51,
       "other": 65,
       "chore": 2
     },
     "commits": [
+      {
+        "sha": "a854d96e",
+        "date": "2026-03-21",
+        "subject": "gallery: add Buddhabrot and Moiré Patterns artifacts",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "5984326a",
         "date": "2026-03-21",
