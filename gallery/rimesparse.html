@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Rime Sparse</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#07081c;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh;touch-action:none}
+.back-btn{
+  position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));
+  background:rgba(7,8,28,0.85);border:1px solid #252840;color:#7a7da8;
+  padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;
+  cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:all 0.2s
+}
+.back-btn:hover{border-color:#5a5d88;color:#b0b3d8}
+#ui{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(7,8,28,0.88);border-top:1px solid #181a2e;
+  padding:0.65rem 1rem;display:flex;justify-content:space-between;
+  align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,monospace;
+  backdrop-filter:blur(8px);z-index:100;flex-wrap:wrap
+}
+.meta{display:flex;align-items:center;gap:0.75rem;color:#8090b8}
+.meta-title{color:#a8b0d0;font-weight:600}
+.meta-hint{color:#363856;font-size:0.7rem}
+.controls{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.controls button{
+  background:rgba(255,255,255,0.04);border:1px solid #252840;color:#7a7da8;
+  font:0.75rem ui-monospace,monospace;padding:6px 14px;border-radius:4px;
+  cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent
+}
+.controls button:hover{background:rgba(255,255,255,0.08);color:#b0b3d8;border-color:#454870}
+#voltaStatus{color:#4a4d70;font-size:0.7rem;min-width:4.5rem;text-align:right}
+@media(max-width:560px){.meta-hint{display:none}}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <div class="meta">
+    <span class="meta-title">Rime Sparse</span>
+    <span class="meta-hint">Petrarch's Canzoniere · 366 fragments · volta every 14s</span>
+  </div>
+  <div class="controls">
+    <span id="voltaStatus"></span>
+    <button id="voltaBtn">volta</button>
+    <button id="scatterBtn">scatter</button>
+    <button id="resetBtn">reset</button>
+  </div>
+</div>
+<script>
+'use strict';
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+
+let W = 0, H = 0, DPR = 1;
+let t = 0, lastTs = 0;
+
+// ── Seeded PRNG (xorshift32) ──────────────────────────────────────────────────
+// 14031327 — Petrarch born 1304; first saw Laura, April 6 1327
+const INITIAL_SEED = 14031327;
+let _s = INITIAL_SEED;
+function rng() {
+  _s ^= _s << 13; _s ^= _s >> 17; _s ^= _s << 5;
+  return (_s >>> 0) / 4294967296;
+}
+function resetRng() { _s = INITIAL_SEED; }
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+const N            = 366;   // One particle per poem in the Canzoniere
+const VOLTA_PERIOD = 14;    // seconds — the span of a sonnet
+const BASE_SPEED   = 62;    // flow acceleration (px/s²)
+const TRAIL_FADE   = 0.016; // per-frame overlay opacity
+
+// ── Particles ─────────────────────────────────────────────────────────────────
+let particles = [];
+
+function initParticles() {
+  resetRng();
+  particles = [];
+  const R = Math.min(W, H) * 0.38;
+  for (let i = 0; i < N; i++) {
+    const a  = rng() * Math.PI * 2;
+    const r  = 0.12 + rng() * 0.85; // fractional radius
+    particles.push({
+      x:     W * 0.5 + Math.cos(a) * r * R,
+      y:     H * 0.5 + Math.sin(a) * r * R,
+      vx:    (rng() - 0.5) * 1.8,
+      vy:    (rng() - 0.5) * 1.8,
+      phase: rng() * Math.PI * 2,  // individual flow phase offset
+      sz:    0.7 + rng() * 1.1,    // base radius
+    });
+  }
+}
+
+// ── Flow field ────────────────────────────────────────────────────────────────
+// Six harmonic layers — 14 total components, one per line of the sonnet.
+// Hidden DNA: LAURA = letter positions 12,1,21,18,1 used as frequency seeds.
+// Three layers mirror the Petrarchan sonnet: two quatrains + sestet.
+function flowAngle(x, y, t) {
+  const nx = x / W;  // normalise 0–1
+  const ny = y / H;
+
+  // First quatrain (ABBA) — broad sweeping waves
+  const a1 = Math.sin(nx * 3.77 + t * 0.13) * Math.cos(ny * 2.31 + t * 0.09);
+  const a2 = Math.sin(ny * 4.71 + t * 0.11) * Math.cos(nx * 1.88 + t * 0.17);
+
+  // Second quatrain (ABBA) — spiralling harmonics; freqs seeded from L=12, U=21
+  const a3 = Math.sin(nx * 0.84 + ny * 1.26 + t * 0.15) * 0.72;
+  const a4 = Math.cos(nx * nx * 6.0 - ny * ny * 4.5 + t * 0.21) * 0.52;
+
+  // Sestet (CDE CDE) — irregular, longing counter-motion; R=18 encoded
+  const a5 = Math.sin((nx + ny) * 5.24 - t * 0.19) * 0.36;
+  const a6 = Math.cos((nx - ny) * 3.14 + t * 0.23) * 0.28;
+
+  return (a1 + a2 + a3 + a4 + a5 + a6) * Math.PI;
+}
+
+// ── Volta ─────────────────────────────────────────────────────────────────────
+// The Petrarchan "turn" — a pulse of longing that draws all fragments
+// toward the invisible centre (Laura), then releases them.
+let manualVoltaTime = -999;
+
+function voltaStrength(t) {
+  const manualAge = t - manualVoltaTime;
+  if (manualAge >= 0 && manualAge < VOLTA_PERIOD) {
+    return Math.sin((manualAge / VOLTA_PERIOD) * Math.PI);
+  }
+  const phase = (t % VOLTA_PERIOD) / VOLTA_PERIOD;
+  return Math.max(0, Math.sin(phase * Math.PI));
+}
+
+// ── Colour ────────────────────────────────────────────────────────────────────
+// "In vita"  — near centre  — warm amber  (Laura living, present)
+// "In morte" — at edges     — cool azure  (Laura gone, mourned)
+//  Volta peak               — ivory-white flash
+function particleColor(x, y, volta, speed) {
+  const cx   = W * 0.5, cy = H * 0.5;
+  const maxR = Math.min(W, H) * 0.52;
+  const dist = Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) / maxR;
+
+  // tc: 0 = vita/warm, 1 = morte/cool
+  let tc = Math.min(1.0, dist);
+  tc = tc * (1 - volta * 0.78); // volta pulls toward warm vita
+
+  // vita  amber  → r=248 g=192 b=72
+  // morte azure  → r=88  g=128 b=220
+  let r = 248 + tc * (88  - 248);
+  let g = 192 + tc * (128 - 192);
+  let b = 72  + tc * (220 - 72);
+
+  // Volta brightening flash toward ivory
+  const boost = 1 + volta * 1.85;
+  r = Math.min(255, r * boost);
+  g = Math.min(255, g * boost);
+  b = Math.min(255, b * boost);
+
+  const a = Math.min(0.92, 0.42 + (1 - Math.min(1, dist)) * 0.28 + speed * 0.012 + volta * 0.22);
+  return [r | 0, g | 0, b | 0, a];
+}
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const nW = window.innerWidth, nH = window.innerHeight;
+  if (nW === W && nH === H) return;
+  W = nW; H = nH;
+  canvas.width  = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+
+function fullReset() {
+  resize();
+  ctx.fillStyle = '#07081c';
+  ctx.fillRect(0, 0, W, H);
+  initParticles();
+}
+
+window.addEventListener('resize', fullReset);
+window.addEventListener('orientationchange', () => setTimeout(fullReset, 140));
+
+// ── Main loop ─────────────────────────────────────────────────────────────────
+function loop(ts) {
+  if (!lastTs) lastTs = ts;
+  const dt = Math.min((ts - lastTs) * 0.001, 0.05);
+  lastTs = ts;
+  t += dt;
+
+  const volta = voltaStrength(t);
+  const cx = W * 0.5, cy = H * 0.5;
+
+  // Slow trail decay — fragments linger like memory
+  ctx.fillStyle = `rgba(7,8,28,${TRAIL_FADE})`;
+  ctx.fillRect(0, 0, W, H);
+
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+
+    // Flow field push
+    const angle = flowAngle(p.x, p.y, t + p.phase * 0.08);
+    const fx = Math.cos(angle) * BASE_SPEED;
+    const fy = Math.sin(angle) * BASE_SPEED;
+
+    // Volta attraction toward Laura — impossibly close, impossible to reach
+    const dx = cx - p.x, dy = cy - p.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) + 0.001;
+    const af = volta * 85;
+    let ax = (dx / dist) * af;
+    let ay = (dy / dist) * af;
+
+    // Counter-repulsion at the very centre — the beloved is unreachable
+    const repelR = Math.min(W, H) * 0.045;
+    if (dist < repelR && volta > 0.04) {
+      const repel = (1 - dist / repelR) * 130 * volta;
+      ax -= (dx / dist) * repel;
+      ay -= (dy / dist) * repel;
+    }
+
+    // Semi-implicit Euler, frame-rate-stable damping
+    const damp = Math.pow(0.86, dt * 60);
+    p.vx = p.vx * damp + (fx + ax) * dt;
+    p.vy = p.vy * damp + (fy + ay) * dt;
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+
+    // Wrap edges
+    if (p.x < -24) p.x += W + 48;
+    else if (p.x > W + 24) p.x -= W + 48;
+    if (p.y < -24) p.y += H + 48;
+    else if (p.y > H + 24) p.y -= H + 48;
+
+    // Draw
+    const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+    const [r, g, b, a] = particleColor(p.x, p.y, volta, speed);
+    const radius = p.sz + volta * 1.4;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
+    ctx.fill();
+  }
+
+  // Volta indicator
+  const statusEl = document.getElementById('voltaStatus');
+  if (statusEl) {
+    statusEl.textContent = volta > 0.04 ? `volta ${(volta * 100).toFixed(0)}%` : '';
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+fullReset();
+requestAnimationFrame(loop);
+
+// ── Controls ──────────────────────────────────────────────────────────────────
+document.getElementById('voltaBtn').addEventListener('click', () => {
+  manualVoltaTime = t;
+});
+
+document.getElementById('scatterBtn').addEventListener('click', () => {
+  const cx = W * 0.5, cy = H * 0.5;
+  const norm = Math.min(W, H) * 0.35;
+  for (const p of particles) {
+    const dx = p.x - cx, dy = p.y - cy;
+    const d = Math.sqrt(dx * dx + dy * dy) + 0.001;
+    const force = 10 * (1.2 + (1 - Math.min(1, d / norm)));
+    p.vx += (dx / d) * force;
+    p.vy += (dy / d) * force;
+  }
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  t = 0; lastTs = 0; manualVoltaTime = -999;
+  fullReset();
+});
+</script>
+</body>
+</html>
