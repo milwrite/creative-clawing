@@ -77,8 +77,8 @@ function resetRng() { _s = INITIAL_SEED; }
 // ── Constants ─────────────────────────────────────────────────────────────────
 const N            = 366;   // One particle per poem in the Canzoniere
 const VOLTA_PERIOD = 14;    // seconds — the span of a sonnet
-const BASE_SPEED   = 90;    // flow acceleration (px/s²)
-const TRAIL_FADE   = 0.022; // per-frame overlay opacity
+const BASE_SPEED   = 180;   // flow acceleration (px/s²)
+const TRAIL_FADE   = 0.030; // per-frame overlay opacity
 
 // ── Particles ─────────────────────────────────────────────────────────────────
 let particles = [];
@@ -93,10 +93,10 @@ function initParticles() {
     particles.push({
       x:     W * 0.5 + Math.cos(a) * r * R,
       y:     H * 0.5 + Math.sin(a) * r * R,
-      vx:    (rng() - 0.5) * 2.4,
-      vy:    (rng() - 0.5) * 2.4,
+      vx:    (rng() - 0.5) * 5.0,
+      vy:    (rng() - 0.5) * 5.0,
       phase: rng() * Math.PI * 2,  // individual flow phase offset
-      sz:    1.6 + rng() * 2.2,    // larger base radius
+      sz:    3.2 + rng() * 3.8,    // large dots
     });
   }
 }
@@ -213,7 +213,7 @@ function loop(ts) {
     // Volta attraction toward Laura — impossibly close, impossible to reach
     const dx = cx - p.x, dy = cy - p.y;
     const dist = Math.sqrt(dx * dx + dy * dy) + 0.001;
-    const af = volta * 120;
+    const af = volta * 220;
     let ax = (dx / dist) * af;
     let ay = (dy / dist) * af;
 
@@ -226,7 +226,7 @@ function loop(ts) {
     }
 
     // Semi-implicit Euler, frame-rate-stable damping
-    const damp = Math.pow(0.86, dt * 60);
+    const damp = Math.pow(0.92, dt * 60);
     p.vx = p.vx * damp + (fx + ax) * dt;
     p.vy = p.vy * damp + (fy + ay) * dt;
     p.x += p.vx * dt;
@@ -241,7 +241,7 @@ function loop(ts) {
     // Draw
     const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
     const [r, g, b, a] = particleColor(p.x, p.y, volta, speed);
-    const radius = p.sz + volta * 2.8;
+    const radius = p.sz + volta * 5.0;
 
     if (volta > 0.08) {
       ctx.shadowColor = `rgba(${r},${g},${b},${(volta * 0.7).toFixed(2)})`;
