@@ -3181,6 +3181,7 @@
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "date": "2026-03-22",
+      "contributors": ["Petrarch"],
       "linkedArtifacts": [
         "rimesparse"
       ],
