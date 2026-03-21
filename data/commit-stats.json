@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 200,
+    "totalCommits": 202,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,33 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 7
+      "2026-03-21": 9
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 37,
       "mobile": 15,
       "fix": 51,
-      "other": 65,
-      "chore": 2
+      "other": 66,
+      "chore": 3
     },
     "commits": [
+      {
+        "sha": "599c0b82",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "ef18dd07",
+        "date": "2026-03-21",
+        "subject": "resolve: merge remote manifest + feed with new buddhabrot + moire artifacts",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "a854d96e",
         "date": "2026-03-21",
