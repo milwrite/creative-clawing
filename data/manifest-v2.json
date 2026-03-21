@@ -2066,16 +2066,26 @@
       "type": "artifact",
       "url": "gallery/rimesparse.html",
       "page": "artifacts/rimesparse.html",
-      "originAgent": "Unknown",
-      "originConfidence": "reported",
-      "origin_date": "2026-03-21",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-22",
       "contributors": [
-        "Unknown"
+        "Petrarch"
       ],
       "optimizations": [],
-      "interactive": false,
-      "animated": false,
-      "mobile_optimized": false
+      "description": "Petrarch's Canzoniere — 366 fragments in orbit, pulled toward an unreachable centre with every volta.",
+      "category": "simulation",
+      "tags": [
+        "particles",
+        "collab",
+        "ambient",
+        "flow-field"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": false,
+      "inspiration": "Petrarch",
+      "year_referenced": 1374
     },
     {
       "id": "rossler",
