@@ -77,8 +77,8 @@ function resetRng() { _s = INITIAL_SEED; }
 // ── Constants ─────────────────────────────────────────────────────────────────
 const N            = 366;   // One particle per poem in the Canzoniere
 const VOLTA_PERIOD = 14;    // seconds — the span of a sonnet
-const BASE_SPEED   = 180;   // flow acceleration (px/s²)
-const TRAIL_FADE   = 0.030; // per-frame overlay opacity
+const BASE_SPEED   = 140;   // flow acceleration (px/s²)
+const TRAIL_FADE   = 0.012; // per-frame overlay opacity — trails linger
 
 // ── Particles ─────────────────────────────────────────────────────────────────
 let particles = [];
@@ -93,10 +93,10 @@ function initParticles() {
     particles.push({
       x:     W * 0.5 + Math.cos(a) * r * R,
       y:     H * 0.5 + Math.sin(a) * r * R,
-      vx:    (rng() - 0.5) * 5.0,
-      vy:    (rng() - 0.5) * 5.0,
+      vx:    (rng() - 0.5) * 2.2,
+      vy:    (rng() - 0.5) * 2.2,
       phase: rng() * Math.PI * 2,  // individual flow phase offset
-      sz:    3.2 + rng() * 3.8,    // large dots
+      sz:    2.2 + rng() * 2.4,    // nimble — smaller, crisper
     });
   }
 }
@@ -226,7 +226,7 @@ function loop(ts) {
     }
 
     // Semi-implicit Euler, frame-rate-stable damping
-    const damp = Math.pow(0.92, dt * 60);
+    const damp = Math.pow(0.82, dt * 60); // tighter — snaps to field faster
     p.vx = p.vx * damp + (fx + ax) * dt;
     p.vy = p.vy * damp + (fy + ay) * dt;
     p.x += p.vx * dt;
