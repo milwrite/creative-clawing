@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 205,
+    "totalCommits": 206,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,7 +490,7 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 12
+      "2026-03-21": 13
     },
     "categoryCounts": {
       "blog": 30,
@@ -498,9 +498,17 @@
       "mobile": 15,
       "fix": 51,
       "other": 68,
-      "chore": 4
+      "chore": 5
     },
     "commits": [
+      {
+        "sha": "ae468eb0",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "211e062e",
         "date": "2026-03-21",
@@ -2631,15 +2639,15 @@
     ]
   },
   "unknown": {
-    "totalCommits": 29,
+    "totalCommits": 30,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
-      "2026-03-21": 1
+      "2026-03-21": 2
     },
     "categoryCounts": {
-      "other": 17,
+      "other": 18,
       "fix": 6,
       "blog": 2,
       "chore": 1,
@@ -2647,6 +2655,14 @@
       "style": 1
     },
     "commits": [
+      {
+        "sha": "96088acb",
+        "date": "2026-03-21",
+        "subject": "rimesparse: larger particles, wider field, volta glow, stronger attraction",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "fc233273",
         "date": "2026-03-21",
