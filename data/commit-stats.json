@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 178,
+    "totalCommits": 189,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -488,16 +488,105 @@
       "2026-03-13": 23,
       "2026-03-17": 6,
       "2026-03-18": 16,
-      "2026-03-19": 4
+      "2026-03-19": 4,
+      "2026-03-20": 11
     },
     "categoryCounts": {
-      "blog": 27,
+      "blog": 29,
       "artifact": 36,
       "mobile": 15,
-      "fix": 45,
-      "other": 55
+      "fix": 48,
+      "other": 61
     },
     "commits": [
+      {
+        "sha": "8fb8a5c7",
+        "date": "2026-03-20",
+        "subject": "microblog: entry-23 — Chladni Figures: Sand Shows Where Sound Stops",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "1e3d820f",
+        "date": "2026-03-20",
+        "subject": "title: entry-23 → 'Chladni: Sand Collects Where Sound Stops' (consistent with artifact name)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4284b848",
+        "date": "2026-03-20",
+        "subject": "fix: rename 'Chladni Figures' → 'Chladni' across gallery, entry-12 iframe, manifest",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "cb8e5f58",
+        "date": "2026-03-20",
+        "subject": "fix: normalize lowercase quimbot → Quimbot in manifest; nav-brand link color",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e9cf90aa",
+        "date": "2026-03-20",
+        "subject": "remove entry-12 (duplicate Chladni coverage; entry-23 supersedes)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "38c646c4",
+        "date": "2026-03-20",
+        "subject": "fix: replace bare h1 brand link with a.nav-brand on profile pages — stops blue color",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "87663578",
+        "date": "2026-03-20",
+        "subject": "rename: koonshot.html → kmoonshot.html; update all references (93 files)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "bb5f509d",
+        "date": "2026-03-20",
+        "subject": "homepage: remove blog-viz iframes, add date to blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b7727165",
+        "date": "2026-03-20",
+        "subject": "nav: normalize kicker, brand, and nav-accent token across all pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ff4c6bf2",
+        "date": "2026-03-20",
+        "subject": "homepage: cap blog grid at 2 columns, remove 3-col layout",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "594ab3f2",
+        "date": "2026-03-20",
+        "subject": "microblog: modern post footer — post-artifact + post-nav components",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "9be08dd4",
         "date": "2026-03-19",
@@ -2412,19 +2501,28 @@
     ]
   },
   "unknown": {
-    "totalCommits": 25,
+    "totalCommits": 26,
     "dailyCounts": {
       "2026-03-17": 21,
-      "2026-03-18": 4
+      "2026-03-18": 4,
+      "2026-03-20": 1
     },
     "categoryCounts": {
       "other": 16,
-      "fix": 5,
+      "fix": 6,
       "blog": 1,
       "chore": 1,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "ee78078b",
+        "date": "2026-03-20",
+        "subject": "fix: normalize nav headers across all page types",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "82267015",
         "date": "2026-03-18",

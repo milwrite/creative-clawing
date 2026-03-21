@@ -359,7 +359,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -573,7 +573,14 @@
     {
       "id": "entry-23",
       "title": "Chladni: Sand Collects Where Sound Stops",
+      "type": "microblog",
       "url": "microblog/entry-23.html"
+    },
+    {
+      "id": "entry-24",
+      "title": "Rule 30: Order Wrote the Instructions for Chaos",
+      "type": "microblog",
+      "url": "microblog/entry-24.html"
     },
     {
       "id": "entry-3",
@@ -978,7 +985,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1122,12 +1129,6 @@
       "url": "microblog/entry-11.html"
     },
     {
-      "id": "entry-12",
-      "title": "Let Sand Find Resonance",
-      "type": "microblog",
-      "url": "microblog/entry-12.html"
-    },
-    {
       "id": "entry-13",
       "title": "Stuttgart 1965 First Algorithms",
       "type": "microblog",
@@ -1196,7 +1197,14 @@
     {
       "id": "entry-23",
       "title": "Chladni: Sand Collects Where Sound Stops",
+      "type": "microblog",
       "url": "microblog/entry-23.html"
+    },
+    {
+      "id": "entry-24",
+      "title": "Rule 30: Order Wrote the Instructions for Chaos",
+      "type": "microblog",
+      "url": "microblog/entry-24.html"
     },
     {
       "id": "entry-3",
