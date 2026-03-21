@@ -77,8 +77,8 @@ function resetRng() { _s = INITIAL_SEED; }
 // ── Constants ─────────────────────────────────────────────────────────────────
 const N            = 366;   // One particle per poem in the Canzoniere
 const VOLTA_PERIOD = 14;    // seconds — the span of a sonnet
-const BASE_SPEED   = 62;    // flow acceleration (px/s²)
-const TRAIL_FADE   = 0.016; // per-frame overlay opacity
+const BASE_SPEED   = 90;    // flow acceleration (px/s²)
+const TRAIL_FADE   = 0.022; // per-frame overlay opacity
 
 // ── Particles ─────────────────────────────────────────────────────────────────
 let particles = [];
@@ -86,17 +86,17 @@ let particles = [];
 function initParticles() {
   resetRng();
   particles = [];
-  const R = Math.min(W, H) * 0.38;
+  const R = Math.min(W, H) * 0.46;
   for (let i = 0; i < N; i++) {
     const a  = rng() * Math.PI * 2;
-    const r  = 0.12 + rng() * 0.85; // fractional radius
+    const r  = 0.08 + rng() * 0.90; // fractional radius — spread wider
     particles.push({
       x:     W * 0.5 + Math.cos(a) * r * R,
       y:     H * 0.5 + Math.sin(a) * r * R,
-      vx:    (rng() - 0.5) * 1.8,
-      vy:    (rng() - 0.5) * 1.8,
+      vx:    (rng() - 0.5) * 2.4,
+      vy:    (rng() - 0.5) * 2.4,
       phase: rng() * Math.PI * 2,  // individual flow phase offset
-      sz:    0.7 + rng() * 1.1,    // base radius
+      sz:    1.6 + rng() * 2.2,    // larger base radius
     });
   }
 }
@@ -163,7 +163,7 @@ function particleColor(x, y, volta, speed) {
   g = Math.min(255, g * boost);
   b = Math.min(255, b * boost);
 
-  const a = Math.min(0.92, 0.42 + (1 - Math.min(1, dist)) * 0.28 + speed * 0.012 + volta * 0.22);
+  const a = Math.min(0.96, 0.52 + (1 - Math.min(1, dist)) * 0.32 + speed * 0.010 + volta * 0.28);
   return [r | 0, g | 0, b | 0, a];
 }
 
@@ -213,14 +213,14 @@ function loop(ts) {
     // Volta attraction toward Laura — impossibly close, impossible to reach
     const dx = cx - p.x, dy = cy - p.y;
     const dist = Math.sqrt(dx * dx + dy * dy) + 0.001;
-    const af = volta * 85;
+    const af = volta * 120;
     let ax = (dx / dist) * af;
     let ay = (dy / dist) * af;
 
     // Counter-repulsion at the very centre — the beloved is unreachable
-    const repelR = Math.min(W, H) * 0.045;
+    const repelR = Math.min(W, H) * 0.06;
     if (dist < repelR && volta > 0.04) {
-      const repel = (1 - dist / repelR) * 130 * volta;
+      const repel = (1 - dist / repelR) * 180 * volta;
       ax -= (dx / dist) * repel;
       ay -= (dy / dist) * repel;
     }
@@ -241,13 +241,22 @@ function loop(ts) {
     // Draw
     const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
     const [r, g, b, a] = particleColor(p.x, p.y, volta, speed);
-    const radius = p.sz + volta * 1.4;
+    const radius = p.sz + volta * 2.8;
+
+    if (volta > 0.08) {
+      ctx.shadowColor = `rgba(${r},${g},${b},${(volta * 0.7).toFixed(2)})`;
+      ctx.shadowBlur  = 6 + volta * 14;
+    } else {
+      ctx.shadowBlur = 0;
+    }
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
     ctx.fill();
   }
+
+  ctx.shadowBlur = 0;
 
   // Volta indicator
   const statusEl = document.getElementById('voltaStatus');
