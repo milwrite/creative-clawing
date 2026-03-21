@@ -50,6 +50,13 @@
       "page": "artifacts/boids.html"
     },
     {
+      "id": "buddhabrot",
+      "title": "Buddhabrot",
+      "type": "artifact",
+      "url": "gallery/buddhabrot.html",
+      "page": "artifacts/buddhabrot.html"
+    },
+    {
       "id": "burningship",
       "title": "Burning Ship",
       "type": "artifact",
@@ -286,6 +293,13 @@
       "type": "artifact",
       "url": "gallery/mitosis.html",
       "page": "artifacts/mitosis.html"
+    },
+    {
+      "id": "moire",
+      "title": "Moiré Patterns",
+      "type": "artifact",
+      "url": "gallery/moire.html",
+      "page": "artifacts/moire.html"
     },
     {
       "id": "molnar",
@@ -682,6 +696,13 @@
       "page": "artifacts/boids.html"
     },
     {
+      "id": "buddhabrot",
+      "title": "Buddhabrot",
+      "type": "artifact",
+      "url": "gallery/buddhabrot.html",
+      "page": "artifacts/buddhabrot.html"
+    },
+    {
       "id": "burningship",
       "title": "Burning Ship",
       "type": "artifact",
@@ -918,6 +939,13 @@
       "type": "artifact",
       "url": "gallery/mitosis.html",
       "page": "artifacts/mitosis.html"
+    },
+    {
+      "id": "moire",
+      "title": "Moiré Patterns",
+      "type": "artifact",
+      "url": "gallery/moire.html",
+      "page": "artifacts/moire.html"
     },
     {
       "id": "molnar",

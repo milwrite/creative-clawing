@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGxpbmUgeDE9IjQiIHkxPSI4IiB4Mj0iMjgiIHkyPSI4IiBzdHJva2U9IiNlMGUwZTAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPGxpbmUgeDE9IjQiIHkxPSIxNCIgeDI9IjI4IiB5Mj0iMTQiIHN0cm9rZT0iI2UwZTBlMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8bGluZSB4MT0iNCIgeTE9IjIwIiB4Mj0iMjgiIHkyPSIyMCIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxsaW5lIHgxPSI0IiB5MT0iMjYiIHgyPSIyOCIgeTI9IjI2IiBzdHJva2U9IiNlMGUwZTAiIHN0cm9rZS13aWR0aD0iMS4yIi8+Cjwvc3ZnPgo="/>
+<title>Moiré Patterns</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden}
+canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:none}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.85);background:rgba(0,0,0,0.65);padding:6px 14px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.82);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:6px;z-index:100}
+.btn{background:rgba(20,20,20,0.8);border:1px solid #444;color:#ccc;padding:5px 10px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s}
+.btn:hover{border-color:#888;color:#fff}
+.btn.active{border-color:#7ecfff;color:#7ecfff}
+label.lbl{color:#aaa;font:10px ui-monospace,monospace}
+input[type=range]{width:90px;accent-color:#7ecfff}
+.row{display:flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <div class="row"><label class="lbl">spacing</label><input type="range" id="sl-spacing" min="4" max="30" value="12" step="1"/></div>
+  <div class="row"><label class="lbl">angle</label><input type="range" id="sl-angle" min="0" max="30" value="5" step="0.5"/></div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+    <button class="btn active" id="btn-lines" onclick="setPattern('lines')">Lines</button>
+    <button class="btn" id="btn-circles" onclick="setPattern('circles')">Circles</button>
+    <button class="btn" id="btn-dots" onclick="setPattern('dots')">Dots</button>
+  </div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+    <button class="btn active" id="btn-anim" onclick="toggleAnim()">Auto-rotate</button>
+  </div>
+</div>
+<div id="info">Moiré patterns · drag to offset layers · use controls to adjust</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H, DPR;
+let pattern = 'lines';
+let spacing = 12;
+let angle = 5; // degrees offset between layers
+let offsetX = 0, offsetY = 0;
+let autoAnim = true;
+let t = 0;
+let rafId;
+
+const slSpacing = document.getElementById('sl-spacing');
+const slAngle = document.getElementById('sl-angle');
+slSpacing.addEventListener('input', () => { spacing = +slSpacing.value; });
+slAngle.addEventListener('input', () => { angle = +slAngle.value; });
+
+function setPattern(p) {
+  pattern = p;
+  ['lines','circles','dots'].forEach(id => {
+    const b = document.getElementById('btn-' + id);
+    if (b) b.classList.toggle('active', id === p);
+  });
+}
+
+function toggleAnim() {
+  autoAnim = !autoAnim;
+  const b = document.getElementById('btn-anim');
+  b.classList.toggle('active', autoAnim);
+}
+
+// Pointer drag
+let dragging = false, dragStart = {x:0, y:0}, dragOff = {x:0, y:0};
+canvas.addEventListener('pointerdown', e => {
+  dragging = true;
+  dragStart = {x: e.clientX, y: e.clientY};
+  dragOff = {x: offsetX, y: offsetY};
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  offsetX = dragOff.x + (e.clientX - dragStart.x);
+  offsetY = dragOff.y + (e.clientY - dragStart.y);
+});
+canvas.addEventListener('pointerup', () => { dragging = false; });
+canvas.addEventListener('pointercancel', () => { dragging = false; });
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.floor(canvas.offsetWidth * DPR);
+  H = Math.floor(canvas.offsetHeight * DPR);
+  canvas.width = W;
+  canvas.height = H;
+}
+
+// Draw a single layer of lines into an offscreen canvas
+function drawLayer(angleRad, ox, oy) {
+  const offscreen = document.createElement('canvas');
+  offscreen.width = W;
+  offscreen.height = H;
+  const c2 = offscreen.getContext('2d');
+  c2.strokeStyle = 'rgba(255,255,255,1)';
+  c2.lineWidth = Math.max(0.5, spacing / 6);
+
+  const s = spacing * DPR;
+  const diagonal = Math.sqrt(W * W + H * H);
+  const numLines = Math.ceil(diagonal * 2 / s) + 4;
+
+  if (pattern === 'lines') {
+    c2.save();
+    c2.translate(W / 2 + ox * DPR, H / 2 + oy * DPR);
+    c2.rotate(angleRad);
+    for (let i = -numLines; i <= numLines; i++) {
+      const y = i * s;
+      c2.beginPath();
+      c2.moveTo(-diagonal, y);
+      c2.lineTo(diagonal, y);
+      c2.stroke();
+    }
+    c2.restore();
+  } else if (pattern === 'circles') {
+    const cx = W / 2 + ox * DPR;
+    const cy = H / 2 + oy * DPR;
+    const nr = Math.ceil(diagonal / s) + 2;
+    for (let i = 0; i <= nr; i++) {
+      c2.beginPath();
+      c2.arc(cx, cy, i * s, 0, Math.PI * 2);
+      c2.stroke();
+    }
+  } else if (pattern === 'dots') {
+    c2.save();
+    c2.translate(W / 2 + ox * DPR, H / 2 + oy * DPR);
+    c2.rotate(angleRad);
+    const r = Math.max(0.8, s * 0.15);
+    for (let i = -numLines; i <= numLines; i++) {
+      for (let j = -numLines; j <= numLines; j++) {
+        c2.beginPath();
+        c2.arc(j * s, i * s, r, 0, Math.PI * 2);
+        c2.fill();
+      }
+    }
+    c2.restore();
+  }
+  return offscreen;
+}
+
+function render() {
+  if (autoAnim) {
+    t += 0.003;
+    // Slowly oscillate angle and offset
+    const animAngle = angle + Math.sin(t * 0.7) * 3.0;
+    const animOx = offsetX + Math.sin(t * 0.4) * 8;
+    const animOy = offsetY + Math.cos(t * 0.3) * 8;
+    draw(animAngle, animOx, animOy);
+  } else {
+    draw(angle, offsetX, offsetY);
+  }
+  rafId = requestAnimationFrame(render);
+}
+
+function draw(angleDeg, ox, oy) {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  const theta = (angleDeg * Math.PI) / 180;
+
+  // Layer 1: base (no rotation, no offset)
+  const layer1 = drawLayer(0, 0, 0);
+  // Layer 2: rotated by theta, offset
+  const layer2 = drawLayer(theta, ox, oy);
+
+  // Multiply blend — where both layers are white, result is white
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = 0.55;
+  ctx.drawImage(layer1, 0, 0);
+  ctx.globalAlpha = 0.55;
+  ctx.drawImage(layer2, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+}
+
+window.addEventListener('resize', () => { resize(); });
+
+resize();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Buddhabrot</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#000;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.85);background:rgba(0,0,0,0.65);padding:6px 14px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.82);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:6px;z-index:100}
+.btn{background:rgba(20,20,20,0.8);border:1px solid #444;color:#ccc;padding:5px 10px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s}
+.btn:hover{border-color:#888;color:#fff}
+.btn.active{border-color:#f7c056;color:#f7c056}
+#progress{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.5);font:14px ui-monospace,monospace;pointer-events:none;text-align:center}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <button class="btn" id="btn-reset" onclick="restart()">Restart</button>
+  <button class="btn active" id="btn-nebula" onclick="toggleNebula()">Nebulabrot</button>
+</div>
+<div id="info">Buddhabrot · orbits of escaping trajectories · click to restart</div>
+<div id="progress" id="progress"></div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const progress = document.getElementById('progress');
+
+let W, H, DPR;
+let buf = null; // density buffers [R, G, B] each Float32Array
+let imageData = null;
+let rafId = null;
+let totalSamples = 0;
+let nebulaMode = true;
+let running = false;
+let maxBright = [0, 0, 0];
+
+// Iteration depths for three color channels (Nebulabrot)
+// R=high depth (long orbits), G=mid, B=short
+const DEPTHS = [2000, 200, 20];
+const SAMPLES_PER_FRAME = 800;
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.floor(canvas.offsetWidth * DPR);
+  H = Math.floor(canvas.offsetHeight * DPR);
+  canvas.width = W;
+  canvas.height = H;
+  restart();
+}
+
+function restart() {
+  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  totalSamples = 0;
+  buf = [new Float32Array(W * H), new Float32Array(W * H), new Float32Array(W * H)];
+  maxBright = [0, 0, 0];
+  imageData = ctx.createImageData(W, H);
+  running = true;
+  rafId = requestAnimationFrame(tick);
+}
+
+// Map complex coordinate to pixel
+function toPixel(re, im) {
+  // view: re in [-2.5, 1.2], im in [-1.6, 1.6] (roughly)
+  const scaleX = W / 3.7;
+  const scaleY = H / 3.2;
+  const scale = Math.min(scaleX, scaleY);
+  const cx = W / 2 - 0.6 * scale; // slight left offset for Mandelbrot shape
+  const cy = H / 2;
+  return [
+    Math.floor(cx + re * scale),
+    Math.floor(cy + im * scale)
+  ];
+}
+
+// Random sample in rectangle [-2.5,1.5] x [-1.5,1.5]
+function randC() {
+  return [Math.random() * 4.0 - 2.5, Math.random() * 3.0 - 1.5];
+}
+
+// Check if c is in main cardioid or period-2 bulb (skip these — they never escape)
+function inCardioidOrBulb(re, im) {
+  const q = (re - 0.25) * (re - 0.25) + im * im;
+  if (q * (q + re - 0.25) < 0.25 * im * im) return true;
+  const r2 = (re + 1) * (re + 1) + im * im;
+  if (r2 < 0.0625) return true;
+  return false;
+}
+
+function sampleOne(channel, maxIter) {
+  let [cre, cim] = randC();
+  if (inCardioidOrBulb(cre, cim)) return false;
+
+  let zre = 0, zim = 0;
+  const orbit = [];
+  let escaped = false;
+
+  for (let i = 0; i < maxIter; i++) {
+    const re2 = zre * zre, im2 = zim * zim;
+    if (re2 + im2 > 4.0) { escaped = true; break; }
+    zim = 2 * zre * zim + cim;
+    zre = re2 - im2 + cre;
+    orbit.push(zre, zim);
+  }
+
+  if (!escaped || orbit.length < 4) return false;
+
+  const b = buf[channel];
+  for (let i = 0; i < orbit.length; i += 2) {
+    const [px, py] = toPixel(orbit[i], orbit[i + 1]);
+    if (px >= 0 && px < W && py >= 0 && py < H) {
+      const idx = py * W + px;
+      b[idx]++;
+      if (b[idx] > maxBright[channel]) maxBright[channel] = b[idx];
+    }
+  }
+  return true;
+}
+
+let renderCounter = 0;
+
+function tick() {
+  if (!running) return;
+
+  for (let s = 0; s < SAMPLES_PER_FRAME; s++) {
+    // Distribute samples across three channels based on cost
+    const ch = s % 3;
+    sampleOne(ch, DEPTHS[ch]);
+  }
+  totalSamples += SAMPLES_PER_FRAME;
+
+  renderCounter++;
+  if (renderCounter % 4 === 0) {
+    renderImage();
+    const mp = Math.min(100, Math.floor(totalSamples / 100000 * 100));
+    if (progress) {
+      if (totalSamples < 8000000) {
+        progress.textContent = `rendering… ${totalSamples.toLocaleString()} samples`;
+        progress.style.display = '';
+      } else {
+        progress.style.display = 'none';
+      }
+    }
+  }
+
+  if (totalSamples < 15000000) {
+    rafId = requestAnimationFrame(tick);
+  } else {
+    running = false;
+    if (progress) progress.style.display = 'none';
+    renderImage();
+    rafId = null;
+  }
+}
+
+function gamma(x) {
+  return Math.sqrt(x); // gamma ~0.5 for nice glow
+}
+
+function renderImage() {
+  const d = imageData.data;
+  const mR = maxBright[0] || 1;
+  const mG = maxBright[1] || 1;
+  const mB = maxBright[2] || 1;
+
+  if (nebulaMode) {
+    for (let i = 0; i < W * H; i++) {
+      const r = gamma(buf[0][i] / mR);
+      const g = gamma(buf[1][i] / mG);
+      const b = gamma(buf[2][i] / mB);
+      const idx = i * 4;
+      d[idx]     = Math.floor(r * 255);
+      d[idx + 1] = Math.floor(g * 255);
+      d[idx + 2] = Math.floor(b * 255);
+      d[idx + 3] = 255;
+    }
+  } else {
+    // Single channel gold/white
+    const m = maxBright[0] || 1;
+    for (let i = 0; i < W * H; i++) {
+      const v = gamma(buf[0][i] / m);
+      const idx = i * 4;
+      d[idx]     = Math.floor(Math.min(1, v * 1.4) * 255);
+      d[idx + 1] = Math.floor(Math.min(1, v * 0.9) * 255);
+      d[idx + 2] = Math.floor(Math.min(1, v * 0.5) * 255);
+      d[idx + 3] = 255;
+    }
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+function toggleNebula() {
+  nebulaMode = !nebulaMode;
+  const btn = document.getElementById('btn-nebula');
+  if (nebulaMode) {
+    btn.textContent = 'Nebulabrot';
+    btn.classList.add('active');
+  } else {
+    btn.textContent = 'Classic';
+    btn.classList.remove('active');
+  }
+  renderImage();
+}
+
+canvas.addEventListener('click', restart);
+window.addEventListener('resize', resize);
+
+resize();
+</script>
+</body>
+</html>

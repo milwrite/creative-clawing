@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-21T06:25:08.667903+00:00",
+  "generated": "2026-03-21T13:41:44.406843+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -277,6 +277,33 @@
       "mobile_optimized": false,
       "inspiration": "Craig Reynolds",
       "year_referenced": 1986
+    },
+    {
+      "id": "buddhabrot",
+      "title": "Buddhabrot",
+      "type": "artifact",
+      "url": "gallery/buddhabrot.html",
+      "page": "artifacts/buddhabrot.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-21",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Escape-path orbit density of the Mandelbrot set — each pixel encodes how many escaping trajectories passed through it. Three-channel Nebulabrot mode maps depth ranges to RGB.",
+      "category": "fractal",
+      "tags": [
+        "buddhabrot",
+        "mandelbrot",
+        "orbit-density",
+        "nebulabrot"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Melinda Green",
+      "year_referenced": 1993
     },
     {
       "id": "burningship",
@@ -1637,6 +1664,33 @@
         "cell",
         "division",
         "organism"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": null,
+      "year_referenced": null
+    },
+    {
+      "id": "moire",
+      "title": "Moiré Patterns",
+      "type": "artifact",
+      "url": "gallery/moire.html",
+      "page": "artifacts/moire.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-21",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Two overlapping periodic grids — lines, circles, or dots — create emergent interference fringes. Drag to offset layers; adjust spacing and rotation angle in real time.",
+      "category": "pattern",
+      "tags": [
+        "moire",
+        "interference",
+        "pattern",
+        "optical"
       ],
       "interactive": true,
       "animated": true,
