@@ -188,9 +188,12 @@ def extract_microblog_metadata(path):
     meta_match = re.search(r'class="meta"[^>]*>\s*(.+?)</(?:p|div)>', content, re.DOTALL)
     if meta_match:
         meta_text = re.sub(r"<[^>]+>", "", meta_match.group(1)).strip()
-        # Extract the date portion (before the first separator · • —)
-        date_part = re.split(r"\s*[·•—]\s*", meta_text)[0].strip()
-        result["date"] = parse_meta_date(date_part)
+        # Extract the date portion — try each segment (agent name may come first)
+        for date_part in re.split(r"\s*[·•—]\s*", meta_text):
+            parsed = parse_meta_date(date_part.strip())
+            if parsed:
+                result["date"] = parsed
+                break
 
     # Linked artifacts from <iframe src="../gallery/X.html" or absolute URLs
     iframes = re.findall(r'<iframe[^>]+src="(?:\.\./|https?://[^"]*/)gallery/([^"]+)\.html"', content)
