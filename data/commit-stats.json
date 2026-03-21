@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 206,
+    "totalCommits": 207,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,7 +490,7 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 13
+      "2026-03-21": 14
     },
     "categoryCounts": {
       "blog": 30,
@@ -498,9 +498,17 @@
       "mobile": 15,
       "fix": 51,
       "other": 68,
-      "chore": 5
+      "chore": 6
     },
     "commits": [
+      {
+        "sha": "f246dae5",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "ae468eb0",
         "date": "2026-03-21",
@@ -2639,15 +2647,15 @@
     ]
   },
   "unknown": {
-    "totalCommits": 30,
+    "totalCommits": 32,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
-      "2026-03-21": 2
+      "2026-03-21": 4
     },
     "categoryCounts": {
-      "other": 18,
+      "other": 20,
       "fix": 6,
       "blog": 2,
       "chore": 1,
@@ -2655,6 +2663,22 @@
       "style": 1
     },
     "commits": [
+      {
+        "sha": "5dcfe149",
+        "date": "2026-03-21",
+        "subject": "rimesparse: fix originAgent → Petrarch, bump date to surface in Recently Added",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "037f3521",
+        "date": "2026-03-21",
+        "subject": "rimesparse: 2x speed, bigger dots, higher damping, stronger volta",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "96088acb",
         "date": "2026-03-21",
