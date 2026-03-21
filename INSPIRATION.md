@@ -75,12 +75,12 @@ Use this to choose adjacent space, not random space.
 | Cellular automata | life, wolfram, langton | Brian's Brain, cyclic CA, Larger than Life |
 | Reaction-diffusion | grayscott, turing | Brusselator, FitzHugh-Nagumo, multi-species variants |
 | Strange attractors | lorenz, clifford | Rössler, Thomas, Dadras, Sprott systems |
-| Fractals | mandelbrot, julia, sierpinski, lsystem, newton | burning ship, buddhabrot, iterated function systems |
+| Fractals | mandelbrot, julia, sierpinski, lsystem, newton, buddhabrot | burning ship, iterated function systems |
 | Physics | pendulum, springwires, boids, montecarlo | N-body gravity, soft-body, fluid, elastic lattices |
 | Noise and flow | flow, scandrift, colorrivers | curl noise, domain warping, spectral synthesis |
 | Geometry and tiling | truchet, voronoi, chinoiserie | Penrose, Wang tiles, hat monotile, hyperbolic tilings |
 | Generative drawing | molnar, schotter, nake, noll | Mohr hypercubes, more Molnár systems, plotter constraints |
-| Pattern and texture | halftone, chladni, phyllotaxis | moiré systems, interference lattices, texture synthesis |
+| Pattern and texture | halftone, chladni, phyllotaxis, moire | interference lattices, texture synthesis |
 | Particle systems | sand, metaballs, mitosis, antcolony, dla | ballistic deposition, slime mold approximations, erosion |
 
 ## Selection criteria
