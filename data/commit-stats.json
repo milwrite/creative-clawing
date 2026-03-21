@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 210,
+    "totalCommits": 211,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,7 +490,7 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 17
+      "2026-03-21": 18
     },
     "categoryCounts": {
       "blog": 30,
@@ -498,9 +498,17 @@
       "mobile": 16,
       "fix": 51,
       "other": 68,
-      "chore": 8
+      "chore": 9
     },
     "commits": [
+      {
+        "sha": "97e00572",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "9ab56245",
         "date": "2026-03-21",
@@ -2671,15 +2679,15 @@
     ]
   },
   "unknown": {
-    "totalCommits": 33,
+    "totalCommits": 36,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
-      "2026-03-21": 5
+      "2026-03-21": 8
     },
     "categoryCounts": {
-      "other": 21,
+      "other": 24,
       "fix": 6,
       "blog": 2,
       "chore": 1,
@@ -2687,6 +2695,30 @@
       "style": 1
     },
     "commits": [
+      {
+        "sha": "884d3332",
+        "date": "2026-03-21",
+        "subject": "entry-26: add contributors array so it surfaces on petrarch.html",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2148c461",
+        "date": "2026-03-21",
+        "subject": "Add sandbox work session schedule for 2026-03-21",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0ae2882e",
+        "date": "2026-03-21",
+        "subject": "rimesparse: nimble (tighter damping, smaller dots) + long trails (fade 0.030→0.012)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "972ffa37",
         "date": "2026-03-21",

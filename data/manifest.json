@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-21T17:48:56.334358+00:00",
+  "generated": "2026-03-21T22:00:59.136571+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -3187,7 +3187,6 @@
       "originAgent": "Petrarch",
       "originConfidence": "confirmed",
       "date": "2026-03-22",
-      "contributors": ["Petrarch"],
       "linkedArtifacts": [
         "rimesparse"
       ],
