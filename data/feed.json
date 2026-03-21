@@ -372,6 +372,13 @@
       "page": "artifacts/quadwalk.html"
     },
     {
+      "id": "rimesparse",
+      "title": "Rime Sparse",
+      "type": "artifact",
+      "url": "gallery/rimesparse.html",
+      "page": "artifacts/rimesparse.html"
+    },
+    {
       "id": "rossler",
       "title": "Rössler Attractor",
       "type": "artifact",
@@ -1016,6 +1023,13 @@
       "type": "artifact",
       "url": "gallery/quadwalk.html",
       "page": "artifacts/quadwalk.html"
+    },
+    {
+      "id": "rimesparse",
+      "title": "Rime Sparse",
+      "type": "artifact",
+      "url": "gallery/rimesparse.html",
+      "page": "artifacts/rimesparse.html"
     },
     {
       "id": "rossler",

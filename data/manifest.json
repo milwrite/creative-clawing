@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-21T13:43:36.217135+00:00",
+  "generated": "2026-03-21T16:40:37.004661+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -2067,6 +2067,23 @@
       "year_referenced": null
     },
     {
+      "id": "rimesparse",
+      "title": "Rime Sparse",
+      "type": "artifact",
+      "url": "gallery/rimesparse.html",
+      "page": "artifacts/rimesparse.html",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-21",
+      "contributors": [
+        "Unknown"
+      ],
+      "optimizations": [],
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
+    },
+    {
       "id": "rossler",
       "title": "Rössler Attractor",
       "type": "artifact",
@@ -2839,33 +2856,6 @@
       "mobile_optimized": false,
       "inspiration": "Stephen Wolfram",
       "year_referenced": 1983
-    },
-    {
-      "id": "rimesparse",
-      "title": "Rime Sparse",
-      "type": "artifact",
-      "url": "gallery/rimesparse.html",
-      "page": "artifacts/rimesparse.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
-      "origin_date": "2026-03-21",
-      "contributors": [
-        "Petrarch"
-      ],
-      "optimizations": [],
-      "description": "Petrarch's Canzoniere — 366 fragments in orbit, pulled toward an unreachable centre with every volta.",
-      "category": "simulation",
-      "tags": [
-        "particles",
-        "collab",
-        "ambient",
-        "flow-field"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": false,
-      "inspiration": "Petrarch",
-      "year_referenced": 1374
     }
   ],
   "microblogs": [

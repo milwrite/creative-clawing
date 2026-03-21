@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 202,
+    "totalCommits": 205,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,41 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 9
+      "2026-03-21": 12
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 37,
       "mobile": 15,
       "fix": 51,
-      "other": 66,
-      "chore": 3
+      "other": 68,
+      "chore": 4
     },
     "commits": [
+      {
+        "sha": "211e062e",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "41892a59",
+        "date": "2026-03-21",
+        "subject": "Update INSPIRATION.md: mark buddhabrot and moire as built",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e35351f9",
+        "date": "2026-03-21",
+        "subject": "Add foundational infrastructure algorithms to inspiration pool",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "599c0b82",
         "date": "2026-03-21",
@@ -2607,14 +2631,15 @@
     ]
   },
   "unknown": {
-    "totalCommits": 28,
+    "totalCommits": 29,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
-      "2026-03-20": 3
+      "2026-03-20": 3,
+      "2026-03-21": 1
     },
     "categoryCounts": {
-      "other": 16,
+      "other": 17,
       "fix": 6,
       "blog": 2,
       "chore": 1,
@@ -2622,6 +2647,14 @@
       "style": 1
     },
     "commits": [
+      {
+        "sha": "fc233273",
+        "date": "2026-03-21",
+        "subject": "add Rime Sparse — Petrarch's Canzoniere as 366-fragment generative piece",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "85bd4f1e",
         "date": "2026-03-20",
