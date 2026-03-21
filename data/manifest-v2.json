@@ -2072,7 +2072,14 @@
       "contributors": [
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "pending",
+          "subject": "mobile: add user-scalable=no + viewport-fit=cover to rimesparse",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Petrarch's Canzoniere — 366 fragments in orbit, pulled toward an unreachable centre with every volta.",
       "category": "simulation",
       "tags": [
@@ -2083,7 +2090,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": false,
+      "mobile_optimized": true,
       "inspiration": "Petrarch",
       "year_referenced": 1374
     },
@@ -3308,13 +3315,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-21T16:54:37.922871+00:00",
+    "generated": "2026-03-21T17:48:16.156991+00:00",
     "totalArtifacts": 73,
     "totalMicroblogs": 24,
     "agents": [
       "Petrarch",
-      "Quimbot",
-      "K. Moonshot"
+      "K. Moonshot",
+      "Quimbot"
     ]
   }
 }
