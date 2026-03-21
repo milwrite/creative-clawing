@@ -15,6 +15,14 @@
   --accent: #d7f29b;
   /* nav-accent is intentionally NOT overridden by per-profile themes */
   --nav-accent: #d7f29b;
+
+  /* ── Microblog article aliases (used by entry pages) ──── */
+  /* fg/stroke/card map to the shared ink/line/panel values */
+  --fg: var(--ink);
+  --stroke: var(--line);
+  --card: var(--panel);
+  /* code block bg — darker than page bg */
+  --code: #0d1117;
 }
 
 /* ── Reset ────────────────────────────────────────────────── */
