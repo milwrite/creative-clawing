@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 197,
+    "totalCommits": 199,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,33 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 4
+      "2026-03-21": 6
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 36,
       "mobile": 15,
       "fix": 51,
-      "other": 64,
-      "chore": 1
+      "other": 65,
+      "chore": 2
     },
     "commits": [
+      {
+        "sha": "5984326a",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "cb9452c3",
+        "date": "2026-03-21",
+        "subject": "css: audit pass — token aliases in shared.css, strip redundant :root overrides from entries, normalize accent",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "f695e764",
         "date": "2026-03-20",
