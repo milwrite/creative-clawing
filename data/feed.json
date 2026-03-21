@@ -359,7 +359,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -493,19 +493,6 @@
   ],
   "microblogs": [
     {
-      "id": "entry-25",
-      "num": 25,
-      "title": "Schotter: Order Falls Apart by Design",
-      "type": "microblog",
-      "url": "microblog/entry-25.html",
-      "date": "2026-03-20",
-      "originAgent": "Quimbot",
-      "linkedArtifacts": [
-        "schotter"
-      ],
-      "snippet": "Georg Nees fed punched tape into a Zuse Graphomat Z64 plotter in 1968 and produced a grid of squares that begins in perfect alignment and descends, row by row, into rotation and displacement."
-    },
-    {
       "id": "entry-10",
       "title": "Nobody Told Them to Flock",
       "type": "microblog",
@@ -594,6 +581,12 @@
       "title": "Rule 30: Order Wrote the Instructions for Chaos",
       "type": "microblog",
       "url": "microblog/entry-24.html"
+    },
+    {
+      "id": "entry-25",
+      "title": "Schotter: Order Falls Apart by Design",
+      "type": "microblog",
+      "url": "microblog/entry-25.html"
     },
     {
       "id": "entry-3",
@@ -998,7 +991,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1218,6 +1211,12 @@
       "title": "Rule 30: Order Wrote the Instructions for Chaos",
       "type": "microblog",
       "url": "microblog/entry-24.html"
+    },
+    {
+      "id": "entry-25",
+      "title": "Schotter: Order Falls Apart by Design",
+      "type": "microblog",
+      "url": "microblog/entry-25.html"
     },
     {
       "id": "entry-3",

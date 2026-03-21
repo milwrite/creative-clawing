@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 189,
+    "totalCommits": 197,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -489,16 +489,82 @@
       "2026-03-17": 6,
       "2026-03-18": 16,
       "2026-03-19": 4,
-      "2026-03-20": 11
+      "2026-03-20": 15,
+      "2026-03-21": 4
     },
     "categoryCounts": {
-      "blog": 29,
+      "blog": 30,
       "artifact": 36,
       "mobile": 15,
-      "fix": 48,
-      "other": 61
+      "fix": 51,
+      "other": 64,
+      "chore": 1
     },
     "commits": [
+      {
+        "sha": "f695e764",
+        "date": "2026-03-20",
+        "subject": "microblog: add entry-24 — Rule 30: Order Wrote the Instructions for Chaos",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "f489154c",
+        "date": "2026-03-20",
+        "subject": "fix entry-25 nav: a.nav-brand + correct kicker text",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "65536932",
+        "date": "2026-03-20",
+        "subject": "fix: nav brand/kicker on all microblog entries; sort by date; fill missing dates in manifest",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "d8f154a5",
+        "date": "2026-03-20",
+        "subject": "fix: delete adverb+simple opening sentences in entries 9, 14, 18",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "7ebb2cdd",
+        "date": "2026-03-21",
+        "subject": "fix: sort blog cards by date on index (match microblogs.html)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "12035c3c",
+        "date": "2026-03-21",
+        "subject": "chore: GH Actions auto-manifest on gallery/microblog push; fix meta date parsing",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "eca8ed54",
+        "date": "2026-03-21",
+        "subject": "test: manifest automation unit tests (25 tests, all passing)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ffe50bb7",
+        "date": "2026-03-21",
+        "subject": "css: full audit pass — tokens, dead rules, shared component consolidation",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "8fb8a5c7",
         "date": "2026-03-20",
@@ -2501,20 +2567,37 @@
     ]
   },
   "unknown": {
-    "totalCommits": 26,
+    "totalCommits": 28,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
-      "2026-03-20": 1
+      "2026-03-20": 3
     },
     "categoryCounts": {
       "other": 16,
       "fix": 6,
-      "blog": 1,
+      "blog": 2,
       "chore": 1,
-      "refactor": 2
+      "refactor": 2,
+      "style": 1
     },
     "commits": [
+      {
+        "sha": "85bd4f1e",
+        "date": "2026-03-20",
+        "subject": "microblog: entry-25 — Schotter: Order Falls Apart by Design (Georg Nees 1968)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "de32860e",
+        "date": "2026-03-20",
+        "subject": "style: remove 'the algorithm is disarmingly simple' filler from entry-25",
+        "categories": [
+          "style"
+        ]
+      },
       {
         "sha": "ee78078b",
         "date": "2026-03-20",
