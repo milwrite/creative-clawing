@@ -21,7 +21,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  margin: 0; padding: 0;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -34,7 +33,7 @@ html, body {
   background:
     linear-gradient(var(--soft) 1px, transparent 1px) 0 0 / 30px 30px,
     linear-gradient(90deg, var(--soft) 1px, transparent 1px) 0 0 / 30px 30px,
-    #050505;
+    var(--bg);
   min-height: 100vh;
 }
 
