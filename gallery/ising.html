@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjZmZmIi8+CiAgPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIGZpbGw9IiNmZmYiLz4KICA8cmVjdCB4PSI0IiB5PSIxNyIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjMjIyIi8+CiAgPHJlY3QgeD0iMTciIHk9IjQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iIzIyMiIvPgo8L3N2Zz4="/>
+<title>Ising Model</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace}
+canvas{display:block;touch-action:none}
+#wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* back button */
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+/* controls */
+#ui{position:fixed;bottom:0;left:0;right:0;padding:10px max(env(safe-area-inset-right),14px) calc(14px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),14px);background:linear-gradient(transparent,rgba(0,0,0,0.88) 30%);display:flex;flex-direction:column;gap:8px;z-index:100}
+.ui-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lbl{color:#888;font-size:11px;min-width:54px}
+.val{color:#bbb;font-size:11px;min-width:28px;text-align:right}
+input[type=range]{flex:1;min-width:80px;max-width:220px;accent-color:#e87040;height:20px;cursor:pointer}
+.btn{background:rgba(20,20,20,0.8);border:1px solid #444;color:#ccc;padding:6px 12px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;min-height:32px;min-width:44px}
+.btn:hover{border-color:#888;color:#fff}
+.btn.active{border-color:#e87040;color:#e87040}
+/* info strip */
+#stats{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));color:rgba(255,255,255,0.6);font:11px ui-monospace,monospace;pointer-events:none;line-height:1.7}
+/* phase label */
+#phase{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font:bold 13px ui-monospace,monospace;color:rgba(255,255,255,0.55);pointer-events:none;text-align:center;transition:opacity 1s;opacity:0;letter-spacing:.08em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<div id="wrap"><canvas id="c"></canvas></div>
+
+<div id="stats">
+  <div>T = <span id="t-val">2.27</span></div>
+  <div>M = <span id="m-val">0.00</span></div>
+  <div><span id="step-val">0</span> sweeps</div>
+</div>
+
+<div id="phase"></div>
+
+<div id="ui">
+  <div class="ui-row">
+    <span class="lbl">temp</span>
+    <input type="range" id="sl-temp" min="0.5" max="5.0" step="0.02" value="2.27"/>
+    <span class="val" id="lbl-temp">2.27</span>
+  </div>
+  <div class="ui-row">
+    <span class="lbl">speed</span>
+    <input type="range" id="sl-speed" min="1" max="30" step="1" value="8"/>
+    <span class="val" id="lbl-speed">8</span>
+    <button class="btn" id="btn-reset" onclick="resetGrid()">Reset</button>
+    <button class="btn active" id="btn-color" onclick="toggleColor()">Color</button>
+    <button class="btn" id="btn-sweep" onclick="toggleSweepMode()">Random</button>
+  </div>
+</div>
+
+<script>
+// ── config ──────────────────────────────────────────────
+const Tc = 2.269; // Ising critical temperature (J=1, kB=1)
+let N = 120;      // grid size — adjusted on resize
+
+// ── state ────────────────────────────────────────────────
+let grid, newGrid;
+let T = 2.27;
+let sweepsPerFrame = 8;
+let sweepCount = 0;
+let colorMode = true;
+let checkerboardSweep = false; // random site vs checkerboard
+let rafId;
+let W, H, cellPx;
+
+// ── init ─────────────────────────────────────────────────
+function makeGrid(randomize = true) {
+  const g = new Int8Array(N * N);
+  for (let i = 0; i < N * N; i++) g[i] = randomize ? (Math.random() < 0.5 ? 1 : -1) : 1;
+  return g;
+}
+
+function resetGrid() {
+  sweepCount = 0;
+  grid = makeGrid(true);
+  document.getElementById('step-val').textContent = '0';
+  showPhase();
+}
+
+// ── Metropolis-Hastings sweep ─────────────────────────────
+function metropolisSweep() {
+  const beta = 1.0 / T;
+  // N*N random site flips per sweep
+  for (let k = 0; k < N * N; k++) {
+    const i = (Math.random() * N) | 0;
+    const j = (Math.random() * N) | 0;
+    const idx = i * N + j;
+
+    // periodic boundary conditions
+    const up    = ((i - 1 + N) % N) * N + j;
+    const down  = ((i + 1) % N)     * N + j;
+    const left  = i * N + ((j - 1 + N) % N);
+    const right = i * N + ((j + 1) % N);
+
+    const s = grid[idx];
+    const neighborSum = grid[up] + grid[down] + grid[left] + grid[right];
+    const dE = 2 * s * neighborSum; // ΔE for flipping s
+
+    if (dE <= 0 || Math.random() < Math.exp(-beta * dE)) {
+      grid[idx] = -s;
+    }
+  }
+}
+
+// ── magnetization ────────────────────────────────────────
+function magnetization() {
+  let sum = 0;
+  for (let i = 0; i < N * N; i++) sum += grid[i];
+  return Math.abs(sum / (N * N));
+}
+
+// ── rendering ────────────────────────────────────────────
+function getColor(s) {
+  if (!colorMode) return s === 1 ? '#f0ece0' : '#111';
+  // Color mode: map spin to warm/cool palette
+  // spin +1 → warm orange-white, spin -1 → deep blue-purple
+  return s === 1 ? '#e87040' : '#2a4880';
+}
+
+function draw() {
+  const ctx = document.getElementById('c').getContext('2d');
+  // Use ImageData for speed
+  const imageData = ctx.createImageData(W, H);
+  const d = imageData.data;
+
+  const warm = [232, 112, 64];   // +1 spin
+  const cool = [42, 72, 128];    // -1 spin
+
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      const s = grid[i * N + j];
+      const col = colorMode ? (s === 1 ? warm : cool) : (s === 1 ? [240,236,224] : [20,20,20]);
+
+      const x0 = Math.round(j * cellPx);
+      const x1 = Math.round((j + 1) * cellPx);
+      const y0 = Math.round(i * cellPx);
+      const y1 = Math.round((i + 1) * cellPx);
+
+      for (let py = y0; py < y1; py++) {
+        for (let px = x0; px < x1; px++) {
+          const off = (py * W + px) * 4;
+          d[off]   = col[0];
+          d[off+1] = col[1];
+          d[off+2] = col[2];
+          d[off+3] = 255;
+        }
+      }
+    }
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+// ── phase label ──────────────────────────────────────────
+function showPhase() {
+  const el = document.getElementById('phase');
+  const label = T < Tc - 0.15 ? 'ferromagnetic' : T > Tc + 0.15 ? 'paramagnetic' : 'critical';
+  el.textContent = label;
+  el.style.opacity = '1';
+  clearTimeout(el._to);
+  el._to = setTimeout(() => el.style.opacity = '0', 2000);
+}
+
+// ── animation loop ────────────────────────────────────────
+function loop() {
+  for (let s = 0; s < sweepsPerFrame; s++) metropolisSweep();
+  sweepCount += sweepsPerFrame;
+  draw();
+  document.getElementById('t-val').textContent = T.toFixed(2);
+  document.getElementById('m-val').textContent = magnetization().toFixed(3);
+  document.getElementById('step-val').textContent = sweepCount;
+  rafId = requestAnimationFrame(loop);
+}
+
+// ── resize ────────────────────────────────────────────────
+function resize() {
+  const canvas = document.getElementById('c');
+  const dpr = window.devicePixelRatio || 1;
+  const container = document.getElementById('wrap');
+  const cw = container.clientWidth;
+  const ch = container.clientHeight;
+  const side = Math.min(cw, ch - (window.self === window.top ? 100 : 0));
+  const px = Math.max(1, Math.floor(side / N));
+  cellPx = px;
+  W = N * px;
+  H = N * px;
+  canvas.width  = W;
+  canvas.height = H;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  // Recalculate N to fill available space better
+  const targetN = Math.floor(side / 3); // 3px per cell target
+  const newN = Math.min(200, Math.max(60, targetN));
+  if (newN !== N) {
+    N = newN;
+    cellPx = Math.max(1, Math.floor(side / N));
+    W = N * cellPx;
+    H = N * cellPx;
+    canvas.width  = W;
+    canvas.height = H;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    resetGrid();
+  }
+}
+
+// ── controls ──────────────────────────────────────────────
+function toggleColor() {
+  colorMode = !colorMode;
+  const btn = document.getElementById('btn-color');
+  btn.classList.toggle('active', colorMode);
+}
+
+function toggleSweepMode() {
+  checkerboardSweep = !checkerboardSweep;
+  const btn = document.getElementById('btn-sweep');
+  btn.textContent = checkerboardSweep ? 'Checker' : 'Random';
+  btn.classList.toggle('active', checkerboardSweep);
+}
+
+document.getElementById('sl-temp').addEventListener('input', function() {
+  const prev = T;
+  T = parseFloat(this.value);
+  document.getElementById('lbl-temp').textContent = T.toFixed(2);
+  if (Math.abs(T - prev) > 0.3) showPhase();
+});
+
+document.getElementById('sl-speed').addEventListener('input', function() {
+  sweepsPerFrame = parseInt(this.value);
+  document.getElementById('lbl-speed').textContent = sweepsPerFrame;
+});
+
+// ── touch: drag to change temperature ─────────────────────
+let touchStartX = null;
+let tempAtTouchStart = null;
+const canvas = document.getElementById('c');
+canvas.addEventListener('pointerdown', e => {
+  touchStartX = e.clientX;
+  tempAtTouchStart = T;
+  canvas.setPointerCapture(e.pointerId);
+}, {passive: true});
+canvas.addEventListener('pointermove', e => {
+  if (touchStartX === null) return;
+  const dx = (e.clientX - touchStartX) / canvas.clientWidth;
+  const newT = Math.max(0.5, Math.min(5.0, tempAtTouchStart + dx * 4.5));
+  T = Math.round(newT * 50) / 50;
+  document.getElementById('sl-temp').value = T;
+  document.getElementById('lbl-temp').textContent = T.toFixed(2);
+}, {passive: true});
+canvas.addEventListener('pointerup', () => {
+  showPhase();
+  touchStartX = null;
+}, {passive: true});
+canvas.addEventListener('pointercancel', () => { touchStartX = null; }, {passive: true});
+
+// ── boot ──────────────────────────────────────────────────
+window.addEventListener('resize', () => { resize(); });
+resize();
+grid = makeGrid(true);
+showPhase();
+loop();
+</script>
+</body>
+</html>
