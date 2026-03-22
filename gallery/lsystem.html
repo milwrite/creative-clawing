@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<style>.back,.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
-<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>L-System Explorer</title>
@@ -18,7 +18,7 @@ canvas{display:block;flex:1;width:100%}
 .panel .right{display:flex;gap:6px}
 .panel button{background:rgba(255,255,255,0.06);border:1px solid #333;color:#999;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
 .panel button:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:#555}
-.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
 .back:hover{border-color:#666;color:#fff}
 .in-iframe .back,.in-iframe .panel{display:none}
 </style>

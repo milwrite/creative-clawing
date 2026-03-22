@@ -15,7 +15,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .overlay{position:fixed;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.5);border:1px solid #1f3c44;color:#b8fff4;border-radius:8px;padding:8px 12px;font-size:12px;backdrop-filter:blur(5px)}
 #info{bottom:14px;max-width:92vw;text-align:center}
 #mic{top:14px;cursor:pointer}
-.back-btn{position:fixed;top:14px;right:14px;color:#b8fff4;text-decoration:none;border:1px solid #1f3c44;border-radius:8px;padding:8px 12px;background:rgba(0,0,0,.5);font-size:12px}
+.back-btn{position:fixed;top:max(14px, env(safe-area-inset-top));right:max(14px, env(safe-area-inset-right));color:#b8fff4;text-decoration:none;border:1px solid #1f3c44;border-radius:8px;padding:8px 12px;background:rgba(0,0,0,.5);font-size:12px}
 </style>
 </head>
 <body>

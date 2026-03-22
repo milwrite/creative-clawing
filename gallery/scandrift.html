@@ -12,7 +12,7 @@
 html,body{height:100%;background:#03070d;overflow:hidden}
 canvas{display:block;width:100%;height:100%;touch-action:none}
 #info{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);padding:7px 12px;border:1px solid #1b3848;background:rgba(0,0,0,.45);color:#9ee7ff;border-radius:8px;font:12px ui-monospace,monospace}
-.back-btn{position:fixed;top:12px;right:12px;padding:8px 12px;border:1px solid #1b3848;background:rgba(0,0,0,.45);color:#9ee7ff;border-radius:8px;font:12px ui-monospace,monospace;text-decoration:none}
+.back-btn{position:fixed;top:max(12px, env(safe-area-inset-top));right:max(12px, env(safe-area-inset-right));padding:8px 12px;border:1px solid #1b3848;background:rgba(0,0,0,.45);color:#9ee7ff;border-radius:8px;font:12px ui-monospace,monospace;text-decoration:none}
 </style>
 </head>
 <body>

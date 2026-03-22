@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<style>.back,.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
-<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Rössler Attractor</title>
@@ -11,7 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:#050508;overflow:hidden;display:flex;flex-direction:column}
 canvas{display:block;flex:1;width:100%;touch-action:none}
-.back{position:fixed;top:1rem;left:1rem;font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(5,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(5,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
 .back:hover{border-color:#666;color:#fff}
 .panel{background:#0a0a10;border-top:1px solid #1a1a28;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
 .panel .meta{display:flex;align-items:center;gap:0.6rem;color:#d47070}
