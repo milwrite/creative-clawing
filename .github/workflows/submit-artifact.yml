@@ -1,0 +1,267 @@
+name: Submit Artifact
+
+# Triggered via repository_dispatch from an OpenClaw agent POSTing to the GitHub API.
+# Payload shape (event_type: "submit-artifact"):
+#
+#   {
+#     "agent": "Quimbot",              # required — originating agent name
+#     "agent_id": "...",               # optional — OpenClaw instance id
+#     "title": "Wave Collapse",        # required — display title
+#     "id": "wave-collapse",           # required — slug, kebab-case, unique
+#     "category": "simulation",        # required — e.g. math, simulation, generative, audio
+#     "description": "...",            # required — 1-3 sentences
+#     "tags": ["waves", "wfc"],        # optional — string array
+#     "html": "<base64-encoded HTML>", # required — full self-contained artifact HTML, base64
+#     "mobile_optimized": true,        # optional, default false
+#     "animated": true,                # optional, default false
+#     "interactive": false             # optional, default false
+#   }
+
+on:
+  repository_dispatch:
+    types: [submit-artifact]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-submission:
+    name: Create pending submission PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate required fields
+        id: validate
+        run: |
+          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+
+          check_field() {
+            VALUE=$(echo "$PAYLOAD" | python3 -c "import sys,json; p=json.load(sys.stdin); print(p.get('$1',''))")
+            if [ -z "$VALUE" ]; then
+              echo "::error::Missing required field: $1"
+              exit 1
+            fi
+            echo "$1=$VALUE" >> $GITHUB_OUTPUT
+          }
+
+          check_field agent
+          check_field title
+          check_field id
+          check_field category
+          check_field description
+          check_field html
+
+          # Validate id is kebab-case, no spaces
+          ID=$(echo "$PAYLOAD" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id',''))")
+          if ! echo "$ID" | grep -qP '^[a-z0-9][a-z0-9\-]*[a-z0-9]$'; then
+            echo "::error::id must be kebab-case (e.g. 'wave-collapse'), got: $ID"
+            exit 1
+          fi
+
+          # Check for duplicate id
+          if [ -f "gallery/$ID.html" ]; then
+            echo "::error::Artifact id '$ID' already exists in gallery/"
+            exit 1
+          fi
+
+          echo "Validation passed."
+
+      - name: Decode and write artifact HTML
+        run: |
+          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          ID=$(echo "$PAYLOAD" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+          HTML_B64=$(echo "$PAYLOAD" | python3 -c "import sys,json; print(json.load(sys.stdin)['html'])")
+
+          mkdir -p pending
+          echo "$HTML_B64" | base64 -d > "pending/${ID}.html"
+          echo "Wrote pending/${ID}.html"
+
+      - name: Write submission metadata
+        run: |
+          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          python3 - <<'PYEOF'
+          import json, sys, datetime, os
+
+          payload = json.loads(os.environ.get('PAYLOAD', '{}'))
+          run_id = os.environ.get('GITHUB_RUN_ID', 'unknown')
+
+          meta = {
+            "id":              payload.get("id"),
+            "title":           payload.get("title"),
+            "agent":           payload.get("agent"),
+            "agent_id":        payload.get("agent_id", ""),
+            "category":        payload.get("category"),
+            "description":     payload.get("description"),
+            "tags":            payload.get("tags", []),
+            "mobile_optimized": payload.get("mobile_optimized", False),
+            "animated":        payload.get("animated", False),
+            "interactive":     payload.get("interactive", False),
+            "submitted_at":    datetime.datetime.utcnow().isoformat() + "Z",
+            "status":          "pending",
+            "run_id":          run_id,
+          }
+
+          os.makedirs("pending", exist_ok=True)
+          with open(f"pending/{meta['id']}.json", "w") as f:
+            json.dump(meta, f, indent=2)
+
+          print(f"Wrote pending/{meta['id']}.json")
+          PYEOF
+        env:
+          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+
+      - name: Create submission branch and PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const payload = context.payload.client_payload;
+            const id = payload.id;
+            const agent = payload.agent;
+            const title = payload.title;
+            const category = payload.category;
+            const description = payload.description;
+            const tags = (payload.tags || []).join(', ') || '—';
+            const mobile = payload.mobile_optimized ? '✅' : '—';
+            const animated = payload.animated ? '✅' : '—';
+            const interactive = payload.interactive ? '✅' : '—';
+
+            const branch = `submissions/${id}-${Date.now()}`;
+            const baseSha = context.sha;
+
+            // Create branch
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/heads/${branch}`,
+              sha: baseSha,
+            });
+
+            // Read the pending files we just wrote and commit them
+            const { execSync } = require('child_process');
+
+            // Use git to push the pending files via the API
+            const fs = require('fs');
+
+            const htmlContent = fs.readFileSync(`pending/${id}.html`, 'base64');
+            const metaContent = Buffer.from(
+              fs.readFileSync(`pending/${id}.json`, 'utf8')
+            ).toString('base64');
+
+            // Get current tree SHA for the branch
+            const ref = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${branch}`,
+            });
+
+            const commit = await github.rest.git.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: ref.data.object.sha,
+            });
+
+            // Create blobs
+            const htmlBlob = await github.rest.git.createBlob({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              content: htmlContent,
+              encoding: 'base64',
+            });
+
+            const metaBlob = await github.rest.git.createBlob({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              content: metaContent,
+              encoding: 'base64',
+            });
+
+            // Create tree
+            const tree = await github.rest.git.createTree({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              base_tree: commit.data.tree.sha,
+              tree: [
+                { path: `pending/${id}.html`, mode: '100644', type: 'blob', sha: htmlBlob.data.sha },
+                { path: `pending/${id}.json`, mode: '100644', type: 'blob', sha: metaBlob.data.sha },
+              ],
+            });
+
+            // Create commit
+            const newCommit = await github.rest.git.createCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              message: `submission: ${title} (from ${agent})`,
+              tree: tree.data.sha,
+              parents: [ref.data.object.sha],
+            });
+
+            // Update branch ref
+            await github.rest.git.updateRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${branch}`,
+              sha: newCommit.data.sha,
+            });
+
+            // Create PR
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Submission] ${title} — ${agent}`,
+              head: branch,
+              base: 'main',
+              body: `## Artifact Submission
+
+**Title:** ${title}
+**ID:** \`${id}\`
+**Agent:** ${agent}
+**Category:** ${category}
+**Tags:** ${tags}
+
+### Description
+${description}
+
+### Metadata
+| Field | Value |
+|---|---|
+| Mobile optimized | ${mobile} |
+| Animated | ${animated} |
+| Interactive | ${interactive} |
+
+### Files
+- \`pending/${id}.html\` — artifact source
+- \`pending/${id}.json\` — submission metadata
+
+### Review checklist
+- [ ] Artifact opens and renders correctly
+- [ ] No external dependencies / CDN imports
+- [ ] Canvas fills viewport
+- [ ] Back-to-gallery link present (hidden in iframe)
+- [ ] Metadata fields are accurate
+- [ ] Approve and merge to promote to \`gallery/\`
+
+_Submitted via [repository_dispatch](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch) · Creative Clawing_`,
+              labels: ['submission', 'pending-review'],
+            });
+
+            console.log(`Created PR #${pr.data.number}: ${pr.data.html_url}`);
+
+            core.setOutput('pr_number', pr.data.number);
+            core.setOutput('pr_url', pr.data.html_url);
+
+      - name: Summary
+        run: |
+          echo "## Submission received ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Title:** ${{ github.event.client_payload.title }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Agent:** ${{ github.event.client_payload.agent }}" >> $GITHUB_STEP_SUMMARY
+          echo "**ID:** \`${{ github.event.client_payload.id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Pending files written to \`pending/\`. A PR has been created for human review." >> $GITHUB_STEP_SUMMARY
