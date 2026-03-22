@@ -111,6 +111,53 @@ This file should get better over time.
 
 ---
 
+## Pathway: Scientific phenomena as entry points
+
+Most of the gallery starts from the algorithm and derives the image. This pathway inverts that. Start from a real physical phenomenon that has already been visualized scientifically — a phenomenon that humans can recognize on sight — and then trace back to the simulation or mathematical model underneath it.
+
+The selection test: could a non-programmer look at this and say "I've seen that in nature"? If yes, and if the model is tractable in a browser, it belongs here.
+
+### Fluid and wave dynamics
+- **Navier-Stokes fluid simulation** — incompressible flow; Jos Stam's stable fluids paper (1999) is the canonical browser-safe implementation. Smoke, ink in water, thermal plumes.
+- **Shallow water equations** — 2D wave propagation; ripples from a dropped stone, interference from two sources, shoaling near a boundary. Jos Stam again; also Matthias Müller (2010).
+- **Kelvin-Helmholtz instability** — the rolling vortices that appear when two fluids move at different speeds; visible in cloud formations and Jupiter's bands. A 2D Euler solver with a velocity shear produces it cleanly.
+- **Rayleigh-Bénard convection** — heat-driven circulation cells; the honeycomb patterns in heated oil. Lattice-Boltzmann methods work well in-browser.
+- **Acoustic resonance / Chladni figures** — already in the gallery (chladni), but cymatics extensions (3D surface modes, Faraday waves) are open.
+
+### Biological and ecological dynamics
+- **SIR epidemic models** — compartmental differential equations for infection spread; show R₀ above and below 1, herd immunity threshold, wave shapes. Referenced constantly post-2020; well-grounded academically.
+- **Turing morphogenesis** — already have turing in the gallery. Adjacent: Gierer-Meinhardt activator-inhibitor (spots vs stripes selection), and Kondo-Asai fish skin models from the 1995 paper.
+- **Predator-prey (Lotka-Volterra)** — population oscillations on a phase plane; the rabbit-fox cycle. The phase portrait is the interesting visualization, not the time series.
+- **Eden growth model** — cells attach to the boundary of a cluster at random. Produces rough, organic-looking colony edges. Related to DLA but biologically motivated.
+- **Schelling segregation model** — Thomas Schelling's 1971 paper showing that mild individual preference for similar neighbors produces strong macro-level segregation. Grid-based; simple to implement; historically significant.
+
+### Electromagnetic and optical phenomena
+- **Electric field lines and equipotentials** — place charges on a canvas and trace gradient lines. The field geometry changes dramatically as charges move.
+- **Interference and diffraction patterns** — double-slit experiment rendered as a 2D wavefield; show how slit width, separation, and wavelength shift the fringe pattern. Connects directly to Fourier optics.
+- **Lissajous curves and oscilloscope art** — two sinusoids on perpendicular axes; the ratio of frequencies determines the shape. Classic visualization of phase relationships.
+- **Magnetic field of current loops** — Biot-Savart law numerically integrated; helmholtz coils, solenoids, magnetic dipoles. Connects to how MRI machines work.
+
+### Geophysical and astronomical
+- **N-body gravity** — already have montecarlo adjacent to this; direct N-body is open. Show orbit emergence, the three-body problem's chaos, Lagrange points.
+- **Orbital mechanics / Kepler ellipses** — animate conic sections from the vis-viva equation; show how eccentricity, semimajor axis, and true anomaly relate.
+- **Perlin/simplex noise as terrain** — noise is in the gallery (scandrift, colorrivers); heightmap-based terrain with erosion simulation is open. Show hydraulic erosion carving valleys over time.
+- **Tidal forcing and resonance** — standing wave nodes in a rectangular basin; why the Bay of Fundy has 16-meter tides. The resonance frequency matches the forcing frequency.
+
+### Materials and statistical physics
+- **Ising model** — lattice of spins, each flipping based on neighbor agreement and temperature. Below the critical temperature, large ferromagnetic domains form. The phase transition is the visual payoff.
+- **Percolation theory** — fill a grid randomly and ask when a connected path spans the lattice. Right at the threshold, fractal cluster structure appears. Visually striking and theoretically deep.
+- **Random walk / Brownian motion** — already have DLA which uses this; the 2D path ensemble and its statistical properties (MSD, return probability) are open.
+- **Crystal growth / Snowflake simulation** — Reiter's cellular automaton (1992) for dendritic ice growth. Six-fold symmetry emerges from local rules and diffusion-limited attachment.
+
+### Reference sources for this pathway
+- Jos Stam, *Stable Fluids* (1999): <https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/ns.pdf>
+- Philip Ball, *The Self-Made Tapestry: Pattern Formation in Nature* (1999)
+- Complexity Explorables (SIR, Schelling, Ising): <https://www.complexity-explorables.org>
+- Kondo and Asai, *A reaction-diffusion wave on the skin of the marine angelfish* (1995): *Nature* 376, 765–768
+- Thomas Schelling, *Dynamic Models of Segregation* (1971): *Journal of Mathematical Sociology* 1(2), 143–186
+
+---
+
 ## Foundational infrastructure algorithms — visualization pool
 
 These are algorithms and mathematical formulations chronicled as key steps in the development of digital infrastructure. Good for staying fresh and avoiding drift back toward pure mathematical art.
