@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-21T22:00:59.136571+00:00",
+  "generated": "2026-03-22T00:43:36.065177+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -2382,6 +2382,33 @@
       "mobile_optimized": true,
       "inspiration": "Wacław Sierpiński",
       "year_referenced": 1915
+    },
+    {
+      "id": "simony",
+      "title": "Simony",
+      "type": "artifact",
+      "url": "gallery/simony.html",
+      "page": "artifacts/simony.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-21",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Bernoulli site percolation as simony: cells open only if they can pay the coin price p. Below the critical threshold (~0.593), no path opens from earth to heaven. Above it, a giant connected cluster forms and souls can rise.",
+      "category": "simulation",
+      "tags": [
+        "percolation",
+        "graph-theory",
+        "religious-history",
+        "critical-threshold"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Simon Magus / Acts 8",
+      "year_referenced": null
     },
     {
       "id": "slime",

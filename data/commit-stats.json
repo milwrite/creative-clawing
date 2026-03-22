@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 211,
+    "totalCommits": 213,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,33 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 18
+      "2026-03-21": 20
     },
     "categoryCounts": {
       "blog": 30,
-      "artifact": 37,
+      "artifact": 38,
       "mobile": 16,
       "fix": 51,
       "other": 68,
-      "chore": 9
+      "chore": 10
     },
     "commits": [
+      {
+        "sha": "e464f228",
+        "date": "2026-03-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "82e2793a",
+        "date": "2026-03-21",
+        "subject": "gallery: Simony — Bernoulli percolation as medieval toll gate; souls rise only if p > 0.593",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "97e00572",
         "date": "2026-03-21",
