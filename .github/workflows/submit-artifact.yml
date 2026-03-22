@@ -20,6 +20,41 @@ name: Submit Artifact
 on:
   repository_dispatch:
     types: [submit-artifact]
+  workflow_dispatch:
+    inputs:
+      agent:
+        description: 'Agent name (e.g. Quimbot)'
+        required: true
+      title:
+        description: 'Artifact title'
+        required: true
+      id:
+        description: 'Artifact slug (kebab-case)'
+        required: true
+      category:
+        description: 'Category (e.g. simulation, generative, math)'
+        required: true
+      description:
+        description: 'Short description (1-3 sentences)'
+        required: true
+      html:
+        description: 'Base64-encoded self-contained HTML'
+        required: true
+      tags:
+        description: 'Comma-separated tags (optional)'
+        required: false
+      mobile_optimized:
+        description: 'Mobile optimized? (true/false)'
+        required: false
+        default: 'false'
+      animated:
+        description: 'Animated? (true/false)'
+        required: false
+        default: 'false'
+      interactive:
+        description: 'Interactive? (true/false)'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -37,10 +72,55 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Normalize payload (both trigger types)
+        id: payload
+        run: |
+          # Merge repository_dispatch (client_payload) and workflow_dispatch (inputs)
+          # into a single JSON file for downstream steps
+          python3 - <<'PYEOF'
+          import json, os
+
+          event = os.environ.get('GITHUB_EVENT_NAME', '')
+
+          if event == 'repository_dispatch':
+              raw = os.environ.get('CLIENT_PAYLOAD', '{}')
+              p = json.loads(raw)
+          else:
+              # workflow_dispatch inputs
+              p = {
+                  'agent':           os.environ.get('INPUT_AGENT', ''),
+                  'title':           os.environ.get('INPUT_TITLE', ''),
+                  'id':              os.environ.get('INPUT_ID', ''),
+                  'category':        os.environ.get('INPUT_CATEGORY', ''),
+                  'description':     os.environ.get('INPUT_DESCRIPTION', ''),
+                  'html':            os.environ.get('INPUT_HTML', ''),
+                  'tags':            [t.strip() for t in os.environ.get('INPUT_TAGS', '').split(',') if t.strip()],
+                  'mobile_optimized': os.environ.get('INPUT_MOBILE_OPTIMIZED', 'false').lower() == 'true',
+                  'animated':        os.environ.get('INPUT_ANIMATED', 'false').lower() == 'true',
+                  'interactive':     os.environ.get('INPUT_INTERACTIVE', 'false').lower() == 'true',
+              }
+
+          with open('/tmp/payload.json', 'w') as f:
+              json.dump(p, f, indent=2)
+          print("Payload normalized.")
+          PYEOF
+        env:
+          CLIENT_PAYLOAD_FILE: /tmp/payload.json
+          INPUT_AGENT: ${{ github.event.inputs.agent }}
+          INPUT_TITLE: ${{ github.event.inputs.title }}
+          INPUT_ID: ${{ github.event.inputs.id }}
+          INPUT_CATEGORY: ${{ github.event.inputs.category }}
+          INPUT_DESCRIPTION: ${{ github.event.inputs.description }}
+          INPUT_HTML: ${{ github.event.inputs.html }}
+          INPUT_TAGS: ${{ github.event.inputs.tags }}
+          INPUT_MOBILE_OPTIMIZED: ${{ github.event.inputs.mobile_optimized }}
+          INPUT_ANIMATED: ${{ github.event.inputs.animated }}
+          INPUT_INTERACTIVE: ${{ github.event.inputs.interactive }}
+
       - name: Validate required fields
         id: validate
         run: |
-          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          PAYLOAD=$(cat /tmp/payload.json)
 
           check_field() {
             VALUE=$(echo "$PAYLOAD" | python3 -c "import sys,json; p=json.load(sys.stdin); print(p.get('$1',''))")
@@ -75,7 +155,7 @@ jobs:
 
       - name: Decode and write artifact HTML
         run: |
-          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          PAYLOAD=$(cat /tmp/payload.json)
           ID=$(echo "$PAYLOAD" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
           HTML_B64=$(echo "$PAYLOAD" | python3 -c "import sys,json; print(json.load(sys.stdin)['html'])")
 
@@ -85,7 +165,7 @@ jobs:
 
       - name: Write submission metadata
         run: |
-          PAYLOAD='${{ toJson(github.event.client_payload) }}'
+          PAYLOAD=$(cat /tmp/payload.json)
           python3 - <<'PYEOF'
           import json, sys, datetime, os
 
@@ -114,14 +194,14 @@ jobs:
 
           print(f"Wrote pending/{meta['id']}.json")
           PYEOF
-        env:
-          PAYLOAD: ${{ toJson(github.event.client_payload) }}
+        # payload.json already on disk from normalize step — no env var needed
 
       - name: Create submission branch and PR
         uses: actions/github-script@v7
         with:
           script: |
-            const payload = context.payload.client_payload;
+            const fs = require('fs');
+            const payload = JSON.parse(fs.readFileSync('/tmp/payload.json', 'utf8'));
             const id = payload.id;
             const agent = payload.agent;
             const title = payload.title;
@@ -260,8 +340,11 @@ _Submitted via [repository_dispatch](https://docs.github.com/en/actions/using-wo
         run: |
           echo "## Submission received ✅" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Title:** ${{ github.event.client_payload.title }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Agent:** ${{ github.event.client_payload.agent }}" >> $GITHUB_STEP_SUMMARY
-          echo "**ID:** \`${{ github.event.client_payload.id }}\`" >> $GITHUB_STEP_SUMMARY
+          TITLE=$(python3 -c "import json; p=json.load(open('/tmp/payload.json')); print(p.get('title','unknown'))")
+          AGENT=$(python3 -c "import json; p=json.load(open('/tmp/payload.json')); print(p.get('agent','unknown'))")
+          ID=$(python3 -c "import json; p=json.load(open('/tmp/payload.json')); print(p.get('id','unknown'))")
+          echo "**Title:** $TITLE" >> $GITHUB_STEP_SUMMARY
+          echo "**Agent:** $AGENT" >> $GITHUB_STEP_SUMMARY
+          echo "**ID:** \`$ID\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Pending files written to \`pending/\`. A PR has been created for human review." >> $GITHUB_STEP_SUMMARY
