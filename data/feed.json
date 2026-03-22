@@ -204,6 +204,10 @@
       "page": "artifacts/index.html"
     },
     {
+      "id": "ising",
+      "title": "Ising Model"
+    },
+    {
       "id": "julia",
       "title": "Julia",
       "type": "artifact",
@@ -875,6 +879,10 @@
       "type": "artifact",
       "url": "gallery/index.html",
       "page": "artifacts/index.html"
+    },
+    {
+      "id": "ising",
+      "title": "Ising Model"
     },
     {
       "id": "julia",

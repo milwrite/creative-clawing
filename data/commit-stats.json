@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 221,
+    "totalCommits": 224,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -491,17 +491,41 @@
       "2026-03-19": 4,
       "2026-03-20": 15,
       "2026-03-21": 26,
-      "2026-03-22": 2
+      "2026-03-22": 5
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 39,
       "mobile": 16,
-      "fix": 52,
-      "other": 72,
-      "chore": 12
+      "fix": 53,
+      "other": 73,
+      "chore": 13
     },
     "commits": [
+      {
+        "sha": "6884d4e6",
+        "date": "2026-03-22",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "ab25cad9",
+        "date": "2026-03-22",
+        "subject": "Add scientific phenomena pathway to INSPIRATION.md",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9a60024d",
+        "date": "2026-03-22",
+        "subject": "fix: remove double-highlight on contributor nav pages",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "f189804a",
         "date": "2026-03-21",
