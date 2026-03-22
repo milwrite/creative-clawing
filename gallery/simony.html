@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Simony</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0608;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui{position:fixed;bottom:max(16px,env(safe-area-inset-bottom,16px));left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:14px;background:rgba(10,6,8,0.82);
+  border:1px solid #3a1f1f;border-radius:6px;padding:8px 16px;
+  font:12px/1.4 ui-monospace,monospace;color:#c9a060;white-space:nowrap;backdrop-filter:blur(8px)}
+#ui label{color:#7a5040;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+#coin-slider{-webkit-appearance:none;width:120px;height:3px;background:#3a1f1f;border-radius:2px;outline:none;cursor:pointer}
+#coin-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#c9a060;cursor:pointer}
+#pval{min-width:36px;text-align:right}
+#threshold-note{color:#7a5040;font-size:11px}
+.back-btn{position:fixed;top:max(16px,env(safe-area-inset-top,16px));right:max(16px,env(safe-area-inset-right,16px));
+  background:rgba(10,6,8,0.8);border:1px solid #3a1f1f;color:#c9a060;padding:8px 14px;
+  border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;
+  backdrop-filter:blur(8px);z-index:1000;min-height:44px;display:flex;align-items:center}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <label>coin price</label>
+  <input id="coin-slider" type="range" min="0" max="100" value="45"/>
+  <span id="pval">0.45</span>
+  <span id="threshold-note">— no path</span>
+</div>
+<script>
+(function(){
+'use strict';
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('coin-slider');
+const pvalEl = document.getElementById('pval');
+const noteEl = document.getElementById('threshold-note');
+
+const CELL = 16;
+const CRITICAL = 0.593;
+let W, H, COLS, ROWS;
+let grid = [];     // 1 = open (paid), 0 = blocked
+let cluster = [];  // flood-fill result: which cells connect top→bottom
+let souls = [];
+let coins = [];
+let p = 0.45;
+let frame = 0;
+
+// ── palette ─────────────────────────────────────────────────────
+const BLOCKED_COLOR  = '#1a0808';
+const OPEN_UNPAID    = '#2a1510';
+const OPEN_PATH      = '#3d2208';
+const PATH_GLOW      = '#c9a060';
+const SOUL_COLOR     = '#fff8e0';
+const COIN_COLOR     = '#f0b030';
+const GATE_CLOSED    = '#6a1010';
+const GATE_GLOW      = '#c02020';
+
+function resize(){
+  W = canvas.offsetWidth;
+  H = canvas.offsetHeight;
+  canvas.width  = W;
+  canvas.height = H;
+  COLS = Math.floor(W / CELL);
+  ROWS = Math.floor(H / CELL);
+  regenerate();
+}
+
+function regenerate(){
+  // Build percolation grid
+  grid = new Uint8Array(COLS * ROWS);
+  for(let i = 0; i < grid.length; i++){
+    grid[i] = Math.random() < p ? 1 : 0;
+  }
+  // BFS flood-fill from top row downward
+  cluster = new Uint8Array(COLS * ROWS);
+  const queue = [];
+  for(let c = 0; c < COLS; c++){
+    if(grid[c]){
+      cluster[c] = 1;
+      queue.push(c);
+    }
+  }
+  let qi = 0;
+  while(qi < queue.length){
+    const idx = queue[qi++];
+    const row = Math.floor(idx / COLS);
+    const col = idx % COLS;
+    const neighbors = [
+      row > 0          ? idx - COLS : -1,
+      row < ROWS-1     ? idx + COLS : -1,
+      col > 0          ? idx - 1    : -1,
+      col < COLS-1     ? idx + 1    : -1,
+    ];
+    for(const n of neighbors){
+      if(n >= 0 && grid[n] && !cluster[n]){
+        cluster[n] = 1;
+        queue.push(n);
+      }
+    }
+  }
+  // Check if any bottom-row cell is in cluster
+  let percolates = false;
+  for(let c = 0; c < COLS; c++){
+    if(cluster[(ROWS-1)*COLS + c]) { percolates = true; break; }
+  }
+  noteEl.textContent = percolates
+    ? '— path open'
+    : (p >= CRITICAL ? '— threshold' : '— no path');
+  noteEl.style.color = percolates ? '#80c080' : (p >= CRITICAL-0.02 ? '#c09030' : '#7a5040');
+
+  // Reset particles
+  souls = [];
+  coins = [];
+}
+
+function spawnSoul(){
+  // Pick a random top-row open cell to start
+  const openTop = [];
+  for(let c = 0; c < COLS; c++){
+    if(grid[c]) openTop.push(c);
+  }
+  if(!openTop.length) return;
+  const col = openTop[Math.floor(Math.random() * openTop.length)];
+  souls.push({
+    x: (col + 0.5) * CELL,
+    y: CELL * 0.5,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: 0.4 + Math.random() * 0.6,
+    alpha: 0.9 + Math.random() * 0.1,
+    size: 2 + Math.random() * 2,
+    inCluster: cluster[col] === 1,
+    trail: [],
+  });
+}
+
+function spawnCoin(){
+  const col = Math.floor(Math.random() * COLS);
+  coins.push({
+    x: (col + Math.random()) * CELL,
+    y: -8,
+    vy: 0.8 + Math.random() * 1.2,
+    alpha: 0.7 + Math.random() * 0.3,
+    size: 2 + Math.random() * 1.5,
+    spin: (Math.random()-0.5)*0.15,
+    angle: Math.random()*Math.PI*2,
+  });
+}
+
+function draw(){
+  ctx.fillStyle = '#0a0608';
+  ctx.fillRect(0, 0, W, H);
+
+  // ── grid cells ──────────────────────────────────────────────
+  for(let row = 0; row < ROWS; row++){
+    for(let col = 0; col < COLS; col++){
+      const idx = row * COLS + col;
+      const x = col * CELL, y = row * CELL;
+      if(grid[idx]){
+        if(cluster[idx]){
+          // Open, in percolating path — gold glow
+          ctx.fillStyle = OPEN_PATH;
+          ctx.fillRect(x, y, CELL-1, CELL-1);
+          // Inner glow
+          const g = ctx.createRadialGradient(x+CELL/2,y+CELL/2,0, x+CELL/2,y+CELL/2,CELL/2);
+          g.addColorStop(0, 'rgba(201,160,96,0.18)');
+          g.addColorStop(1, 'rgba(201,160,96,0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(x, y, CELL-1, CELL-1);
+        } else {
+          // Open but not in percolating path
+          ctx.fillStyle = OPEN_UNPAID;
+          ctx.fillRect(x, y, CELL-1, CELL-1);
+        }
+      } else {
+        // Blocked — toll gate, glows red
+        ctx.fillStyle = BLOCKED_COLOR;
+        ctx.fillRect(x, y, CELL-1, CELL-1);
+        // Faint gate icon — vertical bar in center
+        ctx.fillStyle = GATE_CLOSED;
+        ctx.fillRect(x + CELL/2 - 1, y + 2, 2, CELL - 5);
+        // Occasional flicker
+        if(Math.random() < 0.002){
+          ctx.fillStyle = 'rgba(192,32,32,0.4)';
+          ctx.fillRect(x, y, CELL-1, CELL-1);
+        }
+      }
+    }
+  }
+
+  // ── souls ────────────────────────────────────────────────────
+  for(let i = souls.length-1; i >= 0; i--){
+    const s = souls[i];
+    s.trail.push({x: s.x, y: s.y, a: s.alpha});
+    if(s.trail.length > 12) s.trail.shift();
+
+    // Draw trail
+    for(let t = 0; t < s.trail.length; t++){
+      const ta = s.trail[t].a * (t/s.trail.length) * 0.4;
+      ctx.beginPath();
+      ctx.arc(s.trail[t].x, s.trail[t].y, s.size*0.6, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,248,224,${ta})`;
+      ctx.fill();
+    }
+
+    // Draw soul
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+    const sg = ctx.createRadialGradient(s.x,s.y,0, s.x,s.y,s.size*2.5);
+    if(s.inCluster){
+      sg.addColorStop(0, `rgba(255,255,240,${s.alpha})`);
+      sg.addColorStop(0.4, `rgba(220,200,140,${s.alpha*0.6})`);
+      sg.addColorStop(1, 'rgba(201,160,96,0)');
+    } else {
+      sg.addColorStop(0, `rgba(180,120,80,${s.alpha*0.7})`);
+      sg.addColorStop(1, 'rgba(100,40,20,0)');
+    }
+    ctx.fillStyle = sg;
+    ctx.arc(s.x, s.y, s.size*2.5, 0, Math.PI*2);
+    ctx.fill();
+
+    // Move
+    s.x += s.vx;
+    s.y += s.vy * (s.inCluster ? 1 : 0.2);
+    s.vx += (Math.random()-0.5)*0.05;
+    s.vx *= 0.98;
+
+    // Check if soul hits a blocked cell
+    const col = Math.floor(s.x / CELL);
+    const row = Math.floor(s.y / CELL);
+    const idx = row * COLS + col;
+    if(row >= 0 && row < ROWS && col >= 0 && col < COLS && !grid[idx]){
+      if(s.inCluster){
+        // Redirect — find an open neighbor
+        const candidates = [[-1,0],[1,0],[0,-1],[0,1]];
+        let moved = false;
+        for(const [dc,dr] of candidates){
+          const nc = col+dc, nr = row+dr;
+          if(nc>=0&&nc<COLS&&nr>=0&&nr<ROWS&&grid[nr*COLS+nc]&&cluster[nr*COLS+nc]){
+            s.x = (nc+0.5)*CELL;
+            s.y += s.vy;
+            moved = true;
+            break;
+          }
+        }
+        if(!moved) s.alpha -= 0.05;
+      } else {
+        // Blocked soul fades at gate
+        s.alpha -= 0.08;
+        s.vy *= 0.85;
+      }
+    }
+
+    s.alpha -= 0.003;
+    if(s.alpha <= 0 || s.y > H + 20) souls.splice(i, 1);
+  }
+
+  // ── coins ────────────────────────────────────────────────────
+  for(let i = coins.length-1; i >= 0; i--){
+    const c = coins[i];
+    c.y += c.vy;
+    c.angle += c.spin;
+
+    // Draw as small spinning circle
+    ctx.save();
+    ctx.translate(c.x, c.y);
+    ctx.rotate(c.angle);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, c.size, c.size*0.5, 0, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(240,176,48,${c.alpha})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(255,210,80,${c.alpha*0.7})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.restore();
+
+    if(c.y > H + 10) coins.splice(i, 1);
+  }
+
+  // ── overlay: percolation status ──────────────────────────────
+  if(p >= CRITICAL){
+    ctx.fillStyle = 'rgba(128,192,100,0.04)';
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
+function loop(){
+  frame++;
+  if(frame % 18 === 0 && Math.random() < 0.7) spawnSoul();
+  if(frame % 4 === 0 && Math.random() < p * 0.8) spawnCoin();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+slider.addEventListener('input', () => {
+  p = slider.value / 100;
+  pvalEl.textContent = p.toFixed(2);
+  regenerate();
+});
+
+window.addEventListener('resize', resize);
+canvas.addEventListener('click', regenerate);
+canvas.addEventListener('touchend', e => { e.preventDefault(); regenerate(); }, {passive:false});
+
+if(document.readyState === 'complete'){ resize(); requestAnimationFrame(loop); }
+else window.addEventListener('load', () => { resize(); requestAnimationFrame(loop); });
+
+})();
+</script>
+</body>
+</html>

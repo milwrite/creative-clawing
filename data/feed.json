@@ -296,7 +296,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -380,7 +380,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -510,6 +510,13 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
+    },
+    {
+      "id": "simony",
+      "title": "Simony",
+      "type": "artifact",
+      "url": "gallery/simony.html",
+      "page": "artifacts/simony.html"
     }
   ],
   "microblogs": [
@@ -955,7 +962,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1039,7 +1046,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
