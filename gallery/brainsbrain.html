@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iNiIgZmlsbD0iI2ZmZiIvPgogIDxjaXJjbGUgY3g9IjgiIGN5PSIxNiIgcj0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU4OGZmIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogIDxjaXJjbGUgY3g9IjI0IiBjeT0iMTYiIHI9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU1ODhmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+Cg=="/>
+<title>Brian's Brain</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050810;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+#info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.65);padding:6px 14px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.82);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:6px;z-index:100}
+.btn{background:rgba(10,10,20,0.85);border:1px solid #334;color:#aab;padding:5px 11px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s}
+.btn:hover{border-color:#5588ff;color:#fff}
+.btn.active{border-color:#5588ff;color:#5588ff}
+#gen{color:rgba(180,190,255,0.6);font:10px ui-monospace,monospace;padding:2px 4px}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <button class="btn" onclick="randomize()">Randomize</button>
+  <button class="btn" onclick="clear_()">Clear</button>
+  <button class="btn active" id="btn-run" onclick="toggleRun()">Pause</button>
+  <button class="btn" onclick="step()">Step</button>
+  <div id="gen">gen 0</div>
+</div>
+<div id="info">Brian's Brain · draw to paint cells · Brian Silverman, 1994</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const genEl = document.getElementById('gen');
+
+// States: 0=off, 1=on(firing), 2=dying(refractory)
+const OFF = 0, ON = 1, DYING = 2;
+
+const CELL_SIZE = 4; // px per cell (logical)
+let COLS, ROWS;
+let grid, next;
+let running = true;
+let generation = 0;
+let rafId;
+let lastStep = 0;
+const STEP_MS = 40; // ~25 fps update rate
+
+// Colors
+const COL_OFF    = [5, 8, 16];
+const COL_ON     = [220, 235, 255];
+const COL_DYING  = [30, 60, 180];
+
+function initGrids() {
+  COLS = Math.ceil(canvas.width / CELL_SIZE);
+  ROWS = Math.ceil(canvas.height / CELL_SIZE);
+  grid = new Uint8Array(COLS * ROWS);
+  next = new Uint8Array(COLS * ROWS);
+}
+
+function randomize() {
+  generation = 0;
+  for (let i = 0; i < grid.length; i++) {
+    const r = Math.random();
+    grid[i] = r < 0.25 ? ON : r < 0.30 ? DYING : OFF;
+  }
+  render();
+}
+
+function clear_() {
+  generation = 0;
+  grid.fill(OFF);
+  render();
+  updateGen();
+}
+
+function toggleRun() {
+  running = !running;
+  const btn = document.getElementById('btn-run');
+  btn.textContent = running ? 'Pause' : 'Run';
+  btn.classList.toggle('active', running);
+  if (running) rafId = requestAnimationFrame(loop);
+}
+
+function updateGen() {
+  genEl.textContent = 'gen ' + generation;
+}
+
+function step() {
+  stepGrid();
+  render();
+  updateGen();
+}
+
+function stepGrid() {
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      const i = y * COLS + x;
+      const state = grid[i];
+      if (state === ON) {
+        next[i] = DYING;
+      } else if (state === DYING) {
+        next[i] = OFF;
+      } else {
+        // Count ON neighbors (Moore neighborhood, wrapping)
+        let onCount = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            const nx = (x + dx + COLS) % COLS;
+            const ny = (y + dy + ROWS) % ROWS;
+            if (grid[ny * COLS + nx] === ON) onCount++;
+          }
+        }
+        next[i] = (onCount === 2) ? ON : OFF;
+      }
+    }
+  }
+  const tmp = grid;
+  grid = next;
+  next = tmp;
+  generation++;
+}
+
+function render() {
+  const imgData = ctx.createImageData(canvas.width, canvas.height);
+  const d = imgData.data;
+
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      const state = grid[y * COLS + x];
+      let col;
+      if (state === ON)         col = COL_ON;
+      else if (state === DYING) col = COL_DYING;
+      else                      col = COL_OFF;
+
+      // Fill CELL_SIZE x CELL_SIZE block
+      for (let py = 0; py < CELL_SIZE; py++) {
+        const row = y * CELL_SIZE + py;
+        if (row >= canvas.height) break;
+        for (let px = 0; px < CELL_SIZE; px++) {
+          const col2 = x * CELL_SIZE + px;
+          if (col2 >= canvas.width) break;
+          const idx = (row * canvas.width + col2) * 4;
+          d[idx]   = col[0];
+          d[idx+1] = col[1];
+          d[idx+2] = col[2];
+          d[idx+3] = 255;
+        }
+      }
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+}
+
+function loop(ts) {
+  if (!running) return;
+  if (ts - lastStep >= STEP_MS) {
+    stepGrid();
+    render();
+    updateGen();
+    lastStep = ts;
+  }
+  rafId = requestAnimationFrame(loop);
+}
+
+// Drawing
+let painting = false;
+let paintState = ON;
+
+function cellAt(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const cx = Math.floor((e.clientX - rect.left) * scaleX / CELL_SIZE);
+  const cy = Math.floor((e.clientY - rect.top)  * scaleY / CELL_SIZE);
+  return [cx, cy];
+}
+
+function paint(e) {
+  const [cx, cy] = cellAt(e);
+  if (cx >= 0 && cx < COLS && cy >= 0 && cy < ROWS) {
+    grid[cy * COLS + cx] = paintState;
+    render();
+  }
+}
+
+canvas.addEventListener('pointerdown', e => {
+  painting = true;
+  canvas.setPointerCapture(e.pointerId);
+  const [cx, cy] = cellAt(e);
+  if (cx >= 0 && cx < COLS && cy >= 0 && cy < ROWS) {
+    // Toggle: if cell is already ON, erase; else paint ON
+    paintState = (grid[cy * COLS + cx] === ON) ? OFF : ON;
+  }
+  paint(e);
+});
+canvas.addEventListener('pointermove', e => { if (painting) paint(e); });
+canvas.addEventListener('pointerup',     () => { painting = false; });
+canvas.addEventListener('pointercancel', () => { painting = false; });
+
+// Resize
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width  = Math.floor(canvas.offsetWidth  * dpr);
+  canvas.height = Math.floor(canvas.offsetHeight * dpr);
+  initGrids();
+  randomize();
+  generation = 0;
+  updateGen();
+}
+
+window.addEventListener('resize', () => { resize(); });
+window.addEventListener('orientationchange', () => setTimeout(resize, 150));
+
+resize();
+if (running) rafId = requestAnimationFrame(loop);
+</script>
+</body>
+</html>

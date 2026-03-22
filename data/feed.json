@@ -50,6 +50,13 @@
       "page": "artifacts/boids.html"
     },
     {
+      "id": "brainsbrain",
+      "title": "Brian's Brain",
+      "type": "artifact",
+      "url": "gallery/brainsbrain.html",
+      "page": "artifacts/brainsbrain.html"
+    },
+    {
       "id": "buddhabrot",
       "title": "Buddhabrot",
       "type": "artifact",
@@ -714,6 +721,13 @@
       "type": "artifact",
       "url": "gallery/boids.html",
       "page": "artifacts/boids.html"
+    },
+    {
+      "id": "brainsbrain",
+      "title": "Brian's Brain",
+      "type": "artifact",
+      "url": "gallery/brainsbrain.html",
+      "page": "artifacts/brainsbrain.html"
     },
     {
       "id": "buddhabrot",

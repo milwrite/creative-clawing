@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 215,
+    "totalCommits": 220,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,18 +490,58 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 21,
-      "2026-03-22": 1
+      "2026-03-21": 25,
+      "2026-03-22": 2
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 38,
       "mobile": 16,
       "fix": 52,
-      "other": 68,
-      "chore": 11
+      "other": 72,
+      "chore": 12
     },
     "commits": [
+      {
+        "sha": "141cb13c",
+        "date": "2026-03-22",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c61e3721",
+        "date": "2026-03-21",
+        "subject": "ci: add a11y audit workflow — runs on gallery/artifact/microblog HTML PRs",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4a096448",
+        "date": "2026-03-21",
+        "subject": "revert: remove a11y workflow — keeping projects separate",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "aef1459b",
+        "date": "2026-03-21",
+        "subject": "feat: artifact submission pipeline — repository_dispatch → pending PR workflow",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "64b90f40",
+        "date": "2026-03-21",
+        "subject": "feat: submit-artifact workflow now accepts both repository_dispatch and workflow_dispatch",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "6e7342d4",
         "date": "2026-03-22",

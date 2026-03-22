@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-22T02:48:09.387071+00:00",
+  "generated": "2026-03-22T03:05:22.748084+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -284,6 +284,33 @@
       "mobile_optimized": false,
       "inspiration": "Craig Reynolds",
       "year_referenced": 1986
+    },
+    {
+      "id": "brainsbrain",
+      "title": "Brian's Brain",
+      "type": "artifact",
+      "url": "gallery/brainsbrain.html",
+      "page": "artifacts/brainsbrain.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-21",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Brian Silverman's 3-state cellular automaton: cells fire, enter a refractory dying state, then recover. The exactly-2 rule produces gliders, oscillators, and sprawling activity that rarely settles.",
+      "category": "cellular-automaton",
+      "tags": [
+        "cellular-automaton",
+        "three-state",
+        "gliders",
+        "silverman"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "inspiration": "Brian Silverman",
+      "year_referenced": 1994
     },
     {
       "id": "buddhabrot",
