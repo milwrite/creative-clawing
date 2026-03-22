@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 213,
+    "totalCommits": 215,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,17 +490,34 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 20
+      "2026-03-21": 21,
+      "2026-03-22": 1
     },
     "categoryCounts": {
       "blog": 30,
       "artifact": 38,
       "mobile": 16,
-      "fix": 51,
+      "fix": 52,
       "other": 68,
-      "chore": 10
+      "chore": 11
     },
     "commits": [
+      {
+        "sha": "6e7342d4",
+        "date": "2026-03-22",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "dd718daa",
+        "date": "2026-03-21",
+        "subject": "fix: mobile nav overflow — white-space:normal on buttons, nav-inner box-sizing+overflow",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "e464f228",
         "date": "2026-03-21",
@@ -2695,22 +2712,39 @@
     ]
   },
   "unknown": {
-    "totalCommits": 36,
+    "totalCommits": 38,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
-      "2026-03-21": 8
+      "2026-03-21": 10
     },
     "categoryCounts": {
       "other": 24,
-      "fix": 6,
+      "fix": 7,
       "blog": 2,
       "chore": 1,
       "refactor": 2,
-      "style": 1
+      "style": 1,
+      "docs": 1
     },
     "commits": [
+      {
+        "sha": "595cced7",
+        "date": "2026-03-21",
+        "subject": "docs: sandbox session 1-7 results summary",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "b0e59a2b",
+        "date": "2026-03-21",
+        "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "884d3332",
         "date": "2026-03-21",

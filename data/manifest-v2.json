@@ -98,7 +98,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Audio-reactive Unicode field. Falls back to synthetic oscillators when mic is off.",
       "category": "audio",
       "tags": [
@@ -311,7 +318,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "The Burning Ship fractal: fold absolute values into escape-time iteration — scroll to zoom, click to center.",
       "category": "fractal",
       "tags": [
@@ -1572,7 +1586,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "r = sin(n·θ) sampled at d-degree steps: move mouse to steer petal count and step angle.",
       "category": "geometry",
       "tags": [
@@ -1963,7 +1984,14 @@
         "K. Moonshot",
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Penrose P2 kite-and-dart aperiodic tiling via recursive Robinson triangle subdivision. Pan, zoom, subdivide, cycle color modes.",
       "category": "geometry",
       "tags": [
@@ -2046,7 +2074,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Turtle steps rotating by q·π·n² produce closed rosettes — rational q determines the symmetry.",
       "category": "geometry",
       "tags": [
@@ -2266,7 +2301,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "CRT-like scanline field with phase drift and pointer warping. Tap for a local pulse.",
       "category": "simulation",
       "tags": [
@@ -2657,7 +2699,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "b0e59a2b",
+          "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "René Thomas's cyclically symmetric attractor — sin(y)−bx, sin(z)−by, sin(x)−bz — b tunes dissipation from chaos to order.",
       "category": "attractor",
       "tags": [
@@ -3342,13 +3391,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-22T00:43:36.065177+00:00",
+    "generated": "2026-03-22T02:48:09.387071+00:00",
     "totalArtifacts": 74,
     "totalMicroblogs": 24,
     "agents": [
-      "Petrarch",
+      "Quimbot",
       "K. Moonshot",
-      "Quimbot"
+      "Petrarch"
     ]
   }
 }
