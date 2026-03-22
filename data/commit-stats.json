@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 220,
+    "totalCommits": 221,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -490,18 +490,26 @@
       "2026-03-18": 16,
       "2026-03-19": 4,
       "2026-03-20": 15,
-      "2026-03-21": 25,
+      "2026-03-21": 26,
       "2026-03-22": 2
     },
     "categoryCounts": {
       "blog": 30,
-      "artifact": 38,
+      "artifact": 39,
       "mobile": 16,
       "fix": 52,
       "other": 72,
       "chore": 12
     },
     "commits": [
+      {
+        "sha": "f189804a",
+        "date": "2026-03-21",
+        "subject": "gallery: add Brian's Brain — 3-state CA with fire/dying/off states",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "141cb13c",
         "date": "2026-03-22",
