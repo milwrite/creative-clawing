@@ -260,13 +260,6 @@
       "page": "artifacts/lorenz.html"
     },
     {
-      "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
-      "type": "artifact",
-      "url": "gallery/lotkavolterra.html",
-      "page": "artifacts/lotkavolterra.html"
-    },
-    {
       "id": "lsystem",
       "title": "L-System",
       "type": "artifact",
@@ -377,13 +370,6 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html"
-    },
-    {
-      "id": "percolation",
-      "title": "Percolation",
-      "type": "artifact",
-      "url": "gallery/percolation.html",
-      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",
@@ -966,13 +952,6 @@
       "page": "artifacts/lorenz.html"
     },
     {
-      "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
-      "type": "artifact",
-      "url": "gallery/lotkavolterra.html",
-      "page": "artifacts/lotkavolterra.html"
-    },
-    {
       "id": "lsystem",
       "title": "L-System",
       "type": "artifact",
@@ -1083,13 +1062,6 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html"
-    },
-    {
-      "id": "percolation",
-      "title": "Percolation",
-      "type": "artifact",
-      "url": "gallery/percolation.html",
-      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",

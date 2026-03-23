@@ -73,7 +73,7 @@ Use this to choose adjacent space, not random space.
 | Family | Already built | Open adjacent directions |
 |---|---|---|
 | Cellular automata | life, wolfram, langton | Brian's Brain, cyclic CA, Larger than Life |
-| Reaction-diffusion | grayscott, turing | Brusselator, FitzHugh-Nagumo, multi-species variants |
+| Reaction-diffusion | grayscott, turing, fitzhughnagumo | Brusselator, multi-species variants |
 | Strange attractors | lorenz, clifford | Rössler, Thomas, Dadras, Sprott systems |
 | Fractals | mandelbrot, julia, sierpinski, lsystem, newton, buddhabrot | burning ship, iterated function systems |
 | Physics | pendulum, springwires, boids, montecarlo | N-body gravity, soft-body, fluid, elastic lattices |

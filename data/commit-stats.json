@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 56,
+    "totalCommits": 55,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -15,10 +15,10 @@
       "2026-03-13": 28,
       "2026-03-15": 3,
       "2026-03-14": 3,
-      "2026-03-22": 2
+      "2026-03-22": 1
     },
     "categoryCounts": {
-      "blog": 8,
+      "blog": 7,
       "mobile": 10,
       "fix": 5,
       "other": 28,
@@ -26,14 +26,6 @@
       "chore": 1
     },
     "commits": [
-      {
-        "sha": "97c0b871",
-        "date": "2026-03-22",
-        "subject": "blog: add molnar microblog",
-        "categories": [
-          "blog"
-        ]
-      },
       {
         "sha": "6de9ae87",
         "date": "2026-03-22",
@@ -477,7 +469,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 230,
+    "totalCommits": 227,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -508,42 +500,17 @@
       "2026-03-19": 4,
       "2026-03-20": 15,
       "2026-03-21": 26,
-      "2026-03-22": 8,
-      "2026-03-23": 3
+      "2026-03-22": 8
     },
     "categoryCounts": {
       "blog": 31,
       "artifact": 39,
       "mobile": 16,
       "fix": 53,
-      "other": 76,
-      "chore": 15
+      "other": 75,
+      "chore": 13
     },
     "commits": [
-      {
-        "sha": "05febc2f",
-        "date": "2026-03-23",
-        "subject": "Add percolation + lotka-volterra artifacts",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "facfe51f",
-        "date": "2026-03-23",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "72369bbe",
-        "date": "2026-03-23",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
       {
         "sha": "cc785f41",
         "date": "2026-03-22",

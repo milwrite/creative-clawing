@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzA0MDYwZCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTE2IDQgQTEyIDEyIDAgMCAxIDE2IDI4IEExMiAxMiAwIDAgMSAxNiA0IiBmaWxsPSJub25lIiBzdHJva2U9IiM0MDg4ZGQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIzIDIiLz4KICA8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIzIiBmaWxsPSIjYTBkNGZmIiBvcGFjaXR5PSIwLjkiLz4KPC9zdmc+Cg=="/>
+<title>FitzHugh-Nagumo Excitable Media</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#04060d;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:pixelated}
+.back-btn{
+  position:fixed;
+  top:max(16px, env(safe-area-inset-top));
+  right:max(16px, env(safe-area-inset-right));
+  background:rgba(4,6,13,0.85);
+  border:1px solid #2a3a55;
+  color:#8eb8e8;
+  padding:8px 14px;
+  border-radius:6px;
+  font:12px ui-monospace,monospace;
+  cursor:pointer;
+  text-decoration:none;
+  backdrop-filter:blur(8px);
+  z-index:1000;
+  transition:border-color 0.2s,color 0.2s;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+}
+.back-btn:hover{border-color:#5a8abf;color:#c8dff5}
+#info{
+  position:fixed;
+  bottom:max(16px, env(safe-area-inset-bottom));
+  left:50%;
+  transform:translateX(-50%);
+  color:rgba(140,190,232,0.8);
+  background:rgba(4,6,13,0.7);
+  padding:6px 16px;
+  border-radius:6px;
+  font:12px/1.5 ui-monospace,monospace;
+  pointer-events:none;
+  text-align:center;
+  white-space:nowrap;
+  backdrop-filter:blur(4px);
+}
+#mode-btn{
+  position:fixed;
+  bottom:max(16px, env(safe-area-inset-bottom));
+  right:max(16px, env(safe-area-inset-right));
+  background:rgba(4,6,13,0.85);
+  border:1px solid #2a3a55;
+  color:#8eb8e8;
+  padding:8px 14px;
+  border-radius:6px;
+  font:12px ui-monospace,monospace;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+  z-index:1000;
+  transition:border-color 0.2s,color 0.2s;
+  min-height:44px;
+}
+#mode-btn:hover{border-color:#5a8abf;color:#c8dff5}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">FitzHugh-Nagumo · tap to trigger pulses · space to cycle mode</div>
+<button id="mode-btn">mode</button>
+<script>
+// FitzHugh-Nagumo excitable media
+// Models: cardiac muscle, neural tissue, chemical oscillators (BZ reaction)
+// v_t = Dv·∇²v + v - v³/3 - w + I
+// w_t = Dw·∇²w + ε(v + β - γw)
+// where v = membrane voltage (fast), w = recovery variable (slow)
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Grid resolution — balance between detail and framerate
+const GW = 200, GH = 150;
+
+let v   = new Float32Array(GW * GH);  // voltage / activator
+let w   = new Float32Array(GW * GH);  // recovery / inhibitor
+let v2  = new Float32Array(GW * GH);
+let w2  = new Float32Array(GW * GH);
+
+// Render mode
+const MODES = ['spiral', 'pulse', 'target'];
+let modeIdx = 0;
+
+// Parameters — FHN classic values
+// ε controls timescale separation (small = slower recovery)
+// β, γ control the nullcline geometry
+const PARAMS = {
+  Dv: 1.0,    // diffusion of voltage (fast species)
+  Dw: 0.0,    // diffusion of recovery (slow, nearly 0)
+  eps: 0.08,  // timescale ratio
+  beta: 0.7,
+  gamma: 0.8,
+  I: 0.5,     // external stimulus (keeps medium excitable)
+  dt: 0.1,
+};
+
+// Initialize: near the stable rest state
+// Rest state: w ≈ (v + β)/γ, v ≈ nullcline solution
+function init() {
+  // Resting near v≈-1.2, w≈-0.625 (left branch of v-nullcline)
+  const vRest = -1.2;
+  const wRest = (vRest + PARAMS.beta) / PARAMS.gamma;
+  for (let i = 0; i < GW * GH; i++) {
+    v[i] = vRest + (Math.random() - 0.5) * 0.02;
+    w[i] = wRest + (Math.random() - 0.5) * 0.02;
+  }
+}
+
+// Trigger a circular excitation at grid coords
+function excite(gx, gy, radius) {
+  const r = radius || 6;
+  for (let dy = -r; dy <= r; dy++) {
+    for (let dx = -r; dx <= r; dx++) {
+      if (dx * dx + dy * dy > r * r) continue;
+      const x = ((gx + dx + GW) % GW);
+      const y = ((gy + dy + GH) % GH);
+      const i = y * GW + x;
+      v[i] = 1.8;  // sharp excitation
+      w[i] = 0.0;
+    }
+  }
+}
+
+// Broken-wave end to nucleate a spiral
+function exciteSpiral(gx, gy) {
+  const r = 12;
+  for (let dy = -r; dy <= r; dy++) {
+    for (let dx = -r; dx <= r; dx++) {
+      if (dx * dx + dy * dy > r * r) continue;
+      if (dx < 0) continue;  // half-disc only → free end → spiral arm
+      const x = ((gx + dx + GW) % GW);
+      const y = ((gy + dy + GH) % GH);
+      const i = y * GW + x;
+      v[i] = 1.8;
+      w[i] = -0.3;  // partial recovery on the edge to anchor rotation
+    }
+  }
+}
+
+// Seed based on mode
+function seedMode(mode) {
+  init();
+  if (mode === 'spiral') {
+    // Two counter-rotating spirals
+    exciteSpiral(Math.floor(GW * 0.35), Math.floor(GH * 0.5));
+    exciteSpiral(Math.floor(GW * 0.65), Math.floor(GH * 0.5));
+  } else if (mode === 'pulse') {
+    // Linear wavefront crossing the grid
+    for (let y = 0; y < GH; y++) {
+      const x = Math.floor(GW * 0.15);
+      const i = y * GW + x;
+      v[i] = 1.8;
+      w[i] = 0.0;
+    }
+  } else {
+    // Concentric target waves from center
+    excite(Math.floor(GW * 0.5), Math.floor(GH * 0.5), 4);
+    // Periodic re-excitation via a small pacemaker cell area
+    for (let i = 0; i < GW * GH; i++) pacemakerMask[i] = false;
+    const px = Math.floor(GW * 0.5), py = Math.floor(GH * 0.5);
+    for (let dy = -2; dy <= 2; dy++)
+      for (let dx = -2; dx <= 2; dx++)
+        pacemakerMask[((py + dy + GH) % GH) * GW + ((px + dx + GW) % GW)] = true;
+  }
+}
+
+// Pacemaker region (used in target mode)
+const pacemakerMask = new Uint8Array(GW * GH);
+let pacemakerTick = 0;
+const PACEMAKER_PERIOD = 80; // frames
+
+function step() {
+  const { Dv, Dw, eps, beta, gamma, I, dt } = PARAMS;
+
+  for (let y = 0; y < GH; y++) {
+    for (let x = 0; x < GW; x++) {
+      const i = y * GW + x;
+
+      // Periodic (toroidal) boundary
+      const xL = x === 0 ? GW - 1 : x - 1;
+      const xR = x === GW - 1 ? 0 : x + 1;
+      const yU = y === 0 ? GH - 1 : y - 1;
+      const yD = y === GH - 1 ? 0 : y + 1;
+
+      // 5-point Laplacian
+      const lapV = v[y * GW + xL] + v[y * GW + xR] + v[yU * GW + x] + v[yD * GW + x] - 4 * v[i];
+      const lapW = w[y * GW + xL] + w[y * GW + xR] + w[yU * GW + x] + w[yD * GW + x] - 4 * w[i];
+
+      const vi = v[i], wi = w[i];
+
+      // FHN reaction terms
+      const dvdt = vi - (vi * vi * vi) / 3.0 - wi + I;
+      const dwdt = eps * (vi + beta - gamma * wi);
+
+      v2[i] = vi + dt * (Dv * lapV + dvdt);
+      w2[i] = wi + dt * (Dw * lapW + dwdt);
+    }
+  }
+
+  // Pacemaker forcing in target mode
+  if (MODES[modeIdx] === 'target') {
+    pacemakerTick++;
+    if (pacemakerTick >= PACEMAKER_PERIOD) {
+      pacemakerTick = 0;
+      for (let i = 0; i < GW * GH; i++) {
+        if (pacemakerMask[i]) {
+          v2[i] = 1.8;
+          w2[i] = 0.0;
+        }
+      }
+    }
+  }
+
+  // Swap buffers
+  let tmp;
+  tmp = v; v = v2; v2 = tmp;
+  tmp = w; w = w2; w2 = tmp;
+}
+
+// Color map: maps voltage v ∈ [-2, 2] to a blue-steel-white palette
+// Low v (resting): deep navy
+// Rising v (excitation front): cold teal
+// High v (excited): bright steel blue / near-white
+// Falling (recovery): mid blue-grey
+function colorV(val) {
+  // Normalize -2..2 → 0..1
+  const t = Math.max(0, Math.min(1, (val + 2.0) / 4.0));
+
+  let r, g, b;
+  if (t < 0.30) {
+    // Resting: deep navy / slate
+    const s = t / 0.30;
+    r = (4 + s * 10)   | 0;
+    g = (6 + s * 18)   | 0;
+    b = (13 + s * 52)  | 0;
+  } else if (t < 0.52) {
+    // Rising edge (excitation): teal surge
+    const s = (t - 0.30) / 0.22;
+    r = (14 + s * 20)  | 0;
+    g = (24 + s * 80)  | 0;
+    b = (65 + s * 120) | 0;
+  } else if (t < 0.68) {
+    // Peak excitation: cold ice-blue
+    const s = (t - 0.52) / 0.16;
+    r = (34 + s * 140) | 0;
+    g = (104 + s * 110)| 0;
+    b = (185 + s * 60) | 0;
+  } else if (t < 0.83) {
+    // Plateau / early recovery: steel to silver
+    const s = (t - 0.68) / 0.15;
+    r = (174 + s * 60) | 0;
+    g = (214 + s * 30) | 0;
+    b = (245 + s * 8)  | 0;
+  } else {
+    // Recovery refractory: back toward mid-blue
+    const s = (t - 0.83) / 0.17;
+    r = (234 - s * 220)| 0;
+    g = (244 - s * 220)| 0;
+    b = (253 - s * 200)| 0;
+  }
+  return [
+    Math.max(0, Math.min(255, r)),
+    Math.max(0, Math.min(255, g)),
+    Math.max(0, Math.min(255, b))
+  ];
+}
+
+// Offscreen pixel buffer
+const sim = document.createElement('canvas');
+sim.width = GW; sim.height = GH;
+const sc = sim.getContext('2d');
+const imgData = sc.createImageData(GW, GH);
+const pxData = imgData.data;
+
+let W, H;
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width  = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function drawSim() {
+  for (let i = 0; i < GW * GH; i++) {
+    const [r, g, b] = colorV(v[i]);
+    const base = i * 4;
+    pxData[base]     = r;
+    pxData[base + 1] = g;
+    pxData[base + 2] = b;
+    pxData[base + 3] = 255;
+  }
+  sc.putImageData(imgData, 0, 0);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'medium';
+  ctx.drawImage(sim, 0, 0, W, H);
+}
+
+// Interaction
+function screenToGrid(cx, cy) {
+  return [
+    Math.floor((cx / W) * GW),
+    Math.floor((cy / H) * GH)
+  ];
+}
+
+canvas.addEventListener('click', e => {
+  const [gx, gy] = screenToGrid(e.clientX, e.clientY);
+  excite(gx, gy, 7);
+});
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  for (const touch of e.touches) {
+    const [gx, gy] = screenToGrid(touch.clientX, touch.clientY);
+    excite(gx, gy, 7);
+  }
+}, { passive: false });
+
+function cycleMode() {
+  modeIdx = (modeIdx + 1) % MODES.length;
+  seedMode(MODES[modeIdx]);
+  pacemakerTick = 0;
+  updateInfo();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); cycleMode(); }
+});
+
+const modeBtn = document.getElementById('mode-btn');
+if (modeBtn) modeBtn.addEventListener('click', cycleMode);
+
+const infoEl = document.getElementById('info');
+function updateInfo() {
+  const names = { spiral: 'spiral waves', pulse: 'plane wave', target: 'target waves' };
+  if (infoEl) infoEl.textContent = `FitzHugh-Nagumo · ${names[MODES[modeIdx]]} · tap to excite · space/mode to switch`;
+}
+
+const STEPS_PER_FRAME = 6;
+
+window.addEventListener('resize', resize);
+resize();
+seedMode(MODES[modeIdx]);
+updateInfo();
+
+function frame() {
+  for (let s = 0; s < STEPS_PER_FRAME; s++) step();
+  drawSim();
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>
