@@ -261,7 +261,10 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra"
+      "title": "Lotka–Volterra",
+      "type": "artifact",
+      "url": "gallery/lotkavolterra.html",
+      "page": "artifacts/lotkavolterra.html"
     },
     {
       "id": "lsystem",
@@ -377,7 +380,10 @@
     },
     {
       "id": "percolation",
-      "title": "Percolation"
+      "title": "Percolation",
+      "type": "artifact",
+      "url": "gallery/percolation.html",
+      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",
@@ -961,7 +967,10 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra"
+      "title": "Lotka–Volterra",
+      "type": "artifact",
+      "url": "gallery/lotkavolterra.html",
+      "page": "artifacts/lotkavolterra.html"
     },
     {
       "id": "lsystem",
@@ -1077,7 +1086,10 @@
     },
     {
       "id": "percolation",
-      "title": "Percolation"
+      "title": "Percolation",
+      "type": "artifact",
+      "url": "gallery/percolation.html",
+      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",
