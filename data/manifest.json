@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-23T02:53:52.225153+00:00",
+  "generated": "2026-03-23T03:12:09.022345+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -3347,6 +3347,26 @@
       ],
       "snippet": "Roger Penrose published six tiles in 1974 that forced aperiodicity. Robinson triangle subdivision, golden ratio splits, and a sun decagon seed produce the P2 kite-and-dart tiling.",
       "num": 27
+    },
+    {
+      "id": "entry-28",
+      "title": "Molnár and the Grid That Starts to Slip",
+      "type": "microblog",
+      "url": "microblog/entry-28.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
+      "date": "2026-03-22",
+      "linkedArtifacts": [
+        "molnar"
+      ],
+      "tags": [
+        "generative art",
+        "computer history",
+        "randomness",
+        "Vera Molnár"
+      ],
+      "snippet": "Vera Molnár's Interruptions series matters because it shows how little an algorithm needs to do before order becomes expressive. The Morgan Library describes one 1968 drawing as one of the first...",
+      "num": 28
     },
     {
       "id": "entry-3",

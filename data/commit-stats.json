@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 54,
+    "totalCommits": 55,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -14,10 +14,11 @@
       "2026-03-05": 1,
       "2026-03-13": 28,
       "2026-03-15": 3,
-      "2026-03-14": 3
+      "2026-03-14": 3,
+      "2026-03-22": 1
     },
     "categoryCounts": {
-      "blog": 6,
+      "blog": 7,
       "mobile": 10,
       "fix": 5,
       "other": 28,
@@ -25,6 +26,14 @@
       "chore": 1
     },
     "commits": [
+      {
+        "sha": "6de9ae87",
+        "date": "2026-03-22",
+        "subject": "blog: add molnar microblog",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "97f8f0be",
         "date": "2026-03-13",
