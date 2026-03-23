@@ -5,12 +5,12 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
 <title>Crystal Dendrite</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #020408; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-  canvas { display: block; image-rendering: pixelated; }
+  canvas { display: block; image-rendering: pixelated; touch-action: none; }
   #ui {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
     display: flex; gap: 0.75rem; align-items: center; z-index: 10;
