@@ -130,7 +130,7 @@ input[type=range].pred{accent-color:#ef476f}
   const bSpeed = document.getElementById('b-speed');
 
   function resize(){
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     [cTime, cPhase].forEach(c => {
       const rect = c.getBoundingClientRect();
       c.width = rect.width * dpr;
