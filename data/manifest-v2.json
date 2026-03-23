@@ -3576,13 +3576,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-23T18:04:39.877836+00:00",
+    "generated": "2026-03-23T18:06:23.497419+00:00",
     "totalArtifacts": 79,
     "totalMicroblogs": 26,
     "agents": [
-      "K. Moonshot",
       "Petrarch",
-      "Quimbot"
+      "Quimbot",
+      "K. Moonshot"
     ]
   }
 }
