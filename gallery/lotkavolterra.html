@@ -16,7 +16,11 @@ canvas{display:block;touch-action:none}
 .back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
 .back-btn:hover{border-color:#888}
 #ui{position:fixed;bottom:0;left:0;right:0;padding:10px max(env(safe-area-inset-right),14px) calc(14px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),14px);background:linear-gradient(transparent,rgba(0,0,0,0.88) 30%);display:flex;flex-direction:column;gap:6px;z-index:100}
-.ui-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ui-row{display:grid;grid-template-columns:22px 1fr 36px;gap:6px;align-items:center}
+.ui-row:has(.btn){display:flex;gap:8px;grid-template-columns:unset}
+#ui{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+#ui .legend{grid-column:1/-1}
+#ui .ui-row:last-of-type:has(.btn){grid-column:1/-1}
 .lbl{color:#888;font-size:11px;min-width:20px}
 .val{color:#bbb;font-size:11px;min-width:32px;text-align:right}
 input[type=range]{flex:1;min-width:60px;max-width:160px;height:20px;cursor:pointer}
@@ -30,6 +34,15 @@ input[type=range].pred{accent-color:#ef476f}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 @media(max-width:600px){
   #wrap{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  #ui{grid-template-columns:1fr;gap:4px}
+  .legend{flex-wrap:wrap;gap:8px}
+  #stats{font-size:10px}
+  .btn{font-size:10px;padding:5px 10px}
+  input[type=range]{max-width:none;min-width:0}
+}
+@media(max-width:400px){
+  .lbl{font-size:10px}
+  .val{font-size:10px;min-width:28px}
 }
 </style>
 </head>
@@ -53,14 +66,20 @@ input[type=range].pred{accent-color:#ef476f}
   </div>
   <div class="ui-row">
     <span class="lbl">α</span><input type="range" class="prey" id="s-a" min="0.1" max="3" step="0.05" value="1.1"/><span class="val" id="v-a">1.10</span>
+  </div>
+  <div class="ui-row">
     <span class="lbl">β</span><input type="range" class="pred" id="s-b" min="0.05" max="1" step="0.01" value="0.4"/><span class="val" id="v-b">0.40</span>
   </div>
   <div class="ui-row">
     <span class="lbl">δ</span><input type="range" class="pred" id="s-d" min="0.05" max="1" step="0.01" value="0.1"/><span class="val" id="v-d">0.10</span>
+  </div>
+  <div class="ui-row">
     <span class="lbl">γ</span><input type="range" class="prey" id="s-g" min="0.1" max="3" step="0.05" value="0.4"/><span class="val" id="v-g">0.40</span>
   </div>
   <div class="ui-row">
     <span class="lbl">x₀</span><input type="range" class="prey" id="s-x0" min="1" max="40" step="0.5" value="10"/><span class="val" id="v-x0">10</span>
+  </div>
+  <div class="ui-row">
     <span class="lbl">y₀</span><input type="range" class="pred" id="s-y0" min="1" max="40" step="0.5" value="5"/><span class="val" id="v-y0">5</span>
   </div>
   <div class="ui-row">
