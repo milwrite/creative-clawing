@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjZmZmIi8+CiAgPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIGZpbGw9IiNmZmYiLz4KICA8cmVjdCB4PSI0IiB5PSIxNyIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjMjIyIi8+CiAgPHJlY3QgeD0iMTciIHk9IjQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iIzIyMiIvPgo8L3N2Zz4="/>
+<title>Percolation</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace}
+canvas{display:block;touch-action:none}
+#wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;bottom:0;left:0;right:0;padding:10px max(env(safe-area-inset-right),14px) calc(14px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),14px);background:linear-gradient(transparent,rgba(0,0,0,0.88) 30%);display:flex;flex-direction:column;gap:8px;z-index:100}
+.ui-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lbl{color:#888;font-size:11px;min-width:54px}
+.val{color:#bbb;font-size:11px;min-width:36px;text-align:right}
+input[type=range]{flex:1;min-width:80px;max-width:220px;accent-color:#4ea8de;height:20px;cursor:pointer}
+.btn{background:rgba(20,20,20,0.8);border:1px solid #444;color:#ccc;padding:6px 12px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;min-height:32px;min-width:44px}
+.btn:hover{border-color:#888;color:#fff}
+.btn.active{border-color:#4ea8de;color:#4ea8de}
+#stats{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));color:rgba(255,255,255,0.6);font:11px ui-monospace,monospace;pointer-events:none;line-height:1.7}
+#phase{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font:bold 14px ui-monospace,monospace;color:rgba(255,255,255,0.7);pointer-events:none;text-align:center;transition:opacity 1.5s;opacity:0;letter-spacing:.08em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<div id="wrap"><canvas id="c"></canvas></div>
+
+<div id="stats">
+  <div>p = <span id="p-val">0.50</span></div>
+  <div>p<sub>c</sub> ≈ 0.5927</div>
+  <div>clusters: <span id="cl-val">0</span></div>
+  <div>largest: <span id="lg-val">0</span>%</div>
+  <div>spans: <span id="sp-val">no</span></div>
+</div>
+<div id="phase"></div>
+
+<div id="ui">
+  <div class="ui-row">
+    <span class="lbl">p</span>
+    <input type="range" id="s-prob" min="0" max="1" step="0.005" value="0.50"/>
+    <span class="val" id="v-prob">0.500</span>
+  </div>
+  <div class="ui-row">
+    <span class="lbl">grid</span>
+    <input type="range" id="s-grid" min="50" max="400" step="10" value="150"/>
+    <span class="val" id="v-grid">150</span>
+  </div>
+  <div class="ui-row">
+    <button class="btn" id="b-regen">Regenerate</button>
+    <button class="btn" id="b-animate">Animate p</button>
+    <button class="btn" id="b-span">Show Spanning</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const C = document.getElementById('c');
+  const ctx = C.getContext('2d');
+
+  let N = 150;
+  let prob = 0.50;
+  let grid, labels, clusterSizes;
+  let spanning = false;
+  let spanCluster = -1;
+  let animating = false;
+  let showSpan = false;
+
+  const sProb = document.getElementById('s-prob');
+  const sGrid = document.getElementById('s-grid');
+  const vProb = document.getElementById('v-prob');
+  const vGrid = document.getElementById('v-grid');
+  const pVal = document.getElementById('p-val');
+  const clVal = document.getElementById('cl-val');
+  const lgVal = document.getElementById('lg-val');
+  const spVal = document.getElementById('sp-val');
+  const phaseEl = document.getElementById('phase');
+  const bRegen = document.getElementById('b-regen');
+  const bAnimate = document.getElementById('b-animate');
+  const bSpan = document.getElementById('b-span');
+
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    C.width = w * dpr;
+    C.height = h * dpr;
+    C.style.width = w + 'px';
+    C.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function generate(){
+    grid = new Uint8Array(N * N);
+    for(let i = 0; i < N * N; i++){
+      grid[i] = Math.random() < prob ? 1 : 0;
+    }
+    findClusters();
+    draw();
+    updateStats();
+  }
+
+  // Union-Find for cluster labeling
+  function findClusters(){
+    labels = new Int32Array(N * N).fill(-1);
+    const parent = [];
+    const rank = [];
+    let nextLabel = 0;
+
+    function makeSet(){
+      const l = nextLabel++;
+      parent.push(l);
+      rank.push(0);
+      return l;
+    }
+    function find(x){
+      while(parent[x] !== x) x = parent[x] = parent[parent[x]];
+      return x;
+    }
+    function union(a, b){
+      a = find(a); b = find(b);
+      if(a === b) return;
+      if(rank[a] < rank[b]){ const t = a; a = b; b = t; }
+      parent[b] = a;
+      if(rank[a] === rank[b]) rank[a]++;
+    }
+
+    for(let y = 0; y < N; y++){
+      for(let x = 0; x < N; x++){
+        const i = y * N + x;
+        if(!grid[i]) continue;
+        const up = y > 0 && grid[(y-1)*N+x] ? labels[(y-1)*N+x] : -1;
+        const left = x > 0 && grid[y*N+x-1] ? labels[y*N+x-1] : -1;
+        if(up === -1 && left === -1){
+          labels[i] = makeSet();
+        } else if(up !== -1 && left === -1){
+          labels[i] = up;
+        } else if(up === -1 && left !== -1){
+          labels[i] = left;
+        } else {
+          union(up, left);
+          labels[i] = up;
+        }
+      }
+    }
+
+    // Flatten labels
+    clusterSizes = new Map();
+    for(let i = 0; i < N * N; i++){
+      if(labels[i] === -1) continue;
+      labels[i] = find(labels[i]);
+      clusterSizes.set(labels[i], (clusterSizes.get(labels[i]) || 0) + 1);
+    }
+
+    // Check spanning (top to bottom)
+    const topLabels = new Set();
+    const botLabels = new Set();
+    for(let x = 0; x < N; x++){
+      if(labels[x] !== -1) topLabels.add(labels[x]);
+      if(labels[(N-1)*N+x] !== -1) botLabels.add(labels[(N-1)*N+x]);
+    }
+    spanCluster = -1;
+    spanning = false;
+    for(const l of topLabels){
+      if(botLabels.has(l)){
+        spanning = true;
+        spanCluster = l;
+        break;
+      }
+    }
+  }
+
+  // Color palette for clusters
+  const palette = [
+    '#4ea8de','#56cfe1','#64dfdf','#72efdd','#80ffdb',
+    '#f77f00','#fcbf49','#d62828','#e76f51','#2a9d8f',
+    '#e9c46a','#264653','#a8dadc','#457b9d','#1d3557',
+    '#ef476f','#ffd166','#06d6a0','#118ab2','#073b4c'
+  ];
+  const clusterColors = new Map();
+  let colorIdx = 0;
+
+  function getClusterColor(label){
+    if(!clusterColors.has(label)){
+      clusterColors.set(label, palette[colorIdx % palette.length]);
+      colorIdx++;
+    }
+    return clusterColors.get(label);
+  }
+
+  function draw(){
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const cellW = w / N;
+    const cellH = h / N;
+
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, w, h);
+
+    clusterColors.clear();
+    colorIdx = 0;
+
+    // Sort clusters by size so largest get first colors
+    const sorted = [...clusterSizes.entries()].sort((a,b) => b[1] - a[1]);
+    sorted.forEach(([label]) => getClusterColor(label));
+
+    for(let y = 0; y < N; y++){
+      for(let x = 0; x < N; x++){
+        const i = y * N + x;
+        if(!grid[i]) continue;
+        const label = labels[i];
+        if(showSpan && spanning && label === spanCluster){
+          ctx.fillStyle = '#ff2266';
+        } else if(showSpan && spanning){
+          ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        } else {
+          ctx.fillStyle = getClusterColor(label);
+        }
+        ctx.fillRect(x * cellW, y * cellH, Math.ceil(cellW), Math.ceil(cellH));
+      }
+    }
+  }
+
+  function updateStats(){
+    pVal.textContent = prob.toFixed(2);
+    vProb.textContent = prob.toFixed(3);
+    const numClusters = clusterSizes.size;
+    clVal.textContent = numClusters;
+    const largest = numClusters > 0 ? Math.max(...clusterSizes.values()) : 0;
+    const pct = N * N > 0 ? ((largest / (N * N)) * 100).toFixed(1) : '0.0';
+    lgVal.textContent = pct;
+    spVal.textContent = spanning ? 'YES' : 'no';
+    spVal.style.color = spanning ? '#ff2266' : '';
+
+    // Phase label
+    if(prob < 0.55){
+      phaseEl.textContent = 'subcritical';
+      phaseEl.style.opacity = 0.7;
+    } else if(prob > 0.63){
+      phaseEl.textContent = 'supercritical';
+      phaseEl.style.opacity = 0.7;
+    } else {
+      phaseEl.textContent = 'near threshold';
+      phaseEl.style.opacity = 0.9;
+    }
+    setTimeout(() => { phaseEl.style.opacity = 0; }, 2000);
+  }
+
+  sProb.addEventListener('input', () => {
+    prob = parseFloat(sProb.value);
+    vProb.textContent = prob.toFixed(3);
+    generate();
+  });
+
+  sGrid.addEventListener('input', () => {
+    N = parseInt(sGrid.value);
+    vGrid.textContent = N;
+    generate();
+  });
+
+  bRegen.addEventListener('click', generate);
+
+  bSpan.addEventListener('click', () => {
+    showSpan = !showSpan;
+    bSpan.classList.toggle('active', showSpan);
+    draw();
+  });
+
+  let animId = null;
+  bAnimate.addEventListener('click', () => {
+    if(animating){
+      animating = false;
+      cancelAnimationFrame(animId);
+      bAnimate.classList.remove('active');
+      return;
+    }
+    animating = true;
+    bAnimate.classList.add('active');
+    prob = 0;
+    sProb.value = 0;
+    let last = 0;
+    function step(t){
+      if(!animating) return;
+      if(t - last > 40){
+        prob += 0.003;
+        if(prob > 1) prob = 0;
+        sProb.value = prob;
+        vProb.textContent = prob.toFixed(3);
+        generate();
+        last = t;
+      }
+      animId = requestAnimationFrame(step);
+    }
+    animId = requestAnimationFrame(step);
+  });
+
+  // Touch/pointer for mobile
+  let dragging = false;
+  C.addEventListener('pointerdown', e => {
+    dragging = true;
+    C.setPointerCapture(e.pointerId);
+  });
+  C.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const frac = e.clientX / window.innerWidth;
+    prob = Math.max(0, Math.min(1, frac));
+    sProb.value = prob;
+    generate();
+  });
+  C.addEventListener('pointerup', () => { dragging = false; });
+  C.addEventListener('pointercancel', () => { dragging = false; });
+
+  window.addEventListener('resize', () => { resize(); draw(); });
+  resize();
+  generate();
+})();
+</script>
+</body>
+</html>

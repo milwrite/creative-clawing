@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjZmZmIi8+CiAgPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIGZpbGw9IiNmZmYiLz4KICA8cmVjdCB4PSI0IiB5PSIxNyIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjMjIyIi8+CiAgPHJlY3QgeD0iMTciIHk9IjQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iIzIyMiIvPgo8L3N2Zz4="/>
+<title>Lotka–Volterra</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace;color:#ccc}
+canvas{display:block;touch-action:none}
+#wrap{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;bottom:0;left:0;right:0;padding:10px max(env(safe-area-inset-right),14px) calc(14px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),14px);background:linear-gradient(transparent,rgba(0,0,0,0.88) 30%);display:flex;flex-direction:column;gap:6px;z-index:100}
+.ui-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lbl{color:#888;font-size:11px;min-width:20px}
+.val{color:#bbb;font-size:11px;min-width:32px;text-align:right}
+input[type=range]{flex:1;min-width:60px;max-width:160px;height:20px;cursor:pointer}
+input[type=range].prey{accent-color:#56cfe1}
+input[type=range].pred{accent-color:#ef476f}
+.btn{background:rgba(20,20,20,0.8);border:1px solid #444;color:#ccc;padding:6px 12px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;min-height:32px;min-width:44px}
+.btn:hover{border-color:#888;color:#fff}
+#stats{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));color:rgba(255,255,255,0.5);font:11px ui-monospace,monospace;pointer-events:none;line-height:1.7;z-index:50}
+.legend{display:flex;gap:14px;font-size:11px;color:#888}
+.legend span{display:flex;align-items:center;gap:4px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+@media(max-width:600px){
+  #wrap{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<a href="./" class="back-btn">← Gallery</a>
+<div id="wrap">
+  <canvas id="cTime"></canvas>
+  <canvas id="cPhase"></canvas>
+</div>
+
+<div id="stats">
+  <div>prey: <span id="xv" style="color:#56cfe1">10.0</span></div>
+  <div>predators: <span id="yv" style="color:#ef476f">5.0</span></div>
+</div>
+
+<div id="ui">
+  <div class="legend">
+    <span><span class="dot" style="background:#56cfe1"></span> prey</span>
+    <span><span class="dot" style="background:#ef476f"></span> predators</span>
+    <span><span class="dot" style="background:#ffd166"></span> phase orbit</span>
+  </div>
+  <div class="ui-row">
+    <span class="lbl">α</span><input type="range" class="prey" id="s-a" min="0.1" max="3" step="0.05" value="1.1"/><span class="val" id="v-a">1.10</span>
+    <span class="lbl">β</span><input type="range" class="pred" id="s-b" min="0.05" max="1" step="0.01" value="0.4"/><span class="val" id="v-b">0.40</span>
+  </div>
+  <div class="ui-row">
+    <span class="lbl">δ</span><input type="range" class="pred" id="s-d" min="0.05" max="1" step="0.01" value="0.1"/><span class="val" id="v-d">0.10</span>
+    <span class="lbl">γ</span><input type="range" class="prey" id="s-g" min="0.1" max="3" step="0.05" value="0.4"/><span class="val" id="v-g">0.40</span>
+  </div>
+  <div class="ui-row">
+    <span class="lbl">x₀</span><input type="range" class="prey" id="s-x0" min="1" max="40" step="0.5" value="10"/><span class="val" id="v-x0">10</span>
+    <span class="lbl">y₀</span><input type="range" class="pred" id="s-y0" min="1" max="40" step="0.5" value="5"/><span class="val" id="v-y0">5</span>
+  </div>
+  <div class="ui-row">
+    <button class="btn" id="b-reset">Reset</button>
+    <button class="btn" id="b-pause">Pause</button>
+    <button class="btn" id="b-speed">Speed ×1</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const cTime = document.getElementById('cTime');
+  const cPhase = document.getElementById('cPhase');
+  const ctxT = cTime.getContext('2d');
+  const ctxP = cPhase.getContext('2d');
+
+  // Parameters
+  let alpha = 1.1;   // prey birth rate
+  let beta = 0.4;    // predation rate
+  let delta = 0.1;   // predator growth from eating
+  let gamma = 0.4;   // predator death rate
+
+  let x0 = 10, y0 = 5;
+  let x, y;
+  let history = [];
+  let paused = false;
+  let speed = 1;
+  const dt = 0.005;
+  const maxHist = 8000;
+
+  // Elements
+  const sA = document.getElementById('s-a');
+  const sB = document.getElementById('s-b');
+  const sD = document.getElementById('s-d');
+  const sG = document.getElementById('s-g');
+  const sX0 = document.getElementById('s-x0');
+  const sY0 = document.getElementById('s-y0');
+  const vA = document.getElementById('v-a');
+  const vB = document.getElementById('v-b');
+  const vD = document.getElementById('v-d');
+  const vG = document.getElementById('v-g');
+  const vX0 = document.getElementById('v-x0');
+  const vY0 = document.getElementById('v-y0');
+  const xvEl = document.getElementById('xv');
+  const yvEl = document.getElementById('yv');
+  const bReset = document.getElementById('b-reset');
+  const bPause = document.getElementById('b-pause');
+  const bSpeed = document.getElementById('b-speed');
+
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    [cTime, cPhase].forEach(c => {
+      const rect = c.getBoundingClientRect();
+      c.width = rect.width * dpr;
+      c.height = rect.height * dpr;
+      c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+    });
+  }
+
+  function reset(){
+    alpha = parseFloat(sA.value);
+    beta = parseFloat(sB.value);
+    delta = parseFloat(sD.value);
+    gamma = parseFloat(sG.value);
+    x0 = parseFloat(sX0.value);
+    y0 = parseFloat(sY0.value);
+    x = x0; y = y0;
+    history = [{x, y, t: 0}];
+  }
+
+  // RK4 integration
+  function step(){
+    for(let s = 0; s < speed * 4; s++){
+      const dx1 = alpha * x - beta * x * y;
+      const dy1 = delta * x * y - gamma * y;
+      const x2 = x + 0.5 * dt * dx1;
+      const y2 = y + 0.5 * dt * dy1;
+      const dx2 = alpha * x2 - beta * x2 * y2;
+      const dy2 = delta * x2 * y2 - gamma * y2;
+      const x3 = x + 0.5 * dt * dx2;
+      const y3 = y + 0.5 * dt * dy2;
+      const dx3 = alpha * x3 - beta * x3 * y3;
+      const dy3 = delta * x3 * y3 - gamma * y3;
+      const x4 = x + dt * dx3;
+      const y4 = y + dt * dy3;
+      const dx4 = alpha * x4 - beta * x4 * y4;
+      const dy4 = delta * x4 * y4 - gamma * y4;
+      x += dt * (dx1 + 2*dx2 + 2*dx3 + dx4) / 6;
+      y += dt * (dy1 + 2*dy2 + 2*dy3 + dy4) / 6;
+      if(x < 0) x = 0.01;
+      if(y < 0) y = 0.01;
+      if(x > 200) x = 200;
+      if(y > 200) y = 200;
+      const t = history.length > 0 ? history[history.length-1].t + dt : dt;
+      history.push({x, y, t});
+      if(history.length > maxHist) history.shift();
+    }
+  }
+
+  function drawTimeSeries(){
+    const w = cTime.getBoundingClientRect().width;
+    const h = cTime.getBoundingClientRect().height;
+    ctxT.fillStyle = '#0a0a0a';
+    ctxT.fillRect(0, 0, w, h);
+
+    if(history.length < 2) return;
+
+    // Find y-range
+    let maxPop = 1;
+    for(const p of history) maxPop = Math.max(maxPop, p.x, p.y);
+    const pad = 30;
+    const pw = w - pad * 2;
+    const ph = h - pad * 2;
+
+    // Axes
+    ctxT.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctxT.lineWidth = 1;
+    ctxT.beginPath();
+    ctxT.moveTo(pad, pad);
+    ctxT.lineTo(pad, h - pad);
+    ctxT.lineTo(w - pad, h - pad);
+    ctxT.stroke();
+
+    // Labels
+    ctxT.fillStyle = 'rgba(255,255,255,0.3)';
+    ctxT.font = '10px ui-monospace,monospace';
+    ctxT.fillText('population', pad + 2, pad - 4);
+    ctxT.fillText('time →', w - pad - 30, h - pad + 14);
+
+    // Draw prey
+    ctxT.beginPath();
+    ctxT.strokeStyle = '#56cfe1';
+    ctxT.lineWidth = 1.5;
+    for(let i = 0; i < history.length; i++){
+      const px = pad + (i / (history.length - 1)) * pw;
+      const py = h - pad - (history[i].x / (maxPop * 1.1)) * ph;
+      i === 0 ? ctxT.moveTo(px, py) : ctxT.lineTo(px, py);
+    }
+    ctxT.stroke();
+
+    // Draw predators
+    ctxT.beginPath();
+    ctxT.strokeStyle = '#ef476f';
+    ctxT.lineWidth = 1.5;
+    for(let i = 0; i < history.length; i++){
+      const px = pad + (i / (history.length - 1)) * pw;
+      const py = h - pad - (history[i].y / (maxPop * 1.1)) * ph;
+      i === 0 ? ctxT.moveTo(px, py) : ctxT.lineTo(px, py);
+    }
+    ctxT.stroke();
+  }
+
+  function drawPhase(){
+    const w = cPhase.getBoundingClientRect().width;
+    const h = cPhase.getBoundingClientRect().height;
+    ctxP.fillStyle = '#0a0a0a';
+    ctxP.fillRect(0, 0, w, h);
+
+    if(history.length < 2) return;
+
+    let maxX = 1, maxY = 1;
+    for(const p of history){
+      maxX = Math.max(maxX, p.x);
+      maxY = Math.max(maxY, p.y);
+    }
+    const pad = 30;
+    const pw = w - pad * 2;
+    const ph = h - pad * 2;
+
+    // Axes
+    ctxP.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctxP.lineWidth = 1;
+    ctxP.beginPath();
+    ctxP.moveTo(pad, pad);
+    ctxP.lineTo(pad, h - pad);
+    ctxP.lineTo(w - pad, h - pad);
+    ctxP.stroke();
+
+    ctxP.fillStyle = 'rgba(255,255,255,0.3)';
+    ctxP.font = '10px ui-monospace,monospace';
+    ctxP.fillText('predators ↑', pad + 2, pad - 4);
+    ctxP.fillText('prey →', w - pad - 28, h - pad + 14);
+
+    // Fixed point marker
+    const fpX = gamma / delta;
+    const fpY = alpha / beta;
+    const fpPx = pad + (fpX / (maxX * 1.15)) * pw;
+    const fpPy = h - pad - (fpY / (maxY * 1.15)) * ph;
+    ctxP.fillStyle = 'rgba(255,255,255,0.2)';
+    ctxP.beginPath();
+    ctxP.arc(fpPx, fpPy, 4, 0, Math.PI * 2);
+    ctxP.fill();
+    ctxP.fillStyle = 'rgba(255,255,255,0.15)';
+    ctxP.fillText('equilibrium', fpPx + 6, fpPy - 4);
+
+    // Trail with fading
+    const len = history.length;
+    for(let i = 1; i < len; i++){
+      const a = 0.15 + 0.85 * (i / len);
+      ctxP.strokeStyle = `rgba(255,209,102,${a})`;
+      ctxP.lineWidth = 1 + a;
+      ctxP.beginPath();
+      const px1 = pad + (history[i-1].x / (maxX * 1.15)) * pw;
+      const py1 = h - pad - (history[i-1].y / (maxY * 1.15)) * ph;
+      const px2 = pad + (history[i].x / (maxX * 1.15)) * pw;
+      const py2 = h - pad - (history[i].y / (maxY * 1.15)) * ph;
+      ctxP.moveTo(px1, py1);
+      ctxP.lineTo(px2, py2);
+      ctxP.stroke();
+    }
+
+    // Current position
+    const last = history[len - 1];
+    const cx = pad + (last.x / (maxX * 1.15)) * pw;
+    const cy = h - pad - (last.y / (maxY * 1.15)) * ph;
+    ctxP.fillStyle = '#ffd166';
+    ctxP.beginPath();
+    ctxP.arc(cx, cy, 5, 0, Math.PI * 2);
+    ctxP.fill();
+  }
+
+  function frame(){
+    if(!paused) step();
+    xvEl.textContent = x.toFixed(1);
+    yvEl.textContent = y.toFixed(1);
+    drawTimeSeries();
+    drawPhase();
+    requestAnimationFrame(frame);
+  }
+
+  // Event bindings
+  [sA, sB, sD, sG, sX0, sY0].forEach(s => {
+    s.addEventListener('input', () => {
+      vA.textContent = parseFloat(sA.value).toFixed(2);
+      vB.textContent = parseFloat(sB.value).toFixed(2);
+      vD.textContent = parseFloat(sD.value).toFixed(2);
+      vG.textContent = parseFloat(sG.value).toFixed(2);
+      vX0.textContent = parseFloat(sX0.value);
+      vY0.textContent = parseFloat(sY0.value);
+      reset();
+    });
+  });
+
+  bReset.addEventListener('click', reset);
+  bPause.addEventListener('click', () => {
+    paused = !paused;
+    bPause.textContent = paused ? 'Play' : 'Pause';
+  });
+  bSpeed.addEventListener('click', () => {
+    speed = speed >= 8 ? 1 : speed * 2;
+    bSpeed.textContent = 'Speed ×' + speed;
+  });
+
+  // Click on phase canvas to set initial condition
+  cPhase.addEventListener('pointerdown', e => {
+    const rect = cPhase.getBoundingClientRect();
+    const pad = 30;
+    let maxX = 1, maxY = 1;
+    for(const p of history){ maxX = Math.max(maxX, p.x); maxY = Math.max(maxY, p.y); }
+    const pw = rect.width - pad * 2;
+    const ph = rect.height - pad * 2;
+    const nx = ((e.clientX - rect.left - pad) / pw) * maxX * 1.15;
+    const ny = ((rect.height - (e.clientY - rect.top) - pad) / ph) * maxY * 1.15;
+    if(nx > 0 && ny > 0){
+      x = nx; y = ny;
+      history = [{x, y, t: 0}];
+    }
+  });
+
+  window.addEventListener('resize', () => { resize(); });
+  resize();
+  reset();
+  frame();
+})();
+</script>
+</body>
+</html>

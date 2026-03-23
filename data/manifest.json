@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-23T03:13:29.700893+00:00",
+  "generated": "2026-03-23T13:40:07.752612+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1457,6 +1457,32 @@
       "year_referenced": 1963
     },
     {
+      "id": "lotkavolterra",
+      "title": "Lotka–Volterra",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Predator-prey dynamics with dual-panel display: time series oscillations and phase portrait. RK4 integration of the classic Lotka–Volterra equations with adjustable parameters and click-to-set initial conditions.",
+      "category": "simulation",
+      "tags": [
+        "ecology",
+        "dynamics",
+        "differential-equations",
+        "phase-portrait"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-23",
+      "optimizations": [
+        "touch-action:none",
+        "pointer-capture",
+        "responsive-grid"
+      ]
+    },
+    {
       "id": "lsystem",
       "title": "L-System",
       "type": "artifact",
@@ -2062,6 +2088,32 @@
       "interactive": true,
       "animated": false,
       "mobile_optimized": true
+    },
+    {
+      "id": "percolation",
+      "title": "Percolation",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Site percolation on a square lattice with union-find cluster detection. Drag or animate probability p to watch the phase transition at the critical threshold p_c ≈ 0.5927, where a spanning cluster first connects top to bottom.",
+      "category": "simulation",
+      "tags": [
+        "statistical-physics",
+        "phase-transition",
+        "percolation",
+        "lattice"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-23",
+      "optimizations": [
+        "touch-action:none",
+        "pointer-capture",
+        "responsive-sizing"
+      ]
     },
     {
       "id": "phyllotaxis",
