@@ -917,7 +917,14 @@
       "contributors": [
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "c464c987",
+          "subject": "mobile: cap dpr at 2, add touch-action:none to sketch-frame iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Excitable media: spiral waves, target waves, and plane pulses from a neural firing model.",
       "category": "simulation",
       "tags": [
@@ -3569,7 +3576,7 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-23T14:48:28.563269+00:00",
+    "generated": "2026-03-23T18:04:39.877836+00:00",
     "totalArtifacts": 79,
     "totalMicroblogs": 26,
     "agents": [

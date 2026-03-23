@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 233,
+    "totalCommits": 234,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -509,7 +509,7 @@
       "2026-03-20": 15,
       "2026-03-21": 26,
       "2026-03-22": 8,
-      "2026-03-23": 6
+      "2026-03-23": 7
     },
     "categoryCounts": {
       "blog": 31,
@@ -517,9 +517,17 @@
       "mobile": 17,
       "fix": 53,
       "other": 76,
-      "chore": 17
+      "chore": 18
     },
     "commits": [
+      {
+        "sha": "033b12be",
+        "date": "2026-03-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "ed32ab0a",
         "date": "2026-03-23",
@@ -2874,13 +2882,13 @@
     ]
   },
   "unknown": {
-    "totalCommits": 39,
+    "totalCommits": 40,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
       "2026-03-21": 10,
-      "2026-03-23": 1
+      "2026-03-23": 2
     },
     "categoryCounts": {
       "other": 25,
@@ -2889,9 +2897,18 @@
       "chore": 1,
       "refactor": 2,
       "style": 1,
-      "docs": 1
+      "docs": 1,
+      "mobile": 1
     },
     "commits": [
+      {
+        "sha": "c464c987",
+        "date": "2026-03-23",
+        "subject": "mobile: cap dpr at 2, add touch-action:none to sketch-frame iframes",
+        "categories": [
+          "mobile"
+        ]
+      },
       {
         "sha": "14029b4e",
         "date": "2026-03-23",
