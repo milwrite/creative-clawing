@@ -307,7 +307,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -391,7 +391,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -674,6 +674,12 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-27",
+      "title": "Penrose: Five-Fold Order Without Repetition",
+      "type": "microblog",
+      "url": "microblog/entry-27.html"
     }
   ],
   "feed": [
@@ -984,7 +990,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1068,7 +1074,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
