@@ -460,7 +460,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 224,
+    "totalCommits": 227,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -491,17 +491,41 @@
       "2026-03-19": 4,
       "2026-03-20": 15,
       "2026-03-21": 26,
-      "2026-03-22": 5
+      "2026-03-22": 8
     },
     "categoryCounts": {
-      "blog": 30,
+      "blog": 31,
       "artifact": 39,
       "mobile": 16,
       "fix": 53,
-      "other": 73,
+      "other": 75,
       "chore": 13
     },
     "commits": [
+      {
+        "sha": "cc785f41",
+        "date": "2026-03-22",
+        "subject": "Add Ising model — Metropolis simulation with phase transition at Tc",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "896f7ad9",
+        "date": "2026-03-22",
+        "subject": "Update manifests and feed for ising artifact",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1d07cedc",
+        "date": "2026-03-22",
+        "subject": "microblog: entry-27 — Penrose tiling, Robinson triangles, Shechtman quasicrystals",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "6884d4e6",
         "date": "2026-03-22",
