@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 55,
+    "totalCommits": 56,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -15,10 +15,10 @@
       "2026-03-13": 28,
       "2026-03-15": 3,
       "2026-03-14": 3,
-      "2026-03-22": 1
+      "2026-03-22": 2
     },
     "categoryCounts": {
-      "blog": 7,
+      "blog": 8,
       "mobile": 10,
       "fix": 5,
       "other": 28,
@@ -26,6 +26,14 @@
       "chore": 1
     },
     "commits": [
+      {
+        "sha": "97c0b871",
+        "date": "2026-03-22",
+        "subject": "blog: add molnar microblog",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "6de9ae87",
         "date": "2026-03-22",
@@ -469,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 227,
+    "totalCommits": 228,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -500,7 +508,8 @@
       "2026-03-19": 4,
       "2026-03-20": 15,
       "2026-03-21": 26,
-      "2026-03-22": 8
+      "2026-03-22": 8,
+      "2026-03-23": 1
     },
     "categoryCounts": {
       "blog": 31,
@@ -508,9 +517,17 @@
       "mobile": 16,
       "fix": 53,
       "other": 75,
-      "chore": 13
+      "chore": 14
     },
     "commits": [
+      {
+        "sha": "72369bbe",
+        "date": "2026-03-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "cc785f41",
         "date": "2026-03-22",
