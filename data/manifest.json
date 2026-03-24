@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-24T02:28:58.447507+00:00",
+  "generated": "2026-03-24T02:38:23.011813+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -124,6 +124,37 @@
       "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "astar",
+      "title": "A* Pathfinding",
+      "type": "artifact",
+      "url": "gallery/astar.html",
+      "page": "artifacts/astar.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-23",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [
+        "touch-action:none",
+        "viewport-fit:cover",
+        "user-scalable:no",
+        "dpr-cap:2",
+        "pointer-events"
+      ],
+      "description": "Interactive A* and Dijkstra pathfinding on a grid. Draw walls, generate mazes, drag endpoints, compare search frontier expansion between heuristic-guided and blind search.",
+      "category": "infrastructure",
+      "tags": [
+        "pathfinding",
+        "graph-search",
+        "algorithm",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "audiomountain",

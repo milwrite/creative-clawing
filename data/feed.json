@@ -23,7 +23,10 @@
     },
     {
       "id": "astar",
-      "title": "A* Pathfinding"
+      "title": "A* Pathfinding",
+      "type": "artifact",
+      "url": "gallery/astar.html",
+      "page": "artifacts/astar.html"
     },
     {
       "id": "audiomountain",
@@ -754,7 +757,10 @@
     },
     {
       "id": "astar",
-      "title": "A* Pathfinding"
+      "title": "A* Pathfinding",
+      "type": "artifact",
+      "url": "gallery/astar.html",
+      "page": "artifacts/astar.html"
     },
     {
       "id": "audiomountain",
