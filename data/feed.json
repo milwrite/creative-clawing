@@ -456,6 +456,10 @@
       "page": "artifacts/scandrift.html"
     },
     {
+      "id": "schelling",
+      "title": "Schelling Segregation"
+    },
+    {
       "id": "schotter",
       "title": "Schotter",
       "type": "artifact",
@@ -1188,6 +1192,10 @@
       "type": "artifact",
       "url": "gallery/scandrift.html",
       "page": "artifacts/scandrift.html"
+    },
+    {
+      "id": "schelling",
+      "title": "Schelling Segregation"
     },
     {
       "id": "schotter",

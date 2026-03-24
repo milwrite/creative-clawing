@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Schelling Segregation</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:'Courier New',monospace;color:#ccc;touch-action:none}
+canvas{display:block;position:absolute;top:0;left:0}
+.ui{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;padding:10px 16px;background:rgba(17,17,17,0.85);display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;z-index:10;backdrop-filter:blur(4px)}
+.ui label{font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.ui input[type=range]{width:100px;accent-color:#6af}
+.ui .val{font-size:11px;min-width:32px;text-align:right;color:#6af}
+.ui button{background:#333;border:1px solid #555;color:#ccc;padding:4px 12px;border-radius:3px;cursor:pointer;font-size:12px;font-family:inherit}
+.ui button:hover{background:#444}
+.ui button.active{background:#6af;color:#111;border-color:#6af}
+.stats{font-size:11px;color:#888;margin-left:auto;display:flex;gap:12px}
+.back-btn{position:fixed;top:12px;left:12px;z-index:20;background:rgba(30,30,30,0.8);border:1px solid #444;color:#aaa;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:13px;font-family:inherit;text-decoration:none}
+.back-btn:hover{background:#333;color:#fff}
+@media(max-width:600px){
+  .ui{gap:4px 10px;padding:8px 10px}
+  .ui input[type=range]{width:70px}
+  .stats{width:100%;margin-left:0;justify-content:space-between}
+}
+</style>
+</head>
+<body>
+<a class="back-btn" href="/gallery/">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="ui">
+  <label>Tolerance <input type="range" id="tolerance" min="0" max="100" value="30"><span class="val" id="tolVal">30%</span></label>
+  <label>Empty <input type="range" id="empty" min="5" max="40" value="10"><span class="val" id="empVal">10%</span></label>
+  <label>Groups <input type="range" id="groups" min="2" max="5" value="2"><span class="val" id="grpVal">2</span></label>
+  <button id="stepBtn">Step</button>
+  <button id="runBtn">Run</button>
+  <button id="resetBtn">Reset</button>
+  <div class="stats">
+    <span>Step: <span id="stepCount">0</span></span>
+    <span>Unhappy: <span id="unhappyCount">0</span></span>
+    <span>Similarity: <span id="simIndex">0%</span></span>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const inIframe = window.self !== window.top;
+if (inIframe) {
+  document.querySelector('.back-btn').style.display = 'none';
+}
+
+let W, H, cellSize, cols, rows;
+let grid, running = false, stepNum = 0, animId = null;
+
+const COLORS = ['#4a9eff','#ff6b6b','#5cd65c','#ffb347','#c77dff'];
+const EMPTY = -1;
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const uiH = 80;
+  const available = H - uiH;
+  cellSize = Math.max(4, Math.min(12, Math.floor(Math.min(W, available) / 80)));
+  cols = Math.floor(W / cellSize);
+  rows = Math.floor(available / cellSize);
+  resetGrid();
+}
+
+function resetGrid() {
+  const numGroups = parseInt(document.getElementById('groups').value);
+  const emptyPct = parseInt(document.getElementById('empty').value) / 100;
+  const total = cols * rows;
+  grid = new Int8Array(total);
+
+  for (let i = 0; i < total; i++) {
+    if (Math.random() < emptyPct) {
+      grid[i] = EMPTY;
+    } else {
+      grid[i] = Math.floor(Math.random() * numGroups);
+    }
+  }
+  stepNum = 0;
+  document.getElementById('stepCount').textContent = '0';
+  draw();
+  updateStats();
+}
+
+function getTolerance() {
+  return parseInt(document.getElementById('tolerance').value) / 100;
+}
+
+function neighbors(idx) {
+  const x = idx % cols;
+  const y = (idx - x) / cols;
+  const out = [];
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const nx = x + dx, ny = y + dy;
+      if (nx >= 0 && nx < cols && ny >= 0 && ny < rows) {
+        out.push(ny * cols + nx);
+      }
+    }
+  }
+  return out;
+}
+
+function isHappy(idx) {
+  if (grid[idx] === EMPTY) return true;
+  const me = grid[idx];
+  const nbrs = neighbors(idx);
+  let same = 0, total = 0;
+  for (const n of nbrs) {
+    if (grid[n] !== EMPTY) {
+      total++;
+      if (grid[n] === me) same++;
+    }
+  }
+  if (total === 0) return true;
+  return (same / total) >= getTolerance();
+}
+
+function step() {
+  const unhappy = [];
+  const empties = [];
+  const total = cols * rows;
+
+  for (let i = 0; i < total; i++) {
+    if (grid[i] === EMPTY) empties.push(i);
+    else if (!isHappy(i)) unhappy.push(i);
+  }
+
+  // Fisher-Yates shuffle unhappy
+  for (let i = unhappy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [unhappy[i], unhappy[j]] = [unhappy[j], unhappy[i]];
+  }
+
+  // Move unhappy agents to random empty cells
+  const available = [...empties];
+  for (const u of unhappy) {
+    if (available.length === 0) break;
+    const ri = Math.floor(Math.random() * available.length);
+    const dest = available[ri];
+    grid[dest] = grid[u];
+    grid[u] = EMPTY;
+    available[ri] = u; // old position is now empty
+  }
+
+  stepNum++;
+  document.getElementById('stepCount').textContent = stepNum;
+  draw();
+  updateStats();
+  return unhappy.length;
+}
+
+function updateStats() {
+  const total = cols * rows;
+  let unhappy = 0, simSum = 0, simCount = 0;
+
+  for (let i = 0; i < total; i++) {
+    if (grid[i] === EMPTY) continue;
+    const me = grid[i];
+    const nbrs = neighbors(i);
+    let same = 0, nt = 0;
+    for (const n of nbrs) {
+      if (grid[n] !== EMPTY) {
+        nt++;
+        if (grid[n] === me) same++;
+      }
+    }
+    if (nt > 0) {
+      const ratio = same / nt;
+      simSum += ratio;
+      simCount++;
+      if (ratio < getTolerance()) unhappy++;
+    }
+  }
+
+  document.getElementById('unhappyCount').textContent = unhappy;
+  document.getElementById('simIndex').textContent = simCount > 0 ? Math.round(100 * simSum / simCount) + '%' : '0%';
+}
+
+function draw() {
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 0, W, H);
+
+  const total = cols * rows;
+  for (let i = 0; i < total; i++) {
+    if (grid[i] === EMPTY) continue;
+    const x = (i % cols) * cellSize;
+    const y = ((i - (i % cols)) / cols) * cellSize;
+    ctx.fillStyle = COLORS[grid[i]];
+    ctx.fillRect(x, y, cellSize - 1, cellSize - 1);
+  }
+}
+
+function runLoop() {
+  if (!running) return;
+  const moved = step();
+  if (moved === 0) {
+    running = false;
+    document.getElementById('runBtn').classList.remove('active');
+    document.getElementById('runBtn').textContent = 'Run';
+    return;
+  }
+  animId = requestAnimationFrame(runLoop);
+}
+
+// Controls
+document.getElementById('tolerance').addEventListener('input', e => {
+  document.getElementById('tolVal').textContent = e.target.value + '%';
+  updateStats();
+});
+document.getElementById('empty').addEventListener('input', e => {
+  document.getElementById('empVal').textContent = e.target.value + '%';
+});
+document.getElementById('groups').addEventListener('input', e => {
+  document.getElementById('grpVal').textContent = e.target.value;
+});
+document.getElementById('stepBtn').addEventListener('click', () => {
+  if (running) return;
+  step();
+});
+document.getElementById('runBtn').addEventListener('click', () => {
+  running = !running;
+  const btn = document.getElementById('runBtn');
+  if (running) {
+    btn.classList.add('active');
+    btn.textContent = 'Pause';
+    runLoop();
+  } else {
+    btn.classList.remove('active');
+    btn.textContent = 'Run';
+    if (animId) cancelAnimationFrame(animId);
+  }
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+  running = false;
+  document.getElementById('runBtn').classList.remove('active');
+  document.getElementById('runBtn').textContent = 'Run';
+  if (animId) cancelAnimationFrame(animId);
+  resetGrid();
+});
+
+window.addEventListener('resize', () => {
+  resize();
+});
+
+resize();
+</script>
+</body>
+</html>

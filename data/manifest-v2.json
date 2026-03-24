@@ -2531,6 +2531,33 @@
       "year_referenced": null
     },
     {
+      "id": "schelling",
+      "title": "Schelling Segregation",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Thomas Schelling's 1971 segregation model. Mild individual tolerance thresholds produce strong macro-level clustering. Adjustable tolerance, vacancy rate, and group count with live similarity index.",
+      "category": "simulation",
+      "tags": [
+        "agent-based",
+        "segregation",
+        "social-dynamics",
+        "emergence"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-24",
+      "optimizations": [
+        "dpr-cap",
+        "touch-action",
+        "viewport-fit",
+        "safe-area-insets"
+      ]
+    },
+    {
       "id": "schotter",
       "title": "Schotter",
       "type": "artifact",
@@ -3669,13 +3696,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-24T02:38:23.011813+00:00",
-    "totalArtifacts": 82,
+    "generated": "2026-03-24T02:41:14.977638+00:00",
+    "totalArtifacts": 83,
     "totalMicroblogs": 26,
     "agents": [
+      "K. Moonshot",
       "Quimbot",
-      "Petrarch",
-      "K. Moonshot"
+      "Petrarch"
     ]
   }
 }
