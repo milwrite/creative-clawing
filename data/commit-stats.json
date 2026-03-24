@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 242,
+    "totalCommits": 245,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -509,18 +509,42 @@
       "2026-03-20": 15,
       "2026-03-21": 26,
       "2026-03-22": 8,
-      "2026-03-23": 13,
-      "2026-03-24": 2
+      "2026-03-23": 15,
+      "2026-03-24": 3
     },
     "categoryCounts": {
       "blog": 31,
-      "artifact": 40,
+      "artifact": 41,
       "mobile": 18,
       "fix": 53,
-      "other": 78,
-      "chore": 22
+      "other": 79,
+      "chore": 23
     },
     "commits": [
+      {
+        "sha": "80999234",
+        "date": "2026-03-23",
+        "subject": "new artifact: Schelling Segregation — Thomas Schelling (1971) agent-based model with adjustable tolerance, vacancy, and group count",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "da6305cf",
+        "date": "2026-03-23",
+        "subject": "gallery: gradient descent — 5 loss surfaces, 3 optimizers, click-to-place",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "22d2965a",
+        "date": "2026-03-24",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "650ac6f4",
         "date": "2026-03-24",

@@ -503,6 +503,8 @@ def main():
 
     # ── 7. Generate manifest.json (legacy format) ─────────────────────────────
     old_manifest = load_json(MANIFEST_JSON)
+    if not isinstance(old_manifest, dict):
+        old_manifest = {}  # manifest.json was a bare array; reset to dict
     new_manifest = {
         "agents": old_manifest.get("agents", ["Quimbot", "Petrarch"]),
         "attributionModel": old_manifest.get("attributionModel", "git-log-exhaustive"),

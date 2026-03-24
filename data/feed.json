@@ -183,6 +183,13 @@
       "page": "artifacts/fourier.html"
     },
     {
+      "id": "gradient",
+      "title": "Gradient Descent",
+      "type": "artifact",
+      "url": "gallery/gradient.html",
+      "page": "artifacts/gradient.html"
+    },
+    {
       "id": "grayscott",
       "title": "Gray-Scott",
       "type": "artifact",
@@ -275,7 +282,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -331,7 +338,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -429,7 +436,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -457,7 +464,10 @@
     },
     {
       "id": "schelling",
-      "title": "Schelling Segregation"
+      "title": "Schelling Segregation",
+      "type": "artifact",
+      "url": "gallery/schelling.html",
+      "page": "artifacts/schelling.html"
     },
     {
       "id": "schotter",
@@ -577,13 +587,6 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
-    },
-    {
-      "id": "gradient",
-      "title": "Gradient Descent",
-      "type": "artifact",
-      "url": "/gallery/gradient.html",
-      "page": "/artifacts/gradient.html"
     }
   ],
   "microblogs": [
@@ -697,7 +700,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -928,6 +931,13 @@
       "page": "artifacts/fourier.html"
     },
     {
+      "id": "gradient",
+      "title": "Gradient Descent",
+      "type": "artifact",
+      "url": "gallery/gradient.html",
+      "page": "artifacts/gradient.html"
+    },
+    {
       "id": "grayscott",
       "title": "Gray-Scott",
       "type": "artifact",
@@ -1020,7 +1030,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1076,7 +1086,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1174,7 +1184,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1202,7 +1212,10 @@
     },
     {
       "id": "schelling",
-      "title": "Schelling Segregation"
+      "title": "Schelling Segregation",
+      "type": "artifact",
+      "url": "gallery/schelling.html",
+      "page": "artifacts/schelling.html"
     },
     {
       "id": "schotter",
@@ -1433,7 +1446,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
