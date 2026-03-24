@@ -120,6 +120,34 @@
       "year_referenced": null
     },
     {
+      "id": "astar",
+      "title": "A* Pathfinding",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Interactive A* and Dijkstra pathfinding on a grid. Draw walls, generate mazes, drag endpoints, compare search frontier expansion between heuristic-guided and blind search.",
+      "category": "infrastructure",
+      "tags": [
+        "pathfinding",
+        "graph-search",
+        "algorithm",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-23",
+      "optimizations": [
+        "touch-action:none",
+        "viewport-fit:cover",
+        "user-scalable:no",
+        "dpr-cap:2",
+        "pointer-events"
+      ]
+    },
+    {
       "id": "audiomountain",
       "title": "Audiomountain",
       "type": "artifact",
@@ -3638,13 +3666,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-24T02:28:58.447507+00:00",
-    "totalArtifacts": 81,
+    "generated": "2026-03-24T02:35:52.549966+00:00",
+    "totalArtifacts": 82,
     "totalMicroblogs": 26,
     "agents": [
-      "Petrarch",
+      "Quimbot",
       "K. Moonshot",
-      "Quimbot"
+      "Petrarch"
     ]
   }
 }

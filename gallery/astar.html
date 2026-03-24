@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>A* Pathfinding</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:'Courier New',monospace;color:#c0c0c0;touch-action:none}
+canvas{display:block;position:absolute;top:0;left:0}
+#ui{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;background:rgba(10,10,15,0.85);backdrop-filter:blur(6px);z-index:10;border-top:1px solid rgba(100,200,255,0.15)}
+#ui button{background:rgba(100,200,255,0.12);border:1px solid rgba(100,200,255,0.3);color:#8cf;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;transition:background 0.2s}
+#ui button:hover{background:rgba(100,200,255,0.25)}
+#ui button.active{background:rgba(100,200,255,0.3);border-color:#8cf}
+#ui .info{font-size:12px;color:#6aa;min-width:120px;text-align:center}
+#ui select{background:rgba(10,10,15,0.9);border:1px solid rgba(100,200,255,0.3);color:#8cf;padding:4px 8px;border-radius:4px;font-family:inherit;font-size:13px}
+#back{position:fixed;top:env(safe-area-inset-top,12px);left:16px;z-index:20;background:rgba(10,10,15,0.7);border:1px solid rgba(100,200,255,0.2);color:#8cf;padding:6px 12px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;text-decoration:none}
+</style>
+</head>
+<body>
+<a id="back" href="/gallery/">← gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <button id="btnRun">Run A*</button>
+  <button id="btnDijkstra">Run Dijkstra</button>
+  <button id="btnBoth">Compare</button>
+  <button id="btnClear">Clear Walls</button>
+  <button id="btnMaze">Random Maze</button>
+  <select id="selSpeed">
+    <option value="1">Slow</option>
+    <option value="4" selected>Medium</option>
+    <option value="16">Fast</option>
+    <option value="0">Instant</option>
+  </select>
+  <div class="info" id="stats">Draw walls · Drag endpoints</div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,cols,rows,cellSize,dpr;
+const EMPTY=0,WALL=1,START=2,END=3;
+let grid=[];
+let startCell={r:0,c:0},endCell={r:0,c:0};
+let animFrames=[];
+let animIdx=0;
+let animating=false;
+let animId=null;
+let pathA=null,pathD=null;
+let visitedA=null,visitedD=null;
+let mode='draw'; // draw|dragStart|dragEnd
+let drawing=false;
+let drawVal=WALL;
+let compareMode=false;
+let speed=4;
+
+function init(){
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth;
+  H=window.innerHeight;
+  canvas.width=W*dpr;
+  canvas.height=H*dpr;
+  canvas.style.width=W+'px';
+  canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cellSize=Math.max(12,Math.min(28,Math.floor(Math.min(W,H)/40)));
+  cols=Math.floor(W/cellSize);
+  rows=Math.floor((H-60)/cellSize);
+  grid=[];
+  for(let r=0;r<rows;r++){
+    grid[r]=[];
+    for(let c=0;c<cols;c++) grid[r][c]=EMPTY;
+  }
+  startCell={r:Math.floor(rows/2),c:Math.floor(cols*0.15)};
+  endCell={r:Math.floor(rows/2),c:Math.floor(cols*0.85)};
+  grid[startCell.r][startCell.c]=START;
+  grid[endCell.r][endCell.c]=END;
+  resetAnim();
+  render();
+}
+
+function resetAnim(){
+  animFrames=[];animIdx=0;animating=false;
+  pathA=null;pathD=null;visitedA=null;visitedD=null;
+  compareMode=false;
+  if(animId){cancelAnimationFrame(animId);animId=null;}
+  document.getElementById('stats').textContent='Draw walls · Drag endpoints';
+}
+
+function cellAt(x,y){
+  const c=Math.floor(x/cellSize);
+  const r=Math.floor(y/cellSize);
+  if(r>=0&&r<rows&&c>=0&&c<cols) return {r,c};
+  return null;
+}
+
+function heuristic(a,b){
+  return Math.abs(a.r-b.r)+Math.abs(a.c-b.c);
+}
+
+function neighbors(r,c){
+  const dirs=[[0,1],[1,0],[0,-1],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+  const out=[];
+  for(const[dr,dc] of dirs){
+    const nr=r+dr,nc=c+dc;
+    if(nr>=0&&nr<rows&&nc>=0&&nc<cols&&grid[nr][nc]!==WALL){
+      // diagonal: check both cardinal neighbors to prevent corner cutting
+      if(dr!==0&&dc!==0){
+        if(grid[r+dr][c]===WALL||grid[r][c+dc]===WALL) continue;
+      }
+      out.push({r:nr,c:nc,cost:dr!==0&&dc!==0?1.414:1});
+    }
+  }
+  return out;
+}
+
+function runSearch(useHeuristic){
+  const open=[];
+  const gScore={};
+  const fScore={};
+  const cameFrom={};
+  const closed=new Set();
+  const frames=[];
+  const key=(r,c)=>r*cols+c;
+  const sk=key(startCell.r,startCell.c);
+  const ek=key(endCell.r,endCell.c);
+  gScore[sk]=0;
+  fScore[sk]=useHeuristic?heuristic(startCell,endCell):0;
+  open.push({r:startCell.r,c:startCell.c,f:fScore[sk]});
+
+  while(open.length>0){
+    open.sort((a,b)=>a.f-b.f);
+    const cur=open.shift();
+    const ck=key(cur.r,cur.c);
+    if(closed.has(ck)) continue;
+    closed.add(ck);
+    frames.push({r:cur.r,c:cur.c,type:'visit'});
+    if(ck===ek){
+      // reconstruct path
+      const path=[];
+      let k=ek;
+      while(k!==undefined){
+        path.push({r:Math.floor(k/cols),c:k%cols});
+        k=cameFrom[k];
+      }
+      path.reverse();
+      return {frames,path,visited:closed.size};
+    }
+    for(const nb of neighbors(cur.r,cur.c)){
+      const nk=key(nb.r,nb.c);
+      if(closed.has(nk)) continue;
+      const tentG=(gScore[ck]||0)+nb.cost;
+      if(tentG<(gScore[nk]??Infinity)){
+        gScore[nk]=tentG;
+        fScore[nk]=tentG+(useHeuristic?heuristic(nb,endCell):0);
+        cameFrom[nk]=ck;
+        open.push({r:nb.r,c:nb.c,f:fScore[nk]});
+        frames.push({r:nb.r,c:nb.c,type:'frontier'});
+      }
+    }
+  }
+  return {frames,path:null,visited:closed.size};
+}
+
+const COL={
+  bg:'#0a0a0f',
+  empty:'#12121a',
+  wall:'#2a2a3a',
+  start:'#00e87b',
+  end:'#ff4466',
+  visitA:'rgba(60,140,255,0.35)',
+  frontierA:'rgba(60,140,255,0.15)',
+  pathA:'#4da6ff',
+  visitD:'rgba(255,160,40,0.35)',
+  frontierD:'rgba(255,160,40,0.15)',
+  pathD:'#ffa028',
+  grid:'rgba(40,40,60,0.3)'
+};
+
+function render(){
+  ctx.fillStyle=COL.bg;
+  ctx.fillRect(0,0,W,H);
+  // cells
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const x=c*cellSize,y=r*cellSize;
+      if(grid[r][c]===WALL){
+        ctx.fillStyle=COL.wall;
+      } else {
+        ctx.fillStyle=COL.empty;
+      }
+      ctx.fillRect(x+0.5,y+0.5,cellSize-1,cellSize-1);
+    }
+  }
+  // visited overlay
+  if(visitedA){
+    for(const f of visitedA){
+      const x=f.c*cellSize,y=f.r*cellSize;
+      ctx.fillStyle=f.type==='visit'?COL.visitA:COL.frontierA;
+      ctx.fillRect(x+0.5,y+0.5,cellSize-1,cellSize-1);
+    }
+  }
+  if(visitedD){
+    for(const f of visitedD){
+      const x=f.c*cellSize,y=f.r*cellSize;
+      ctx.fillStyle=f.type==='visit'?COL.visitD:COL.frontierD;
+      ctx.fillRect(x+0.5,y+0.5,cellSize-1,cellSize-1);
+    }
+  }
+  // paths
+  if(pathA&&pathA.length>1){
+    ctx.strokeStyle=COL.pathA;ctx.lineWidth=Math.max(2,cellSize*0.3);
+    ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(pathA[0].c*cellSize+cellSize/2,pathA[0].r*cellSize+cellSize/2);
+    for(let i=1;i<pathA.length;i++) ctx.lineTo(pathA[i].c*cellSize+cellSize/2,pathA[i].r*cellSize+cellSize/2);
+    ctx.stroke();
+  }
+  if(pathD&&pathD.length>1){
+    ctx.strokeStyle=COL.pathD;ctx.lineWidth=Math.max(2,cellSize*0.3);
+    ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(pathD[0].c*cellSize+cellSize/2,pathD[0].r*cellSize+cellSize/2);
+    for(let i=1;i<pathD.length;i++) ctx.lineTo(pathD[i].c*cellSize+cellSize/2,pathD[i].r*cellSize+cellSize/2);
+    ctx.stroke();
+  }
+  // start/end
+  const sr=startCell.r*cellSize+cellSize/2,sc=startCell.c*cellSize+cellSize/2;
+  const er=endCell.r*cellSize+cellSize/2,ec=endCell.c*cellSize+cellSize/2;
+  ctx.fillStyle=COL.start;
+  ctx.beginPath();ctx.arc(sc,sr,cellSize*0.35,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=COL.end;
+  ctx.beginPath();ctx.arc(ec,er,cellSize*0.35,0,Math.PI*2);ctx.fill();
+}
+
+// Animation
+function animateSearch(resultA,resultD){
+  animating=true;
+  visitedA=[];visitedD=[];
+  pathA=null;pathD=null;
+  const framesA=resultA?resultA.frames:[];
+  const framesD=resultD?resultD.frames:[];
+  const maxLen=Math.max(framesA.length,framesD.length);
+  let idx=0;
+  const spd=speed===0?maxLen:speed;
+
+  function step(){
+    for(let s=0;s<spd&&idx<maxLen;s++,idx++){
+      if(idx<framesA.length) visitedA.push(framesA[idx]);
+      if(idx<framesD.length) visitedD.push(framesD[idx]);
+    }
+    render();
+    if(idx>=maxLen){
+      // show paths
+      if(resultA) pathA=resultA.path;
+      if(resultD) pathD=resultD.path;
+      render();
+      animating=false;
+      let stat='';
+      if(resultA) stat+=`A*: ${resultA.visited} visited`+(resultA.path?`, path ${resultA.path.length}`:', no path');
+      if(resultD){
+        if(stat) stat+=' · ';
+        stat+=`Dijkstra: ${resultD.visited} visited`+(resultD.path?`, path ${resultD.path.length}`:', no path');
+      }
+      document.getElementById('stats').textContent=stat;
+      return;
+    }
+    animId=requestAnimationFrame(step);
+  }
+  step();
+}
+
+function doRun(astar,dijkstra){
+  resetAnim();
+  const rA=astar?runSearch(true):null;
+  const rD=dijkstra?runSearch(false):null;
+  compareMode=astar&&dijkstra;
+  animateSearch(rA,rD);
+}
+
+// Maze generation (recursive backtracker)
+function generateMaze(){
+  resetAnim();
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) grid[r][c]=WALL;
+  const visited=new Set();
+  const stack=[];
+  const sr=1,sc=1;
+  grid[sr][sc]=EMPTY;
+  visited.add(sr*cols+sc);
+  stack.push({r:sr,c:sc});
+  while(stack.length>0){
+    const cur=stack[stack.length-1];
+    const nbrs=[];
+    for(const[dr,dc] of [[0,2],[2,0],[0,-2],[-2,0]]){
+      const nr=cur.r+dr,nc=cur.c+dc;
+      if(nr>0&&nr<rows-1&&nc>0&&nc<cols-1&&!visited.has(nr*cols+nc)){
+        nbrs.push({r:nr,c:nc,wr:cur.r+dr/2,wc:cur.c+dc/2});
+      }
+    }
+    if(nbrs.length===0){stack.pop();continue;}
+    const next=nbrs[Math.floor(Math.random()*nbrs.length)];
+    grid[next.wr][next.wc]=EMPTY;
+    grid[next.r][next.c]=EMPTY;
+    visited.add(next.r*cols+next.c);
+    stack.push({r:next.r,c:next.c});
+  }
+  // place start and end in open cells
+  startCell={r:1,c:1};
+  endCell={r:rows-2-(rows%2===0?1:0),c:cols-2-(cols%2===0?1:0)};
+  if(grid[endCell.r][endCell.c]===WALL){endCell.r--;endCell.c--;}
+  grid[startCell.r][startCell.c]=START;
+  grid[endCell.r][endCell.c]=END;
+  render();
+}
+
+// Input handling
+function getPos(e){
+  const t=e.touches?e.touches[0]:e;
+  return {x:t.clientX,y:t.clientY};
+}
+
+function pointerDown(e){
+  e.preventDefault();
+  if(animating) return;
+  const{x,y}=getPos(e);
+  const cell=cellAt(x,y);
+  if(!cell) return;
+  if(cell.r===startCell.r&&cell.c===startCell.c){mode='dragStart';return;}
+  if(cell.r===endCell.r&&cell.c===endCell.c){mode='dragEnd';return;}
+  mode='draw';drawing=true;
+  resetAnim();
+  drawVal=grid[cell.r][cell.c]===WALL?EMPTY:WALL;
+  grid[cell.r][cell.c]=drawVal;
+  render();
+}
+
+function pointerMove(e){
+  e.preventDefault();
+  const{x,y}=getPos(e);
+  const cell=cellAt(x,y);
+  if(!cell) return;
+  if(mode==='dragStart'){
+    if(grid[cell.r][cell.c]!==WALL&&!(cell.r===endCell.r&&cell.c===endCell.c)){
+      grid[startCell.r][startCell.c]=EMPTY;
+      startCell=cell;
+      grid[startCell.r][startCell.c]=START;
+      resetAnim();render();
+    }
+  } else if(mode==='dragEnd'){
+    if(grid[cell.r][cell.c]!==WALL&&!(cell.r===startCell.r&&cell.c===startCell.c)){
+      grid[endCell.r][endCell.c]=EMPTY;
+      endCell=cell;
+      grid[endCell.r][endCell.c]=END;
+      resetAnim();render();
+    }
+  } else if(drawing){
+    if(!(cell.r===startCell.r&&cell.c===startCell.c)&&!(cell.r===endCell.r&&cell.c===endCell.c)){
+      grid[cell.r][cell.c]=drawVal;
+      render();
+    }
+  }
+}
+
+function pointerUp(e){
+  drawing=false;mode='draw';
+}
+
+canvas.addEventListener('pointerdown',pointerDown,{passive:false});
+canvas.addEventListener('pointermove',pointerMove,{passive:false});
+canvas.addEventListener('pointerup',pointerUp);
+canvas.addEventListener('pointercancel',pointerUp);
+
+document.getElementById('btnRun').addEventListener('click',()=>doRun(true,false));
+document.getElementById('btnDijkstra').addEventListener('click',()=>doRun(false,true));
+document.getElementById('btnBoth').addEventListener('click',()=>doRun(true,true));
+document.getElementById('btnClear').addEventListener('click',()=>{
+  resetAnim();
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+    if(grid[r][c]===WALL) grid[r][c]=EMPTY;
+  }
+  render();
+});
+document.getElementById('btnMaze').addEventListener('click',generateMaze);
+document.getElementById('selSpeed').addEventListener('change',e=>{speed=parseInt(e.target.value);});
+
+// iframe detection: hide UI
+if(window.self!==window.top){
+  document.getElementById('back').style.display='none';
+}
+
+window.addEventListener('resize',()=>{init();});
+init();
+</script>
+</body>
+</html>
