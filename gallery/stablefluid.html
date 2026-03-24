@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Stable Fluids</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui{position:fixed;top:env(safe-area-inset-top,12px);left:env(safe-area-inset-left,12px);z-index:10;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font:13px/1 'Menlo','Consolas',monospace;color:#ccc}
+#ui button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#eee;padding:5px 10px;border-radius:4px;cursor:pointer;font:inherit}
+#ui button:hover{background:rgba(255,255,255,.22)}
+#ui button.active{background:rgba(100,180,255,.3);border-color:rgba(100,180,255,.6)}
+#back{position:fixed;bottom:env(safe-area-inset-bottom,12px);right:env(safe-area-inset-right,12px);z-index:10;font:13px/1 'Menlo',monospace;color:#888;text-decoration:none}
+#back:hover{color:#ccc}
+</style>
+</head>
+<body>
+<div id="ui">
+  <button id="btnMode" class="active">Dye</button>
+  <button id="btnClear">Clear</button>
+  <button id="btnVort">Vorticity</button>
+</div>
+<a id="back" href="../">← gallery</a>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* Stable Fluids — Jos Stam (1999)
+   2D Navier-Stokes on a staggered grid.
+   Semi-Lagrangian advection + Gauss-Seidel pressure projection.
+   Vorticity confinement optional (Fedkiw et al. 2001). */
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// Hide UI in iframe
+if(window.self !== window.top){
+  document.getElementById('ui').style.display='none';
+  document.getElementById('back').style.display='none';
+}
+
+// Grid
+const N = 128;
+const size = (N+2)*(N+2);
+const dt = 0.15;
+const diffusion = 0.00001;
+const viscosity = 0.00001;
+const iterations = 16;
+let vortConf = 0.35;
+
+// Allocations
+let u    = new Float32Array(size);
+let v    = new Float32Array(size);
+let u0   = new Float32Array(size);
+let v0   = new Float32Array(size);
+let dens = new Float32Array(size);
+let dens0= new Float32Array(size);
+
+function IX(i,j){ return i + (N+2)*j; }
+
+function addSource(x, s, dt_){
+  for(let i=0;i<size;i++) x[i] += dt_*s[i];
+}
+
+function setBnd(b, x){
+  const n=N;
+  for(let i=1;i<=n;i++){
+    x[IX(0,  i)] = b===1 ? -x[IX(1,i)] : x[IX(1,i)];
+    x[IX(n+1,i)] = b===1 ? -x[IX(n,i)] : x[IX(n,i)];
+    x[IX(i,  0)] = b===2 ? -x[IX(i,1)] : x[IX(i,1)];
+    x[IX(i,n+1)] = b===2 ? -x[IX(i,n)] : x[IX(i,n)];
+  }
+  x[IX(0,  0  )] = 0.5*(x[IX(1,0  )]+x[IX(0,  1)]);
+  x[IX(0,  n+1)] = 0.5*(x[IX(1,n+1)]+x[IX(0,  n)]);
+  x[IX(n+1,0  )] = 0.5*(x[IX(n,0  )]+x[IX(n+1,1)]);
+  x[IX(n+1,n+1)] = 0.5*(x[IX(n,n+1)]+x[IX(n+1,n)]);
+}
+
+function diffuse(b, x, x0, diff, dt_){
+  const a = dt_ * diff * N * N;
+  const c = 1 + 4*a;
+  for(let k=0;k<iterations;k++){
+    for(let j=1;j<=N;j++){
+      for(let i=1;i<=N;i++){
+        x[IX(i,j)] = (x0[IX(i,j)] + a*(x[IX(i-1,j)]+x[IX(i+1,j)]+x[IX(i,j-1)]+x[IX(i,j+1)])) / c;
+      }
+    }
+    setBnd(b,x);
+  }
+}
+
+function advect(b, d, d0, u_, v_, dt_){
+  const dt0 = dt_*N;
+  for(let j=1;j<=N;j++){
+    for(let i=1;i<=N;i++){
+      let x = i - dt0*u_[IX(i,j)];
+      let y = j - dt0*v_[IX(i,j)];
+      if(x<0.5) x=0.5; if(x>N+0.5) x=N+0.5;
+      if(y<0.5) y=0.5; if(y>N+0.5) y=N+0.5;
+      const i0=Math.floor(x), i1=i0+1;
+      const j0=Math.floor(y), j1=j0+1;
+      const s1=x-i0, s0=1-s1;
+      const t1=y-j0, t0=1-t1;
+      d[IX(i,j)] = s0*(t0*d0[IX(i0,j0)]+t1*d0[IX(i0,j1)]) + s1*(t0*d0[IX(i1,j0)]+t1*d0[IX(i1,j1)]);
+    }
+  }
+  setBnd(b,d);
+}
+
+function project(u_, v_, p, div){
+  const h = 1.0/N;
+  for(let j=1;j<=N;j++){
+    for(let i=1;i<=N;i++){
+      div[IX(i,j)] = -0.5*h*(u_[IX(i+1,j)]-u_[IX(i-1,j)]+v_[IX(i,j+1)]-v_[IX(i,j-1)]);
+      p[IX(i,j)] = 0;
+    }
+  }
+  setBnd(0,div); setBnd(0,p);
+  for(let k=0;k<iterations;k++){
+    for(let j=1;j<=N;j++){
+      for(let i=1;i<=N;i++){
+        p[IX(i,j)] = (div[IX(i,j)]+p[IX(i-1,j)]+p[IX(i+1,j)]+p[IX(i,j-1)]+p[IX(i,j+1)])*0.25;
+      }
+    }
+    setBnd(0,p);
+  }
+  for(let j=1;j<=N;j++){
+    for(let i=1;i<=N;i++){
+      u_[IX(i,j)] -= 0.5*N*(p[IX(i+1,j)]-p[IX(i-1,j)]);
+      v_[IX(i,j)] -= 0.5*N*(p[IX(i,j+1)]-p[IX(i,j-1)]);
+    }
+  }
+  setBnd(1,u_); setBnd(2,v_);
+}
+
+function vorticityConfinement(u_, v_, eps){
+  const curl = new Float32Array(size);
+  // compute curl (scalar in 2D = dv/dx - du/dy)
+  for(let j=1;j<=N;j++){
+    for(let i=1;i<=N;i++){
+      curl[IX(i,j)] = 0.5*((v_[IX(i+1,j)]-v_[IX(i-1,j)]) - (u_[IX(i,j+1)]-u_[IX(i,j-1)]));
+    }
+  }
+  // compute gradient of |curl| and apply confinement force
+  for(let j=2;j<N;j++){
+    for(let i=2;i<N;i++){
+      const dwdx = (Math.abs(curl[IX(i+1,j)])-Math.abs(curl[IX(i-1,j)]))*0.5;
+      const dwdy = (Math.abs(curl[IX(i,j+1)])-Math.abs(curl[IX(i,j-1)]))*0.5;
+      const len = Math.sqrt(dwdx*dwdx+dwdy*dwdy)+1e-5;
+      const nx = dwdx/len, ny = dwdy/len;
+      u_[IX(i,j)] += eps * dt * (ny * curl[IX(i,j)]);
+      v_[IX(i,j)] -= eps * dt * (nx * curl[IX(i,j)]);
+    }
+  }
+}
+
+function velStep(){
+  addSource(u, u0, dt);
+  addSource(v, v0, dt);
+  [u0,u]=[u,u0]; diffuse(1,u,u0,viscosity,dt);
+  [v0,v]=[v,v0]; diffuse(2,v,v0,viscosity,dt);
+  project(u,v,u0,v0);
+  if(vortConf>0) vorticityConfinement(u,v,vortConf);
+  [u0,u]=[u,u0]; [v0,v]=[v,v0];
+  advect(1,u,u0,u0,v0,dt);
+  advect(2,v,v0,u0,v0,dt);
+  project(u,v,u0,v0);
+}
+
+function densStep(){
+  addSource(dens, dens0, dt);
+  [dens0,dens]=[dens,dens0]; diffuse(0,dens,dens0,diffusion,dt);
+  [dens0,dens]=[dens,dens0]; advect(0,dens,dens0,u,v,dt);
+}
+
+// --- Rendering ---
+let imgData;
+function resize(){
+  const dpr = Math.min(devicePixelRatio||1, 2);
+  canvas.width  = Math.round(innerWidth*dpr);
+  canvas.height = Math.round(innerHeight*dpr);
+  imgData = ctx.createImageData(canvas.width, canvas.height);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Color: 3-channel dye
+let dyeR = new Float32Array(size);
+let dyeG = new Float32Array(size);
+let dyeB = new Float32Array(size);
+let dyeR0= new Float32Array(size);
+let dyeG0= new Float32Array(size);
+let dyeB0= new Float32Array(size);
+
+function dyeStep(){
+  addSource(dyeR, dyeR0, dt);
+  addSource(dyeG, dyeG0, dt);
+  addSource(dyeB, dyeB0, dt);
+  [dyeR0,dyeR]=[dyeR,dyeR0]; diffuse(0,dyeR,dyeR0,diffusion,dt);
+  [dyeR0,dyeR]=[dyeR,dyeR0]; advect(0,dyeR,dyeR0,u,v,dt);
+  [dyeG0,dyeG]=[dyeG,dyeG0]; diffuse(0,dyeG,dyeG0,diffusion,dt);
+  [dyeG0,dyeG]=[dyeG,dyeG0]; advect(0,dyeG,dyeG0,u,v,dt);
+  [dyeB0,dyeB]=[dyeB,dyeB0]; diffuse(0,dyeB,dyeB0,diffusion,dt);
+  [dyeB0,dyeB]=[dyeB,dyeB0]; advect(0,dyeB,dyeB0,u,v,dt);
+}
+
+function render(){
+  const w = canvas.width, h = canvas.height;
+  const data = imgData.data;
+  for(let py=0;py<h;py++){
+    for(let px=0;px<w;px++){
+      // map pixel to grid
+      const gi = 1 + (px/w)*N;
+      const gj = 1 + (py/h)*N;
+      const i0=Math.floor(gi), j0=Math.floor(gj);
+      const i1=Math.min(i0+1,N+1), j1=Math.min(j0+1,N+1);
+      const sx=gi-i0, sy=gj-j0;
+      // bilinear
+      const bilerp = (f)=>(1-sx)*((1-sy)*f[IX(i0,j0)]+sy*f[IX(i0,j1)])+sx*((1-sy)*f[IX(i1,j0)]+sy*f[IX(i1,j1)]);
+      const r = bilerp(dyeR);
+      const g = bilerp(dyeG);
+      const b = bilerp(dyeB);
+      const idx = (py*w+px)*4;
+      data[idx  ] = Math.min(255, Math.max(0, r*255|0));
+      data[idx+1] = Math.min(255, Math.max(0, g*255|0));
+      data[idx+2] = Math.min(255, Math.max(0, b*255|0));
+      data[idx+3] = 255;
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+}
+
+// --- Interaction ---
+let mouseDown = false;
+let prevX = 0, prevY = 0;
+let hue = 0;
+
+function hsl2rgb(h,s,l){
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}
+  else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}
+  return [r+m,g+m,b+m];
+}
+
+function applyForce(x, y, dx, dy){
+  const i = Math.floor(1 + (x/innerWidth)*N);
+  const j = Math.floor(1 + (y/innerHeight)*N);
+  if(i<1||i>N||j<1||j>N) return;
+  const force = 8;
+  const radius = 3;
+  for(let di=-radius;di<=radius;di++){
+    for(let dj=-radius;dj<=radius;dj++){
+      const ci=i+di, cj=j+dj;
+      if(ci<1||ci>N||cj<1||cj>N) continue;
+      const d2 = di*di+dj*dj;
+      const w = Math.exp(-d2/(radius*radius*0.5));
+      u0[IX(ci,cj)] += force*dx*w;
+      v0[IX(ci,cj)] += force*dy*w;
+      const [r,g,b] = hsl2rgb(hue,0.9,0.55);
+      dyeR0[IX(ci,cj)] += w*r*1.5;
+      dyeG0[IX(ci,cj)] += w*g*1.5;
+      dyeB0[IX(ci,cj)] += w*b*1.5;
+    }
+  }
+  hue = (hue + 0.8) % 360;
+}
+
+canvas.addEventListener('pointerdown',(e)=>{
+  mouseDown=true;
+  prevX=e.clientX; prevY=e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove',(e)=>{
+  if(!mouseDown) return;
+  const dx = e.clientX - prevX;
+  const dy = e.clientY - prevY;
+  applyForce(e.clientX, e.clientY, dx, dy);
+  prevX=e.clientX; prevY=e.clientY;
+});
+canvas.addEventListener('pointerup',()=>{ mouseDown=false; });
+canvas.addEventListener('pointercancel',()=>{ mouseDown=false; });
+
+// Buttons
+const btnMode = document.getElementById('btnMode');
+const btnClear = document.getElementById('btnClear');
+const btnVort = document.getElementById('btnVort');
+let showDye = true;
+let vortEnabled = true;
+
+btnMode.addEventListener('click',()=>{
+  showDye = !showDye;
+  btnMode.textContent = showDye ? 'Dye' : 'Velocity';
+  btnMode.classList.toggle('active', showDye);
+});
+
+btnClear.addEventListener('click',()=>{
+  u.fill(0); v.fill(0); u0.fill(0); v0.fill(0);
+  dens.fill(0); dens0.fill(0);
+  dyeR.fill(0); dyeG.fill(0); dyeB.fill(0);
+  dyeR0.fill(0); dyeG0.fill(0); dyeB0.fill(0);
+  hue = 0;
+});
+
+btnVort.addEventListener('click',()=>{
+  vortEnabled = !vortEnabled;
+  vortConf = vortEnabled ? 0.35 : 0;
+  btnVort.classList.toggle('active', vortEnabled);
+});
+btnVort.classList.add('active');
+
+function renderVelocity(){
+  const w = canvas.width, h = canvas.height;
+  const data = imgData.data;
+  for(let py=0;py<h;py++){
+    for(let px=0;px<w;px++){
+      const gi = 1 + (px/w)*N;
+      const gj = 1 + (py/h)*N;
+      const i0=Math.floor(gi), j0=Math.floor(gj);
+      const i1=Math.min(i0+1,N+1), j1=Math.min(j0+1,N+1);
+      const sx=gi-i0, sy=gj-j0;
+      const bilerp=(f)=>(1-sx)*((1-sy)*f[IX(i0,j0)]+sy*f[IX(i0,j1)])+sx*((1-sy)*f[IX(i1,j0)]+sy*f[IX(i1,j1)]);
+      const vu = bilerp(u);
+      const vv = bilerp(v);
+      const speed = Math.sqrt(vu*vu+vv*vv);
+      const angle = Math.atan2(vv,vu);
+      const [r,g,b] = hsl2rgb(((angle*180/Math.PI)+360)%360, 0.8, Math.min(0.6, speed*3));
+      const idx = (py*w+px)*4;
+      data[idx  ] = r*255|0;
+      data[idx+1] = g*255|0;
+      data[idx+2] = b*255|0;
+      data[idx+3] = 255;
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+}
+
+// Gentle decay to prevent permanent staining
+function decay(arr, rate){
+  for(let i=0;i<size;i++) arr[i]*=rate;
+}
+
+// --- Main loop ---
+function step(){
+  velStep();
+  dyeStep();
+  // clear source fields
+  u0.fill(0); v0.fill(0);
+  dyeR0.fill(0); dyeG0.fill(0); dyeB0.fill(0);
+  // gentle decay
+  decay(dyeR, 0.997);
+  decay(dyeG, 0.997);
+  decay(dyeB, 0.997);
+  if(showDye) render(); else renderVelocity();
+  requestAnimationFrame(step);
+}
+requestAnimationFrame(step);
+</script>
+</body>
+</html>

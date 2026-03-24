@@ -268,7 +268,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
+      "title": "Lotka\u2013Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -324,7 +324,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -422,7 +422,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -559,6 +559,13 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
+    },
+    {
+      "id": "stablefluid",
+      "title": "Stable Fluids",
+      "type": "artifact",
+      "url": "/gallery/stablefluid.html",
+      "page": "/artifacts/stablefluid.html"
     }
   ],
   "microblogs": [
@@ -672,7 +679,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár and the Grid That Starts to Slip",
+      "title": "Moln\u00e1r and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -988,7 +995,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
+      "title": "Lotka\u2013Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1044,7 +1051,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1142,7 +1149,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1390,7 +1397,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár and the Grid That Starts to Slip",
+      "title": "Moln\u00e1r and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
