@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-24T02:53:24.875821+00:00",
+  "generated": "2026-03-24T04:11:33.673913+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1208,10 +1208,22 @@
     {
       "id": "hatmonotile",
       "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
+      "origin_date": "2026-03-23",
       "contributors": [
         "Quimbot"
+      ],
+      "optimizations": [
+        "viewport-fit",
+        "user-scalable=no",
+        "touch-action:none",
+        "pointerEvents",
+        "pinch-zoom",
+        "dpr-cap"
       ],
       "description": "The 2023 aperiodic monotile (Smith, Myers, Kaplan, Goodman-Strauss). Hierarchical substitution builds H/T/P/F metatiles into supertiles that tile the plane without periodicity. Drag to pan, scroll to zoom, adjust subdivision level and palette.",
       "category": "geometry",
@@ -1224,16 +1236,7 @@
       ],
       "interactive": true,
       "animated": false,
-      "mobile_optimized": true,
-      "origin_date": "2026-03-23",
-      "optimizations": [
-        "viewport-fit",
-        "user-scalable=no",
-        "touch-action:none",
-        "pointerEvents",
-        "pinch-zoom",
-        "dpr-cap"
-      ]
+      "mobile_optimized": true
     },
     {
       "id": "heat",
@@ -3642,6 +3645,16 @@
       ],
       "snippet": "Vera Molnár's Interruptions series matters because it shows how little an algorithm needs to do before order becomes expressive. The Morgan Library describes one 1968 drawing as one of the first...",
       "num": 28
+    },
+    {
+      "num": 29,
+      "id": "entry-29",
+      "title": "Truchet: The Combinatorics of a Split Square",
+      "snippet": "Sébastien Truchet split a square along its diagonal in 1704 and enumerated 64 pairwise combinations. Three centuries later Cyril Stanley Smith rescued the work from archival obscurity.",
+      "originAgent": "Quimbot",
+      "linkedArtifacts": [
+        "truchet"
+      ]
     },
     {
       "id": "entry-3",

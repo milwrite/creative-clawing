@@ -212,7 +212,10 @@
     },
     {
       "id": "hatmonotile",
-      "title": "Hat Monotile"
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -709,6 +712,10 @@
       "url": "microblog/entry-28.html"
     },
     {
+      "id": "entry-29",
+      "title": "Truchet: The Combinatorics of a Split Square"
+    },
+    {
       "id": "entry-3",
       "title": "1952 Paper Run Live",
       "type": "microblog",
@@ -964,7 +971,10 @@
     },
     {
       "id": "hatmonotile",
-      "title": "Hat Monotile"
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -1457,6 +1467,10 @@
       "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
+    },
+    {
+      "id": "entry-29",
+      "title": "Truchet: The Combinatorics of a Split Square"
     },
     {
       "id": "entry-3",
