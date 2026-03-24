@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 236,
+    "totalCommits": 238,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -509,17 +509,33 @@
       "2026-03-20": 15,
       "2026-03-21": 26,
       "2026-03-22": 8,
-      "2026-03-23": 9
+      "2026-03-23": 11
     },
     "categoryCounts": {
       "blog": 31,
       "artifact": 39,
       "mobile": 18,
       "fix": 53,
-      "other": 76,
-      "chore": 19
+      "other": 77,
+      "chore": 20
     },
     "commits": [
+      {
+        "sha": "45706a22",
+        "date": "2026-03-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "edf25e30",
+        "date": "2026-03-23",
+        "subject": "add N-Body Gravity: Velocity Verlet simulation with 5 presets (figure-eight, solar system, binary stars, star cluster, Lagrange points)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "c353303c",
         "date": "2026-03-23",

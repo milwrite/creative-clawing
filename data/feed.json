@@ -268,7 +268,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -324,7 +324,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -356,6 +356,13 @@
       "type": "artifact",
       "url": "gallery/nake.html",
       "page": "artifacts/nake.html"
+    },
+    {
+      "id": "nbody",
+      "title": "N-Body Gravity",
+      "type": "artifact",
+      "url": "gallery/nbody.html",
+      "page": "artifacts/nbody.html"
     },
     {
       "id": "newton",
@@ -415,7 +422,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -552,13 +559,6 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
-    },
-    {
-      "id": "nbody",
-      "title": "N-Body Gravity",
-      "type": "artifact",
-      "url": "gallery/nbody.html",
-      "page": "artifacts/nbody.html"
     }
   ],
   "microblogs": [
@@ -672,7 +672,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -988,7 +988,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1044,7 +1044,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1076,6 +1076,13 @@
       "type": "artifact",
       "url": "gallery/nake.html",
       "page": "artifacts/nake.html"
+    },
+    {
+      "id": "nbody",
+      "title": "N-Body Gravity",
+      "type": "artifact",
+      "url": "gallery/nbody.html",
+      "page": "artifacts/nbody.html"
     },
     {
       "id": "newton",
@@ -1135,7 +1142,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1383,7 +1390,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
