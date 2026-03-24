@@ -212,7 +212,10 @@
     },
     {
       "id": "hatmonotile",
-      "title": "Hat Monotile"
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -964,7 +967,10 @@
     },
     {
       "id": "hatmonotile",
-      "title": "Hat Monotile"
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
