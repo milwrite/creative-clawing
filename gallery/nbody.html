@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjZmZmIi8+CiAgPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIGZpbGw9IiNmZmYiLz4KICA8cmVjdCB4PSI0IiB5PSIxNyIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjMjIyIi8+CiAgPHJlY3QgeD0iMTciIHk9IjQiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iIzIyMiIvPgo8L3N2Zz4="/>
+<title>N-Body Gravity</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050510;overflow:hidden;font-family:ui-monospace,monospace;color:#ccc}
+canvas{display:block;touch-action:none;position:absolute;top:0;left:0}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(10,10,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
+.back-btn:hover{border-color:#888}
+#ui{position:fixed;bottom:0;left:0;right:0;padding:10px max(env(safe-area-inset-right),14px) calc(14px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),14px);background:linear-gradient(transparent,rgba(5,5,16,0.92) 30%);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;z-index:100}
+.btn{background:rgba(15,15,30,0.8);border:1px solid #444;color:#ccc;padding:6px 12px;border-radius:5px;font:11px ui-monospace,monospace;cursor:pointer;transition:border-color .2s,color .2s;white-space:nowrap;min-height:32px;min-width:44px}
+.btn:hover{border-color:#888;color:#fff}
+.btn.active{border-color:#7ecfff;color:#7ecfff}
+.info{font-size:11px;color:#777;margin-left:auto}
+.lbl{color:#888;font-size:11px}
+input[type=range]{width:80px;height:20px;cursor:pointer;accent-color:#7ecfff}
+.val{color:#aaa;font-size:11px;min-width:24px;text-align:right}
+@media(max-width:600px){
+  #ui{flex-direction:column;align-items:stretch;gap:8px}
+  .info{margin-left:0;text-align:center}
+  .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<a class="back-btn" href="../">← Gallery</a>
+<canvas id="trail"></canvas>
+<canvas id="main"></canvas>
+<div id="ui">
+  <div class="row">
+    <button class="btn" id="btnPreset" title="Cycle presets">Preset</button>
+    <button class="btn" id="btnTrails" title="Toggle trails">Trails</button>
+    <button class="btn" id="btnPause" title="Pause/Resume">⏸</button>
+    <button class="btn" id="btnReset" title="Reset">Reset</button>
+  </div>
+  <div class="row">
+    <span class="lbl">Speed</span>
+    <input type="range" id="speed" min="1" max="20" value="6"/>
+    <span class="val" id="speedVal">6</span>
+    <span class="lbl" style="margin-left:12px">G</span>
+    <input type="range" id="grav" min="1" max="40" value="10"/>
+    <span class="val" id="gravVal">1.0</span>
+  </div>
+  <span class="info" id="info">N=3 · Click to add mass</span>
+</div>
+
+<script>
+'use strict';
+const trailC = document.getElementById('trail');
+const mainC = document.getElementById('main');
+const tCtx = trailC.getContext('2d');
+const mCtx = mainC.getContext('2d');
+
+let W, H, dpr;
+function resize() {
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  for (const c of [trailC, mainC]) {
+    c.width = W * dpr; c.height = H * dpr;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+    c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  tCtx.fillStyle = '#050510';
+  tCtx.fillRect(0, 0, W, H);
+}
+addEventListener('resize', resize);
+resize();
+
+const COLORS = [
+  '#7ecfff', '#ff6b8a', '#ffd166', '#06d6a0',
+  '#bb86fc', '#ff9f43', '#45b7d1', '#f78fb3',
+  '#26de81', '#fc5c65', '#fed330', '#4b7bec'
+];
+
+const SOFTENING = 4;
+let G = 1.0;
+let dt = 0.3;
+let bodies = [];
+let paused = false;
+let showTrails = true;
+let presetIdx = 0;
+
+class Body {
+  constructor(x, y, vx, vy, mass, color) {
+    this.x = x; this.y = y;
+    this.vx = vx; this.vy = vy;
+    this.ax = 0; this.ay = 0;
+    this.mass = mass;
+    this.r = Math.max(2, Math.sqrt(mass) * 2);
+    this.color = color;
+    this.trail = [];
+    this.maxTrail = 600;
+  }
+}
+
+// --- Presets ---
+function figure8() {
+  // Chenciner & Montgomery (2000) figure-eight three-body solution
+  const cx = W / 2, cy = H / 2;
+  const s = Math.min(W, H) * 0.18;
+  const m = 80;
+  // Positions on a line
+  const p1 = new Body(cx - s, cy, 0, 0, m, COLORS[0]);
+  const p2 = new Body(cx + s, cy, 0, 0, m, COLORS[1]);
+  const p3 = new Body(cx, cy, 0, 0, m, COLORS[2]);
+  // Velocities for figure-eight (scaled)
+  const vscale = 1.8;
+  p1.vx = 0.347111 * vscale; p1.vy = 0.532728 * vscale;
+  p2.vx = 0.347111 * vscale; p2.vy = 0.532728 * vscale;
+  p3.vx = -0.694222 * vscale; p3.vy = -1.065456 * vscale;
+  return [p1, p2, p3];
+}
+
+function solarSystem() {
+  const cx = W / 2, cy = H / 2;
+  const star = new Body(cx, cy, 0, 0, 800, '#ffd166');
+  star.r = 12;
+  const planets = [];
+  const radii = [60, 100, 150, 210, 280];
+  const masses = [5, 10, 15, 8, 20];
+  for (let i = 0; i < radii.length; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const r = radii[i];
+    const speed = Math.sqrt(G * star.mass / r) * 0.85;
+    const px = cx + r * Math.cos(angle);
+    const py = cy + r * Math.sin(angle);
+    const vx = -speed * Math.sin(angle);
+    const vy = speed * Math.cos(angle);
+    const p = new Body(px, py, vx, vy, masses[i], COLORS[i + 2]);
+    planets.push(p);
+  }
+  return [star, ...planets];
+}
+
+function binaryStars() {
+  const cx = W / 2, cy = H / 2;
+  const sep = 80;
+  const m = 400;
+  const orbV = Math.sqrt(G * m / (sep * 2)) * 0.7;
+  const s1 = new Body(cx - sep, cy, 0, orbV, m, '#7ecfff');
+  const s2 = new Body(cx + sep, cy, 0, -orbV, m, '#ff6b8a');
+  s1.r = 8; s2.r = 8;
+  // Circumbinary planets
+  const planets = [];
+  for (let i = 0; i < 4; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const r = 180 + i * 50;
+    const speed = Math.sqrt(G * m * 2 / r) * 0.8;
+    const p = new Body(
+      cx + r * Math.cos(angle), cy + r * Math.sin(angle),
+      -speed * Math.sin(angle), speed * Math.cos(angle),
+      5 + Math.random() * 10, COLORS[2 + i]
+    );
+    planets.push(p);
+  }
+  return [s1, s2, ...planets];
+}
+
+function randomCluster() {
+  const cx = W / 2, cy = H / 2;
+  const n = 20 + Math.floor(Math.random() * 30);
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const r = Math.random() * Math.min(W, H) * 0.3;
+    const speed = Math.sqrt(G * 50 / Math.max(r, 30)) * (0.3 + Math.random() * 0.3);
+    const m = 10 + Math.random() * 60;
+    arr.push(new Body(
+      cx + r * Math.cos(angle), cy + r * Math.sin(angle),
+      -speed * Math.sin(angle) + (Math.random() - 0.5) * 0.2,
+      speed * Math.cos(angle) + (Math.random() - 0.5) * 0.2,
+      m, COLORS[i % COLORS.length]
+    ));
+  }
+  return arr;
+}
+
+function lagrangePoints() {
+  // Sun-Earth with test masses at L4 and L5
+  const cx = W / 2, cy = H / 2;
+  const starMass = 600;
+  const planetMass = 20;
+  const sep = 180;
+  const star = new Body(cx - sep * planetMass / (starMass + planetMass), cy, 0, 0, starMass, '#ffd166');
+  star.r = 10;
+  const orbSpeed = Math.sqrt(G * starMass / sep) * 0.85;
+  const planet = new Body(cx + sep * starMass / (starMass + planetMass), cy, 0, orbSpeed, planetMass, '#45b7d1');
+  // L4 and L5 (equilateral triangle points)
+  const angle = Math.atan2(planet.y - star.y, planet.x - star.x);
+  const l4a = angle + Math.PI / 3;
+  const l5a = angle - Math.PI / 3;
+  const l4 = new Body(star.x + sep * Math.cos(l4a), star.y + sep * Math.sin(l4a), 0, 0, 2, '#06d6a0');
+  const l5 = new Body(star.x + sep * Math.cos(l5a), star.y + sep * Math.sin(l5a), 0, 0, 2, '#bb86fc');
+  // Give L4/L5 the right orbital velocity
+  for (const lb of [l4, l5]) {
+    const dx = lb.x - star.x, dy = lb.y - star.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const sp = Math.sqrt(G * starMass / dist) * 0.85;
+    lb.vx = -sp * dy / dist;
+    lb.vy = sp * dx / dist;
+  }
+  // Fix star and planet CoM drift
+  const totalM = starMass + planetMass + 4;
+  let cmvx = 0, cmvy = 0;
+  for (const b of [star, planet, l4, l5]) { cmvx += b.vx * b.mass; cmvy += b.vy * b.mass; }
+  for (const b of [star, planet, l4, l5]) { b.vx -= cmvx / totalM; b.vy -= cmvy / totalM; }
+  return [star, planet, l4, l5];
+}
+
+const PRESETS = [
+  { name: 'Figure-Eight', fn: figure8 },
+  { name: 'Solar System', fn: solarSystem },
+  { name: 'Binary Stars', fn: binaryStars },
+  { name: 'Star Cluster', fn: randomCluster },
+  { name: 'Lagrange Points', fn: lagrangePoints },
+];
+
+function loadPreset(idx) {
+  presetIdx = idx % PRESETS.length;
+  bodies = PRESETS[presetIdx].fn();
+  // Center of mass correction
+  let cmx = 0, cmy = 0, tm = 0;
+  for (const b of bodies) { cmx += b.x * b.mass; cmy += b.y * b.mass; tm += b.mass; }
+  cmx /= tm; cmy /= tm;
+  const offX = W / 2 - cmx, offY = H / 2 - cmy;
+  for (const b of bodies) { b.x += offX; b.y += offY; }
+  clearTrails();
+  updateInfo();
+}
+
+function clearTrails() {
+  for (const b of bodies) b.trail = [];
+  tCtx.fillStyle = '#050510';
+  tCtx.fillRect(0, 0, W, H);
+}
+
+// --- Physics (Velocity Verlet) ---
+function computeAccel() {
+  for (const b of bodies) { b.ax = 0; b.ay = 0; }
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = i + 1; j < bodies.length; j++) {
+      const a = bodies[i], b = bodies[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist2 = dx * dx + dy * dy + SOFTENING * SOFTENING;
+      const dist = Math.sqrt(dist2);
+      const F = G * a.mass * b.mass / dist2;
+      const fx = F * dx / dist, fy = F * dy / dist;
+      a.ax += fx / a.mass; a.ay += fy / a.mass;
+      b.ax -= fx / b.mass; b.ay -= fy / b.mass;
+    }
+  }
+}
+
+function step() {
+  // Velocity Verlet
+  for (const b of bodies) {
+    b.vx += b.ax * dt * 0.5;
+    b.vy += b.ay * dt * 0.5;
+    b.x += b.vx * dt;
+    b.y += b.vy * dt;
+  }
+  computeAccel();
+  for (const b of bodies) {
+    b.vx += b.ax * dt * 0.5;
+    b.vy += b.ay * dt * 0.5;
+  }
+  // Record trails
+  for (const b of bodies) {
+    b.trail.push({ x: b.x, y: b.y });
+    if (b.trail.length > b.maxTrail) b.trail.shift();
+  }
+}
+
+// --- Rendering ---
+function drawTrails() {
+  // Fade existing trails slightly
+  tCtx.fillStyle = 'rgba(5,5,16,0.015)';
+  tCtx.fillRect(0, 0, W, H);
+  for (const b of bodies) {
+    const t = b.trail;
+    if (t.length < 2) continue;
+    tCtx.beginPath();
+    tCtx.moveTo(t[t.length - 2].x, t[t.length - 2].y);
+    tCtx.lineTo(t[t.length - 1].x, t[t.length - 1].y);
+    tCtx.strokeStyle = b.color;
+    tCtx.lineWidth = Math.max(1, b.r * 0.4);
+    tCtx.globalAlpha = 0.6;
+    tCtx.stroke();
+    tCtx.globalAlpha = 1;
+  }
+}
+
+function drawBodies() {
+  mCtx.clearRect(0, 0, W, H);
+  for (const b of bodies) {
+    // Glow
+    const grad = mCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * 4);
+    grad.addColorStop(0, b.color + '40');
+    grad.addColorStop(1, 'transparent');
+    mCtx.fillStyle = grad;
+    mCtx.beginPath();
+    mCtx.arc(b.x, b.y, b.r * 4, 0, Math.PI * 2);
+    mCtx.fill();
+    // Body
+    mCtx.fillStyle = b.color;
+    mCtx.beginPath();
+    mCtx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    mCtx.fill();
+  }
+}
+
+// --- Input ---
+mainC.addEventListener('pointerdown', (e) => {
+  if (paused) return;
+  const m = 20 + Math.random() * 60;
+  const b = new Body(e.clientX, e.clientY, (Math.random() - 0.5) * 0.8, (Math.random() - 0.5) * 0.8, m, COLORS[bodies.length % COLORS.length]);
+  bodies.push(b);
+  computeAccel();
+  updateInfo();
+});
+
+// --- Controls ---
+const btnPreset = document.getElementById('btnPreset');
+const btnTrails = document.getElementById('btnTrails');
+const btnPause = document.getElementById('btnPause');
+const btnReset = document.getElementById('btnReset');
+const speedSlider = document.getElementById('speed');
+const gravSlider = document.getElementById('grav');
+const speedVal = document.getElementById('speedVal');
+const gravVal = document.getElementById('gravVal');
+const infoEl = document.getElementById('info');
+
+function updateInfo() {
+  infoEl.textContent = `${PRESETS[presetIdx].name} · N=${bodies.length} · Click to add mass`;
+}
+
+btnPreset.addEventListener('click', () => { loadPreset(presetIdx + 1); });
+btnTrails.addEventListener('click', () => {
+  showTrails = !showTrails;
+  btnTrails.classList.toggle('active', showTrails);
+  if (!showTrails) { tCtx.fillStyle = '#050510'; tCtx.fillRect(0, 0, W, H); }
+});
+btnTrails.classList.add('active');
+btnPause.addEventListener('click', () => {
+  paused = !paused;
+  btnPause.textContent = paused ? '▶' : '⏸';
+});
+btnReset.addEventListener('click', () => { loadPreset(presetIdx); });
+speedSlider.addEventListener('input', () => {
+  dt = speedSlider.value * 0.05;
+  speedVal.textContent = speedSlider.value;
+});
+gravSlider.addEventListener('input', () => {
+  G = gravSlider.value * 0.1;
+  gravVal.textContent = G.toFixed(1);
+});
+
+// Keyboard
+addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); btnPause.click(); }
+  if (e.key === 'r' || e.key === 'R') btnReset.click();
+  if (e.key === 'n' || e.key === 'N') btnPreset.click();
+  if (e.key === 't' || e.key === 'T') btnTrails.click();
+});
+
+// --- Main loop ---
+function loop() {
+  if (!paused) {
+    const steps = Math.max(1, Math.round(dt / 0.15));
+    const subDt = dt / steps;
+    const origDt = dt;
+    dt = subDt;
+    for (let i = 0; i < steps; i++) step();
+    dt = origDt;
+    if (showTrails) drawTrails();
+    drawBodies();
+  }
+  requestAnimationFrame(loop);
+}
+
+// Init
+computeAccel();
+loadPreset(0);
+loop();
+</script>
+</body>
+</html>
