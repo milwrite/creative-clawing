@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-24T02:23:29.596482+00:00",
+  "generated": "2026-03-24T02:28:58.447507+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -2743,6 +2743,36 @@
       "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "stablefluid",
+      "title": "Stable Fluids",
+      "type": "artifact",
+      "url": "gallery/stablefluid.html",
+      "page": "artifacts/stablefluid.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-24",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [
+        "touch-action:none",
+        "pointerCapture",
+        "DPR cap at 2",
+        "viewport-fit:cover"
+      ],
+      "description": "Interactive 2D Navier-Stokes fluid simulation based on Jos Stam (1999). Semi-Lagrangian advection, Gauss-Seidel pressure projection, optional vorticity confinement.",
+      "category": "physics",
+      "tags": [
+        "fluid",
+        "navier-stokes",
+        "simulation",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "starfield",

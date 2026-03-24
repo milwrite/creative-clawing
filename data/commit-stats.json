@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 238,
+    "totalCommits": 240,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -509,17 +509,34 @@
       "2026-03-20": 15,
       "2026-03-21": 26,
       "2026-03-22": 8,
-      "2026-03-23": 11
+      "2026-03-23": 12,
+      "2026-03-24": 1
     },
     "categoryCounts": {
       "blog": 31,
-      "artifact": 39,
+      "artifact": 40,
       "mobile": 18,
       "fix": 53,
       "other": 77,
-      "chore": 20
+      "chore": 21
     },
     "commits": [
+      {
+        "sha": "1c22d20b",
+        "date": "2026-03-24",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "841c64b5",
+        "date": "2026-03-23",
+        "subject": "gallery: stable fluids — Jos Stam (1999) Navier-Stokes simulation",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "45706a22",
         "date": "2026-03-23",
