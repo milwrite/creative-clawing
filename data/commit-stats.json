@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 245,
+    "totalCommits": 246,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -509,18 +509,26 @@
       "2026-03-20": 15,
       "2026-03-21": 26,
       "2026-03-22": 8,
-      "2026-03-23": 15,
+      "2026-03-23": 16,
       "2026-03-24": 3
     },
     "categoryCounts": {
       "blog": 31,
       "artifact": 41,
       "mobile": 18,
-      "fix": 53,
+      "fix": 54,
       "other": 79,
       "chore": 23
     },
     "commits": [
+      {
+        "sha": "d874c4b0",
+        "date": "2026-03-23",
+        "subject": "fix: guard against bare-array manifest.json in update_manifest.py",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "80999234",
         "date": "2026-03-23",

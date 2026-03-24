@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Hat Monotile</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+#ui{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:10;
+  background:rgba(20,20,40,0.85);padding:10px 18px;border-radius:12px;backdrop-filter:blur(8px);
+  font-family:'Courier New',monospace;color:#ccc;font-size:13px}
+#ui label{white-space:nowrap}
+#ui input[type=range]{width:100px;accent-color:#e94560}
+#ui button{background:rgba(233,69,96,0.2);color:#e94560;border:1px solid #e94560;padding:4px 12px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:12px}
+#ui button:hover{background:rgba(233,69,96,0.4)}
+#ui select{background:#1a1a2e;color:#ccc;border:1px solid #444;padding:3px 6px;border-radius:4px;font-family:inherit;font-size:12px}
+#back{position:fixed;top:15px;left:15px;z-index:10;background:rgba(20,20,40,0.85);color:#ccc;border:1px solid #444;
+  padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Courier New',monospace;font-size:13px;backdrop-filter:blur(8px);text-decoration:none}
+#back:hover{background:rgba(233,69,96,0.3);color:#e94560}
+#info{position:fixed;top:15px;right:15px;z-index:10;color:rgba(200,200,220,0.5);font-family:'Courier New',monospace;font-size:11px;text-align:right}
+</style>
+</head>
+<body>
+<a id="back" href="/gallery/">← gallery</a>
+<div id="info">drag to pan · scroll to zoom</div>
+<div id="ui">
+  <label>level</label><input type="range" id="levelSlider" min="1" max="6" value="3" step="1"><span id="levelVal">3</span>
+  <label>palette</label>
+  <select id="palette">
+    <option value="classic">classic</option>
+    <option value="warm">warm</option>
+    <option value="ocean">ocean</option>
+    <option value="mono">mono</option>
+  </select>
+  <button id="resetBtn">reset</button>
+</div>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+// --- Palettes ---
+const palettes = {
+  classic: {H:[148,205,235], H1:[0,137,212], T:[251,251,251], P:[250,220,180], F:[191,191,191], bg:'#1a1a2e', stroke:[30,30,50]},
+  warm:    {H:[255,183,77],  H1:[230,126,34], T:[255,241,224], P:[255,138,101], F:[239,154,154], bg:'#2d1b0e', stroke:[60,30,10]},
+  ocean:   {H:[100,181,246], H1:[21,101,192], T:[224,247,250], P:[77,208,225],  F:[128,203,196], bg:'#0d2137', stroke:[10,30,50]},
+  mono:    {H:[200,200,200], H1:[120,120,120], T:[245,245,245], P:[170,170,170], F:[140,140,140], bg:'#111', stroke:[40,40,40]}
+};
+let pal = palettes.classic;
+
+// --- Affine math ---
+const hr3 = Math.sqrt(3)/2;
+const ident = [1,0,0,0,1,0];
+
+function pt(x,y){return{x,y}}
+function hexPt(x,y){return pt(x+0.5*y, hr3*y)}
+function inv(T){const d=T[0]*T[4]-T[1]*T[3];return[T[4]/d,-T[1]/d,(T[1]*T[5]-T[2]*T[4])/d,-T[3]/d,T[0]/d,(T[2]*T[3]-T[0]*T[5])/d]}
+function mul(A,B){return[A[0]*B[0]+A[1]*B[3],A[0]*B[1]+A[1]*B[4],A[0]*B[2]+A[1]*B[5]+A[2],A[3]*B[0]+A[4]*B[3],A[3]*B[1]+A[4]*B[4],A[3]*B[2]+A[4]*B[5]+A[5]]}
+function padd(p,q){return{x:p.x+q.x,y:p.y+q.y}}
+function psub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function trot(a){const c=Math.cos(a),s=Math.sin(a);return[c,-s,0,s,c,0]}
+function ttrans(tx,ty){return[1,0,tx,0,1,ty]}
+function rotAbout(p,a){return mul(ttrans(p.x,p.y),mul(trot(a),ttrans(-p.x,-p.y)))}
+function transPt(M,P){return pt(M[0]*P.x+M[1]*P.y+M[2],M[3]*P.x+M[4]*P.y+M[5])}
+function matchSeg(p,q){return[q.x-p.x,p.y-q.y,p.x,q.y-p.y,q.x-p.x,p.y]}
+function matchTwo(p1,q1,p2,q2){return mul(matchSeg(p2,q2),inv(matchSeg(p1,q1)))}
+function intersect(p1,q1,p2,q2){
+  const d=(q2.y-p2.y)*(q1.x-p1.x)-(q2.x-p2.x)*(q1.y-p1.y);
+  const uA=((q2.x-p2.x)*(p1.y-p2.y)-(q2.y-p2.y)*(p1.x-p2.x))/d;
+  return pt(p1.x+uA*(q1.x-p1.x),p1.y+uA*(q1.y-p1.y));
+}
+
+// --- Geom class ---
+class Geom{
+  constructor(pgon,fill,stroke){this.shape=pgon;this.fill=fill;this.stroke=stroke;this.children=[]}
+  addChild(T,geom){this.children.push({T,geom})}
+  evalChild(n,i){return transPt(this.children[n].T,this.children[n].geom.shape[i])}
+  recentre(){
+    let cx=0,cy=0;
+    for(const p of this.shape){cx+=p.x;cy+=p.y}
+    cx/=this.shape.length;cy/=this.shape.length;
+    for(let i=0;i<this.shape.length;i++){this.shape[i]=padd(this.shape[i],pt(-cx,-cy))}
+    const M=ttrans(-cx,-cy);
+    for(const ch of this.children)ch.T=mul(M,ch.T);
+  }
+}
+
+// --- Hat outline (13 vertices on hex grid) ---
+const hat_outline=[hexPt(0,0),hexPt(-1,-1),hexPt(0,-2),hexPt(2,-2),hexPt(2,-1),hexPt(4,-2),hexPt(5,-1),hexPt(4,0),hexPt(3,0),hexPt(2,2),hexPt(0,3),hexPt(0,2),hexPt(-1,2)];
+
+function makeHats(){
+  return{
+    H1:new Geom(hat_outline,pal.H1,pal.stroke),
+    H:new Geom(hat_outline,pal.H,pal.stroke),
+    T:new Geom(hat_outline,pal.T,pal.stroke),
+    P:new Geom(hat_outline,pal.P,pal.stroke),
+    F:new Geom(hat_outline,pal.F,pal.stroke)
+  };
+}
+
+function buildInitMetatiles(hats){
+  // H metatile
+  const H_outline=[pt(0,0),pt(4,0),pt(4.5,hr3),pt(2.5,5*hr3),pt(1.5,5*hr3),pt(-0.5,hr3)];
+  const Hg=new Geom(H_outline,null,[0,0,0]);
+  Hg.addChild(matchTwo(hat_outline[5],hat_outline[7],H_outline[5],H_outline[0]),hats.H);
+  Hg.addChild(matchTwo(hat_outline[9],hat_outline[11],H_outline[1],H_outline[2]),hats.H);
+  Hg.addChild(matchTwo(hat_outline[5],hat_outline[7],H_outline[3],H_outline[4]),hats.H);
+  Hg.addChild(mul(ttrans(2.5,hr3),mul([-0.5,-hr3,0,hr3,-0.5,0],[0.5,0,0,0,-0.5,0])),hats.H1);
+
+  // T metatile
+  const T_outline=[pt(0,0),pt(3,0),pt(1.5,3*hr3)];
+  const Tg=new Geom(T_outline,null,[0,0,0]);
+  Tg.addChild([0.5,0,0.5,0,0.5,hr3],hats.T);
+
+  // P metatile
+  const P_outline=[pt(0,0),pt(4,0),pt(3,2*hr3),pt(-1,2*hr3)];
+  const Pg=new Geom(P_outline,null,[0,0,0]);
+  Pg.addChild([0.5,0,1.5,0,0.5,hr3],hats.P);
+  Pg.addChild(mul(ttrans(0,2*hr3),mul([0.5,hr3,0,-hr3,0.5,0],[0.5,0,0,0,0.5,0])),hats.P);
+
+  // F metatile
+  const F_outline=[pt(0,0),pt(3,0),pt(3.5,hr3),pt(3,2*hr3),pt(-1,2*hr3)];
+  const Fg=new Geom(F_outline,null,[0,0,0]);
+  Fg.addChild([0.5,0,1.5,0,0.5,hr3],hats.F);
+  Fg.addChild(mul(ttrans(0,2*hr3),mul([0.5,hr3,0,-hr3,0.5,0],[0.5,0,0,0,0.5,0])),hats.F);
+
+  return[Hg,Tg,Pg,Fg];
+}
+
+// --- Substitution rules (from Kaplan's reference) ---
+function constructPatch(H,T,P,F){
+  const rules=[['H'],[0,0,'P',2],[1,0,'H',2],[2,0,'P',2],[3,0,'H',2],[4,4,'P',2],[0,4,'F',3],[2,4,'F',3],[4,1,3,2,'F',0],[8,3,'H',0],[9,2,'P',0],[10,2,'H',0],[11,4,'P',2],[12,0,'H',2],[13,0,'F',3],[14,2,'F',1],[15,3,'H',4],[8,2,'F',1],[17,3,'H',0],[18,2,'P',0],[19,2,'H',2],[20,4,'F',3],[20,0,'P',2],[22,0,'H',2],[23,4,'F',3],[23,0,'F',3],[16,0,'P',2],[9,4,0,2,'T',2],[4,0,'F',3]];
+  const ret=new Geom([],null,null);
+  const shapes={'H':H,'T':T,'P':P,'F':F};
+  for(const r of rules){
+    if(r.length===1){ret.addChild(ident,shapes[r[0]])}
+    else if(r.length===4){
+      const poly=ret.children[r[0]].geom.shape;
+      const Tr=ret.children[r[0]].T;
+      const Pp=transPt(Tr,poly[(r[1]+1)%poly.length]);
+      const Q=transPt(Tr,poly[r[1]]);
+      const nshp=shapes[r[2]];
+      ret.addChild(matchTwo(nshp.shape[r[3]],nshp.shape[(r[3]+1)%nshp.shape.length],Pp,Q),nshp);
+    }else{
+      const chP=ret.children[r[0]];const chQ=ret.children[r[2]];
+      const Pp=transPt(chQ.T,chQ.geom.shape[r[3]]);
+      const Q=transPt(chP.T,chP.geom.shape[r[1]]);
+      const nshp=shapes[r[4]];
+      ret.addChild(matchTwo(nshp.shape[r[5]],nshp.shape[(r[5]+1)%nshp.shape.length],Pp,Q),nshp);
+    }
+  }
+  return ret;
+}
+
+function constructMetatiles(patch){
+  const bps1=patch.evalChild(8,2);
+  const bps2=patch.evalChild(21,2);
+  const rbps=transPt(rotAbout(bps1,-2*Math.PI/3),bps2);
+  const p72=patch.evalChild(7,2);
+  const p252=patch.evalChild(25,2);
+  const llc=intersect(bps1,rbps,patch.evalChild(6,2),p72);
+  let w=psub(patch.evalChild(6,2),llc);
+
+  const nH=[llc,bps1];
+  w=transPt(trot(-Math.PI/3),w);nH.push(padd(nH[1],w));
+  nH.push(patch.evalChild(14,2));
+  w=transPt(trot(-Math.PI/3),w);nH.push(psub(nH[3],w));
+  nH.push(patch.evalChild(6,2));
+  const new_H=new Geom(nH,null,[0,0,0]);
+  for(const ch of[0,9,16,27,26,6,1,8,10,15])new_H.addChild(patch.children[ch].T,patch.children[ch].geom);
+
+  const nP=[p72,padd(p72,psub(bps1,llc)),bps1,llc];
+  const new_P=new Geom(nP,null,[0,0,0]);
+  for(const ch of[7,2,3,4,28])new_P.addChild(patch.children[ch].T,patch.children[ch].geom);
+
+  const nF=[bps2,patch.evalChild(24,2),patch.evalChild(25,0),p252,padd(p252,psub(llc,bps1))];
+  const new_F=new Geom(nF,null,[0,0,0]);
+  for(const ch of[21,20,22,23,24,25])new_F.addChild(patch.children[ch].T,patch.children[ch].geom);
+
+  const AAA=nH[2];const BBB=padd(nH[1],psub(nH[4],nH[5]));
+  const CCC=transPt(rotAbout(BBB,-Math.PI/3),AAA);
+  const new_T=new Geom([BBB,CCC,AAA],null,[0,0,0]);
+  new_T.addChild(patch.children[11].T,patch.children[11].geom);
+
+  new_H.recentre();new_P.recentre();new_F.recentre();new_T.recentre();
+  return[new_H,new_T,new_P,new_F];
+}
+
+// --- Build tiling at given level ---
+function buildTiling(level){
+  const hats=makeHats();
+  let tiles=buildInitMetatiles(hats);
+  for(let i=1;i<level;i++){
+    const patch=constructPatch(...tiles);
+    tiles=constructMetatiles(patch);
+  }
+  return tiles;
+}
+
+// --- Rendering ---
+let viewX=0,viewY=0,viewScale=20;
+let tiles,level=3;
+
+function drawGeom(geom,S,lev){
+  if(lev>0){
+    for(const g of geom.children)drawGeom(g.geom,mul(S,g.T),lev-1);
+  }else{
+    if(!geom.fill)return;
+    const pts=geom.shape.map(p=>transPt(S,p));
+    // Frustum cull
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    for(const p of pts){if(p.x<minX)minX=p.x;if(p.x>maxX)maxX=p.x;if(p.y<minY)minY=p.y;if(p.y>maxY)maxY=p.y}
+    if(maxX<0||minX>canvas.width||maxY<0||minY>canvas.height)return;
+
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y);
+    for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
+    ctx.closePath();
+    const f=geom.fill;
+    ctx.fillStyle=`rgb(${f[0]},${f[1]},${f[2]})`;
+    ctx.fill();
+    const s=geom.stroke||pal.stroke;
+    ctx.strokeStyle=`rgb(${s[0]},${s[1]},${s[2]})`;
+    ctx.lineWidth=Math.max(0.3,0.8/Math.sqrt(viewScale));
+    ctx.stroke();
+  }
+}
+
+function render(){
+  const dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle=pal.bg;ctx.fillRect(0,0,innerWidth,innerHeight);
+
+  const S=[viewScale,0,viewX+innerWidth/2,0,-viewScale,viewY+innerHeight/2];
+  // Draw H metatile (index 0) which contains the full patch
+  drawGeom(tiles[0],S,level);
+}
+
+// --- Interaction ---
+let dragging=false,lastX,lastY;
+
+canvas.addEventListener('pointerdown',e=>{
+  dragging=true;lastX=e.clientX;lastY=e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  viewX+=e.clientX-lastX;viewY+=e.clientY-lastY;
+  lastX=e.clientX;lastY=e.clientY;
+  render();
+});
+canvas.addEventListener('pointerup',()=>dragging=false);
+canvas.addEventListener('pointercancel',()=>dragging=false);
+
+// Pinch zoom
+let pinchDist=0;
+canvas.addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    pinchDist=Math.sqrt(dx*dx+dy*dy);
+  }
+},{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if(pinchDist>0){
+      const ratio=d/pinchDist;
+      viewScale*=ratio;
+      pinchDist=d;
+      render();
+    }
+  }
+},{passive:false});
+
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const factor=e.deltaY<0?1.1:0.9;
+  const mx=e.clientX-innerWidth/2-viewX;
+  const my=e.clientY-innerHeight/2-viewY;
+  viewX-=mx*(factor-1);viewY-=my*(factor-1);
+  viewScale*=factor;
+  render();
+},{passive:false});
+
+// --- Controls ---
+const levelSlider=document.getElementById('levelSlider');
+const levelVal=document.getElementById('levelVal');
+const paletteSelect=document.getElementById('palette');
+const resetBtn=document.getElementById('resetBtn');
+
+function rebuild(){
+  tiles=buildTiling(level);
+  render();
+}
+
+levelSlider.addEventListener('input',()=>{
+  level=parseInt(levelSlider.value);
+  levelVal.textContent=level;
+  rebuild();
+});
+
+paletteSelect.addEventListener('change',()=>{
+  pal=palettes[paletteSelect.value];
+  rebuild();
+});
+
+resetBtn.addEventListener('click',()=>{
+  viewX=0;viewY=0;viewScale=20;level=3;
+  levelSlider.value=3;levelVal.textContent='3';
+  paletteSelect.value='classic';pal=palettes.classic;
+  rebuild();
+});
+
+window.addEventListener('resize',render);
+
+// Hide UI in iframe
+if(window.self!==window.top){
+  document.getElementById('back').style.display='none';
+  document.getElementById('ui').style.display='none';
+  document.getElementById('info').style.display='none';
+}
+
+// Init
+rebuild();
+</script>
+</body>
+</html>

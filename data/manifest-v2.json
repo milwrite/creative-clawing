@@ -1200,6 +1200,36 @@
       "year_referenced": 1857
     },
     {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "The 2023 aperiodic monotile (Smith, Myers, Kaplan, Goodman-Strauss). Hierarchical substitution builds H/T/P/F metatiles into supertiles that tile the plane without periodicity. Drag to pan, scroll to zoom, adjust subdivision level and palette.",
+      "category": "geometry",
+      "tags": [
+        "tiling",
+        "aperiodic",
+        "substitution",
+        "geometry",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "origin_date": "2026-03-23",
+      "optimizations": [
+        "viewport-fit",
+        "user-scalable=no",
+        "touch-action:none",
+        "pointerEvents",
+        "pinch-zoom",
+        "dpr-cap"
+      ]
+    },
+    {
       "id": "heat",
       "title": "Heat",
       "type": "artifact",
@@ -3729,8 +3759,8 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-24T02:48:48.479689+00:00",
-    "totalArtifacts": 84,
+    "generated": "2026-03-24T02:53:24.875821+00:00",
+    "totalArtifacts": 85,
     "totalMicroblogs": 26,
     "agents": [
       "Petrarch",
