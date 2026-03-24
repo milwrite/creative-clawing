@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Gradient Descent</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:'Helvetica Neue',sans-serif;color:#ccc;touch-action:none}
+canvas{display:block;position:absolute;top:0;left:0}
+#ui{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;padding:12px 16px;background:rgba(10,10,15,0.92);backdrop-filter:blur(8px);display:flex;flex-wrap:wrap;gap:8px;align-items:center;z-index:10;font-size:13px}
+#ui label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+#ui select,#ui input[type=range]{background:#1a1a2e;border:1px solid #333;color:#ccc;border-radius:4px;padding:2px 4px}
+#ui input[type=range]{width:80px;accent-color:#4ecdc4}
+#ui button{background:#4ecdc4;color:#0a0a0f;border:none;border-radius:4px;padding:4px 12px;cursor:pointer;font-weight:600;font-size:13px}
+#ui button:hover{background:#45b7aa}
+#ui button.secondary{background:#333;color:#ccc}
+#ui button.secondary:hover{background:#444}
+.val{min-width:28px;text-align:right;font-variant-numeric:tabular-nums;color:#4ecdc4}
+#back{position:fixed;top:12px;left:12px;z-index:20;background:rgba(10,10,15,0.85);color:#ccc;border:1px solid #333;border-radius:4px;padding:6px 14px;cursor:pointer;font-size:13px;text-decoration:none}
+#back:hover{background:#1a1a2e}
+</style>
+</head>
+<body>
+<a id="back" href="/gallery/">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="ui">
+  <label>Surface: <select id="surfSel">
+    <option value="rosenbrock">Rosenbrock</option>
+    <option value="himmelblau">Himmelblau</option>
+    <option value="rastrigin">Rastrigin</option>
+    <option value="saddle">Saddle</option>
+    <option value="beale">Beale</option>
+  </select></label>
+  <label>Optimizer: <select id="optSel">
+    <option value="gd">Vanilla GD</option>
+    <option value="momentum">Momentum</option>
+    <option value="adam">Adam</option>
+  </select></label>
+  <label>LR: <input type="range" id="lrSlider" min="-5" max="-0.5" step="0.1" value="-2.5"><span class="val" id="lrVal"></span></label>
+  <button id="btnStep">Step</button>
+  <button id="btnRun">Run</button>
+  <button id="btnReset" class="secondary">Reset</button>
+</div>
+<script>
+const C=document.getElementById('c'),ctx=C.getContext('2d');
+const surfSel=document.getElementById('surfSel');
+const optSel=document.getElementById('optSel');
+const lrSlider=document.getElementById('lrSlider');
+const lrVal=document.getElementById('lrVal');
+const btnStep=document.getElementById('btnStep');
+const btnRun=document.getElementById('btnRun');
+const btnReset=document.getElementById('btnReset');
+
+let W,H,dpr,running=false,animId=null;
+
+// Surface definitions: {fn, grad, range:[xmin,xmax,ymin,ymax], start:[x,y]}
+const surfaces={
+  rosenbrock:{
+    fn:(x,y)=>100*(y-x*x)**2+(1-x)**2,
+    grad:(x,y)=>[
+      -400*x*(y-x*x)+2*(x-1),
+      200*(y-x*x)
+    ],
+    range:[-2,2,-1,3],
+    start:[-1.5,2.5],
+    logScale:true
+  },
+  himmelblau:{
+    fn:(x,y)=>(x*x+y-11)**2+(x+y*y-7)**2,
+    grad:(x,y)=>[
+      4*x*(x*x+y-11)+2*(x+y*y-7),
+      2*(x*x+y-11)+4*y*(x+y*y-7)
+    ],
+    range:[-5,5,-5,5],
+    start:[-3,4],
+    logScale:true
+  },
+  rastrigin:{
+    fn:(x,y)=>20+x*x-10*Math.cos(2*Math.PI*x)+y*y-10*Math.cos(2*Math.PI*y),
+    grad:(x,y)=>[
+      2*x+20*Math.PI*Math.sin(2*Math.PI*x),
+      2*y+20*Math.PI*Math.sin(2*Math.PI*y)
+    ],
+    range:[-5.12,5.12,-5.12,5.12],
+    start:[4,4],
+    logScale:false
+  },
+  saddle:{
+    fn:(x,y)=>x*x-y*y,
+    grad:(x,y)=>[2*x,-2*y],
+    range:[-3,3,-3,3],
+    start:[0.1,2.5],
+    logScale:false
+  },
+  beale:{
+    fn:(x,y)=>(1.5-x+x*y)**2+(2.25-x+x*y*y)**2+(2.625-x+x*y*y*y)**2,
+    grad:(x,y)=>{
+      const a=1.5-x+x*y,b=2.25-x+x*y*y,c=2.625-x+x*y*y*y;
+      return[
+        2*a*(-1+y)+2*b*(-1+y*y)+2*c*(-1+y*y*y),
+        2*a*x+2*b*2*x*y+2*c*3*x*y*y
+      ];
+    },
+    range:[-4.5,4.5,-4.5,4.5],
+    start:[-3,3],
+    logScale:true
+  }
+};
+
+let surf,pos,trail,vel,m1,m2,t,stepCount;
+
+function init(){
+  const s=surfaces[surfSel.value];
+  surf=s;
+  pos=[...s.start];
+  trail=[pos.slice()];
+  vel=[0,0];
+  m1=[0,0];m2=[0,0];t=0;stepCount=0;
+  running=false;
+  if(animId){cancelAnimationFrame(animId);animId=null;}
+  btnRun.textContent='Run';
+  render();
+}
+
+function resize(){
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth;H=window.innerHeight;
+  C.width=W*dpr;C.height=H*dpr;
+  C.style.width=W+'px';C.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  if(surf)render();
+}
+
+function worldToScreen(wx,wy){
+  const r=surf.range;
+  const px=(wx-r[0])/(r[1]-r[0])*W;
+  const py=(1-(wy-r[2])/(r[3]-r[2]))*H;
+  return[px,py];
+}
+
+function screenToWorld(sx,sy){
+  const r=surf.range;
+  const wx=r[0]+sx/W*(r[1]-r[0]);
+  const wy=r[2]+(1-sy/H)*(r[3]-r[2]);
+  return[wx,wy];
+}
+
+function getColor(val,mn,mx){
+  let t2=(val-mn)/(mx-mn);
+  t2=Math.max(0,Math.min(1,t2));
+  // dark navy → teal → yellow → white
+  const r=Math.floor(t2<0.5?t2*2*80:80+(t2-0.5)*2*175);
+  const g=Math.floor(t2<0.33?30+t2*3*150:t2<0.66?180:180+(t2-0.66)*3*75);
+  const b=Math.floor(t2<0.33?80+t2*3*116:196-t2*150);
+  return`rgb(${r},${g},${b})`;
+}
+
+function renderSurface(){
+  const r=surf.range;
+  const res=Math.max(2,Math.floor(Math.min(W,H)/200));
+  const cols=Math.ceil(W/res),rows=Math.ceil(H/res);
+  const vals=new Float64Array(cols*rows);
+  let mn=Infinity,mx=-Infinity;
+  for(let j=0;j<rows;j++){
+    for(let i=0;i<cols;i++){
+      const[wx,wy]=screenToWorld(i*res,j*res);
+      let v=surf.fn(wx,wy);
+      if(surf.logScale)v=Math.log(1+v);
+      vals[j*cols+i]=v;
+      if(v<mn)mn=v;if(v>mx)mx=v;
+    }
+  }
+  const img=ctx.createImageData(cols,rows);
+  for(let j=0;j<rows;j++){
+    for(let i=0;i<cols;i++){
+      const v=vals[j*cols+i];
+      let t2=(v-mn)/(mx-mn);
+      t2=Math.max(0,Math.min(1,t2));
+      // palette: deep navy → teal → amber → white
+      let r2,g2,b2;
+      if(t2<0.25){const s=t2/0.25;r2=10+s*18;g2=10+s*60;b2=30+s*80;}
+      else if(t2<0.5){const s=(t2-0.25)/0.25;r2=28+s*50;g2=70+s*110;b2=110+s*86;}
+      else if(t2<0.75){const s=(t2-0.5)/0.25;r2=78+s*177;g2=180-s*30;b2=196-s*146;}
+      else{const s=(t2-0.75)/0.25;r2=255;g2=150+s*105;b2=50+s*205;}
+      const idx=(j*cols+i)*4;
+      img.data[idx]=r2;img.data[idx+1]=g2;img.data[idx+2]=b2;img.data[idx+3]=255;
+    }
+  }
+  // draw scaled
+  const off=new OffscreenCanvas(cols,rows);
+  const octx=off.getContext('2d');
+  octx.putImageData(img,0,0);
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(off,0,0,W,H);
+}
+
+function renderContours(){
+  const r=surf.range;
+  const numContours=20;
+  // sample to find range
+  let mn=Infinity,mx=-Infinity;
+  for(let j=0;j<50;j++)for(let i=0;i<50;i++){
+    const[wx,wy]=screenToWorld(i/50*W,j/50*H);
+    let v=surf.fn(wx,wy);if(surf.logScale)v=Math.log(1+v);
+    if(v<mn)mn=v;if(v>mx)mx=v;
+  }
+  // use marching squares for contour lines
+  const res=4;
+  const cols=Math.ceil(W/res),rows=Math.ceil(H/res);
+  const grid=new Float64Array(cols*rows);
+  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
+    const[wx,wy]=screenToWorld(i*res,j*res);
+    let v=surf.fn(wx,wy);if(surf.logScale)v=Math.log(1+v);
+    grid[j*cols+i]=v;
+  }
+  ctx.strokeStyle='rgba(255,255,255,0.12)';
+  ctx.lineWidth=0.5;
+  for(let c=0;c<numContours;c++){
+    const level=mn+(mx-mn)*(c+1)/(numContours+1);
+    ctx.beginPath();
+    for(let j=0;j<rows-1;j++)for(let i=0;i<cols-1;i++){
+      const v00=grid[j*cols+i],v10=grid[j*cols+i+1];
+      const v01=grid[(j+1)*cols+i],v11=grid[(j+1)*cols+i+1];
+      const x0=i*res,y0=j*res,x1=(i+1)*res,y1=(j+1)*res;
+      const idx2=((v00>=level?8:0)|(v10>=level?4:0)|(v11>=level?2:0)|(v01>=level?1:0));
+      if(idx2===0||idx2===15)continue;
+      // linear interpolation helpers
+      const lx=(l,a,b,ax,bx)=>ax+(l-a)/(b-a)*(bx-ax);
+      // top edge (v00-v10), right (v10-v11), bottom (v01-v11), left (v00-v01)
+      const te=[lx(level,v00,v10,x0,x1),y0];
+      const re=[x1,lx(level,v10,v11,y0,y1)];
+      const be=[lx(level,v01,v11,x0,x1),y1];
+      const le=[x0,lx(level,v00,v01,y0,y1)];
+      const segs=[];
+      switch(idx2){
+        case 1:case 14:segs.push(le,be);break;
+        case 2:case 13:segs.push(be,re);break;
+        case 3:case 12:segs.push(le,re);break;
+        case 4:case 11:segs.push(te,re);break;
+        case 5:segs.push(te,le,be,re);break;
+        case 6:case 9:segs.push(te,be);break;
+        case 7:case 8:segs.push(te,le);break;
+        case 10:segs.push(te,re,be,le);break;
+      }
+      for(let s=0;s<segs.length;s+=2){
+        ctx.moveTo(segs[s][0],segs[s][1]);
+        ctx.lineTo(segs[s+1][0],segs[s+1][1]);
+      }
+    }
+    ctx.stroke();
+  }
+}
+
+function renderTrail(){
+  if(trail.length<2)return;
+  // trail line
+  ctx.strokeStyle='rgba(255,78,80,0.7)';
+  ctx.lineWidth=2;
+  ctx.lineJoin='round';
+  ctx.beginPath();
+  for(let i=0;i<trail.length;i++){
+    const[sx,sy]=worldToScreen(trail[i][0],trail[i][1]);
+    if(i===0)ctx.moveTo(sx,sy);else ctx.lineTo(sx,sy);
+  }
+  ctx.stroke();
+
+  // dots at each step
+  for(let i=0;i<trail.length;i++){
+    const[sx,sy]=worldToScreen(trail[i][0],trail[i][1]);
+    const alpha=0.3+0.7*(i/trail.length);
+    const radius=i===trail.length-1?5:2.5;
+    ctx.beginPath();
+    ctx.arc(sx,sy,radius,0,Math.PI*2);
+    if(i===trail.length-1){
+      ctx.fillStyle='#ff4e50';
+      ctx.fill();
+      ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+    }else{
+      ctx.fillStyle=`rgba(255,78,80,${alpha})`;
+      ctx.fill();
+    }
+  }
+}
+
+function renderInfo(){
+  ctx.fillStyle='rgba(10,10,15,0.75)';
+  ctx.fillRect(8,8,200,60);
+  ctx.fillStyle='#ccc';
+  ctx.font='12px monospace';
+  const v=surf.fn(pos[0],pos[1]);
+  ctx.fillText(`x: ${pos[0].toFixed(4)}  y: ${pos[1].toFixed(4)}`,16,26);
+  ctx.fillText(`f(x,y): ${v.toFixed(4)}`,16,42);
+  ctx.fillText(`steps: ${stepCount}`,16,58);
+}
+
+function render(){
+  ctx.clearRect(0,0,W,H);
+  renderSurface();
+  renderContours();
+  renderTrail();
+  renderInfo();
+}
+
+function getLR(){return Math.pow(10,parseFloat(lrSlider.value));}
+
+function step(){
+  const lr=getLR();
+  const g=surf.grad(pos[0],pos[1]);
+  const opt=optSel.value;
+
+  if(opt==='gd'){
+    pos[0]-=lr*g[0];
+    pos[1]-=lr*g[1];
+  }else if(opt==='momentum'){
+    const mu=0.9;
+    vel[0]=mu*vel[0]-lr*g[0];
+    vel[1]=mu*vel[1]-lr*g[1];
+    pos[0]+=vel[0];
+    pos[1]+=vel[1];
+  }else if(opt==='adam'){
+    t++;
+    const b1=0.9,b2=0.999,eps=1e-8;
+    for(let i=0;i<2;i++){
+      m1[i]=b1*m1[i]+(1-b1)*g[i];
+      m2[i]=b2*m2[i]+(1-b2)*g[i]*g[i];
+      const m1h=m1[i]/(1-Math.pow(b1,t));
+      const m2h=m2[i]/(1-Math.pow(b2,t));
+      pos[i]-=lr*m1h/(Math.sqrt(m2h)+eps);
+    }
+  }
+
+  // clamp to range
+  const r=surf.range;
+  pos[0]=Math.max(r[0],Math.min(r[1],pos[0]));
+  pos[1]=Math.max(r[2],Math.min(r[3],pos[1]));
+
+  trail.push(pos.slice());
+  if(trail.length>2000)trail.shift();
+  stepCount++;
+  render();
+}
+
+function runLoop(){
+  if(!running)return;
+  for(let i=0;i<3;i++)step();
+  animId=requestAnimationFrame(runLoop);
+}
+
+// Update LR display
+function updateLR(){lrVal.textContent=getLR().toExponential(1);}
+lrSlider.addEventListener('input',updateLR);
+
+surfSel.addEventListener('change',init);
+optSel.addEventListener('change',()=>{vel=[0,0];m1=[0,0];m2=[0,0];t=0;});
+btnStep.addEventListener('click',step);
+btnRun.addEventListener('click',()=>{
+  running=!running;
+  btnRun.textContent=running?'Pause':'Run';
+  if(running)runLoop();
+});
+btnReset.addEventListener('click',init);
+
+// Click to place starting point
+C.addEventListener('pointerdown',(e)=>{
+  if(e.target!==C)return;
+  const rect=C.getBoundingClientRect();
+  const sx=e.clientX-rect.left,sy=e.clientY-rect.top;
+  const[wx,wy]=screenToWorld(sx,sy);
+  pos=[wx,wy];
+  trail=[[wx,wy]];
+  vel=[0,0];m1=[0,0];m2=[0,0];t=0;stepCount=0;
+  render();
+});
+
+// iframe detection: hide back button and UI chrome
+if(window.self!==window.top){
+  document.getElementById('back').style.display='none';
+}
+
+window.addEventListener('resize',resize);
+resize();
+updateLR();
+init();
+</script>
+</body>
+</html>
