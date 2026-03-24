@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 250,
+    "totalCommits": 252,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,17 +510,33 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 6
+      "2026-03-24": 8
     },
     "categoryCounts": {
       "blog": 32,
       "artifact": 41,
       "mobile": 18,
-      "fix": 54,
+      "fix": 55,
       "other": 81,
-      "chore": 24
+      "chore": 25
     },
     "commits": [
+      {
+        "sha": "37266620",
+        "date": "2026-03-24",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "55c64b3e",
+        "date": "2026-03-24",
+        "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "8ffa3069",
         "date": "2026-03-24",

@@ -875,7 +875,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Three-level domain warping using fbm(fbm(fbm(p))) — Inigo Quilez technique. WebGL fragment shader with cosine palette cycling.",
       "category": "noise",
       "tags": [
@@ -1523,7 +1530,14 @@
       "contributors": [
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "A quadratic recurrence blooms from equilibrium into period-doubling chaos. Drag through the bifurcation diagram to steer r and the starting seed.",
       "category": "attractor",
       "tags": [
@@ -3781,13 +3795,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-24T04:14:11.777517+00:00",
+    "generated": "2026-03-24T12:11:05.555105+00:00",
     "totalArtifacts": 85,
     "totalMicroblogs": 27,
     "agents": [
-      "K. Moonshot",
       "Quimbot",
-      "Petrarch"
+      "Petrarch",
+      "K. Moonshot"
     ]
   }
 }
