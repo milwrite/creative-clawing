@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3QgZmlsbD0iIzA1MDUxMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+PHBhdGggZD0iTTQgMTYgUTkgMTIgMTYgMTYgUTIzIDIwIDI4IDE2IiBmaWxsPSJub25lIiBzdHJva2U9IiM0MDkwZmYiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg=="/>
+<title>Kelvin-Helmholtz Instability</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050512;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(8,8,24,0.85);border:1px solid #234;color:#9abacc;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#4090ff}
+.panel{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));background:rgba(5,5,18,0.85);border:1px solid #224;color:#7090b0;padding:10px 14px;border-radius:8px;font:12px/1.5 ui-monospace,monospace;backdrop-filter:blur(10px);z-index:100;pointer-events:none;max-width:min(300px,calc(100vw - 24px))}
+.panel .name{font-size:13px;font-weight:600;color:#90b8d8;margin-bottom:3px}
+.controls{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:100}
+.controls button{background:rgba(8,8,24,0.88);border:1px solid #234;color:#8aaabb;padding:9px 16px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;backdrop-filter:blur(8px);transition:border-color 0.2s,color 0.2s;min-height:44px;min-width:44px}
+.controls button:hover{border-color:#4090ff;color:#b0d0e8}
+.controls label{color:#6080a0;font:11px ui-monospace,monospace;display:flex;align-items:center;gap:6px}
+.controls input[type=range]{width:80px;accent-color:#4090ff}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="name">Kelvin-Helmholtz Instability</div>
+  <div id="stepcount">t = 0</div>
+</div>
+<div class="controls">
+  <button id="btnReset">reset</button>
+  <label>speed <input type="range" id="speedSlider" min="1" max="10" value="5"/></label>
+</div>
+<script>
+const N = 300;
+const TWO_PI = Math.PI * 2;
+const DELTA2 = 0.01 * 0.01; // Rosenhead regularization δ²
+const GAMMA = 1.0 / N;      // circulation per vortex
+
+let vx = new Float64Array(N);
+let vy = new Float64Array(N);
+let initialHue = new Float64Array(N);
+let stepCount = 0;
+let animId;
+
+function init() {
+  stepCount = 0;
+  for (let i = 0; i < N; i++) {
+    vx[i] = i / N;
+    vy[i] = 0.5 + (Math.random() - 0.5) * 0.04;
+    initialHue[i] = (i / N) * 300; // rainbow by initial x-position
+  }
+}
+
+// Compute induced velocity at (xi, yi) from all other vortices
+// Using Rosenhead-regularized 2D Biot-Savart with periodic x-boundary
+// Periodicity handled by including images at x±1 (sufficient for [0,1] domain)
+function computeVelocities(nx, ny, outU, outV) {
+  const GAM_2PI = GAMMA / TWO_PI;
+  for (let i = 0; i < N; i++) {
+    let u = 0, v = 0;
+    const xi = nx[i], yi = ny[i];
+    for (let j = 0; j < N; j++) {
+      if (i === j) continue;
+      const xj = nx[j], yj = ny[j];
+      const dy = yi - yj;
+
+      // Periodic images: j at xj-1, xj, xj+1
+      for (let k = -1; k <= 1; k++) {
+        const dx = xi - (xj + k);
+        const r2 = dx*dx + dy*dy + DELTA2;
+        u += GAM_2PI * dy / r2;
+        v -= GAM_2PI * dx / r2;
+      }
+    }
+    outU[i] = u;
+    outV[i] = v;
+  }
+}
+
+const tmpU = new Float64Array(N);
+const tmpV = new Float64Array(N);
+const nx = new Float64Array(N);
+const ny = new Float64Array(N);
+
+function stepRK2(dt) {
+  // k1
+  computeVelocities(vx, vy, tmpU, tmpV);
+  // midpoint
+  for (let i = 0; i < N; i++) {
+    nx[i] = vx[i] + 0.5 * dt * tmpU[i];
+    ny[i] = vy[i] + 0.5 * dt * tmpV[i];
+    // periodic x wrap
+    nx[i] = ((nx[i] % 1) + 1) % 1;
+  }
+  // k2
+  computeVelocities(nx, ny, tmpU, tmpV);
+  for (let i = 0; i < N; i++) {
+    vx[i] = vx[i] + dt * tmpU[i];
+    vy[i] = vy[i] + dt * tmpV[i];
+    vx[i] = ((vx[i] % 1) + 1) % 1;
+    // soft clamp y to keep vortices visible
+    vy[i] = Math.max(0.05, Math.min(0.95, vy[i]));
+  }
+}
+
+const c = document.getElementById('c'), ctx = c.getContext('2d');
+let W, H, dpr;
+
+function resize() {
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function frame() {
+  animId = requestAnimationFrame(frame);
+
+  const speed = parseInt(document.getElementById('speedSlider').value);
+  const stepsPerFrame = speed;
+  const dt = 0.002;
+
+  for (let s = 0; s < stepsPerFrame; s++) {
+    stepRK2(dt);
+    stepCount++;
+  }
+
+  // Clear
+  ctx.fillStyle = '#050512';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw midline guide
+  const midY = H * 0.5;
+  ctx.strokeStyle = 'rgba(40,60,120,0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, midY); ctx.lineTo(W, midY);
+  ctx.stroke();
+
+  // Draw vortices
+  const R = 3.5;
+  for (let i = 0; i < N; i++) {
+    const px = vx[i] * W;
+    const py = vy[i] * H;
+    const dy = vy[i] - 0.5;
+    // Color: blue upper half, red lower half; saturation by displacement
+    const disp = Math.abs(dy) / 0.45; // normalized 0..1
+    let hue, sat, lit;
+    if (dy > 0) {
+      // above midline: cyan-blue
+      hue = 190 + disp * 40;
+      sat = 70 + disp * 30;
+      lit = 55 + disp * 15;
+    } else {
+      // below midline: orange-red
+      hue = 20 - disp * 20;
+      sat = 70 + disp * 30;
+      lit = 55 + disp * 15;
+    }
+    ctx.beginPath();
+    ctx.arc(px, py, R, 0, Math.PI * 2);
+    ctx.fillStyle = `hsl(${hue},${sat}%,${lit}%)`;
+    ctx.fill();
+  }
+
+  document.getElementById('stepcount').textContent = `t = ${stepCount}`;
+}
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  cancelAnimationFrame(animId);
+  init();
+  frame();
+});
+
+window.addEventListener('resize', resize);
+resize();
+init();
+frame();
+</script>
+</body>
+</html>

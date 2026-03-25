@@ -253,6 +253,13 @@
       "page": "artifacts/kaleidoscope.html"
     },
     {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html"
+    },
+    {
       "id": "langton",
       "title": "Langton",
       "type": "artifact",
@@ -517,6 +524,13 @@
       "type": "artifact",
       "url": "gallery/springwires.html",
       "page": "artifacts/springwires.html"
+    },
+    {
+      "id": "sprott",
+      "title": "Sprott Attractor Family",
+      "type": "artifact",
+      "url": "gallery/sprott.html",
+      "page": "artifacts/sprott.html"
     },
     {
       "id": "stablefluid",
@@ -1026,6 +1040,13 @@
       "page": "artifacts/kaleidoscope.html"
     },
     {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html"
+    },
+    {
       "id": "langton",
       "title": "Langton",
       "type": "artifact",
@@ -1290,6 +1311,13 @@
       "type": "artifact",
       "url": "gallery/springwires.html",
       "page": "artifacts/springwires.html"
+    },
+    {
+      "id": "sprott",
+      "title": "Sprott Attractor Family",
+      "type": "artifact",
+      "url": "gallery/sprott.html",
+      "page": "artifacts/sprott.html"
     },
     {
       "id": "stablefluid",
