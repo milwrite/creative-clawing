@@ -99,12 +99,14 @@ Every artifact must work on a narrow viewport (≤600px). Required:
 
 ```css
 @media(max-width:600px){
-  body { display:flex; flex-direction:column; }
-  canvas { flex:1; min-height:0; }           /* or use a wrapper div with flex:1 */
-  #ui { position:relative; flex-shrink:0;
+  html.standalone body { display:flex; flex-direction:column; }
+  html.standalone canvas { flex:1; min-height:0; }
+  html.standalone #ui { position:relative; flex-shrink:0;
         padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
 }
 ```
+
+**Critical: always scope mobile layout rules to `html.standalone`** — media queries fire based on the iframe's own viewport width, not the parent page. Card thumbnails on the homepage are ~200px wide, which is below any `max-width` breakpoint. Without `html.standalone` scoping, the mobile layout activates inside card iframes and breaks the thumbnail rendering.
 
 For `position:absolute` canvases (sized to `window.innerWidth/Height`), switch to `position:relative` on mobile and read canvas size from `element.getBoundingClientRect()` — not `window.innerWidth/Height` — after the layout shift.
 
