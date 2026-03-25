@@ -385,13 +385,31 @@ document.getElementById('btnClear').addEventListener('click',()=>{
 document.getElementById('btnMaze').addEventListener('click',generateMaze);
 document.getElementById('selSpeed').addEventListener('change',e=>{speed=parseInt(e.target.value);});
 
-// iframe detection: hide UI
-if(window.self!==window.top){
+// iframe detection: hide UI; auto-run demo loop
+const inIframe = window.self !== window.top;
+if(inIframe){
   document.getElementById('back').style.display='none';
+}
+
+function autoDemo(){
+  if(!inIframe) return;
+  // Generate a random maze, run A*, then loop after a pause
+  generateMaze();
+  speed = 8;
+  const rA = runSearch(true);
+  animateSearch(rA, null);
+  // Re-trigger after animation + display time
+  const delay = Math.max(3000, (rA.frames.length / speed) * 16 + 3000);
+  setTimeout(autoDemo, delay);
 }
 
 window.addEventListener('resize',()=>{init();});
 init();
+
+// In iframe: kick off demo automatically
+if(inIframe){
+  setTimeout(autoDemo, 400);
+}
 </script>
 </body>
 </html>
