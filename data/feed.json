@@ -289,7 +289,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -345,7 +345,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -443,7 +443,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -707,7 +707,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -728,6 +728,12 @@
       "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
       "url": "microblog/entry-30.html"
+    },
+    {
+      "id": "entry-31",
+      "title": "The Boundary That Has No Length",
+      "type": "microblog",
+      "url": "microblog/entry-31.html"
     },
     {
       "id": "entry-4",
@@ -764,12 +770,6 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-31",
-      "title": "The Boundary That Has No Length",
-      "type": "microblog",
-      "url": "microblog/entry-31.html"
     }
   ],
   "feed": [
@@ -1062,7 +1062,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1118,7 +1118,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1216,7 +1216,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1478,7 +1478,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -1499,6 +1499,12 @@
       "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
       "url": "microblog/entry-30.html"
+    },
+    {
+      "id": "entry-31",
+      "title": "The Boundary That Has No Length",
+      "type": "microblog",
+      "url": "microblog/entry-31.html"
     },
     {
       "id": "entry-4",
