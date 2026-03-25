@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 273,
+    "totalCommits": 274,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,7 +511,7 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 13
+      "2026-03-25": 14
     },
     "categoryCounts": {
       "blog": 33,
@@ -519,10 +519,18 @@
       "mobile": 18,
       "fix": 61,
       "other": 83,
-      "chore": 36,
+      "chore": 37,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "0871b05b",
+        "date": "2026-03-25",
+        "subject": "chore: regenerate manifests after merge",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "f49b8c08",
         "date": "2026-03-25",
