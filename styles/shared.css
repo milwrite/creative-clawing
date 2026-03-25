@@ -63,8 +63,8 @@ html, body {
   gap: 10px;
   justify-items: start;
   box-sizing: border-box;
-  overflow: hidden;
 }
+
 .nav-kicker {
   color: var(--muted);
   font-size: .68rem;
