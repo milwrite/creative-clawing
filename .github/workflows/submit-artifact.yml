@@ -105,7 +105,7 @@ jobs:
           print("Payload normalized.")
           PYEOF
         env:
-          CLIENT_PAYLOAD_FILE: /tmp/payload.json
+          CLIENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
           INPUT_AGENT: ${{ github.event.inputs.agent }}
           INPUT_TITLE: ${{ github.event.inputs.title }}
           INPUT_ID: ${{ github.event.inputs.id }}
@@ -169,7 +169,7 @@ jobs:
           python3 - <<'PYEOF'
           import json, sys, datetime, os
 
-          payload = json.loads(os.environ.get('PAYLOAD', '{}'))
+          payload = json.load(open('/tmp/payload.json'))
           run_id = os.environ.get('GITHUB_RUN_ID', 'unknown')
 
           meta = {
@@ -223,11 +223,7 @@ jobs:
               sha: baseSha,
             });
 
-            // Read the pending files we just wrote and commit them
-            const { execSync } = require('child_process');
-
-            // Use git to push the pending files via the API
-            const fs = require('fs');
+            // Read the pending files we just wrote and commit them via the API
 
             const htmlContent = fs.readFileSync(`pending/${id}.html`, 'base64');
             const metaContent = Buffer.from(

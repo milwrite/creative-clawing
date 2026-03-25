@@ -9,8 +9,17 @@
 <title>A* Pathfinding</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:'Courier New',monospace;color:#c0c0c0;touch-action:none}
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#0a0a0f;font-family:'Courier New',monospace;color:#c0c0c0;touch-action:none}
 canvas{display:block;position:absolute;top:0;left:0}
+@media(max-width:600px){
+  body{display:flex;flex-direction:column;position:relative}
+  canvas{position:relative;top:auto;left:auto;flex:1;min-height:0;width:100%!important;height:auto!important}
+  #ui{position:relative;bottom:auto;left:auto;right:auto;border-top:1px solid rgba(100,200,255,0.15);
+    flex-shrink:0;padding:8px max(env(safe-area-inset-right),10px) calc(8px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),10px);
+    gap:6px;font-size:12px}
+  #ui button{padding:5px 10px;font-size:12px}
+  #stats{font-size:10px}
+}
 #ui{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;background:rgba(10,10,15,0.85);backdrop-filter:blur(6px);z-index:10;border-top:1px solid rgba(100,200,255,0.15)}
 #ui button{background:rgba(100,200,255,0.12);border:1px solid rgba(100,200,255,0.3);color:#8cf;padding:6px 14px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;transition:background 0.2s}
 #ui button:hover{background:rgba(100,200,255,0.25)}
@@ -58,8 +67,9 @@ let speed=4;
 
 function init(){
   dpr=Math.min(window.devicePixelRatio||1,2);
-  W=window.innerWidth;
-  H=window.innerHeight;
+  const _r=canvas.parentElement?canvas.parentElement.getBoundingClientRect():null;
+  W=_r&&_r.width>0?Math.round(_r.width):window.innerWidth;
+  H=_r&&_r.height>0?Math.round(_r.height):window.innerHeight;
   canvas.width=W*dpr;
   canvas.height=H*dpr;
   canvas.style.width=W+'px';
