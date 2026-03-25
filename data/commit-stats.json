@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 257,
+    "totalCommits": 260,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,18 +510,42 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 11,
-      "2026-03-25": 2
+      "2026-03-24": 13,
+      "2026-03-25": 3
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 56,
+      "fix": 58,
       "other": 81,
-      "chore": 28
+      "chore": 29
     },
     "commits": [
+      {
+        "sha": "5f198eff",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c65a47b8",
+        "date": "2026-03-24",
+        "subject": "fix: iframe sandbox allow-same-origin so artifact top-frame check hides controls correctly",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "b8bbee8b",
+        "date": "2026-03-24",
+        "subject": "fix: astar iframe — auto-demo loop so it's not a dead static grid",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "5f3a9e4f",
         "date": "2026-03-25",
