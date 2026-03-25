@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T03:38:17.300067+00:00",
+  "generated": "2026-03-25T03:45:39.784961+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1308,7 +1308,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Metropolis-Hastings simulation of a 2D ferromagnet. Drag or use the temperature slider to cross Tc ≈ 2.269 and watch ferromagnetic domains form and dissolve.",
       "category": "physics",
       "tags": [
