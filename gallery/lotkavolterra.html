@@ -10,7 +10,7 @@
 <title>Lotka–Volterra</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace;color:#ccc}
+html,body{height:100%;height:100dvh;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace;color:#ccc}
 canvas{display:block;touch-action:none}
 #wrap{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr}
 .back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
@@ -33,16 +33,28 @@ input[type=range].pred{accent-color:#ef476f}
 .legend span{display:flex;align-items:center;gap:4px}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 @media(max-width:600px){
-  #wrap{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
-  #ui{grid-template-columns:1fr;gap:4px}
-  .legend{flex-wrap:wrap;gap:8px}
+  html,body{overflow:hidden;height:100%;height:100dvh}
+  body{display:flex;flex-direction:column}
+  #wrap{
+    flex:1;min-height:0;
+    grid-template-columns:1fr;
+    grid-template-rows:1fr 1fr
+  }
+  #ui{
+    position:relative;bottom:auto;left:auto;right:auto;
+    flex-shrink:0;
+    background:rgba(0,0,0,0.97);
+    padding:8px max(env(safe-area-inset-right),10px) calc(8px + env(safe-area-inset-bottom)) max(env(safe-area-inset-left),10px);
+    grid-template-columns:1fr 1fr;
+    gap:3px 10px
+  }
+  .legend{flex-wrap:wrap;gap:6px}
   #stats{font-size:10px}
   .btn{font-size:10px;padding:5px 10px}
-  input[type=range]{max-width:none;min-width:0}
-}
-@media(max-width:400px){
+  input[type=range]{max-width:none;min-width:0;height:24px}
   .lbl{font-size:10px}
   .val{font-size:10px;min-width:28px}
+  .back-btn{font-size:11px;padding:6px 10px}
 }
 </style>
 </head>
