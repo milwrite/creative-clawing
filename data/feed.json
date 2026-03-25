@@ -134,6 +134,13 @@
       "page": "artifacts/cyclicca.html"
     },
     {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html"
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -905,6 +912,13 @@
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html"
+    },
+    {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html"
     },
     {
       "id": "dla",
