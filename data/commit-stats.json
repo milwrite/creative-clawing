@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 274,
+    "totalCommits": 276,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,18 +511,34 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 14
+      "2026-03-25": 16
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 61,
+      "fix": 62,
       "other": 83,
-      "chore": 37,
+      "chore": 38,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "e05f4a85",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "19ed0135",
+        "date": "2026-03-25",
+        "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "0871b05b",
         "date": "2026-03-25",

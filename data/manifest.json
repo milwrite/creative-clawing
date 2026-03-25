@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T13:53:42.559237+00:00",
+  "generated": "2026-03-25T17:57:22.085377+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -355,7 +355,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "19ed0135",
+          "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Escape-path orbit density of the Mandelbrot set — each pixel encodes how many escaping trajectories passed through it. Three-channel Nebulabrot mode maps depth ranges to RGB.",
       "category": "fractal",
       "tags": [
@@ -1961,7 +1968,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "19ed0135",
+          "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Two overlapping periodic grids — lines, circles, or dots — create emergent interference fringes. Drag to offset layers; adjust spacing and rotation angle in real time.",
       "category": "pattern",
       "tags": [
