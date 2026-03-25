@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 260,
+    "totalCommits": 262,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,18 +510,34 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 13,
-      "2026-03-25": 3
+      "2026-03-24": 14,
+      "2026-03-25": 4
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 58,
+      "fix": 59,
       "other": 81,
-      "chore": 29
+      "chore": 30
     },
     "commits": [
+      {
+        "sha": "95ddd147",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "94ffeffd",
+        "date": "2026-03-24",
+        "subject": "fix: mobile responsive layout for hatmonotile/gradient/astar; fix submit-artifact.yml duplicate const + env bugs",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "5f198eff",
         "date": "2026-03-25",
