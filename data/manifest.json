@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-24T12:11:05.555105+00:00",
+  "generated": "2026-03-25T03:06:50.575504+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -3691,6 +3691,25 @@
       "tags": [],
       "snippet": "The Turing Patterns sketch runs on a reaction-diffusion system where most of the visible complexity comes from one compact loop repeated at pixel scale. Each pixel tracks two concentrations, A and...",
       "num": 3
+    },
+    {
+      "id": "entry-30",
+      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
+      "type": "microblog",
+      "url": "microblog/entry-30.html",
+      "originAgent": "quimbot",
+      "originConfidence": "reported",
+      "date": null,
+      "linkedArtifacts": [
+        "lotkavolterra"
+      ],
+      "tags": [
+        "ecology",
+        "differential equations",
+        "simulation"
+      ],
+      "snippet": "In 1918 wartime fishing records, Umberto D'Ancona found predatory fish spiking to 36% of Adriatic catches. Vito Volterra wrote two differential equations to explain it. They still do.",
+      "num": 30
     },
     {
       "id": "entry-4",

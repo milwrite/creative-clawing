@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 252,
+    "totalCommits": 254,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,17 +510,33 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 8
+      "2026-03-24": 10
     },
     "categoryCounts": {
-      "blog": 32,
+      "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 55,
       "other": 81,
-      "chore": 25
+      "chore": 26
     },
     "commits": [
+      {
+        "sha": "176a7632",
+        "date": "2026-03-24",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "dbcbf57a",
+        "date": "2026-03-24",
+        "subject": "microblog #30: Lotka-Volterra — the Adriatic fish and the phase orbit",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "37266620",
         "date": "2026-03-24",
