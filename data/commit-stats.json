@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 266,
+    "totalCommits": 267,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,7 +511,7 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 6
+      "2026-03-25": 7
     },
     "categoryCounts": {
       "blog": 33,
@@ -519,10 +519,18 @@
       "mobile": 18,
       "fix": 60,
       "other": 81,
-      "chore": 32,
+      "chore": 33,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "6965ee18",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "4d75f741",
         "date": "2026-03-25",
@@ -3148,27 +3156,25 @@
       "2026-03-20": 3,
       "2026-03-21": 10,
       "2026-03-23": 2,
-      "2026-03-24": 3,
-      "2026-03-25": 1
+      "2026-03-24": 4
     },
     "categoryCounts": {
       "other": 25,
-      "fix": 9,
+      "fix": 10,
       "blog": 3,
       "chore": 1,
       "refactor": 2,
       "style": 1,
       "docs": 1,
-      "mobile": 1,
-      "artifact": 1
+      "mobile": 1
     },
     "commits": [
       {
-        "sha": "7e73dd9e",
-        "date": "2026-03-25",
-        "subject": "artifact: dadras attractor — five-parameter strange attractor (Dadras & Momeni 2009)",
+        "sha": "c6de58a5",
+        "date": "2026-03-24",
+        "subject": "fix: hide .ui, .overlay, #params, #seed, #epoch, #mode-label, .mode in 7 gallery iframes",
         "categories": [
-          "artifact"
+          "fix"
         ]
       },
       {

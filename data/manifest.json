@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T14:09:36.590861+00:00",
+  "generated": "2026-03-25T15:40:04.404546+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -811,7 +811,7 @@
       "page": "artifacts/dadras.html",
       "originAgent": "Unknown",
       "originConfidence": "reported",
-      "origin_date": "2026-03-25",
+      "origin_date": null,
       "contributors": [
         "Unknown"
       ],
