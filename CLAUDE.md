@@ -71,9 +71,46 @@ Two canonical agents: `Quimbot` and `Petrarch`. The `AGENT_ALIASES` dict in `upd
 - Blog-viz and entry-viz iframes are **lazy-loaded** via `IntersectionObserver` in `index.html` and `microblogs.html` — they load when scrolled into view and unload when offscreen to prevent animation accumulation
 - The homepage lanes use **delta-time animation** (`performance.now()` delta / 1000) so glide speed is consistent across 60Hz and 120Hz displays
 
+## Artifact quality standards (required for every new gallery file)
+
+### Iframe control hiding
+Every `gallery/X.html` **must** hide its controls and back button when loaded inside an iframe. The canonical three-line pattern goes immediately after `<style>` opens:
+
+```html
+<style>.back-btn,#back,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+```
+
+Include **all** control selectors used in the file (`#ui`, `.panel`, `.controls`, `.back-btn`, `#back`, etc.). Missing any selector means controls bleed into homepage and gallery card thumbnails.
+
+Note: the homepage iframes use `sandbox="allow-scripts allow-same-origin"`. The `allow-same-origin` flag is required so `window.self !== window.top` evaluates correctly — without it the sandboxed frame gets an opaque origin and the check may return `true`.
+
+### Mobile responsiveness
+Every artifact must work on a narrow viewport (≤600px). Required:
+
+- `<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">` in `<head>`
+- `height:100dvh` alongside `height:100%` on `html,body`
+- `touch-action:none` on canvas elements
+- `pointer` events (not `mouse`) for drag/interaction
+- Safe-area insets on fixed UI: `env(safe-area-inset-bottom)`, `env(safe-area-inset-left/right)`
+
+**Critical: never use `position:fixed` UI overlays without a mobile fallback.** Fixed-bottom control panels overlay the canvas on narrow viewports. On mobile (≤600px), switch to a flex-column layout:
+
+```css
+@media(max-width:600px){
+  body { display:flex; flex-direction:column; }
+  canvas { flex:1; min-height:0; }           /* or use a wrapper div with flex:1 */
+  #ui { position:relative; flex-shrink:0;
+        padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+}
+```
+
+For `position:absolute` canvases (sized to `window.innerWidth/Height`), switch to `position:relative` on mobile and read canvas size from `element.getBoundingClientRect()` — not `window.innerWidth/Height` — after the layout shift.
+
 ## Adding a new artifact
 
-1. Create `gallery/X.html` (self-contained canvas sketch)
+1. Create `gallery/X.html` (self-contained canvas sketch — must pass quality standards above)
 2. Create `artifacts/X.html` (detail wrapper — copy pattern from any existing file)
 3. Run `python3 update_manifest.py --all`
 4. Optionally add `description`, `category`, `tags` to the artifact's entry in `manifest-v2.json` directly (these are preserved on subsequent runs)
