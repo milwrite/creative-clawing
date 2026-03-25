@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 277,
+    "totalCommits": 279,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,18 +511,34 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 17
+      "2026-03-25": 19
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 62,
+      "fix": 63,
       "other": 83,
-      "chore": 39,
+      "chore": 40,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "a4caffff",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "72fb093c",
+        "date": "2026-03-25",
+        "subject": "fix: dadras contributor Unknown→Petrarch; stop ejecting iframes on scroll (fixes black cards on mobile)",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "3864baf8",
         "date": "2026-03-25",
@@ -3229,7 +3245,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 48,
+    "totalCommits": 49,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3237,11 +3253,11 @@
       "2026-03-21": 10,
       "2026-03-23": 2,
       "2026-03-24": 4,
-      "2026-03-25": 4
+      "2026-03-25": 5
     },
     "categoryCounts": {
       "other": 26,
-      "fix": 10,
+      "fix": 11,
       "blog": 3,
       "chore": 2,
       "refactor": 2,
@@ -3251,6 +3267,14 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "e6a4e09a",
+        "date": "2026-03-25",
+        "subject": "fix: defer resize() in sprott+stablefluid for iframe black-card bug; fix dadras manifest (Unknown→Petrarch, flags)",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "7e73dd9e",
         "date": "2026-03-25",
