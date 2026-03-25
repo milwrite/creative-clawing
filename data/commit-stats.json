@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 262,
+    "totalCommits": 264,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,18 +510,34 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 14,
-      "2026-03-25": 4
+      "2026-03-24": 15,
+      "2026-03-25": 5
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 59,
+      "fix": 60,
       "other": 81,
-      "chore": 30
+      "chore": 31
     },
     "commits": [
+      {
+        "sha": "f11b96d3",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4a511826",
+        "date": "2026-03-24",
+        "subject": "fix: remove overflow:hidden from .nav-inner so Contributors submenu isn't clipped",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "95ddd147",
         "date": "2026-03-25",
@@ -3108,18 +3124,18 @@
     ]
   },
   "unknown": {
-    "totalCommits": 41,
+    "totalCommits": 42,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
       "2026-03-21": 10,
       "2026-03-23": 2,
-      "2026-03-24": 1
+      "2026-03-24": 2
     },
     "categoryCounts": {
       "other": 25,
-      "fix": 7,
+      "fix": 8,
       "blog": 3,
       "chore": 1,
       "refactor": 2,
@@ -3128,6 +3144,14 @@
       "mobile": 1
     },
     "commits": [
+      {
+        "sha": "9d80ae01",
+        "date": "2026-03-24",
+        "subject": "fix: hide .panel/.controls in 19 gallery iframes; unclip nav submenu",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "b62bc759",
         "date": "2026-03-24",
