@@ -227,12 +227,10 @@ function paintAt(cx,cy){
     }
   }
 }
-c.addEventListener('mousedown',e=>{drawing=true;paintAt(e.clientX,e.clientY)});
-c.addEventListener('mousemove',e=>{if(drawing)paintAt(e.clientX,e.clientY)});
-addEventListener('mouseup',()=>drawing=false);
-c.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;paintAt(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
-c.addEventListener('touchmove',e=>{e.preventDefault();if(drawing)paintAt(e.touches[0].clientX,e.touches[0].clientY)},{passive:false});
-addEventListener('touchend',()=>drawing=false);
+c.addEventListener('pointerdown',e=>{e.preventDefault();drawing=true;c.setPointerCapture(e.pointerId);paintAt(e.clientX,e.clientY)},{passive:false});
+c.addEventListener('pointermove',e=>{if(drawing)paintAt(e.clientX,e.clientY)});
+c.addEventListener('pointerup',()=>drawing=false);
+c.addEventListener('pointercancel',()=>drawing=false);
 </script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
 <title>Spring Wires</title>
 <style>
@@ -193,65 +193,42 @@ function nodeAt(x,y){
   return -1;
 }
 
-canvas.addEventListener('mousedown',e=>{
+let lastTapAt=0;
+canvas.addEventListener('pointerdown',e=>{
+  e.preventDefault();
   mouseX=e.clientX; mouseY=e.clientY;
   const idx=nodeAt(e.clientX,e.clientY);
   if(idx>=0){
     dragging=idx;
     dragOffX=nodes[idx].x-e.clientX;
     dragOffY=nodes[idx].y-e.clientY;
+    canvas.setPointerCapture(e.pointerId);
   }
-});
-canvas.addEventListener('mousemove',e=>{
+},{passive:false});
+canvas.addEventListener('pointermove',e=>{
   mouseX=e.clientX; mouseY=e.clientY;
 });
-canvas.addEventListener('mouseup',()=>{ dragging=null; });
-canvas.addEventListener('click',e=>{
-  const idx=nodeAt(e.clientX,e.clientY);
-  if(idx>=0) nodes[idx].pinned=!nodes[idx].pinned;
-});
-canvas.addEventListener('dblclick',e=>{
-  // Add a new node at click, connect to nearest
-  const nx=e.clientX, ny=e.clientY;
-  const newIdx=nodes.length;
-  nodes.push({x:nx,y:ny,px:nx+Math.random()*2-1,py:ny-5,pinned:false,hue:Math.random()*360});
-  // Connect to 3 nearest
-  const dists=nodes.slice(0,-1).map((n,i)=>({i,d:Math.hypot(n.x-nx,n.y-ny)}));
-  dists.sort((a,b)=>a.d-b.d);
-  for(let k=0;k<Math.min(3,dists.length);k++) edges.push([newIdx,dists[k].i]);
-  e.preventDefault();
-});
-
-// Touch support
-canvas.addEventListener('touchstart',e=>{
-  e.preventDefault();
-  const t=e.touches[0];
-  mouseX=t.clientX; mouseY=t.clientY;
-  const idx=nodeAt(t.clientX,t.clientY);
-  if(idx>=0){ dragging=idx; dragOffX=nodes[idx].x-t.clientX; dragOffY=nodes[idx].y-t.clientY; }
-},{passive:false});
-canvas.addEventListener('touchmove',e=>{
-  e.preventDefault();
-  const t=e.touches[0];
-  mouseX=t.clientX; mouseY=t.clientY;
-},{passive:false});
-let lastTapAt=0;
-canvas.addEventListener('touchend',e=>{
+canvas.addEventListener('pointerup',e=>{
+  const wasDragging=dragging!==null;
   dragging=null;
+  // Toggle pin on tap (no drag)
+  if(!wasDragging){
+    const idx=nodeAt(e.clientX,e.clientY);
+    if(idx>=0) nodes[idx].pinned=!nodes[idx].pinned;
+  }
+  // Double-tap to add node
   const now=performance.now();
   if(now-lastTapAt<280){
-    const t=(e.changedTouches&&e.changedTouches[0])||null;
-    if(t){
-      const nx=t.clientX, ny=t.clientY;
-      const newIdx=nodes.length;
-      nodes.push({x:nx,y:ny,px:nx+Math.random()*2-1,py:ny-5,pinned:false,hue:Math.random()*360});
-      const dists=nodes.slice(0,-1).map((n,i)=>({i,d:Math.hypot(n.x-nx,n.y-ny)}));
-      dists.sort((a,b)=>a.d-b.d);
-      for(let k=0;k<Math.min(3,dists.length);k++) edges.push([newIdx,dists[k].i]);
-    }
+    const nx=e.clientX, ny=e.clientY;
+    const newIdx=nodes.length;
+    nodes.push({x:nx,y:ny,px:nx+Math.random()*2-1,py:ny-5,pinned:false,hue:Math.random()*360});
+    const dists=nodes.slice(0,-1).map((n,i)=>({i,d:Math.hypot(n.x-nx,n.y-ny)}));
+    dists.sort((a,b)=>a.d-b.d);
+    for(let k=0;k<Math.min(3,dists.length);k++) edges.push([newIdx,dists[k].i]);
   }
   lastTapAt=now;
 });
+canvas.addEventListener('pointercancel',()=>{ dragging=null; });
 </script>
 </body>
 </html>

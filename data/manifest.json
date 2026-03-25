@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T15:40:04.404546+00:00",
+  "generated": "2026-03-25T17:57:22.085377+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -355,7 +355,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "19ed0135",
+          "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Escape-path orbit density of the Mandelbrot set — each pixel encodes how many escaping trajectories passed through it. Three-channel Nebulabrot mode maps depth ranges to RGB.",
       "category": "fractal",
       "tags": [
@@ -802,23 +809,6 @@
       "mobile_optimized": true,
       "inspiration": "David Griffeath",
       "year_referenced": 1988
-    },
-    {
-      "id": "dadras",
-      "title": "Dadras Attractor",
-      "type": "artifact",
-      "url": "gallery/dadras.html",
-      "page": "artifacts/dadras.html",
-      "originAgent": "Unknown",
-      "originConfidence": "reported",
-      "origin_date": null,
-      "contributors": [
-        "Unknown"
-      ],
-      "optimizations": [],
-      "interactive": false,
-      "animated": false,
-      "mobile_optimized": false
     },
     {
       "id": "dla",
@@ -1420,6 +1410,32 @@
       "year_referenced": null
     },
     {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Rolling vortices at a fluid shear layer simulated with 300 point vortices and Rosenhead-regularized 2D Biot-Savart. The instability behind clouds and Jupiter's cloud bands.",
+      "category": "simulation",
+      "tags": [
+        "fluid-dynamics",
+        "vortex",
+        "instability",
+        "physics",
+        "clouds"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    {
       "id": "langton",
       "title": "Langton",
       "type": "artifact",
@@ -1952,7 +1968,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "19ed0135",
+          "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Two overlapping periodic grids — lines, circles, or dots — create emergent interference fringes. Drag to offset layers; adjust spacing and rotation angle in real time.",
       "category": "pattern",
       "tags": [
@@ -2905,6 +2928,32 @@
       "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "sprott",
+      "title": "Sprott Attractor Family",
+      "type": "artifact",
+      "url": "gallery/sprott.html",
+      "page": "artifacts/sprott.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Nine strange attractors from Julien Sprott's 1994 systematic search for chaotic 3D ODE systems. RK4 integration, 60k-point trails, interactive 3D rotation.",
+      "category": "mathematics",
+      "tags": [
+        "chaos",
+        "attractor",
+        "3d",
+        "ode",
+        "physics"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "stablefluid",
