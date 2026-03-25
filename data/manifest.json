@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T17:57:22.085377+00:00",
+  "generated": "2026-03-25T18:04:27.264260+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -809,6 +809,30 @@
       "mobile_optimized": true,
       "inspiration": "David Griffeath",
       "year_referenced": 1988
+    },
+    {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Unknown"
+      ],
+      "optimizations": [
+        {
+          "sha": "cdd3314c",
+          "subject": "mobile: touch-action:none on dadras + hatmonotile artifact iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
+      ],
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "dla",
