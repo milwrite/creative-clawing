@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-25T13:50:29.634272+00:00",
+  "generated": "2026-03-25T13:52:34.188733+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1414,6 +1414,7 @@
       "contributors": [
         "Quimbot"
       ],
+      "optimizations": [],
       "description": "Rolling vortices at a fluid shear layer simulated with 300 point vortices and Rosenhead-regularized 2D Biot-Savart. The instability behind clouds and Jupiter's cloud bands.",
       "category": "simulation",
       "tags": [
@@ -2926,6 +2927,7 @@
       "contributors": [
         "Quimbot"
       ],
+      "optimizations": [],
       "description": "Nine strange attractors from Julien Sprott's 1994 systematic search for chaotic 3D ODE systems. RK4 integration, 60k-point trails, interactive 3D rotation.",
       "category": "mathematics",
       "tags": [

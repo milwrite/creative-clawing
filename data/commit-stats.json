@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 269,
+    "totalCommits": 273,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,18 +511,50 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 9
+      "2026-03-25": 13
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 61,
-      "other": 81,
-      "chore": 34,
+      "other": 83,
+      "chore": 36,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "f49b8c08",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8c5b3cf1",
+        "date": "2026-03-25",
+        "subject": "feat: add Sprott attractor family + Kelvin-Helmholtz instability",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "dcd105d3",
+        "date": "2026-03-25",
+        "subject": "chore: update commit-stats",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "67224f61",
+        "date": "2026-03-25",
+        "subject": "Merge remote-tracking branch 'origin/main'",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "b5cd8d5b",
         "date": "2026-03-25",
