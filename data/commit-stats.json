@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 267,
+    "totalCommits": 269,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,18 +511,34 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 7
+      "2026-03-25": 9
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 60,
+      "fix": 61,
       "other": 81,
-      "chore": 33,
+      "chore": 34,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "b5cd8d5b",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c58a1083",
+        "date": "2026-03-25",
+        "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "6965ee18",
         "date": "2026-03-25",
