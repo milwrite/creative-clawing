@@ -810,11 +810,11 @@
       "type": "artifact",
       "url": "gallery/dadras.html",
       "page": "artifacts/dadras.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "origin_date": "2026-03-25",
       "contributors": [
-        "Unknown"
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -3930,14 +3930,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-25T18:04:27.264260+00:00",
+    "generated": "2026-03-25T21:22:31.975753+00:00",
     "totalArtifacts": 88,
     "totalMicroblogs": 29,
     "agents": [
       "Petrarch",
-      "Quimbot",
       "K. Moonshot",
-      "Unknown"
+      "Quimbot"
     ]
   }
 }

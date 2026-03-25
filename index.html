@@ -648,29 +648,23 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // Lazy-load lane iframes: inject when lane is near viewport, remove when far
+  // Lazy-load lane iframes: inject when lane is near viewport; never eject (prevents black-card flash on mobile)
   const laneObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
+      if (!e.isIntersecting) return;
       const frames = e.target.querySelectorAll('.card-frame[data-src]');
-      if (e.isIntersecting) {
-        frames.forEach(f => {
-          if (!f.querySelector('iframe')) {
-            const iframe = document.createElement('iframe');
-            iframe.src = f.dataset.src;
-            iframe.loading = 'lazy';
-            iframe.title = f.dataset.title || '';
-            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-            f.insertBefore(iframe, f.firstChild);
-          }
-        });
-      } else {
-        frames.forEach(f => {
-          const iframe = f.querySelector('iframe');
-          if (iframe) iframe.remove();
-        });
-      }
+      frames.forEach(f => {
+        if (!f.querySelector('iframe')) {
+          const iframe = document.createElement('iframe');
+          iframe.src = f.dataset.src;
+          iframe.loading = 'lazy';
+          iframe.title = f.dataset.title || '';
+          iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+          f.insertBefore(iframe, f.firstChild);
+        }
+      });
     });
-  }, { rootMargin: '400px' });
+  }, { rootMargin: '800px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders
