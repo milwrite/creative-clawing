@@ -260,10 +260,14 @@ c.addEventListener('pointermove', e => {
 c.addEventListener('pointerup', () => { dragging = false; });
 c.addEventListener('pointercancel', () => { dragging = false; });
 
-window.addEventListener('resize', () => { resize(); });
-resize();
-resetSystem();
-frame();
+window.addEventListener('resize', () => { resize(); resetSystem(); });
+function start() {
+  resize();
+  if (c.width === 0 || c.height === 0) { requestAnimationFrame(start); return; }
+  resetSystem();
+  frame();
+}
+requestAnimationFrame(start);
 </script>
 </body>
 </html>
