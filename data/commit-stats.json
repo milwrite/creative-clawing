@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 255,
+    "totalCommits": 257,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,18 +510,34 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 10,
-      "2026-03-25": 1
+      "2026-03-24": 11,
+      "2026-03-25": 2
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 55,
+      "fix": 56,
       "other": 81,
-      "chore": 27
+      "chore": 28
     },
     "commits": [
+      {
+        "sha": "5f3a9e4f",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8e1a2cb0",
+        "date": "2026-03-24",
+        "subject": "fix: lotkavolterra mobile layout — controls no longer overlay canvases on narrow viewport",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "d614773b",
         "date": "2026-03-25",
