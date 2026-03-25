@@ -5,7 +5,7 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .label{display:revert!important}</style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>Voronoi Tessellation</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -157,24 +157,24 @@ requestAnimationFrame(frame);
 
 // Interaction
 let dragging = false;
-canvas.addEventListener('click', e => {
-  if (!dragging) addSeed(e.clientX, e.clientY);
-});
-
 let dragIdx = -1;
-canvas.addEventListener('mousedown', e => {
-  // Find closest seed
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  const cx = e.clientX, cy = e.clientY;
   let minD = Infinity;
   for (let i = 0; i < seeds.length; i++) {
-    const dx = e.clientX - seeds[i].x;
-    const dy = e.clientY - seeds[i].y;
+    const dx = cx - seeds[i].x;
+    const dy = cy - seeds[i].y;
     const d = dx * dx + dy * dy;
     if (d < minD && d < 900) { minD = d; dragIdx = i; }
   }
-  if (dragIdx >= 0) dragging = true;
-});
+  if (dragIdx >= 0) {
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+  }
+}, { passive: false });
 
-canvas.addEventListener('mousemove', e => {
+canvas.addEventListener('pointermove', e => {
   if (dragging && dragIdx >= 0) {
     seeds[dragIdx].x = e.clientX;
     seeds[dragIdx].y = e.clientY;
@@ -183,39 +183,15 @@ canvas.addEventListener('mousemove', e => {
   }
 });
 
-canvas.addEventListener('mouseup', () => {
-  if (!dragging && dragIdx < 0) return;
+canvas.addEventListener('pointerup', e => {
+  if (!dragging && dragIdx < 0) {
+    addSeed(e.clientX, e.clientY);
+  }
   setTimeout(() => { dragging = false; dragIdx = -1; }, 50);
 });
 
-// Touch support
-canvas.addEventListener('touchstart', e => {
-  e.preventDefault();
-  const t = e.touches[0];
-  let minD = Infinity;
-  for (let i = 0; i < seeds.length; i++) {
-    const dx = t.clientX - seeds[i].x;
-    const dy = t.clientY - seeds[i].y;
-    const d = dx * dx + dy * dy;
-    if (d < minD && d < 900) { minD = d; dragIdx = i; }
-  }
-  if (dragIdx >= 0) { dragging = true; }
-  else { addSeed(t.clientX, t.clientY); }
-}, { passive: false });
-
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  if (dragging && dragIdx >= 0) {
-    const t = e.touches[0];
-    seeds[dragIdx].x = t.clientX;
-    seeds[dragIdx].y = t.clientY;
-    seeds[dragIdx].vx = 0;
-    seeds[dragIdx].vy = 0;
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchend', () => {
-  setTimeout(() => { dragging = false; dragIdx = -1; }, 50);
+canvas.addEventListener('pointercancel', () => {
+  dragging = false; dragIdx = -1;
 });
 
 document.addEventListener('keydown', e => {

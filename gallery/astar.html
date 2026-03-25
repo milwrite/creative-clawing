@@ -333,6 +333,7 @@ function getPos(e){
 
 function pointerDown(e){
   e.preventDefault();
+  canvas.setPointerCapture(e.pointerId);
   if(animating) return;
   const{x,y}=getPos(e);
   const cell=cellAt(x,y);
