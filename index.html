@@ -659,7 +659,7 @@
             iframe.src = f.dataset.src;
             iframe.loading = 'lazy';
             iframe.title = f.dataset.title || '';
-            iframe.setAttribute('sandbox', 'allow-scripts');
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
             f.insertBefore(iframe, f.firstChild);
           }
         });
