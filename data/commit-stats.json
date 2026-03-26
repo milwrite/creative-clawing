@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 279,
+    "totalCommits": 281,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,18 +511,34 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 19
+      "2026-03-25": 21
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 63,
-      "other": 83,
-      "chore": 40,
+      "other": 84,
+      "chore": 41,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "0fee364e",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "49832338",
+        "date": "2026-03-25",
+        "subject": "feat: add snowflake — Reiter hex CA for dendritic ice crystal growth",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "a4caffff",
         "date": "2026-03-25",

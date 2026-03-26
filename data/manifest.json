@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-26T02:27:40.347307+00:00",
+  "generated": "2026-03-26T02:28:59.178074+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -2894,6 +2894,7 @@
       "contributors": [
         "Quimbot"
       ],
+      "optimizations": [],
       "description": "Reiter cellular automaton for hexagonal ice crystal growth. Dendritic, plate, stellar, and sector morphologies emerge from diffusion-limited aggregation on a hex lattice with tunable vapor parameters.",
       "category": "simulation",
       "tags": [
