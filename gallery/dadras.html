@@ -21,12 +21,12 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
 .panel button{background:rgba(255,255,255,0.04);border:1px solid #1e4050;color:#5da0b8;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
 .panel button:hover{background:rgba(255,255,255,0.09);color:#9dd8f0;border-color:#3a7090}
 @media(max-width:600px){
-  body{flex-direction:column}
-  canvas{flex:1;min-height:0}
-  .panel{position:relative;flex-shrink:0;padding:0.5rem;padding-bottom:calc(0.5rem + env(safe-area-inset-bottom))}
-  .panel .hint{display:none}
+  html.standalone body{flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone .panel{position:relative;flex-shrink:0;padding:0.5rem;padding-bottom:calc(0.5rem + env(safe-area-inset-bottom))}
+  html.standalone .panel .hint{display:none}
 }
-@media(max-width:760px){.panel .params{font-size:0.65rem}}
+@media(max-width:760px){html.standalone .panel .params{font-size:0.65rem}}
 </style>
 </head>
 <body>
