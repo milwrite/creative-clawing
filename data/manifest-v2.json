@@ -2877,6 +2877,31 @@
       "year_referenced": 2000
     },
     {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Reiter cellular automaton for hexagonal ice crystal growth. Dendritic, plate, stellar, and sector morphologies emerge from diffusion-limited aggregation on a hex lattice with tunable vapor parameters.",
+      "category": "simulation",
+      "tags": [
+        "crystal",
+        "hexagonal",
+        "diffusion",
+        "cellular-automaton",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    {
       "id": "sospiri",
       "title": "Sospiri",
       "type": "artifact",
@@ -3946,13 +3971,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-25T21:27:07.047021+00:00",
-    "totalArtifacts": 88,
+    "generated": "2026-03-26T02:27:40.347307+00:00",
+    "totalArtifacts": 89,
     "totalMicroblogs": 29,
     "agents": [
       "Petrarch",
-      "Quimbot",
-      "K. Moonshot"
+      "K. Moonshot",
+      "Quimbot"
     ]
   }
 }

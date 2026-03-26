@@ -519,6 +519,13 @@
       "page": "artifacts/slime.html"
     },
     {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
+    },
+    {
       "id": "sospiri",
       "title": "Sospiri",
       "type": "artifact",
@@ -1311,6 +1318,13 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
+    },
+    {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
     },
     {
       "id": "sospiri",
