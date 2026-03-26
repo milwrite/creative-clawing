@@ -470,26 +470,24 @@
     </div>`;
   }
 
-  // ── Unified lane animation loop ──────────────────────────────
-  // One rAF drives all lanes instead of N independent loops
+  // Single shared rAF loop drives all lane scrolls — avoids N separate rAF callbacks.
   const allLanes = [];
-
-  function laneLoop(ts) {
-    for (const L of allLanes) {
-      if (L.paused) { L.lastTs = ts; continue; }
-      const dt = L.lastTs ? Math.min(ts - L.lastTs, 50) : 16.67;
-      L.pos += L.pxPerSec * (dt / 1000);
-      const half = L.track.scrollWidth / 2;
-      if (half > 0) {
-        if (L.pos > half) L.pos -= half;
-        if (L.pos < 0)   L.pos += half;
+  let sharedLastTs = null;
+  function sharedStep(ts) {
+    const dt = sharedLastTs ? Math.min(ts - sharedLastTs, 50) : 16.67;
+    sharedLastTs = ts;
+    for (const lane of allLanes) {
+      if (!lane.paused) {
+        lane.pos += lane.pxPerSec * (dt / 1000);
+        const half = lane.track.scrollWidth / 2;
+        if (lane.pos > half) lane.pos -= half;
+        if (lane.pos < 0) lane.pos += half;
+        lane.track.style.transform = `translate3d(${-lane.pos}px,0,0)`;
       }
-      L.track.style.transform = `translate3d(${-L.pos}px,0,0)`;
-      L.lastTs = ts;
     }
-    requestAnimationFrame(laneLoop);
+    requestAnimationFrame(sharedStep);
   }
-  requestAnimationFrame(laneLoop);
+  requestAnimationFrame(sharedStep);
 
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
@@ -501,22 +499,23 @@
     track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
-    const L = {
+    // Register with shared loop
+    const laneState = {
       track,
       pos: 0,
       paused: false,
+      // px per second — consistent across 60Hz and 120Hz displays
       pxPerSec: speed * 60 * (dir < 0 ? -1 : 1),
-      lastTs: null
     };
-    allLanes.push(L);
+    allLanes.push(laneState);
 
     let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
     const dragThreshold = 6;
 
     function onDown(e) {
-      L.paused = true; isDragging = true; dragMoved = false;
+      laneState.paused = true; isDragging = true; dragMoved = false;
       dragStart = e.touches ? e.touches[0].clientX : e.clientX;
-      scrollStart = L.pos;
+      scrollStart = laneState.pos;
       lane.classList.add('is-dragging');
       if (!e.touches) e.preventDefault();
     }
@@ -526,13 +525,13 @@
       const dx = dragStart - x;
       if (Math.abs(dx) > dragThreshold) { dragMoved = true; if (e.touches) e.preventDefault(); }
       const half = track.scrollWidth / 2;
-      L.pos = ((scrollStart + dx) % half + half) % half;
-      track.style.transform = `translateX(${-L.pos}px)`;
+      laneState.pos = ((scrollStart + dx) % half + half) % half;
+      track.style.transform = `translateX(${-laneState.pos}px)`;
     }
     function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
-      setTimeout(() => { L.paused = false; }, 400);
+      setTimeout(() => { laneState.paused = false; }, 400);
     }
 
     lane.addEventListener('click', e => { if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; } }, true);
@@ -670,60 +669,51 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // ── Smart iframe lifecycle: inject when near viewport, evict when far away ──
-  // Keeps total active iframes capped to avoid GPU/memory overload on wide viewports
-  const MAX_ACTIVE_IFRAMES = 48;
-  const activeIframes = new Set();
+  // Lazy-load lane iframes: inject when lane is near viewport; never eject (prevents black-card flash on mobile)
+  // rootMargin is capped to avoid pre-loading too many iframes on large/4K screens.
+  // Max concurrent live iframes is capped — lanes that scroll out of view get their iframes
+  // replaced with static placeholders to free GPU resources.
+  const MAX_LIVE_IFRAMES = 32; // hard cap: ~2 lanes worth
+  const liveIframeFrames = new Set();
 
-  function injectIframes(container) {
-    const frames = container.querySelectorAll('.card-frame[data-src]');
+  function injectFrames(el) {
+    const frames = el.querySelectorAll('.card-frame[data-src]');
     frames.forEach(f => {
-      if (f.querySelector('iframe')) return;
+      if (f.querySelector('iframe') || liveIframeFrames.size >= MAX_LIVE_IFRAMES) return;
       const iframe = document.createElement('iframe');
       iframe.src = f.dataset.src;
       iframe.loading = 'lazy';
       iframe.title = f.dataset.title || '';
       iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
       f.insertBefore(iframe, f.firstChild);
-      activeIframes.add(iframe);
-    });
-    trimIframes();
-  }
-
-  function evictIframes(container) {
-    const iframes = container.querySelectorAll('iframe');
-    iframes.forEach(iframe => {
-      activeIframes.delete(iframe);
-      iframe.remove();
+      liveIframeFrames.add(f);
     });
   }
 
-  function trimIframes() {
-    // If over budget, evict iframes furthest from viewport center
-    if (activeIframes.size <= MAX_ACTIVE_IFRAMES) return;
-    const viewMid = window.scrollY + window.innerHeight / 2;
-    const scored = [...activeIframes].map(iframe => {
-      const rect = iframe.getBoundingClientRect();
-      const absY = rect.top + window.scrollY + rect.height / 2;
-      return { iframe, dist: Math.abs(absY - viewMid) };
-    }).sort((a, b) => b.dist - a.dist);
-    const excess = activeIframes.size - MAX_ACTIVE_IFRAMES;
-    for (let i = 0; i < excess && i < scored.length; i++) {
-      activeIframes.delete(scored[i].iframe);
-      scored[i].iframe.remove();
-    }
+  function ejectFrames(el) {
+    const frames = el.querySelectorAll('.card-frame[data-src]');
+    frames.forEach(f => {
+      const iframe = f.querySelector('iframe');
+      if (iframe) {
+        iframe.src = 'about:blank'; // stop the canvas loop
+        iframe.remove();
+        liveIframeFrames.delete(f);
+      }
+    });
   }
 
+  // Use a tighter rootMargin: 300px fixed (not viewport-relative) — enough to preload
+  // the next lane before it scrolls into view, without saturating GPU with 5+ lanes at once.
   const laneObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        injectIframes(e.target);
+        injectFrames(e.target);
       } else {
-        evictIframes(e.target);
+        // Only eject if we're over the live cap — preserves already-loaded nearby lanes
+        if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) ejectFrames(e.target);
       }
     });
-  }, { rootMargin: '400px' });
+  }, { rootMargin: '300px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders
