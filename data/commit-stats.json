@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 282,
+    "totalCommits": 283,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -511,7 +511,7 @@
       "2026-03-22": 8,
       "2026-03-23": 17,
       "2026-03-24": 16,
-      "2026-03-25": 21,
+      "2026-03-25": 22,
       "2026-03-26": 1
     },
     "categoryCounts": {
@@ -519,11 +519,19 @@
       "artifact": 41,
       "mobile": 18,
       "fix": 63,
-      "other": 84,
+      "other": 85,
       "chore": 42,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "5e6d4690",
+        "date": "2026-03-25",
+        "subject": "feat: add PageRank — power iteration + random surfer visualization",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "984083b5",
         "date": "2026-03-26",
