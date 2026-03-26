@@ -107,11 +107,12 @@
       border-color: rgba(255,255,255,.35);
     }
 
-    .lane-set { display: grid; gap: 10px; }
+    .lane-set { display: grid; gap: 10px; contain: layout style; }
     .lane {
       overflow: hidden;
       cursor: grab;
       touch-action: pan-y;
+      contain: layout paint;
     }
     .lane.is-dragging { cursor: grabbing; }
     .lane-track {
@@ -133,19 +134,27 @@
       text-decoration: none;
       color: inherit;
       flex-shrink: 0;
+      contain: layout paint;
     }
     .card-frame { position: relative; overflow: hidden; }
     .card-overlay { position: absolute; inset: 0; z-index: 1; touch-action: auto; }
     .card:hover { border-color: rgba(255,255,255,.35); }
     .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-    .recent-grid .card { width: auto; min-width: 0; height: 240px; }
+    .recent-grid .card { width: auto; min-width: 0; height: 240px; contain: layout paint; }
     .card iframe {
       width: 100%;
       height: 100%;
       border: 0;
       display: block;
-      background: #000;
+      background: #0a0a0a;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+    .card iframe.if-ready { opacity: 1; }
+    .card-frame {
+      background: #0a0a0a;
+      contain: layout paint;
     }
     .card-meta {
       border-top: 1px solid var(--soft);
@@ -308,6 +317,9 @@
       border-color: rgba(255,255,255,.35);
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      .lane-track { animation: none !important; will-change: auto; }
+    }
     @media (max-width: 700px) {
       section { scroll-margin-top: 120px; }
     }
@@ -458,6 +470,27 @@
     </div>`;
   }
 
+  // ── Unified lane animation loop ──────────────────────────────
+  // One rAF drives all lanes instead of N independent loops
+  const allLanes = [];
+
+  function laneLoop(ts) {
+    for (const L of allLanes) {
+      if (L.paused) { L.lastTs = ts; continue; }
+      const dt = L.lastTs ? Math.min(ts - L.lastTs, 50) : 16.67;
+      L.pos += L.pxPerSec * (dt / 1000);
+      const half = L.track.scrollWidth / 2;
+      if (half > 0) {
+        if (L.pos > half) L.pos -= half;
+        if (L.pos < 0)   L.pos += half;
+      }
+      L.track.style.transform = `translate3d(${-L.pos}px,0,0)`;
+      L.lastTs = ts;
+    }
+    requestAnimationFrame(laneLoop);
+  }
+  requestAnimationFrame(laneLoop);
+
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
     lane.className = 'lane';
@@ -468,33 +501,22 @@
     track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
-    let pos = 0;
-    let paused = false;
-    // px per second (not per frame) — consistent across 60Hz and 120Hz displays
-    const pxPerSec = speed * 60 * (dir < 0 ? -1 : 1);
-    let lastTs = null;
-
-    function step(ts) {
-      if (!paused) {
-        const dt = lastTs ? Math.min(ts - lastTs, 50) : 16.67; // cap at 50ms to handle tab blur
-        pos += pxPerSec * (dt / 1000);
-        const half = track.scrollWidth / 2;
-        if (pos > half) pos -= half;
-        if (pos < 0) pos += half;
-        track.style.transform = `translate3d(${-pos}px,0,0)`;
-      }
-      lastTs = ts;
-      requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    const L = {
+      track,
+      pos: 0,
+      paused: false,
+      pxPerSec: speed * 60 * (dir < 0 ? -1 : 1),
+      lastTs: null
+    };
+    allLanes.push(L);
 
     let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
     const dragThreshold = 6;
 
     function onDown(e) {
-      paused = true; isDragging = true; dragMoved = false;
+      L.paused = true; isDragging = true; dragMoved = false;
       dragStart = e.touches ? e.touches[0].clientX : e.clientX;
-      scrollStart = pos;
+      scrollStart = L.pos;
       lane.classList.add('is-dragging');
       if (!e.touches) e.preventDefault();
     }
@@ -504,13 +526,13 @@
       const dx = dragStart - x;
       if (Math.abs(dx) > dragThreshold) { dragMoved = true; if (e.touches) e.preventDefault(); }
       const half = track.scrollWidth / 2;
-      pos = ((scrollStart + dx) % half + half) % half;
-      track.style.transform = `translateX(${-pos}px)`;
+      L.pos = ((scrollStart + dx) % half + half) % half;
+      track.style.transform = `translateX(${-L.pos}px)`;
     }
     function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
-      setTimeout(() => { paused = false; }, 400);
+      setTimeout(() => { L.paused = false; }, 400);
     }
 
     lane.addEventListener('click', e => { if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; } }, true);
@@ -648,23 +670,60 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // Lazy-load lane iframes: inject when lane is near viewport; never eject (prevents black-card flash on mobile)
+  // ── Smart iframe lifecycle: inject when near viewport, evict when far away ──
+  // Keeps total active iframes capped to avoid GPU/memory overload on wide viewports
+  const MAX_ACTIVE_IFRAMES = 48;
+  const activeIframes = new Set();
+
+  function injectIframes(container) {
+    const frames = container.querySelectorAll('.card-frame[data-src]');
+    frames.forEach(f => {
+      if (f.querySelector('iframe')) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = f.dataset.src;
+      iframe.loading = 'lazy';
+      iframe.title = f.dataset.title || '';
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
+      f.insertBefore(iframe, f.firstChild);
+      activeIframes.add(iframe);
+    });
+    trimIframes();
+  }
+
+  function evictIframes(container) {
+    const iframes = container.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      activeIframes.delete(iframe);
+      iframe.remove();
+    });
+  }
+
+  function trimIframes() {
+    // If over budget, evict iframes furthest from viewport center
+    if (activeIframes.size <= MAX_ACTIVE_IFRAMES) return;
+    const viewMid = window.scrollY + window.innerHeight / 2;
+    const scored = [...activeIframes].map(iframe => {
+      const rect = iframe.getBoundingClientRect();
+      const absY = rect.top + window.scrollY + rect.height / 2;
+      return { iframe, dist: Math.abs(absY - viewMid) };
+    }).sort((a, b) => b.dist - a.dist);
+    const excess = activeIframes.size - MAX_ACTIVE_IFRAMES;
+    for (let i = 0; i < excess && i < scored.length; i++) {
+      activeIframes.delete(scored[i].iframe);
+      scored[i].iframe.remove();
+    }
+  }
+
   const laneObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const frames = e.target.querySelectorAll('.card-frame[data-src]');
-      frames.forEach(f => {
-        if (!f.querySelector('iframe')) {
-          const iframe = document.createElement('iframe');
-          iframe.src = f.dataset.src;
-          iframe.loading = 'lazy';
-          iframe.title = f.dataset.title || '';
-          iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-          f.insertBefore(iframe, f.firstChild);
-        }
-      });
+      if (e.isIntersecting) {
+        injectIframes(e.target);
+      } else {
+        evictIframes(e.target);
+      }
     });
-  }, { rootMargin: '800px' });
+  }, { rootMargin: '400px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders
