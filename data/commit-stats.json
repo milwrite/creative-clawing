@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 283,
+    "totalCommits": 285,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -512,18 +512,34 @@
       "2026-03-23": 17,
       "2026-03-24": 16,
       "2026-03-25": 22,
-      "2026-03-26": 1
+      "2026-03-26": 3
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 63,
-      "other": 85,
-      "chore": 42,
+      "other": 86,
+      "chore": 43,
       "docs": 1
     },
     "commits": [
+      {
+        "sha": "1f334c9f",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "46e21765",
+        "date": "2026-03-26",
+        "subject": "sweep: normalize rossler+schelling 100dvh; remove schelling legacy iframe inline-hide",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "5e6d4690",
         "date": "2026-03-25",
