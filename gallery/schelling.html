@@ -9,7 +9,7 @@
 <title>Schelling Segregation</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#111;font-family:'Courier New',monospace;color:#ccc;touch-action:none}
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#111;font-family:'Courier New',monospace;color:#ccc;touch-action:none}
 canvas{display:block;position:absolute;top:0;left:0}
 .ui{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;padding:10px 16px;background:rgba(17,17,17,0.85);display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;z-index:10;backdrop-filter:blur(4px)}
 .ui label{font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -48,9 +48,6 @@ canvas{display:block;position:absolute;top:0;left:0}
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 const inIframe = window.self !== window.top;
-if (inIframe) {
-  document.querySelector('.back-btn').style.display = 'none';
-}
 
 let W, H, cellSize, cols, rows;
 let grid, running = false, stepNum = 0, animId = null;
