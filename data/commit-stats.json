@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 286,
+    "totalCommits": 289,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -512,18 +512,43 @@
       "2026-03-23": 17,
       "2026-03-24": 16,
       "2026-03-25": 22,
-      "2026-03-26": 4
+      "2026-03-26": 7
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 63,
-      "other": 86,
-      "chore": 44,
-      "docs": 1
+      "other": 87,
+      "chore": 45,
+      "docs": 1,
+      "perf": 1
     },
     "commits": [
+      {
+        "sha": "0d0569ce",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "62f404d0",
+        "date": "2026-03-26",
+        "subject": "perf: homepage — single shared rAF for lane scrolls, tighter iframe cap (32 max, 300px rootMargin)",
+        "categories": [
+          "perf"
+        ]
+      },
+      {
+        "sha": "41a17711",
+        "date": "2026-03-26",
+        "subject": "sweep: fix astar iframe init timing; add service worker shell cache (offline support)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "0a68e56c",
         "date": "2026-03-26",
@@ -3302,7 +3327,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 50,
+    "totalCommits": 51,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3311,10 +3336,10 @@
       "2026-03-23": 2,
       "2026-03-24": 4,
       "2026-03-25": 5,
-      "2026-03-26": 1
+      "2026-03-26": 2
     },
     "categoryCounts": {
-      "other": 26,
+      "other": 27,
       "fix": 12,
       "blog": 3,
       "chore": 2,
@@ -3325,6 +3350,14 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "6f26cd8d",
+        "date": "2026-03-26",
+        "subject": "optimize homepage: iframe lifecycle, unified rAF, containment",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "46e8a6d8",
         "date": "2026-03-26",
