@@ -414,6 +414,13 @@
       "page": "artifacts/noll.html"
     },
     {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html"
+    },
+    {
       "id": "pendulum",
       "title": "Pendulum",
       "type": "artifact",
@@ -1213,6 +1220,13 @@
       "type": "artifact",
       "url": "gallery/noll.html",
       "page": "artifacts/noll.html"
+    },
+    {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html"
     },
     {
       "id": "pendulum",

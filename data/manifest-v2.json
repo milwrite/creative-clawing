@@ -2268,6 +2268,30 @@
       "year_referenced": 1965
     },
     {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "description": "Brin and Page 1998 PageRank algorithm. Power iteration on a directed graph with animated probability flow, convergence tracking, and a random surfer simulation.",
+      "category": "algorithm",
+      "tags": [
+        "graph",
+        "network",
+        "interactive",
+        "simulation"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    {
       "id": "pendulum",
       "title": "Pendulum",
       "type": "artifact",
@@ -3972,12 +3996,12 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-26T02:28:59.178074+00:00",
-    "totalArtifacts": 89,
+    "generated": "2026-03-26T02:36:10.318394+00:00",
+    "totalArtifacts": 90,
     "totalMicroblogs": 29,
     "agents": [
-      "Petrarch",
       "Quimbot",
+      "Petrarch",
       "K. Moonshot"
     ]
   }
