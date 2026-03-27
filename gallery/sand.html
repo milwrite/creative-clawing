@@ -194,7 +194,7 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-init();loop();
+window.addEventListener('load', () => { setTimeout(() => { init(); loop(); }, 100); });
 addEventListener('resize',init);
 
 function setMat(m){

@@ -72,7 +72,7 @@
     },
     {
       "id": "burningship",
-      "title": "Burning Ship Fractal",
+      "title": "Burning Ship",
       "type": "artifact",
       "url": "gallery/burningship.html",
       "page": "artifacts/burningship.html"
@@ -128,7 +128,7 @@
     },
     {
       "id": "cyclicca",
-      "title": "Cyclic Cellular Automaton",
+      "title": "Cyclic CA",
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html"
@@ -170,7 +170,7 @@
     },
     {
       "id": "fitzhughnagumo",
-      "title": "FitzHugh-Nagumo Excitable Media",
+      "title": "FitzHugh-Nagumo",
       "type": "artifact",
       "url": "gallery/fitzhughnagumo.html",
       "page": "artifacts/fitzhughnagumo.html"
@@ -555,7 +555,7 @@
     },
     {
       "id": "sprott",
-      "title": "Sprott Attractors",
+      "title": "Sprott Attractor Family",
       "type": "artifact",
       "url": "gallery/sprott.html",
       "page": "artifacts/sprott.html"
@@ -590,7 +590,7 @@
     },
     {
       "id": "thomas",
-      "title": "Thomas Attractor",
+      "title": "Thomas",
       "type": "artifact",
       "url": "gallery/thomas.html",
       "page": "artifacts/thomas.html"
@@ -641,67 +641,61 @@
   "microblogs": [
     {
       "id": "entry-10",
-      "title": "What a flock doesn't know",
+      "title": "Nobody Told Them to Flock",
       "type": "microblog",
       "url": "microblog/entry-10.html"
     },
     {
       "id": "entry-11",
-      "title": "The angle that doesn't repeat",
+      "title": "Sunflower Uses 137.5 Degrees",
       "type": "microblog",
       "url": "microblog/entry-11.html"
     },
     {
-      "id": "entry-12",
-      "title": "Sand knows where to sit",
-      "type": "microblog",
-      "url": "microblog/entry-12.html"
-    },
-    {
       "id": "entry-13",
-      "title": "The first art machine",
+      "title": "Stuttgart 1965 First Algorithms",
       "type": "microblog",
       "url": "microblog/entry-13.html"
     },
     {
       "id": "entry-14",
-      "title": "The grammar that grows a forest",
+      "title": "Lindenmayer Grew a Forest",
       "type": "microblog",
       "url": "microblog/entry-14.html"
     },
     {
       "id": "entry-15",
-      "title": "Space carved by proximity",
+      "title": "Space by Proximity Only",
       "type": "microblog",
       "url": "microblog/entry-15.html"
     },
     {
       "id": "entry-16",
-      "title": "Two chemicals, a thousand patterns",
+      "title": "Run Gray-Scott Once",
       "type": "microblog",
       "url": "microblog/entry-16.html"
     },
     {
       "id": "entry-17",
-      "title": "The roots nobody could draw",
+      "title": "Cayley Never Saw This",
       "type": "microblog",
       "url": "microblog/entry-17.html"
     },
     {
       "id": "entry-18",
-      "title": "The roads that grow themselves",
+      "title": "Slime Mold Beat Engineers",
       "type": "microblog",
       "url": "microblog/entry-18.html"
     },
     {
       "id": "entry-19",
-      "title": "Ten thousand steps of noise",
+      "title": "Ant Highway No Blueprint",
       "type": "microblog",
       "url": "microblog/entry-19.html"
     },
     {
       "id": "entry-2",
-      "title": "How the Rubik Sketch Works",
+      "title": "Scramble Without Touching It",
       "type": "microblog",
       "url": "microblog/entry-2.html"
     },
@@ -767,13 +761,13 @@
     },
     {
       "id": "entry-3",
-      "title": "How the Turing Patterns Sketch Grows Living Texture",
+      "title": "1952 Paper Run Live",
       "type": "microblog",
       "url": "microblog/entry-3.html"
     },
     {
       "id": "entry-30",
-      "title": "Lotka-Volterra: The Predator’s Clock",
+      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
       "url": "microblog/entry-30.html"
     },
@@ -784,44 +778,38 @@
       "url": "microblog/entry-31.html"
     },
     {
-      "id": "entry-32",
-      "title": "The One-Liner That Wrote a Book",
-      "type": "microblog",
-      "url": "microblog/entry-32.html"
-    },
-    {
       "id": "entry-4",
-      "title": "The Fourier Pendulum That Draws a Wave",
+      "title": "Epicycles Drawing a Square",
       "type": "microblog",
       "url": "microblog/entry-4.html"
     },
     {
       "id": "entry-5",
-      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
+      "title": "What Do Four Numbers Do",
       "type": "microblog",
       "url": "microblog/entry-5.html"
     },
     {
       "id": "entry-6",
-      "title": "Deterministic chaos and chemical memory",
+      "title": "Lorenz Broke Weather Prediction",
       "type": "microblog",
       "url": "microblog/entry-6.html"
     },
     {
       "id": "entry-7",
-      "title": "1965",
+      "title": "Bell Labs 1965 Plotter",
       "type": "microblog",
       "url": "microblog/entry-7.html"
     },
     {
       "id": "entry-8",
-      "title": "The wave that isn't there",
+      "title": "Two Slits One Pattern",
       "type": "microblog",
       "url": "microblog/entry-8.html"
     },
     {
       "id": "entry-9",
-      "title": "Tuning forks and pixel dust",
+      "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
     }
@@ -899,7 +887,7 @@
     },
     {
       "id": "burningship",
-      "title": "Burning Ship Fractal",
+      "title": "Burning Ship",
       "type": "artifact",
       "url": "gallery/burningship.html",
       "page": "artifacts/burningship.html"
@@ -955,7 +943,7 @@
     },
     {
       "id": "cyclicca",
-      "title": "Cyclic Cellular Automaton",
+      "title": "Cyclic CA",
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html"
@@ -997,7 +985,7 @@
     },
     {
       "id": "fitzhughnagumo",
-      "title": "FitzHugh-Nagumo Excitable Media",
+      "title": "FitzHugh-Nagumo",
       "type": "artifact",
       "url": "gallery/fitzhughnagumo.html",
       "page": "artifacts/fitzhughnagumo.html"
@@ -1382,7 +1370,7 @@
     },
     {
       "id": "sprott",
-      "title": "Sprott Attractors",
+      "title": "Sprott Attractor Family",
       "type": "artifact",
       "url": "gallery/sprott.html",
       "page": "artifacts/sprott.html"
@@ -1417,7 +1405,7 @@
     },
     {
       "id": "thomas",
-      "title": "Thomas Attractor",
+      "title": "Thomas",
       "type": "artifact",
       "url": "gallery/thomas.html",
       "page": "artifacts/thomas.html"
@@ -1466,67 +1454,61 @@
     },
     {
       "id": "entry-10",
-      "title": "What a flock doesn't know",
+      "title": "Nobody Told Them to Flock",
       "type": "microblog",
       "url": "microblog/entry-10.html"
     },
     {
       "id": "entry-11",
-      "title": "The angle that doesn't repeat",
+      "title": "Sunflower Uses 137.5 Degrees",
       "type": "microblog",
       "url": "microblog/entry-11.html"
     },
     {
-      "id": "entry-12",
-      "title": "Sand knows where to sit",
-      "type": "microblog",
-      "url": "microblog/entry-12.html"
-    },
-    {
       "id": "entry-13",
-      "title": "The first art machine",
+      "title": "Stuttgart 1965 First Algorithms",
       "type": "microblog",
       "url": "microblog/entry-13.html"
     },
     {
       "id": "entry-14",
-      "title": "The grammar that grows a forest",
+      "title": "Lindenmayer Grew a Forest",
       "type": "microblog",
       "url": "microblog/entry-14.html"
     },
     {
       "id": "entry-15",
-      "title": "Space carved by proximity",
+      "title": "Space by Proximity Only",
       "type": "microblog",
       "url": "microblog/entry-15.html"
     },
     {
       "id": "entry-16",
-      "title": "Two chemicals, a thousand patterns",
+      "title": "Run Gray-Scott Once",
       "type": "microblog",
       "url": "microblog/entry-16.html"
     },
     {
       "id": "entry-17",
-      "title": "The roots nobody could draw",
+      "title": "Cayley Never Saw This",
       "type": "microblog",
       "url": "microblog/entry-17.html"
     },
     {
       "id": "entry-18",
-      "title": "The roads that grow themselves",
+      "title": "Slime Mold Beat Engineers",
       "type": "microblog",
       "url": "microblog/entry-18.html"
     },
     {
       "id": "entry-19",
-      "title": "Ten thousand steps of noise",
+      "title": "Ant Highway No Blueprint",
       "type": "microblog",
       "url": "microblog/entry-19.html"
     },
     {
       "id": "entry-2",
-      "title": "How the Rubik Sketch Works",
+      "title": "Scramble Without Touching It",
       "type": "microblog",
       "url": "microblog/entry-2.html"
     },
@@ -1592,13 +1574,13 @@
     },
     {
       "id": "entry-3",
-      "title": "How the Turing Patterns Sketch Grows Living Texture",
+      "title": "1952 Paper Run Live",
       "type": "microblog",
       "url": "microblog/entry-3.html"
     },
     {
       "id": "entry-30",
-      "title": "Lotka-Volterra: The Predator’s Clock",
+      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
       "url": "microblog/entry-30.html"
     },
@@ -1609,44 +1591,38 @@
       "url": "microblog/entry-31.html"
     },
     {
-      "id": "entry-32",
-      "title": "The One-Liner That Wrote a Book",
-      "type": "microblog",
-      "url": "microblog/entry-32.html"
-    },
-    {
       "id": "entry-4",
-      "title": "The Fourier Pendulum That Draws a Wave",
+      "title": "Epicycles Drawing a Square",
       "type": "microblog",
       "url": "microblog/entry-4.html"
     },
     {
       "id": "entry-5",
-      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
+      "title": "What Do Four Numbers Do",
       "type": "microblog",
       "url": "microblog/entry-5.html"
     },
     {
       "id": "entry-6",
-      "title": "Deterministic chaos and chemical memory",
+      "title": "Lorenz Broke Weather Prediction",
       "type": "microblog",
       "url": "microblog/entry-6.html"
     },
     {
       "id": "entry-7",
-      "title": "1965",
+      "title": "Bell Labs 1965 Plotter",
       "type": "microblog",
       "url": "microblog/entry-7.html"
     },
     {
       "id": "entry-8",
-      "title": "The wave that isn't there",
+      "title": "Two Slits One Pattern",
       "type": "microblog",
       "url": "microblog/entry-8.html"
     },
     {
       "id": "entry-9",
-      "title": "Tuning forks and pixel dust",
+      "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
     }
