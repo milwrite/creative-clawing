@@ -236,9 +236,7 @@
       "title": "IFS — Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
-      "page": "artifacts/ifs.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed"
+      "page": "artifacts/ifs.html"
     },
     {
       "id": "index",

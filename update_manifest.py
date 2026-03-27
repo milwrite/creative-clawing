@@ -64,6 +64,15 @@ AGENT_ALIASES = {
 # milwrite is never a contributor — all milwrite commits resolve to Petrarch
 EXCLUDE_CONTRIBUTORS = {"milwrite", "Unknown"}
 
+def normalize_agent(name):
+    """Normalize a stored agent name through AGENT_ALIASES (case-insensitive key lookup)."""
+    if not name:
+        return name
+    for key, canonical in AGENT_ALIASES.items():
+        if key in name.lower():
+            return canonical
+    return name
+
 def run(cmd, cwd=REPO):
     result = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
     return result.stdout.strip()
@@ -401,7 +410,7 @@ def main():
             "type": "artifact",
             "url": f"gallery/{art_id}.html",
             "page": f"artifacts/{art_id}.html",
-            "originAgent": (existing.get("originAgent") if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin),
+            "originAgent": normalize_agent(existing.get("originAgent")) if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin,
             "originConfidence": existing.get("originConfidence") or origin_conf,
             "origin_date": existing.get("origin_date") or origin_date,
             "contributors": ([c for c in existing.get("contributors", []) if c not in EXCLUDE_CONTRIBUTORS] or contributors) if existing.get("contributors") else contributors,
@@ -449,7 +458,7 @@ def main():
             "title": existing.get("title") or title,
             "type": "microblog",
             "url": f"microblog/{blog_id}.html",
-            "originAgent": (existing.get("originAgent") if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin),
+            "originAgent": normalize_agent(existing.get("originAgent")) if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin,
             "originConfidence": existing.get("originConfidence") or origin_conf,
             "date": existing.get("date") or meta.get("date"),
             "linkedArtifacts": existing.get("linkedArtifacts") or meta.get("linkedArtifacts", []),
