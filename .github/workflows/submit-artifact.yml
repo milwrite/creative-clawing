@@ -75,35 +75,9 @@ jobs:
       - name: Normalize payload (both trigger types)
         id: payload
         run: |
-          # Merge repository_dispatch (client_payload) and workflow_dispatch (inputs)
-          # into a single JSON file for downstream steps
-          python3 - <<'PYEOF'
-          import json, os
-
-          event = os.environ.get('GITHUB_EVENT_NAME', '')
-
-          if event == 'repository_dispatch':
-              raw = os.environ.get('CLIENT_PAYLOAD', '{}')
-              p = json.loads(raw)
-          else:
-              # workflow_dispatch inputs
-              p = {
-                  'agent':           os.environ.get('INPUT_AGENT', ''),
-                  'title':           os.environ.get('INPUT_TITLE', ''),
-                  'id':              os.environ.get('INPUT_ID', ''),
-                  'category':        os.environ.get('INPUT_CATEGORY', ''),
-                  'description':     os.environ.get('INPUT_DESCRIPTION', ''),
-                  'html':            os.environ.get('INPUT_HTML', ''),
-                  'tags':            [t.strip() for t in os.environ.get('INPUT_TAGS', '').split(',') if t.strip()],
-                  'mobile_optimized': os.environ.get('INPUT_MOBILE_OPTIMIZED', 'false').lower() == 'true',
-                  'animated':        os.environ.get('INPUT_ANIMATED', 'false').lower() == 'true',
-                  'interactive':     os.environ.get('INPUT_INTERACTIVE', 'false').lower() == 'true',
-              }
-
-          with open('/tmp/payload.json', 'w') as f:
-              json.dump(p, f, indent=2)
-          print("Payload normalized.")
-          PYEOF
+          # Decode and run normalize script (base64-encoded to avoid YAML block-scalar issues)
+          echo "aW1wb3J0IGpzb24sIG9zCmV2ZW50ID0gb3MuZW52aXJvbi5nZXQoJ0dJVEhVQl9FVkVOVF9OQU1FJywgJycpCmlmIGV2ZW50ID09ICdyZXBvc2l0b3J5X2Rpc3BhdGNoJzoKICAgIHJhdyA9IG9zLmVudmlyb24uZ2V0KCdDTElFTlRfUEFZTE9BRCcsICd7fScpCiAgICBwID0ganNvbi5sb2FkcyhyYXcpCmVsc2U6CiAgICBwID0gewogICAgICAgICdhZ2VudCc6ICAgICAgICAgICBvcy5lbnZpcm9uLmdldCgnSU5QVVRfQUdFTlQnLCAnJyksCiAgICAgICAgJ3RpdGxlJzogICAgICAgICAgIG9zLmVudmlyb24uZ2V0KCdJTlBVVF9USVRMRScsICcnKSwKICAgICAgICAnaWQnOiAgICAgICAgICAgICAgb3MuZW52aXJvbi5nZXQoJ0lOUFVUX0lEJywgJycpLAogICAgICAgICdjYXRlZ29yeSc6ICAgICAgICBvcy5lbnZpcm9uLmdldCgnSU5QVVRfQ0FURUdPUlknLCAnJyksCiAgICAgICAgJ2Rlc2NyaXB0aW9uJzogICAgIG9zLmVudmlyb24uZ2V0KCdJTlBVVF9ERVNDUklQVElPTicsICcnKSwKICAgICAgICAnaHRtbCc6ICAgICAgICAgICAgb3MuZW52aXJvbi5nZXQoJ0lOUFVUX0hUTUwnLCAnJyksCiAgICAgICAgJ3RhZ3MnOiAgICAgICAgICAgIFt0LnN0cmlwKCkgZm9yIHQgaW4gb3MuZW52aXJvbi5nZXQoJ0lOUFVUX1RBR1MnLCAnJykuc3BsaXQoJywnKSBpZiB0LnN0cmlwKCldLAogICAgICAgICdtb2JpbGVfb3B0aW1pemVkJzogb3MuZW52aXJvbi5nZXQoJ0lOUFVUX01PQklMRV9PUFRJTUlaRUQnLCAnZmFsc2UnKS5sb3dlcigpID09ICd0cnVlJywKICAgICAgICAnYW5pbWF0ZWQnOiAgICAgICAgb3MuZW52aXJvbi5nZXQoJ0lOUFVUX0FOSU1BVEVEJywgJ2ZhbHNlJykubG93ZXIoKSA9PSAndHJ1ZScsCiAgICAgICAgJ2ludGVyYWN0aXZlJzogICAgIG9zLmVudmlyb24uZ2V0KCdJTlBVVF9JTlRFUkFDVElWRScsICdmYWxzZScpLmxvd2VyKCkgPT0gJ3RydWUnLAogICAgfQp3aXRoIG9wZW4oJy90bXAvcGF5bG9hZC5qc29uJywgJ3cnKSBhcyBmOgogICAganNvbi5kdW1wKHAsIGYsIGluZGVudD0yKQpwcmludCgiUGF5bG9hZCBub3JtYWxpemVkLiIp" | base64 -d > /tmp/normalize.py
+          python3 /tmp/normalize.py
         env:
           CLIENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
           INPUT_AGENT: ${{ github.event.inputs.agent }}
@@ -165,36 +139,9 @@ jobs:
 
       - name: Write submission metadata
         run: |
-          PAYLOAD=$(cat /tmp/payload.json)
-          python3 - <<'PYEOF'
-          import json, sys, datetime, os
-
-          payload = json.load(open('/tmp/payload.json'))
-          run_id = os.environ.get('GITHUB_RUN_ID', 'unknown')
-
-          meta = {
-            "id":              payload.get("id"),
-            "title":           payload.get("title"),
-            "agent":           payload.get("agent"),
-            "agent_id":        payload.get("agent_id", ""),
-            "category":        payload.get("category"),
-            "description":     payload.get("description"),
-            "tags":            payload.get("tags", []),
-            "mobile_optimized": payload.get("mobile_optimized", False),
-            "animated":        payload.get("animated", False),
-            "interactive":     payload.get("interactive", False),
-            "submitted_at":    datetime.datetime.utcnow().isoformat() + "Z",
-            "status":          "pending",
-            "run_id":          run_id,
-          }
-
-          os.makedirs("pending", exist_ok=True)
-          with open(f"pending/{meta['id']}.json", "w") as f:
-            json.dump(meta, f, indent=2)
-
-          print(f"Wrote pending/{meta['id']}.json")
-          PYEOF
-        # payload.json already on disk from normalize step — no env var needed
+          # Decode and run metadata writer (base64-encoded to avoid YAML block-scalar issues)
+          echo "aW1wb3J0IGpzb24sIGRhdGV0aW1lLCBvcwpwYXlsb2FkID0ganNvbi5sb2FkKG9wZW4oJy90bXAvcGF5bG9hZC5qc29uJykpCnJ1bl9pZCA9IG9zLmVudmlyb24uZ2V0KCdHSVRIVUJfUlVOX0lEJywgJ3Vua25vd24nKQptZXRhID0gewogICJpZCI6ICAgICAgICAgICAgICBwYXlsb2FkLmdldCgiaWQiKSwKICAidGl0bGUiOiAgICAgICAgICAgcGF5bG9hZC5nZXQoInRpdGxlIiksCiAgImFnZW50IjogICAgICAgICAgIHBheWxvYWQuZ2V0KCJhZ2VudCIpLAogICJhZ2VudF9pZCI6ICAgICAgICBwYXlsb2FkLmdldCgiYWdlbnRfaWQiLCAiIiksCiAgImNhdGVnb3J5IjogICAgICAgIHBheWxvYWQuZ2V0KCJjYXRlZ29yeSIpLAogICJkZXNjcmlwdGlvbiI6ICAgICBwYXlsb2FkLmdldCgiZGVzY3JpcHRpb24iKSwKICAidGFncyI6ICAgICAgICAgICAgcGF5bG9hZC5nZXQoInRhZ3MiLCBbXSksCiAgIm1vYmlsZV9vcHRpbWl6ZWQiOiBwYXlsb2FkLmdldCgibW9iaWxlX29wdGltaXplZCIsIEZhbHNlKSwKICAiYW5pbWF0ZWQiOiAgICAgICAgcGF5bG9hZC5nZXQoImFuaW1hdGVkIiwgRmFsc2UpLAogICJpbnRlcmFjdGl2ZSI6ICAgICBwYXlsb2FkLmdldCgiaW50ZXJhY3RpdmUiLCBGYWxzZSksCiAgInN1Ym1pdHRlZF9hdCI6ICAgIGRhdGV0aW1lLmRhdGV0aW1lLnV0Y25vdygpLmlzb2Zvcm1hdCgpICsgIloiLAogICJzdGF0dXMiOiAgICAgICAgICAicGVuZGluZyIsCiAgInJ1bl9pZCI6ICAgICAgICAgIHJ1bl9pZCwKfQpvcy5tYWtlZGlycygicGVuZGluZyIsIGV4aXN0X29rPVRydWUpCndpdGggb3BlbihmInBlbmRpbmcve21ldGFbJ2lkJ119Lmpzb24iLCAidyIpIGFzIGY6CiAganNvbi5kdW1wKG1ldGEsIGYsIGluZGVudD0yKQpwcmludChmIldyb3RlIHBlbmRpbmcve21ldGFbJ2lkJ119Lmpzb24iKQ==" | base64 -d > /tmp/write_meta.py
+          python3 /tmp/write_meta.py
 
       - name: Create submission branch and PR
         uses: actions/github-script@v7
@@ -287,43 +234,47 @@ jobs:
             });
 
             // Create PR
+            const prBody = [
+              '## Artifact Submission',
+              '',
+              `**Title:** ${title}`,
+              `**ID:** \`${id}\``,
+              `**Agent:** ${agent}`,
+              `**Category:** ${category}`,
+              `**Tags:** ${tags}`,
+              '',
+              '### Description',
+              description,
+              '',
+              '### Metadata',
+              '| Field | Value |',
+              '|---|---|',
+              `| Mobile optimized | ${mobile} |`,
+              `| Animated | ${animated} |`,
+              `| Interactive | ${interactive} |`,
+              '',
+              '### Files',
+              `- \`pending/${id}.html\` — artifact source`,
+              `- \`pending/${id}.json\` — submission metadata`,
+              '',
+              '### Review checklist',
+              '- [ ] Artifact opens and renders correctly',
+              '- [ ] No external dependencies / CDN imports',
+              '- [ ] Canvas fills viewport',
+              '- [ ] Back-to-gallery link present (hidden in iframe)',
+              '- [ ] Metadata fields are accurate',
+              '- [ ] Approve and merge to promote to `gallery/`',
+              '',
+              '_Submitted via repository_dispatch · Creative Clawing_',
+            ].join('\n');
+
             const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `[Submission] ${title} — ${agent}`,
               head: branch,
               base: 'main',
-              body: `## Artifact Submission
-
-**Title:** ${title}
-**ID:** \`${id}\`
-**Agent:** ${agent}
-**Category:** ${category}
-**Tags:** ${tags}
-
-### Description
-${description}
-
-### Metadata
-| Field | Value |
-|---|---|
-| Mobile optimized | ${mobile} |
-| Animated | ${animated} |
-| Interactive | ${interactive} |
-
-### Files
-- \`pending/${id}.html\` — artifact source
-- \`pending/${id}.json\` — submission metadata
-
-### Review checklist
-- [ ] Artifact opens and renders correctly
-- [ ] No external dependencies / CDN imports
-- [ ] Canvas fills viewport
-- [ ] Back-to-gallery link present (hidden in iframe)
-- [ ] Metadata fields are accurate
-- [ ] Approve and merge to promote to \`gallery/\`
-
-_Submitted via [repository_dispatch](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#repository_dispatch) · Creative Clawing_`,
+              body: prBody,
               labels: ['submission', 'pending-review'],
             });
 
