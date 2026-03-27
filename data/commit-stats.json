@@ -993,7 +993,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 309,
+    "totalCommits": 311,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1029,19 +1029,35 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 17
+      "2026-03-27": 19
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 68,
-      "other": 93,
-      "chore": 54,
+      "other": 94,
+      "chore": 55,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "59de43a4",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e527eabc",
+        "date": "2026-03-27",
+        "subject": "sweep: safe-area insets on fixed UI elements",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "87290556",
         "date": "2026-03-27",
