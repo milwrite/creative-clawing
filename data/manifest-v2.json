@@ -1305,8 +1305,8 @@
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html",
       "originAgent": "Petrarch",
-      "originConfidence": "reported",
-      "origin_date": "2026-03-27",
+      "originConfidence": "confirmed",
+      "origin_date": null,
       "contributors": [
         "Petrarch"
       ],
