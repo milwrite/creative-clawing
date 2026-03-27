@@ -971,7 +971,7 @@
       "type": "artifact",
       "url": "gallery/fitzhughnagumo.html",
       "page": "artifacts/fitzhughnagumo.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
@@ -1306,7 +1306,7 @@
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "origin_date": "2026-03-27",
       "contributors": [
@@ -2497,7 +2497,7 @@
       "type": "artifact",
       "url": "gallery/rimesparse.html",
       "page": "artifacts/rimesparse.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "origin_date": "2026-03-21",
       "contributors": [
@@ -3652,7 +3652,7 @@
       "title": "Harmonograph: The Parlor Machine, Drawing Decay",
       "type": "microblog",
       "url": "microblog/entry-21.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": null,
       "linkedArtifacts": [
@@ -3728,7 +3728,7 @@
       "title": "Schotter: Order Falls Apart by Design",
       "type": "microblog",
       "url": "microblog/entry-25.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": null,
       "linkedArtifacts": [
@@ -3747,7 +3747,7 @@
       "title": "366 Fragments: Building Rime Sparse",
       "type": "microblog",
       "url": "microblog/entry-26.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": null,
       "linkedArtifacts": [
@@ -3806,7 +3806,7 @@
       "title": "Truchet: The Combinatorics of a Split Square",
       "type": "microblog",
       "url": "microblog/entry-29.html",
-      "originAgent": "Unknown",
+      "originAgent": "Quimbot",
       "originConfidence": "reported",
       "date": null,
       "linkedArtifacts": [
@@ -3999,14 +3999,14 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-27T15:27:34.503445+00:00",
+    "generated": "2026-03-27T15:38:00.071039+00:00",
     "totalArtifacts": 91,
     "totalMicroblogs": 31,
     "agents": [
-      "Unknown",
+      "Petrarch",
       "K. Moonshot",
-      "Quimbot",
-      "Petrarch"
+      "Unknown",
+      "Quimbot"
     ]
   }
 }

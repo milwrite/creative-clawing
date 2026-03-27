@@ -57,6 +57,8 @@ AGENT_ALIASES = {
     "milwrite":  "Petrarch",  # milwrite = repo owner; commits attributed to Petrarch
     "zach":      "Petrarch",
     "milwright": "Petrarch",
+    "zmuhls":    "Petrarch",  # zmuhls / zmuhlbauer1@gmail.com = Petrarch's human git identity
+    "zmuhlbauer": "Petrarch",
 }
 
 # milwrite is never a contributor — all milwrite commits resolve to Petrarch
@@ -397,7 +399,7 @@ def main():
             "type": "artifact",
             "url": f"gallery/{art_id}.html",
             "page": f"artifacts/{art_id}.html",
-            "originAgent": existing.get("originAgent") or final_origin,
+            "originAgent": (existing.get("originAgent") if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin),
             "originConfidence": existing.get("originConfidence") or origin_conf,
             "origin_date": existing.get("origin_date") or origin_date,
             "contributors": existing.get("contributors") or contributors,
@@ -445,7 +447,7 @@ def main():
             "title": existing.get("title") or title,
             "type": "microblog",
             "url": f"microblog/{blog_id}.html",
-            "originAgent": existing.get("originAgent") or final_origin,
+            "originAgent": (existing.get("originAgent") if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin),
             "originConfidence": existing.get("originConfidence") or origin_conf,
             "date": existing.get("date") or meta.get("date"),
             "linkedArtifacts": existing.get("linkedArtifacts") or meta.get("linkedArtifacts", []),

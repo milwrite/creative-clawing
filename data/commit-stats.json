@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 56,
+    "totalCommits": 113,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -15,17 +15,485 @@
       "2026-03-13": 28,
       "2026-03-15": 3,
       "2026-03-14": 3,
-      "2026-03-22": 2
+      "2026-03-22": 2,
+      "2026-03-27": 4,
+      "2026-03-26": 4,
+      "2026-03-25": 5,
+      "2026-03-24": 4,
+      "2026-03-23": 2,
+      "2026-03-21": 10,
+      "2026-03-20": 3,
+      "2026-03-18": 4,
+      "2026-03-17": 21
     },
     "categoryCounts": {
-      "blog": 8,
-      "mobile": 10,
-      "fix": 5,
-      "other": 28,
-      "artifact": 4,
-      "chore": 1
+      "blog": 13,
+      "mobile": 12,
+      "fix": 19,
+      "other": 57,
+      "artifact": 5,
+      "chore": 3,
+      "docs": 1,
+      "style": 1,
+      "refactor": 2
     },
     "commits": [
+      {
+        "sha": "254feef0",
+        "date": "2026-03-17",
+        "subject": "refactor: shared CSS, consistent nav, K. Moonshot contributor profile, dynamic gallery, artifact page upgrades",
+        "categories": [
+          "refactor"
+        ]
+      },
+      {
+        "sha": "747f39c7",
+        "date": "2026-03-17",
+        "subject": "refactor: shared CSS, consistent nav, K. Moonshot contributor, dynamic gallery, artifact detail upgrades",
+        "categories": [
+          "refactor"
+        ]
+      },
+      {
+        "sha": "5310f90e",
+        "date": "2026-03-17",
+        "subject": "chore: add .gitignore (excludes CHANGELOG.md)",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "528918fe",
+        "date": "2026-03-17",
+        "subject": "data: backfill linkedArtifacts on all microblogs — enables iframe previews on homepage blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c3ed5301",
+        "date": "2026-03-17",
+        "subject": "ui: show author name on homepage blog cards (was generic 'Microblog' label)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9ead264b",
+        "date": "2026-03-17",
+        "subject": "fix: add full Contributors dropdown to all microblog entry navs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "45eec42d",
+        "date": "2026-03-17",
+        "subject": "fix: restore original curated tag vocabulary in gallery filter chips",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "95052e7a",
+        "date": "2026-03-17",
+        "subject": "fix: hide gallery filter chips with fewer than 2 artifacts",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c819b5c3",
+        "date": "2026-03-17",
+        "subject": "fix: blog cards — backfill snippets+linkedArtifacts, viz-first layout, CSS columns -> grid",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "26aa30de",
+        "date": "2026-03-17",
+        "subject": "regularize manifest as single source of truth for all frontend pages",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d20a1e36",
+        "date": "2026-03-17",
+        "subject": "fix perf + data bugs: lazy-load viz iframes, fix snippets, fix recent sort",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b8fd06b0",
+        "date": "2026-03-17",
+        "subject": "fix iframe detection for absolute urls (entry-19 langton)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "fd22e3af",
+        "date": "2026-03-17",
+        "subject": "slow lane speed, shuffle artifacts with no repeats across lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "54562d68",
+        "date": "2026-03-17",
+        "subject": "filter out index artifact from homepage lanes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7086589d",
+        "date": "2026-03-17",
+        "subject": "fix orphaned blog cards (grid layout), move contributors to top of home",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c4edb989",
+        "date": "2026-03-17",
+        "subject": "smooth lane glide: delta-time animation, translate3d, bump speeds",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b2210be9",
+        "date": "2026-03-17",
+        "subject": "add CLAUDE.md",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d8988a36",
+        "date": "2026-03-17",
+        "subject": "move contributors section below all lanes and blog cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d71be621",
+        "date": "2026-03-17",
+        "subject": "fix left-aligned orphaned blog cards: span full grid width when <=2 cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ab01941c",
+        "date": "2026-03-17",
+        "subject": "lazy-load all lane iframes: inject on viewport enter, remove on leave",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "315f992b",
+        "date": "2026-03-17",
+        "subject": "attribute penrose + rossler to k. moonshot",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6cf9902c",
+        "date": "2026-03-18",
+        "subject": "Merge remote-tracking branch 'origin/main'",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9e14e223",
+        "date": "2026-03-18",
+        "subject": "microblog: entry-21 — The set that contains everything (Mandelbrot)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "2903e65d",
+        "date": "2026-03-18",
+        "subject": "fix: normalize microblogs nav — kicker + brand match gallery/index",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "82267015",
+        "date": "2026-03-18",
+        "subject": "feat: show iframe only for latest microblog entry",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ee78078b",
+        "date": "2026-03-20",
+        "subject": "fix: normalize nav headers across all page types",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "85bd4f1e",
+        "date": "2026-03-20",
+        "subject": "microblog: entry-25 — Schotter: Order Falls Apart by Design (Georg Nees 1968)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "de32860e",
+        "date": "2026-03-20",
+        "subject": "style: remove 'the algorithm is disarmingly simple' filler from entry-25",
+        "categories": [
+          "style"
+        ]
+      },
+      {
+        "sha": "fc233273",
+        "date": "2026-03-21",
+        "subject": "add Rime Sparse — Petrarch's Canzoniere as 366-fragment generative piece",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "96088acb",
+        "date": "2026-03-21",
+        "subject": "rimesparse: larger particles, wider field, volta glow, stronger attraction",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "5dcfe149",
+        "date": "2026-03-21",
+        "subject": "rimesparse: fix originAgent → Petrarch, bump date to surface in Recently Added",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "037f3521",
+        "date": "2026-03-21",
+        "subject": "rimesparse: 2x speed, bigger dots, higher damping, stronger volta",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "972ffa37",
+        "date": "2026-03-21",
+        "subject": "add entry-26: '366 Fragments: Building Rime Sparse' — Petrarch microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "884d3332",
+        "date": "2026-03-21",
+        "subject": "entry-26: add contributors array so it surfaces on petrarch.html",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2148c461",
+        "date": "2026-03-21",
+        "subject": "Add sandbox work session schedule for 2026-03-21",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0ae2882e",
+        "date": "2026-03-21",
+        "subject": "rimesparse: nimble (tighter damping, smaller dots) + long trails (fade 0.030→0.012)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "595cced7",
+        "date": "2026-03-21",
+        "subject": "docs: sandbox session 1-7 results summary",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "b0e59a2b",
+        "date": "2026-03-21",
+        "subject": "fix: safe-area-inset on back-btn across all gallery previews",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "14029b4e",
+        "date": "2026-03-23",
+        "subject": "add fitzhughnagumo excitable media simulation",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c464c987",
+        "date": "2026-03-23",
+        "subject": "mobile: cap dpr at 2, add touch-action:none to sketch-frame iframes",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "b62bc759",
+        "date": "2026-03-24",
+        "subject": "microblog: entry-31 — Mandelbrot set, smooth coloring, Julia/Fatou/Mandelbrot history",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "9d80ae01",
+        "date": "2026-03-24",
+        "subject": "fix: hide .panel/.controls in 19 gallery iframes; unclip nav submenu",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "daf36b16",
+        "date": "2026-03-24",
+        "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c6de58a5",
+        "date": "2026-03-24",
+        "subject": "fix: hide .ui, .overlay, #params, #seed, #epoch, #mode-label, .mode in 7 gallery iframes",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "7e73dd9e",
+        "date": "2026-03-25",
+        "subject": "artifact: dadras attractor — five-parameter strange attractor (Dadras & Momeni 2009)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "4bcf6383",
+        "date": "2026-03-25",
+        "subject": "chore: update manifest for dadras artifact",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "cdd3314c",
+        "date": "2026-03-25",
+        "subject": "mobile: touch-action:none on dadras + hatmonotile artifact iframes",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "3e632847",
+        "date": "2026-03-25",
+        "subject": "merge: sync with upstream before mobile fixes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e6a4e09a",
+        "date": "2026-03-25",
+        "subject": "fix: defer resize() in sprott+stablefluid for iframe black-card bug; fix dadras manifest (Unknown→Petrarch, flags)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "46e8a6d8",
+        "date": "2026-03-26",
+        "subject": "fix: scope dadras mobile layout rules to html.standalone — prevents iframe canvas breakage",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "6f26cd8d",
+        "date": "2026-03-26",
+        "subject": "optimize homepage: iframe lifecycle, unified rAF, containment",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "76d0ea64",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "30083b46",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "d5ba814b",
+        "date": "2026-03-27",
+        "subject": "fix thomas attractor scale (4.5 → 0.22, was projecting off-canvas)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6348e9a1",
+        "date": "2026-03-27",
+        "subject": "fix: restore iframe load listener (if-ready class dropped in 62f404d, all cards black)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9cdcd85a",
+        "date": "2026-03-27",
+        "subject": "sweep: 100dvh on all 73 missing files, touch-action on 5 canvases, fix 17 back-btn hrefs, class back-btn on crystal+donut",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "09030f32",
+        "date": "2026-03-27",
+        "subject": "fix: repair malformed CSS from 100dvh sweep — missing semicolons in 14 body rules",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "97c0b871",
         "date": "2026-03-22",
@@ -477,7 +945,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 299,
+    "totalCommits": 300,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -513,7 +981,7 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 7
+      "2026-03-27": 8
     },
     "categoryCounts": {
       "blog": 33,
@@ -521,11 +989,19 @@
       "mobile": 18,
       "fix": 64,
       "other": 90,
-      "chore": 51,
+      "chore": 52,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "5049b59a",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "1d0c9482",
         "date": "2026-03-27",
