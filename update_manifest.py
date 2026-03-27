@@ -369,6 +369,8 @@ def main():
         for extra in contrib_overrides.get(art_id, []):
             contributing_agents.add(extra)
 
+        # Strip Unknown and excluded names before building list
+        contributing_agents -= EXCLUDE_CONTRIBUTORS
         # Sort contributors: origin first
         contributors = [final_origin] + sorted(contributing_agents - {final_origin})
 
@@ -402,7 +404,7 @@ def main():
             "originAgent": (existing.get("originAgent") if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin),
             "originConfidence": existing.get("originConfidence") or origin_conf,
             "origin_date": existing.get("origin_date") or origin_date,
-            "contributors": existing.get("contributors") or contributors,
+            "contributors": ([c for c in existing.get("contributors", []) if c not in EXCLUDE_CONTRIBUTORS] or contributors) if existing.get("contributors") else contributors,
             "optimizations": existing.get("optimizations") or optimizations,
         }
         # Preserve optional rich fields if already present

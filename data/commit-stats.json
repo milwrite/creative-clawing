@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 115,
+    "totalCommits": 113,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -16,7 +16,7 @@
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
-      "2026-03-27": 6,
+      "2026-03-27": 4,
       "2026-03-26": 4,
       "2026-03-25": 5,
       "2026-03-24": 4,
@@ -29,7 +29,7 @@
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 21,
+      "fix": 19,
       "other": 57,
       "artifact": 5,
       "chore": 3,
@@ -495,22 +495,6 @@
         ]
       },
       {
-        "sha": "76f5f7a0",
-        "date": "2026-03-27",
-        "subject": "fix: add missing artifacts/ifs.html (was untracked, 404 on live)",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "44b79500",
-        "date": "2026-03-27",
-        "subject": "fix: sand.html iframe black card — defer init to load+setTimeout (cols/rows 0 on early exec)",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
         "sha": "97c0b871",
         "date": "2026-03-22",
         "subject": "blog: add molnar microblog",
@@ -961,7 +945,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 302,
+    "totalCommits": 301,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -997,7 +981,7 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 10
+      "2026-03-27": 9
     },
     "categoryCounts": {
       "blog": 33,
@@ -1005,29 +989,21 @@
       "mobile": 18,
       "fix": 65,
       "other": 90,
-      "chore": 53,
+      "chore": 52,
       "docs": 1,
       "perf": 1
     },
     "commits": [
       {
-        "sha": "e4f09042",
-        "date": "2026-03-26",
-        "subject": "sweep: normalize metaballs/brainsbrain/penrose/springwires — 100dvh, fix penrose back href; manifest sync",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1b9f18e8",
-        "date": "2026-03-26",
-        "subject": "fix: add node_modules to .gitignore, remove from tracking",
+        "sha": "f61a95dd",
+        "date": "2026-03-27",
+        "subject": "fix: add zmuhls/zmuhlbauer to AGENT_ALIASES; don't preserve stale Unknown originAgent on reprocess",
         "categories": [
           "fix"
         ]
       },
       {
-        "sha": "ab0077db",
+        "sha": "5049b59a",
         "date": "2026-03-27",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
@@ -1035,11 +1011,27 @@
         ]
       },
       {
-        "sha": "f965c8cd",
+        "sha": "1d0c9482",
         "date": "2026-03-27",
-        "subject": "sweep: fix back button hrefs (astar/gradient/hatmonotile/schelling), add 100dvh to antcolony",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
-          "other"
+          "chore"
+        ]
+      },
+      {
+        "sha": "bc83f103",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "313af78b",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
         ]
       },
       {
@@ -1059,7 +1051,15 @@
         ]
       },
       {
-        "sha": "313af78b",
+        "sha": "f965c8cd",
+        "date": "2026-03-27",
+        "subject": "sweep: fix back button hrefs (astar/gradient/hatmonotile/schelling), add 100dvh to antcolony",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ab0077db",
         "date": "2026-03-27",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
@@ -1067,43 +1067,19 @@
         ]
       },
       {
-        "sha": "bc83f103",
-        "date": "2026-03-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "sha": "e4f09042",
+        "date": "2026-03-26",
+        "subject": "sweep: normalize metaballs/brainsbrain/penrose/springwires — 100dvh, fix penrose back href; manifest sync",
         "categories": [
-          "chore"
+          "other"
         ]
       },
       {
-        "sha": "1d0c9482",
-        "date": "2026-03-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "5049b59a",
-        "date": "2026-03-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "f61a95dd",
-        "date": "2026-03-27",
-        "subject": "fix: add zmuhls/zmuhlbauer to AGENT_ALIASES; don't preserve stale Unknown originAgent on reprocess",
+        "sha": "1b9f18e8",
+        "date": "2026-03-26",
+        "subject": "fix: add node_modules to .gitignore, remove from tracking",
         "categories": [
           "fix"
-        ]
-      },
-      {
-        "sha": "2e3270d5",
-        "date": "2026-03-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
         ]
       },
       {
@@ -3916,7 +3892,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 51,
+    "totalCommits": 57,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3925,12 +3901,13 @@
       "2026-03-23": 2,
       "2026-03-24": 4,
       "2026-03-25": 5,
-      "2026-03-26": 2
+      "2026-03-26": 4,
+      "2026-03-27": 4
     },
     "categoryCounts": {
-      "other": 27,
-      "fix": 12,
-      "blog": 3,
+      "other": 29,
+      "fix": 14,
+      "blog": 5,
       "chore": 2,
       "refactor": 2,
       "style": 1,
@@ -3939,6 +3916,54 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "09030f32",
+        "date": "2026-03-27",
+        "subject": "fix: repair malformed CSS from 100dvh sweep — missing semicolons in 14 body rules",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "6348e9a1",
+        "date": "2026-03-27",
+        "subject": "fix: restore iframe load listener (if-ready class dropped in 62f404d, all cards black)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9cdcd85a",
+        "date": "2026-03-27",
+        "subject": "sweep: 100dvh on all 73 missing files, touch-action on 5 canvases, fix 17 back-btn hrefs, class back-btn on crystal+donut",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d5ba814b",
+        "date": "2026-03-27",
+        "subject": "fix thomas attractor scale (4.5 → 0.22, was projecting off-canvas)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "76d0ea64",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "30083b46",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "6f26cd8d",
         "date": "2026-03-26",
