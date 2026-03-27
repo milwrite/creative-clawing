@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<title>IFS — Iterated Function Systems</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#050608;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#ui{
+  position:fixed;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;
+  z-index:10;
+}
+.btn{
+  background:rgba(10,12,16,0.85);
+  border:1px solid #2a3040;
+  color:#8898b0;
+  padding:6px 14px;
+  border-radius:5px;
+  font:11px/1 ui-monospace,monospace;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:border-color .15s,color .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{border-color:#5068a0;color:#aac0e0}
+.btn.active{border-color:#6080c0;color:#90b8e8}
+#info{
+  position:fixed;
+  bottom:calc(56px + env(safe-area-inset-bottom));
+  left:50%;transform:translateX(-50%);
+  color:rgba(150,170,200,0.6);
+  background:rgba(5,6,8,0.7);
+  padding:4px 12px;
+  border-radius:5px;
+  font:11px/1.5 ui-monospace,monospace;
+  pointer-events:none;
+  white-space:nowrap;
+  text-align:center;
+}
+.back-btn{
+  position:fixed;
+  top:calc(12px + env(safe-area-inset-top));
+  right:calc(12px + env(safe-area-inset-right));
+  background:rgba(10,12,16,0.85);
+  border:1px solid #2a3040;
+  color:#8898b0;
+  padding:7px 13px;
+  border-radius:5px;
+  font:11px ui-monospace,monospace;
+  text-decoration:none;
+  backdrop-filter:blur(6px);
+  z-index:100;
+  transition:border-color .15s;
+}
+.back-btn:hover{border-color:#5068a0}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone #ui{position:relative;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom));transform:none;left:auto;display:flex;justify-content:center;bottom:auto;margin-top:-1px}
+  html.standalone #info{bottom:calc(58px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">IFS chaos game · <span id="label-name">Barnsley Fern</span></div>
+<div id="ui">
+  <button class="btn active" data-sys="fern" onclick="switchSystem('fern',this)">Fern</button>
+  <button class="btn" data-sys="tree" onclick="switchSystem('tree',this)">Tree</button>
+  <button class="btn" data-sys="sierpinski" onclick="switchSystem('sierpinski',this)">Sierpiński</button>
+  <button class="btn" data-sys="dragon" onclick="switchSystem('dragon',this)">Dragon</button>
+</div>
+<script>
+// ─── IFS definitions ─────────────────────────────────────────────────────────
+// Each transform: { a,b,c,d,e,f, p, color }
+// Applied: x' = a*x + b*y + e,  y' = c*x + d*y + f
+// p = probability weight
+
+const SYSTEMS = {
+  fern: {
+    name: 'Barnsley Fern',
+    transforms: [
+      { a:  0,     b:  0,     c:  0,     d:  0.16,  e: 0,    f: 0,    p: 0.01 },
+      { a:  0.85,  b:  0.04,  c: -0.04,  d:  0.85,  e: 0,    f: 1.6,  p: 0.85 },
+      { a:  0.2,   b: -0.26,  c:  0.23,  d:  0.22,  e: 0,    f: 1.6,  p: 0.07 },
+      { a: -0.15,  b:  0.28,  c:  0.26,  d:  0.24,  e: 0,    f: 0.44, p: 0.07 },
+    ],
+    // tint per transform (soft greens, avoiding rainbow)
+    colors: ['#2a6030','#3a8040','#4a9850','#5aaa60'],
+    bounds: { xmin:-2.8, xmax:2.8, ymin:0, ymax:10 },
+  },
+  tree: {
+    name: 'Symmetric Tree',
+    transforms: [
+      { a:  0,     b:  0,     c:  0,     d:  0.5,   e: 0,    f: 0,    p: 0.05 },
+      { a:  0.42,  b: -0.42,  c:  0.42,  d:  0.42,  e: 0,    f: 0.2,  p: 0.40 },
+      { a:  0.42,  b:  0.42,  c: -0.42,  d:  0.42,  e: 0,    f: 0.2,  p: 0.40 },
+      { a:  0.1,   b:  0,     c:  0,     d:  0.1,   e: 0,    f: 0.2,  p: 0.15 },
+    ],
+    colors: ['#2e4a2e','#4a6a3a','#5a8050','#70a060'],
+    bounds: { xmin:-1, xmax:1, ymin:0, ymax:2 },
+  },
+  sierpinski: {
+    name: 'Sierpiński Triangle',
+    transforms: [
+      { a:0.5, b:0,   c:0,   d:0.5,  e:0,    f:0,   p:0.33 },
+      { a:0.5, b:0,   c:0,   d:0.5,  e:0.5,  f:0,   p:0.33 },
+      { a:0.5, b:0,   c:0,   d:0.5,  e:0.25, f:0.5, p:0.34 },
+    ],
+    colors: ['#1e3a5a','#2a5080','#3868a0'],
+    bounds: { xmin:0, xmax:1, ymin:0, ymax:1 },
+  },
+  dragon: {
+    name: 'Dragon Curve IFS',
+    transforms: [
+      { a:0.5,  b:-0.5, c:0.5, d:0.5,  e:0,  f:0,   p:0.5 },
+      { a:-0.5, b:-0.5, c:0.5, d:-0.5, e:1,  f:0,   p:0.5 },
+    ],
+    colors: ['#3a2060','#5030a0'],
+    bounds: { xmin:-0.2, xmax:1.2, ymin:-0.6, ymax:0.6 },
+  },
+};
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H, DPR;
+let sys = SYSTEMS.fern;
+let animId = null;
+let ptsBuf;          // ImageData pixel buffer
+let pointCount = 0;
+const BATCH = 4000;  // points per frame
+const MAX_PTS = 600000;
+
+// Build cumulative probability table
+function buildCDF(transforms) {
+  const cdf = [];
+  let sum = 0;
+  for (const t of transforms) { sum += t.p; cdf.push(sum); }
+  const total = sum;
+  return cdf.map(v => v / total);
+}
+
+function pickTransform(cdf) {
+  const r = Math.random();
+  for (let i = 0; i < cdf.length; i++) if (r < cdf[i]) return i;
+  return cdf.length - 1;
+}
+
+// Hex color → [r,g,b]
+function hexRGB(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n>>16)&255, (n>>8)&255, n&255];
+}
+
+let cdf, colorRGB;
+let px, py; // current point
+
+function initSystem() {
+  cdf = buildCDF(sys.transforms);
+  colorRGB = sys.colors.map(hexRGB);
+  px = 0; py = 0;
+  pointCount = 0;
+  // clear pixel buffer
+  ptsBuf = ctx.createImageData(W, H);
+  // fill with background
+  const d = ptsBuf.data;
+  for (let i = 0; i < d.length; i += 4) {
+    d[i]=5; d[i+1]=6; d[i+2]=8; d[i+3]=255;
+  }
+}
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  W = Math.round(rect.width * DPR);
+  H = Math.round(rect.height * DPR);
+  canvas.width = W;
+  canvas.height = H;
+}
+
+// Map IFS coords → pixel coords
+function mapXY(x, y) {
+  const b = sys.bounds;
+  const bw = b.xmax - b.xmin, bh = b.ymax - b.ymin;
+  // maintain aspect ratio with padding
+  const pad = 0.05;
+  const scale = Math.min((W * (1 - pad * 2)) / bw, (H * (1 - pad * 2)) / bh);
+  const ox = (W - bw * scale) / 2 - b.xmin * scale;
+  const oy = (H - bh * scale) / 2 + (b.ymax) * scale; // flip y
+  return [ox + x * scale, oy - y * scale];
+}
+
+function plotPoints() {
+  const d = ptsBuf.data;
+  for (let i = 0; i < BATCH; i++) {
+    const ti = pickTransform(cdf);
+    const t = sys.transforms[ti];
+    const nx = t.a * px + t.b * py + t.e;
+    const ny = t.c * px + t.d * py + t.f;
+    px = nx; py = ny;
+    if (pointCount < 20) { pointCount++; continue; } // skip first few (transient)
+
+    const [cx2, cy2] = mapXY(px, py);
+    const xi = Math.round(cx2), yi = Math.round(cy2);
+    if (xi < 0 || xi >= W || yi < 0 || yi >= H) continue;
+
+    const idx = (yi * W + xi) * 4;
+    const [r, g, b] = colorRGB[ti];
+    // accumulate: blend toward color, brightening
+    d[idx]   = Math.min(255, d[idx]   + (r - d[idx]) * 0.18 + 8);
+    d[idx+1] = Math.min(255, d[idx+1] + (g - d[idx+1]) * 0.18 + 8);
+    d[idx+2] = Math.min(255, d[idx+2] + (b - d[idx+2]) * 0.18 + 6);
+    d[idx+3] = 255;
+
+    pointCount++;
+  }
+  ctx.putImageData(ptsBuf, 0, 0);
+}
+
+function frame() {
+  if (pointCount < MAX_PTS) {
+    plotPoints();
+    animId = requestAnimationFrame(frame);
+  }
+}
+
+function start() {
+  if (animId) cancelAnimationFrame(animId);
+  resize();
+  initSystem();
+  animId = requestAnimationFrame(frame);
+}
+
+function switchSystem(key, btn) {
+  sys = SYSTEMS[key];
+  document.getElementById('label-name').textContent = sys.name;
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  start();
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => { start(); });
+start();
+</script>
+</body>
+</html>

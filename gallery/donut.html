@@ -9,7 +9,7 @@
 <title>ASCII Donut</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0a; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+  body { background: #0a0a0a; display: flex; align-items: center; justify-content: center; min-height:100dvh; overflow: hidden; }
   canvas { display: block; touch-action: none; }
   #ui {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
@@ -28,7 +28,7 @@
 <body>
 <canvas id="c"></canvas>
 <div id="ui">
-  <a href="index.html"><button>← gallery</button></a>
+  <a class="back-btn" href="./"><button>← gallery</button></a>
   <span id="label">ASCII DONUT</span>
   <button id="toggleColor">green</button>
   <button id="toggleSpeed">normal</button>

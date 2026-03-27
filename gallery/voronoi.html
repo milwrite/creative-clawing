@@ -9,7 +9,7 @@
 <title>Voronoi Tessellation</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0a; overflow: hidden; cursor: crosshair; touch-action: none; }
+  body { background: #0a0a0a; overflow: hidden; cursor: crosshair; touch-action: none; min-height:100dvh}
   canvas { display: block; }
   .label {
     position: fixed; bottom: 1rem; left: 1rem;
@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-<a class="back" href="index.html">← Gallery</a>
+<a class="back" href="./">← Gallery</a>
 <canvas id="c"></canvas>
 <div class="label">click to add seeds · drag to push · R to reset</div>
 <script>if (window.self !== window.top) document.body.classList.add('in-iframe');</script>

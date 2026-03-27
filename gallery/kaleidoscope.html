@@ -9,7 +9,7 @@
 <title>Kaleidoscope Shader</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:#06070b;overflow:hidden;display:flex;flex-direction:column}
+html,body{height:100%;height:100dvh;background:#06070b;overflow:hidden;display:flex;flex-direction:column}
 canvas{display:block;flex:1;width:100%;touch-action:none}
 .back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
 .back:hover{border-color:#666;color:#fff}
@@ -33,7 +33,7 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
 </head>
 <body>
 <script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
-<a class="back" href="index.html">← Gallery</a>
+<a class="back" href="./">← Gallery</a>
 <canvas id="c"></canvas>
 <div class="panel">
   <div class="meta">

@@ -9,7 +9,7 @@
 <title>Heat Diffusion</title>
 <style>
   * { margin: 0; padding: 0; }
-  body { background: #000; overflow: hidden; }
+  body { background: #000; overflow: hidden; min-height:100dvh}
   canvas { display: block; touch-action: none; }
   .back{position:fixed;top:calc(0.8rem + env(safe-area-inset-top));left:calc(0.8rem + env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(10,10,10,0.85);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
   .back:hover{border-color:#666;color:#fff}
@@ -19,7 +19,7 @@
 </head>
 <body>
 <script>if(window.self!==window.top)document.body.classList.add('in-iframe');</script>
-<a class="back" href="index.html">← Gallery</a>
+<a class="back" href="./">← Gallery</a>
 <canvas id="c"></canvas>
 <div class="label">click or drag to add heat sources</div>
 <script>

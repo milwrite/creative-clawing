@@ -9,7 +9,7 @@
 <title>Crystal Dendrite</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #020408; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+  body { background: #020408; display: flex; align-items: center; justify-content: center; min-height:100dvh; overflow: hidden; }
   canvas { display: block; image-rendering: pixelated; touch-action: none; }
   #ui {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
@@ -29,7 +29,7 @@
 <body>
 <canvas id="c"></canvas>
 <div id="ui">
-  <a href="index.html"><button>← gallery</button></a>
+  <a class="back-btn" href="./"><button>← gallery</button></a>
   <span id="label">CRYSTAL DENDRITE</span>
   <button id="resetBtn">reset</button>
   <span id="count">0 particles</span>
