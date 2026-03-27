@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back,.back-btn,#back,#info,#ui,#mode-btn,.panel,.controls,.hint{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls,html.standalone .hint{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Dadras Attractor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#04070d;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none}
+.back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#7aa;background:rgba(4,7,13,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #1e3340;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#4a8090;color:#cef}
+.panel{background:#060b12;border-top:1px solid #0d1f2d;padding:0.65rem 0.9rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#5da0c0}
+.panel .hint{color:#1e4050}
+.panel .params{display:flex;align-items:center;gap:0.4rem;color:#4090a0;font-size:0.7rem}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.04);border:1px solid #1e4050;color:#5da0b8;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.09);color:#9dd8f0;border-color:#3a7090}
+@media(max-width:600px){
+  html.standalone body{flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone .panel{position:relative;flex-shrink:0;padding:0.5rem;padding-bottom:calc(0.5rem + env(safe-area-inset-bottom))}
+  html.standalone .panel .hint{display:none}
+}
+@media(max-width:760px){html.standalone .panel .params{font-size:0.65rem}}
+</style>
+</head>
+<body>
+<a class="back" href="../gallery.html">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Dadras Attractor</span>
+    <span class="hint">dx/dt = y − px + qyz &nbsp;|&nbsp; dy/dt = ry − xz + z &nbsp;|&nbsp; dz/dt = sxz − ez</span>
+  </div>
+  <div class="controls">
+    <span class="params" id="paramDisplay">p=3.00 q=2.70 r=1.70 s=2.00 e=9.00</span>
+    <button id="resetBtn">reset</button>
+    <button id="presetBtn">preset</button>
+    <button id="viewBtn">rotate</button>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W = 0, H = 0;
+
+// Dadras & Momeni (2009) — three-scroll strange attractor
+// dx/dt = y - p*x + q*y*z
+// dy/dt = r*y - x*z + z
+// dz/dt = s*x*z - e*z
+const PRESETS = [
+  { p:3.0, q:2.7, r:1.7, s:2.0, e:9.0,  label:'classic' },
+  { p:3.0, q:2.7, r:1.7, s:2.0, e:4.0,  label:'double' },
+  { p:3.0, q:2.7, r:1.7, s:2.0, e:14.0, label:'tight' },
+  { p:2.5, q:2.0, r:2.0, s:2.0, e:9.0,  label:'spread' },
+];
+let presetIdx = 0;
+
+let pp = 3.0, pq = 2.7, pr = 1.7, ps = 2.0, pe = 9.0;
+const dt = 0.004;
+const MAX_POINTS = 70000;
+const STEPS_PER_FRAME = 8;
+
+let points = [];
+let x = 0.1, y = 0.0, z = 0.1;
+
+// Rotation state
+let rotY = 0.3, rotX = -0.25;
+let autoRotate = true;
+let dragging = false;
+let lastMX = 0, lastMY = 0;
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const nw = canvas.offsetWidth, nh = canvas.offsetHeight;
+  if (nw < 1 || nh < 1) return;
+  if (nw === W && nh === H) return;
+  W = nw; H = nh;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function step() {
+  const dx = y - pp * x + pq * y * z;
+  const dy = pr * y - x * z + z;
+  const dz = ps * x * z - pe * z;
+  x += dx * dt;
+  y += dy * dt;
+  z += dz * dt;
+  // Divergence guard
+  if (!isFinite(x) || !isFinite(y) || !isFinite(z) ||
+      Math.abs(x) > 300 || Math.abs(y) > 300 || Math.abs(z) > 300) {
+    x = 0.1; y = 0.0; z = 0.1;
+    points = [];
+  }
+  points.push({ x, y, z });
+  if (points.length > MAX_POINTS) points.shift();
+}
+
+function project(px, py, pz) {
+  const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+  let rx = px * cosY - pz * sinY;
+  let rz = px * sinY + pz * cosY;
+  const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+  let ry = py * cosX - rz * sinX;
+  rz = py * sinX + rz * cosX;
+  const scale = Math.min(W, H) / 28;
+  return {
+    sx: W / 2 + rx * scale,
+    sy: H / 2 + ry * scale,
+    depth: rz,
+  };
+}
+
+function draw() {
+  ctx.fillStyle = 'rgba(4,7,13,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  const len = points.length;
+  if (len < 2) return;
+
+  for (let i = 1; i < len; i++) {
+    const p0 = project(points[i - 1].x, points[i - 1].y, points[i - 1].z);
+    const p1 = project(points[i].x, points[i].y, points[i].z);
+    const age = i / len;
+    const alpha = age * age * 0.85;
+    // Depth-based lightness; teal-to-ice palette
+    const light = 35 + age * 28 + (p1.depth + 15) * 0.6;
+    const sat = 55 + age * 20;
+    ctx.strokeStyle = `hsla(195,${sat}%,${Math.max(20, Math.min(80, light))}%,${alpha})`;
+    ctx.lineWidth = 0.4 + age * 1.4;
+    ctx.beginPath();
+    ctx.moveTo(p0.sx, p0.sy);
+    ctx.lineTo(p1.sx, p1.sy);
+    ctx.stroke();
+  }
+
+  // Current position dot
+  const cur = project(x, y, z);
+  ctx.fillStyle = '#aeeeff';
+  ctx.beginPath();
+  ctx.arc(cur.sx, cur.sy, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function loop() {
+  resize();
+  if (autoRotate) rotY += 0.0025;
+  for (let i = 0; i < STEPS_PER_FRAME; i++) step();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function resetSim() {
+  x = 0.1; y = 0.0; z = 0.1;
+  points = [];
+  ctx.fillStyle = '#04070d';
+  ctx.fillRect(0, 0, W, H);
+}
+
+function updateDisplay() {
+  document.getElementById('paramDisplay').textContent =
+    'p=' + pp.toFixed(2) + ' q=' + pq.toFixed(2) + ' r=' + pr.toFixed(2) +
+    ' s=' + ps.toFixed(2) + ' e=' + pe.toFixed(2);
+}
+
+document.getElementById('resetBtn').addEventListener('click', resetSim);
+
+document.getElementById('presetBtn').addEventListener('click', function () {
+  presetIdx = (presetIdx + 1) % PRESETS.length;
+  const pr_ = PRESETS[presetIdx];
+  pp = pr_.p; pq = pr_.q; pr = pr_.r; ps = pr_.s; pe = pr_.e;
+  updateDisplay();
+  resetSim();
+});
+
+document.getElementById('viewBtn').addEventListener('click', function () {
+  autoRotate = !autoRotate;
+  this.textContent = autoRotate ? 'rotate' : 'manual';
+});
+
+// Drag to rotate
+canvas.addEventListener('pointerdown', function (e) {
+  if (e.button !== 0) return;
+  dragging = true;
+  lastMX = e.clientX; lastMY = e.clientY;
+  canvas.setPointerCapture(e.pointerId);
+  autoRotate = false;
+  document.getElementById('viewBtn').textContent = 'manual';
+});
+canvas.addEventListener('pointermove', function (e) {
+  if (!dragging) return;
+  rotY += (e.clientX - lastMX) * 0.005;
+  rotX += (e.clientY - lastMY) * 0.005;
+  rotX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotX));
+  lastMX = e.clientX; lastMY = e.clientY;
+});
+canvas.addEventListener('pointerup', function () { dragging = false; });
+canvas.addEventListener('pointercancel', function () { dragging = false; });
+
+requestAnimationFrame(function () { requestAnimationFrame(loop); });
+</script>
+</body>
+</html>

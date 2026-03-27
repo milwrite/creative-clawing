@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>.back,.back-btn,#back,#info,#ui,#mode-btn{display:none!important}</style>
+<style>.back,.back-btn,#back,#info,#ui,#mode-btn,.panel,.controls,.hint{display:none!important}</style>
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
-<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
+<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls,html.standalone .hint{display:revert!important}</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Penrose Tiling</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;background:#050508;overflow:hidden;display:flex;flex-direction:column}
+html,body{height:100%;height:100dvh;background:#050508;overflow:hidden;display:flex;flex-direction:column}
 canvas{display:block;flex:1;width:100%;touch-action:none}
 .back{position:fixed;top:max(1rem, env(safe-area-inset-top));left:max(1rem, env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(5,5,8,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
 .back:hover{border-color:#666;color:#fff}
@@ -25,7 +25,7 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
 </style>
 </head>
 <body>
-<a class="back" href="../gallery.html">← gallery</a>
+<a class="back" href="../">← gallery</a>
 <canvas id="c"></canvas>
 <div class="panel">
   <div class="meta">

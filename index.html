@@ -107,11 +107,12 @@
       border-color: rgba(255,255,255,.35);
     }
 
-    .lane-set { display: grid; gap: 10px; }
+    .lane-set { display: grid; gap: 10px; contain: layout style; }
     .lane {
       overflow: hidden;
       cursor: grab;
       touch-action: pan-y;
+      contain: layout paint;
     }
     .lane.is-dragging { cursor: grabbing; }
     .lane-track {
@@ -133,19 +134,27 @@
       text-decoration: none;
       color: inherit;
       flex-shrink: 0;
+      contain: layout paint;
     }
     .card-frame { position: relative; overflow: hidden; }
     .card-overlay { position: absolute; inset: 0; z-index: 1; touch-action: auto; }
     .card:hover { border-color: rgba(255,255,255,.35); }
     .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-    .recent-grid .card { width: auto; min-width: 0; height: 240px; }
+    .recent-grid .card { width: auto; min-width: 0; height: 240px; contain: layout paint; }
     .card iframe {
       width: 100%;
       height: 100%;
       border: 0;
       display: block;
-      background: #000;
+      background: #0a0a0a;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+    .card iframe.if-ready { opacity: 1; }
+    .card-frame {
+      background: #0a0a0a;
+      contain: layout paint;
     }
     .card-meta {
       border-top: 1px solid var(--soft);
@@ -308,6 +317,9 @@
       border-color: rgba(255,255,255,.35);
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      .lane-track { animation: none !important; will-change: auto; }
+    }
     @media (max-width: 700px) {
       section { scroll-margin-top: 120px; }
     }
@@ -458,6 +470,25 @@
     </div>`;
   }
 
+  // Single shared rAF loop drives all lane scrolls — avoids N separate rAF callbacks.
+  const allLanes = [];
+  let sharedLastTs = null;
+  function sharedStep(ts) {
+    const dt = sharedLastTs ? Math.min(ts - sharedLastTs, 50) : 16.67;
+    sharedLastTs = ts;
+    for (const lane of allLanes) {
+      if (!lane.paused) {
+        lane.pos += lane.pxPerSec * (dt / 1000);
+        const half = lane.track.scrollWidth / 2;
+        if (lane.pos > half) lane.pos -= half;
+        if (lane.pos < 0) lane.pos += half;
+        lane.track.style.transform = `translate3d(${-lane.pos}px,0,0)`;
+      }
+    }
+    requestAnimationFrame(sharedStep);
+  }
+  requestAnimationFrame(sharedStep);
+
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
     lane.className = 'lane';
@@ -468,33 +499,23 @@
     track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
-    let pos = 0;
-    let paused = false;
-    // px per second (not per frame) — consistent across 60Hz and 120Hz displays
-    const pxPerSec = speed * 60 * (dir < 0 ? -1 : 1);
-    let lastTs = null;
-
-    function step(ts) {
-      if (!paused) {
-        const dt = lastTs ? Math.min(ts - lastTs, 50) : 16.67; // cap at 50ms to handle tab blur
-        pos += pxPerSec * (dt / 1000);
-        const half = track.scrollWidth / 2;
-        if (pos > half) pos -= half;
-        if (pos < 0) pos += half;
-        track.style.transform = `translate3d(${-pos}px,0,0)`;
-      }
-      lastTs = ts;
-      requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    // Register with shared loop
+    const laneState = {
+      track,
+      pos: 0,
+      paused: false,
+      // px per second — consistent across 60Hz and 120Hz displays
+      pxPerSec: speed * 60 * (dir < 0 ? -1 : 1),
+    };
+    allLanes.push(laneState);
 
     let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
     const dragThreshold = 6;
 
     function onDown(e) {
-      paused = true; isDragging = true; dragMoved = false;
+      laneState.paused = true; isDragging = true; dragMoved = false;
       dragStart = e.touches ? e.touches[0].clientX : e.clientX;
-      scrollStart = pos;
+      scrollStart = laneState.pos;
       lane.classList.add('is-dragging');
       if (!e.touches) e.preventDefault();
     }
@@ -504,13 +525,13 @@
       const dx = dragStart - x;
       if (Math.abs(dx) > dragThreshold) { dragMoved = true; if (e.touches) e.preventDefault(); }
       const half = track.scrollWidth / 2;
-      pos = ((scrollStart + dx) % half + half) % half;
-      track.style.transform = `translateX(${-pos}px)`;
+      laneState.pos = ((scrollStart + dx) % half + half) % half;
+      track.style.transform = `translateX(${-laneState.pos}px)`;
     }
     function onUp() {
       isDragging = false;
       lane.classList.remove('is-dragging');
-      setTimeout(() => { paused = false; }, 400);
+      setTimeout(() => { laneState.paused = false; }, 400);
     }
 
     lane.addEventListener('click', e => { if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; } }, true);
@@ -648,29 +669,51 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // Lazy-load lane iframes: inject when lane is near viewport, remove when far
-  const laneObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      const frames = e.target.querySelectorAll('.card-frame[data-src]');
-      if (e.isIntersecting) {
-        frames.forEach(f => {
-          if (!f.querySelector('iframe')) {
-            const iframe = document.createElement('iframe');
-            iframe.src = f.dataset.src;
-            iframe.loading = 'lazy';
-            iframe.title = f.dataset.title || '';
-            iframe.setAttribute('sandbox', 'allow-scripts');
-            f.insertBefore(iframe, f.firstChild);
-          }
-        });
-      } else {
-        frames.forEach(f => {
-          const iframe = f.querySelector('iframe');
-          if (iframe) iframe.remove();
-        });
+  // Lazy-load lane iframes: inject when lane is near viewport; never eject (prevents black-card flash on mobile)
+  // rootMargin is capped to avoid pre-loading too many iframes on large/4K screens.
+  // Max concurrent live iframes is capped — lanes that scroll out of view get their iframes
+  // replaced with static placeholders to free GPU resources.
+  const MAX_LIVE_IFRAMES = 32; // hard cap: ~2 lanes worth
+  const liveIframeFrames = new Set();
+
+  function injectFrames(el) {
+    const frames = el.querySelectorAll('.card-frame[data-src]');
+    frames.forEach(f => {
+      if (f.querySelector('iframe') || liveIframeFrames.size >= MAX_LIVE_IFRAMES) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = f.dataset.src;
+      iframe.loading = 'lazy';
+      iframe.title = f.dataset.title || '';
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      f.insertBefore(iframe, f.firstChild);
+      liveIframeFrames.add(f);
+    });
+  }
+
+  function ejectFrames(el) {
+    const frames = el.querySelectorAll('.card-frame[data-src]');
+    frames.forEach(f => {
+      const iframe = f.querySelector('iframe');
+      if (iframe) {
+        iframe.src = 'about:blank'; // stop the canvas loop
+        iframe.remove();
+        liveIframeFrames.delete(f);
       }
     });
-  }, { rootMargin: '400px' });
+  }
+
+  // Use a tighter rootMargin: 300px fixed (not viewport-relative) — enough to preload
+  // the next lane before it scrolls into view, without saturating GPU with 5+ lanes at once.
+  const laneObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        injectFrames(e.target);
+      } else {
+        // Only eject if we're over the live cap — preserves already-loaded nearby lanes
+        if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) ejectFrames(e.target);
+      }
+    });
+  }, { rootMargin: '300px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders
@@ -679,6 +722,13 @@
     if (target) target.scrollIntoView({ behavior: 'smooth' });
   }
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>

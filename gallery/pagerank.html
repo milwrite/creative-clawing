@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,#mode-btn,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iNCIgZmlsbD0iIzJhNmQ4YSIvPgogIDxjaXJjbGUgY3g9IjIyIiBjeT0iMTAiIHI9IjYiIGZpbGw9IiNlOGE4MzgiLz4KICA8Y2lyY2xlIGN4PSIxMCIgY3k9IjIyIiByPSIzIiBmaWxsPSIjMmE2ZDhhIi8+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIyMiIgcj0iNSIgZmlsbD0iI2M4ODQyMCIvPgo8L3N2Zz4K"/>
+<title>PageRank</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0a0f;overflow:hidden}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(10,10,20,0.85);border:1px solid #334;color:#aac;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+.back-btn:hover{border-color:#667}
+.panel{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:rgba(8,8,16,0.9);border:1px solid #1a2a3a;border-radius:8px;padding:10px 16px;font:11px ui-monospace,monospace;color:#8aaccc;backdrop-filter:blur(10px);z-index:100;display:flex;flex-direction:column;gap:8px;min-width:320px;max-width:calc(100vw - 24px)}
+.panel-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.panel-btn{background:rgba(26,42,58,0.8);border:1px solid #2a4a6a;color:#8aaccc;padding:5px 12px;border-radius:4px;font:11px ui-monospace,monospace;cursor:pointer;transition:all 0.15s}
+.panel-btn:hover{background:rgba(42,70,100,0.8);color:#ccddee}
+.panel-btn.active{background:rgba(42,109,138,0.5);border-color:#4a8aaa;color:#aaddff}
+.panel-stat{color:#557799;font-size:10px}
+.panel-stat span{color:#8aaccc}
+input[type=range]{-webkit-appearance:none;width:80px;height:4px;background:#1a2a3a;border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#4a8aaa;cursor:pointer}
+label{color:#557799;font-size:10px;white-space:nowrap}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel" id="panel">
+  <div class="panel-row">
+    <button class="panel-btn" id="btnReset">Reset</button>
+    <button class="panel-btn" id="btnStep">Step</button>
+    <button class="panel-btn active" id="btnAuto">Auto ■</button>
+    <button class="panel-btn active" id="btnSurfer">Surfer ●</button>
+    <label>Speed <input type="range" id="speedSlider" min="1" max="10" value="4"/></label>
+  </div>
+  <div class="panel-row">
+    <span class="panel-stat">Nodes: <span id="statNodes">0</span></span>
+    <span class="panel-stat">Iter: <span id="statIter">0</span></span>
+    <span class="panel-stat">Δ: <span id="statDelta">—</span></span>
+    <span class="panel-stat" style="color:#448;font-size:9px">Click empty = add node · Click node = inspect · Drag = move</span>
+  </div>
+</div>
+<script>
+// ── Canvas setup ──────────────────────────────────────────────────────────
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+let W, H, DPR;
+
+function resize() {
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Graph state ───────────────────────────────────────────────────────────
+const DAMPING = 0.85;
+const MIN_R = 8, MAX_R = 50;
+
+let nodes = [], edges = [];
+// edges: {from, to}
+let ranks = [];
+let iteration = 0;
+let maxDelta = 1;
+let converged = false;
+
+// Particles: {x,y, tx,ty, t,dur, alpha}
+let particles = [];
+
+// Surfer state
+let surferNode = 0;
+let surferX = 0, surferY = 0;
+let surferTX = 0, surferTY = 0;
+let surferT = 0, surferDur = 0.5;
+let surferTrail = []; // {x,y,age}
+let showSurfer = true;
+
+// Highlighted node
+let selectedNode = -1;
+
+// Auto iteration
+let autoMode = true;
+let autoTimer = 0;
+let iterationsPerSec = 4;
+
+// Drag state
+let dragging = -1, dragOffX = 0, dragOffY = 0;
+
+// ── Color helpers ─────────────────────────────────────────────────────────
+function rankColor(r, alpha) {
+  // r in [0,1] normalized rank
+  // low→teal #2a6d8a, high→gold #e8a838
+  const rr = Math.sqrt(r);
+  const lr = [42,109,138], hr = [232,168,56];
+  const R = Math.round(lr[0] + (hr[0]-lr[0])*rr);
+  const G = Math.round(lr[1] + (hr[1]-lr[1])*rr);
+  const B = Math.round(lr[2] + (hr[2]-lr[2])*rr);
+  return `rgba(${R},${G},${B},${alpha})`;
+}
+
+// ── Force layout helpers ──────────────────────────────────────────────────
+function runForceLayout(iters) {
+  const N = nodes.length;
+  if (N < 2) return;
+  for (let it = 0; it < iters; it++) {
+    // Repulsion
+    for (let i = 0; i < N; i++) {
+      for (let j = i+1; j < N; j++) {
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const d2 = dx*dx + dy*dy + 1;
+        const f = 3500 / d2;
+        const nx = dx / Math.sqrt(d2);
+        const ny = dy / Math.sqrt(d2);
+        nodes[i].vx -= nx * f;
+        nodes[i].vy -= ny * f;
+        nodes[j].vx += nx * f;
+        nodes[j].vy += ny * f;
+      }
+    }
+    // Attraction along edges
+    edges.forEach(e => {
+      const a = nodes[e.from], b = nodes[e.to];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const d = Math.sqrt(dx*dx + dy*dy) + 1;
+      const ideal = 140;
+      const f = (d - ideal) * 0.02;
+      a.vx += dx/d * f;
+      a.vy += dy/d * f;
+      b.vx -= dx/d * f;
+      b.vy -= dy/d * f;
+    });
+    // Center gravity
+    nodes.forEach(n => {
+      n.vx += (W/2 - n.x) * 0.003;
+      n.vy += (H/2 - n.y) * 0.003;
+    });
+    // Integrate + dampen
+    nodes.forEach(n => {
+      n.vx *= 0.8; n.vy *= 0.8;
+      n.x += n.vx; n.y += n.vy;
+      n.x = Math.max(60, Math.min(W-60, n.x));
+      n.y = Math.max(60, Math.min(H-60, n.y));
+    });
+  }
+}
+
+// ── Graph generation ──────────────────────────────────────────────────────
+function rnd(a,b){ return a + Math.random()*(b-a); }
+function rndInt(a,b){ return Math.floor(rnd(a,b+1)); }
+
+function buildGraph(N) {
+  nodes = [];
+  edges = [];
+  ranks = [];
+  iteration = 0;
+  maxDelta = 1;
+  converged = false;
+  particles = [];
+  surferTrail = [];
+  selectedNode = -1;
+
+  // Arrange in a loose circle first
+  for (let i = 0; i < N; i++) {
+    const angle = (i / N) * Math.PI * 2;
+    const r = Math.min(W, H) * 0.35;
+    nodes.push({
+      x: W/2 + Math.cos(angle) * r,
+      y: H/2 + Math.sin(angle) * r,
+      vx: rnd(-1,1), vy: rnd(-1,1)
+    });
+  }
+
+  // Add edges: each node gets 1-4 random outgoing edges (no self-loops)
+  for (let i = 0; i < N; i++) {
+    const deg = rndInt(1, Math.min(4, N-1));
+    const targets = new Set();
+    let attempts = 0;
+    while (targets.size < deg && attempts < 20) {
+      attempts++;
+      const t = rndInt(0, N-1);
+      if (t !== i) targets.add(t);
+    }
+    targets.forEach(t => edges.push({from:i, to:t}));
+  }
+
+  // Ensure every node has at least one incoming edge (for interesting PageRank)
+  for (let i = 0; i < N; i++) {
+    const hasIncoming = edges.some(e => e.to === i);
+    if (!hasIncoming) {
+      // pick a random other node to point at this one
+      const src = (i + rndInt(1, N-1)) % N;
+      edges.push({from:src, to:i});
+    }
+  }
+
+  // Uniform initial ranks
+  ranks = new Array(N).fill(1/N);
+
+  // Run force layout to settle
+  nodes.forEach(n => { n.vx = rnd(-2,2); n.vy = rnd(-2,2); });
+  runForceLayout(200);
+
+  // Init surfer
+  surferNode = rndInt(0, N-1);
+  surferX = nodes[surferNode].x;
+  surferY = nodes[surferNode].y;
+  surferTX = surferX; surferTY = surferY;
+  surferT = 0; surferDur = 0.5;
+}
+
+// ── PageRank iteration ────────────────────────────────────────────────────
+function stepPageRank() {
+  const N = nodes.length;
+  if (N === 0) return;
+
+  // Build adjacency: outgoing degrees
+  const outDeg = new Array(N).fill(0);
+  edges.forEach(e => outDeg[e.from]++);
+
+  // Dangling nodes (no outgoing edges) distribute to all
+  const danglingMass = ranks.reduce((acc, r, i) => outDeg[i] === 0 ? acc + r : acc, 0);
+
+  const newRanks = new Array(N).fill(0);
+  edges.forEach(e => {
+    if (outDeg[e.from] > 0) {
+      newRanks[e.to] += ranks[e.from] / outDeg[e.from];
+    }
+  });
+
+  // Apply damping + dangling distribution + teleport
+  for (let i = 0; i < N; i++) {
+    newRanks[i] = (1 - DAMPING) / N + DAMPING * (newRanks[i] + danglingMass / N);
+  }
+
+  // Normalize
+  const sum = newRanks.reduce((a,b) => a+b, 0);
+  for (let i = 0; i < N; i++) newRanks[i] /= sum;
+
+  // Compute max delta
+  maxDelta = 0;
+  for (let i = 0; i < N; i++) maxDelta = Math.max(maxDelta, Math.abs(newRanks[i] - ranks[i]));
+
+  converged = maxDelta < 0.0001;
+  ranks = newRanks;
+  iteration++;
+
+  // Spawn flow particles along edges
+  spawnFlowParticles();
+}
+
+function spawnFlowParticles() {
+  const N = nodes.length;
+  const outDeg = new Array(N).fill(0);
+  edges.forEach(e => outDeg[e.from]++);
+
+  edges.forEach(e => {
+    if (outDeg[e.from] === 0) return;
+    const contribution = ranks[e.from] / outDeg[e.from];
+    const count = Math.max(1, Math.round(contribution * 30));
+    for (let i = 0; i < count; i++) {
+      const sx = nodes[e.from].x, sy = nodes[e.from].y;
+      const tx = nodes[e.to].x, ty = nodes[e.to].y;
+      particles.push({
+        from: e.from, to: e.to,
+        sx, sy, tx, ty,
+        t: Math.random() * 0.3,
+        dur: 0.4 + Math.random() * 0.3,
+        alpha: Math.min(1, contribution * 40 + 0.3)
+      });
+    }
+  });
+}
+
+// ── Rank normalization for visual size ────────────────────────────────────
+function normRanks() {
+  if (ranks.length === 0) return [];
+  const mn = Math.min(...ranks), mx = Math.max(...ranks);
+  const span = mx - mn || 1;
+  return ranks.map(r => (r - mn) / span);
+}
+
+function nodeRadius(normR) {
+  return MIN_R + (MAX_R - MIN_R) * Math.pow(normR, 0.5);
+}
+
+// ── Drawing ───────────────────────────────────────────────────────────────
+function bezierCP(ax,ay,bx,by) {
+  const mx = (ax+bx)/2, my = (ay+by)/2;
+  const dx = bx-ax, dy = by-ay;
+  const len = Math.sqrt(dx*dx+dy*dy);
+  const off = Math.min(len*0.35, 60);
+  const nx = -dy/len, ny = dx/len;
+  return { cx: mx + nx*off, cy: my + ny*off };
+}
+
+function drawArrowHead(x, y, angle, size, color) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(-size, -size*0.5);
+  ctx.lineTo(-size, size*0.5);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.restore();
+}
+
+function getEdgeTangent(ax,ay,bx,by) {
+  const { cx, cy } = bezierCP(ax,ay,bx,by);
+  // Tangent at t=1: direction from control point to end
+  const tx = bx - cx, ty = by - cy;
+  return Math.atan2(ty, tx);
+}
+
+function pointOnBezier(ax,ay,cx,cy,bx,by,t) {
+  const u = 1-t;
+  return {
+    x: u*u*ax + 2*u*t*cx + t*t*bx,
+    y: u*u*ay + 2*u*t*cy + t*t*by
+  };
+}
+
+function draw(dt) {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  const N = nodes.length;
+  if (N === 0) return;
+
+  const nRanks = normRanks();
+  const outDeg = new Array(N).fill(0);
+  edges.forEach(e => outDeg[e.from]++);
+
+  // ── Draw edges ────────────────────────────────────────────────────────
+  edges.forEach(e => {
+    const a = nodes[e.from], b = nodes[e.to];
+    const { cx, cy } = bezierCP(a.x,a.y,b.x,b.y);
+
+    const isSelected = (selectedNode === e.from || selectedNode === e.to);
+    const edgeColor = isSelected ? 'rgba(74,138,170,0.7)' : 'rgba(42,74,100,0.4)';
+    const arrowColor = isSelected ? '#4a8aaa' : '#2a4a6a';
+
+    // Edge curve
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo(cx, cy, b.x, b.y);
+    ctx.strokeStyle = edgeColor;
+    ctx.lineWidth = isSelected ? 1.5 : 0.8;
+    ctx.stroke();
+
+    // Arrowhead near target
+    const tArrow = 0.85;
+    const pt = pointOnBezier(a.x,a.y,cx,cy,b.x,b.y,tArrow);
+    const pt2 = pointOnBezier(a.x,a.y,cx,cy,b.x,b.y,tArrow+0.05);
+    const angle = Math.atan2(pt2.y-pt.y, pt2.x-pt.x);
+    drawArrowHead(pt2.x, pt2.y, angle, 7, arrowColor);
+  });
+
+  // ── Draw flow particles ───────────────────────────────────────────────
+  particles.forEach(p => {
+    const { cx, cy } = bezierCP(p.sx,p.sy,p.tx,p.ty);
+    const progress = Math.min(1, p.t / p.dur);
+    const pt = pointOnBezier(p.sx,p.sy,cx,cy,p.tx,p.ty,progress);
+    const fade = Math.sin(progress * Math.PI);
+    const a = p.alpha * fade;
+
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 2.5, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+
+    // Glow
+    const grd = ctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,8);
+    grd.addColorStop(0, `rgba(180,220,255,${a*0.4})`);
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 8, 0, Math.PI*2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+  });
+
+  // ── Draw surfer trail ─────────────────────────────────────────────────
+  if (showSurfer && surferTrail.length > 1) {
+    for (let i = 1; i < surferTrail.length; i++) {
+      const a = surferTrail[i-1], b = surferTrail[i];
+      const alpha = (1 - b.age / 60) * 0.5;
+      if (alpha <= 0) continue;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `rgba(0,220,255,${alpha})`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  // ── Draw nodes ────────────────────────────────────────────────────────
+  nodes.forEach((n, i) => {
+    const r = nodeRadius(nRanks[i]);
+    const isSelected = selectedNode === i;
+
+    // Glow for high-rank nodes
+    if (nRanks[i] > 0.3) {
+      const grd = ctx.createRadialGradient(n.x,n.y,r*0.5,n.x,n.y,r*2.5);
+      grd.addColorStop(0, rankColor(nRanks[i], 0.15));
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r*2.5, 0, Math.PI*2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+
+    // Selection ring
+    if (isSelected) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r+5, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(0,200,255,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Node circle
+    const grd = ctx.createRadialGradient(n.x-r*0.3,n.y-r*0.3,0,n.x,n.y,r);
+    grd.addColorStop(0, rankColor(nRanks[i], 0.95));
+    grd.addColorStop(1, rankColor(nRanks[i], 0.6));
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI*2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // Border
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI*2);
+    ctx.strokeStyle = rankColor(nRanks[i], 0.8);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Label (only when big enough)
+    if (r >= 14) {
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.font = `${Math.round(Math.min(r*0.55, 13))}px ui-monospace,monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(ranks[i] ? ranks[i].toFixed(3) : '0.000', n.x, n.y);
+    }
+  });
+
+  // ── Draw surfer ───────────────────────────────────────────────────────
+  if (showSurfer && N > 0) {
+    const sx = surferX, sy = surferY;
+
+    // Outer glow
+    const sg = ctx.createRadialGradient(sx,sy,0,sx,sy,18);
+    sg.addColorStop(0, 'rgba(0,230,255,0.3)');
+    sg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath();
+    ctx.arc(sx, sy, 18, 0, Math.PI*2);
+    ctx.fillStyle = sg;
+    ctx.fill();
+
+    // Dot
+    ctx.beginPath();
+    ctx.arc(sx, sy, 5, 0, Math.PI*2);
+    ctx.fillStyle = '#00e8ff';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(sx, sy, 5, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+}
+
+// ── Surfer simulation ─────────────────────────────────────────────────────
+function stepSurfer(dt) {
+  const N = nodes.length;
+  if (!showSurfer || N === 0) return;
+
+  surferT += dt;
+
+  // Interpolate position toward target
+  const prog = Math.min(1, surferT / surferDur);
+  const ease = prog < 0.5 ? 2*prog*prog : 1-2*(1-prog)*(1-prog);
+  surferX = surferTX + (surferTX - (surferTrail.length > 0 ? surferTrail[surferTrail.length-1].x : surferX)) * 0;
+  // Simpler: lerp from start to target
+  const startX = surferTrail.length > 0 ? surferTrail[surferTrail.length - 1].x : nodes[surferNode].x;
+  const startY = surferTrail.length > 0 ? surferTrail[surferTrail.length - 1].y : nodes[surferNode].y;
+
+  // Actually just track a smooth move to surferTX/surferTY
+  surferX += (surferTX - surferX) * Math.min(1, dt * 6);
+  surferY += (surferTY - surferY) * Math.min(1, dt * 6);
+
+  // Add to trail
+  surferTrail.push({ x: surferX, y: surferY, age: 0 });
+  if (surferTrail.length > 60) surferTrail.shift();
+  surferTrail.forEach(p => p.age++);
+
+  // Hop to next node when close or timer expires
+  if (surferT >= surferDur) {
+    surferT = 0;
+    surferDur = 0.3 + Math.random() * 0.6;
+
+    const outEdges = edges.filter(e => e.from === surferNode);
+    let nextNode;
+    if (outEdges.length > 0 && Math.random() < DAMPING) {
+      // Follow a random outgoing edge
+      const e = outEdges[Math.floor(Math.random() * outEdges.length)];
+      nextNode = e.to;
+    } else {
+      // Teleport to random node
+      nextNode = Math.floor(Math.random() * N);
+    }
+    surferNode = nextNode;
+    surferTX = nodes[surferNode].x;
+    surferTY = nodes[surferNode].y;
+  } else {
+    // Update target in case node was moved
+    surferTX = nodes[surferNode].x;
+    surferTY = nodes[surferNode].y;
+  }
+}
+
+// ── Update particles ──────────────────────────────────────────────────────
+function updateParticles(dt) {
+  // Update particle positions
+  particles.forEach(p => {
+    p.t += dt;
+    // Update source/target in case nodes moved
+    if (p.from < nodes.length) { p.sx = nodes[p.from].x; p.sy = nodes[p.from].y; }
+    if (p.to < nodes.length) { p.tx = nodes[p.to].x; p.ty = nodes[p.to].y; }
+  });
+  particles = particles.filter(p => p.t < p.dur);
+}
+
+// ── Auto iteration ────────────────────────────────────────────────────────
+let lastIterTime = 0;
+
+function maybeAutoStep(now) {
+  if (!autoMode) return;
+  const interval = 1000 / iterationsPerSec;
+  if (now - lastIterTime >= interval) {
+    lastIterTime = now;
+    if (!converged) stepPageRank();
+  }
+}
+
+// ── UI updates ────────────────────────────────────────────────────────────
+const statNodes = document.getElementById('statNodes');
+const statIter = document.getElementById('statIter');
+const statDelta = document.getElementById('statDelta');
+
+function updateStats() {
+  if (!statNodes) return;
+  statNodes.textContent = nodes.length;
+  statIter.textContent = iteration;
+  if (converged) {
+    statDelta.textContent = 'converged';
+    statDelta.style.color = '#4aaa6a';
+  } else {
+    statDelta.textContent = maxDelta.toExponential(2);
+    statDelta.style.color = maxDelta < 0.001 ? '#8acc88' : '#8aaccc';
+  }
+}
+
+// ── Main loop ─────────────────────────────────────────────────────────────
+let lastTime = 0;
+
+function loop(ts) {
+  const dt = Math.min((ts - lastTime) / 1000, 0.05);
+  lastTime = ts;
+
+  maybeAutoStep(ts);
+  updateParticles(dt);
+  stepSurfer(dt);
+
+  // Gentle force drift (very mild, just to avoid overlap)
+  if (nodes.length > 1 && Math.random() < 0.05) runForceLayout(1);
+
+  draw(dt);
+  updateStats();
+  requestAnimationFrame(loop);
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────
+function hitTest(px, py) {
+  const nRanks = normRanks();
+  for (let i = nodes.length-1; i >= 0; i--) {
+    const r = nodeRadius(nRanks[i]) + 6;
+    const dx = nodes[i].x - px, dy = nodes[i].y - py;
+    if (dx*dx + dy*dy < r*r) return i;
+  }
+  return -1;
+}
+
+function addNode(px, py) {
+  if (nodes.length >= 50) return;
+  const N = nodes.length;
+  nodes.push({ x: px, y: py, vx: 0, vy: 0 });
+  ranks.push(1/(N+1));
+  // Re-normalize
+  const sum = ranks.reduce((a,b)=>a+b,0);
+  for (let i=0;i<ranks.length;i++) ranks[i]/=sum;
+
+  // Add outgoing edges to 1-3 existing nodes
+  const outCount = Math.min(rndInt(1,3), N);
+  const targets = new Set();
+  let at = 0;
+  while (targets.size < outCount && at < 20) {
+    at++;
+    targets.add(rndInt(0, N-1));
+  }
+  targets.forEach(t => edges.push({from: N, to: t}));
+
+  // 1-2 random existing nodes get edges to new node
+  const inCount = Math.min(rndInt(1,2), N);
+  const srcs = new Set();
+  at = 0;
+  while (srcs.size < inCount && at < 20) {
+    at++;
+    srcs.add(rndInt(0, N-1));
+  }
+  srcs.forEach(s => edges.push({from: s, to: N}));
+
+  // Reset converged state
+  converged = false;
+}
+
+// Pointer events
+let pointerDown = false;
+let pointerMoved = false;
+let pointerDownX = 0, pointerDownY = 0;
+let dragStartX = 0, dragStartY = 0;
+
+cv.addEventListener('pointerdown', e => {
+  const rect = cv.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (W / rect.width);
+  const py = (e.clientY - rect.top) * (H / rect.height);
+
+  const hit = hitTest(px, py);
+  if (hit >= 0) {
+    dragging = hit;
+    dragOffX = nodes[hit].x - px;
+    dragOffY = nodes[hit].y - py;
+    cv.setPointerCapture(e.pointerId);
+    pointerDown = true;
+    pointerMoved = false;
+    pointerDownX = px;
+    pointerDownY = py;
+  } else {
+    pointerDown = true;
+    pointerMoved = false;
+    pointerDownX = px;
+    pointerDownY = py;
+    dragging = -1;
+  }
+  e.preventDefault();
+});
+
+cv.addEventListener('pointermove', e => {
+  if (!pointerDown) return;
+  const rect = cv.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (W / rect.width);
+  const py = (e.clientY - rect.top) * (H / rect.height);
+
+  const dx = px - pointerDownX, dy = py - pointerDownY;
+  if (dx*dx + dy*dy > 16) pointerMoved = true;
+
+  if (dragging >= 0) {
+    nodes[dragging].x = Math.max(30, Math.min(W-30, px + dragOffX));
+    nodes[dragging].y = Math.max(30, Math.min(H-30, py + dragOffY));
+    nodes[dragging].vx = 0;
+    nodes[dragging].vy = 0;
+  }
+  e.preventDefault();
+});
+
+cv.addEventListener('pointerup', e => {
+  const rect = cv.getBoundingClientRect();
+  const px = (e.clientX - rect.left) * (W / rect.width);
+  const py = (e.clientY - rect.top) * (H / rect.height);
+
+  if (!pointerMoved) {
+    // Tap/click
+    const hit = hitTest(px, py);
+    if (hit >= 0) {
+      selectedNode = selectedNode === hit ? -1 : hit;
+    } else {
+      selectedNode = -1;
+      addNode(px, py);
+    }
+  }
+  dragging = -1;
+  pointerDown = false;
+  e.preventDefault();
+});
+
+cv.addEventListener('pointercancel', e => {
+  dragging = -1;
+  pointerDown = false;
+});
+
+// ── Controls ──────────────────────────────────────────────────────────────
+document.getElementById('btnReset')?.addEventListener('click', () => {
+  buildGraph(rndInt(15,20));
+  lastIterTime = 0;
+});
+
+document.getElementById('btnStep')?.addEventListener('click', () => {
+  stepPageRank();
+});
+
+const btnAuto = document.getElementById('btnAuto');
+btnAuto?.addEventListener('click', () => {
+  autoMode = !autoMode;
+  btnAuto.textContent = autoMode ? 'Auto ■' : 'Auto ▶';
+  btnAuto.classList.toggle('active', autoMode);
+});
+
+const btnSurfer = document.getElementById('btnSurfer');
+btnSurfer?.addEventListener('click', () => {
+  showSurfer = !showSurfer;
+  btnSurfer.textContent = showSurfer ? 'Surfer ●' : 'Surfer ○';
+  btnSurfer.classList.toggle('active', showSurfer);
+  if (showSurfer) surferTrail = [];
+});
+
+document.getElementById('speedSlider')?.addEventListener('input', e => {
+  iterationsPerSec = parseInt(e.target.value);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────
+buildGraph(rndInt(15,20));
+requestAnimationFrame(ts => { lastTime = ts; loop(ts); });
+</script>
+</body>
+</html>

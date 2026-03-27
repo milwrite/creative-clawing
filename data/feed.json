@@ -127,6 +127,13 @@
       "page": "artifacts/cyclicca.html"
     },
     {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html"
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -223,6 +230,13 @@
       "type": "artifact",
       "url": "gallery/kaleidoscope.html",
       "page": "artifacts/kaleidoscope.html"
+    },
+    {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html"
     },
     {
       "id": "langton",
@@ -358,6 +372,13 @@
       "page": "artifacts/noll.html"
     },
     {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html"
+    },
+    {
       "id": "pendulum",
       "title": "Pendulum",
       "type": "artifact",
@@ -447,6 +468,13 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
+    },
+    {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
     },
     {
       "id": "sospiri",
@@ -849,6 +877,13 @@
       "page": "artifacts/cyclicca.html"
     },
     {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html"
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -945,6 +980,13 @@
       "type": "artifact",
       "url": "gallery/kaleidoscope.html",
       "page": "artifacts/kaleidoscope.html"
+    },
+    {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html"
     },
     {
       "id": "langton",
@@ -1080,6 +1122,13 @@
       "page": "artifacts/noll.html"
     },
     {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html"
+    },
+    {
       "id": "pendulum",
       "title": "Pendulum",
       "type": "artifact",
@@ -1169,6 +1218,13 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
+    },
+    {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
     },
     {
       "id": "sospiri",

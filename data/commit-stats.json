@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 254,
+    "totalCommits": 290,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -510,17 +510,309 @@
       "2026-03-21": 26,
       "2026-03-22": 8,
       "2026-03-23": 17,
-      "2026-03-24": 10
+      "2026-03-24": 16,
+      "2026-03-25": 22,
+      "2026-03-26": 8
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 55,
-      "other": 81,
-      "chore": 26
+      "fix": 63,
+      "other": 87,
+      "chore": 46,
+      "docs": 1,
+      "perf": 1
     },
     "commits": [
+      {
+        "sha": "aa02f5e8",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "0d0569ce",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "62f404d0",
+        "date": "2026-03-26",
+        "subject": "perf: homepage — single shared rAF for lane scrolls, tighter iframe cap (32 max, 300px rootMargin)",
+        "categories": [
+          "perf"
+        ]
+      },
+      {
+        "sha": "41a17711",
+        "date": "2026-03-26",
+        "subject": "sweep: fix astar iframe init timing; add service worker shell cache (offline support)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0a68e56c",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "1f334c9f",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "46e21765",
+        "date": "2026-03-26",
+        "subject": "sweep: normalize rossler+schelling 100dvh; remove schelling legacy iframe inline-hide",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "5e6d4690",
+        "date": "2026-03-25",
+        "subject": "feat: add PageRank — power iteration + random surfer visualization",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "984083b5",
+        "date": "2026-03-26",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "0fee364e",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "49832338",
+        "date": "2026-03-25",
+        "subject": "feat: add snowflake — Reiter hex CA for dendritic ice crystal growth",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "a4caffff",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "72fb093c",
+        "date": "2026-03-25",
+        "subject": "fix: dadras contributor Unknown→Petrarch; stop ejecting iframes on scroll (fixes black cards on mobile)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "3864baf8",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e05f4a85",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "19ed0135",
+        "date": "2026-03-25",
+        "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "0871b05b",
+        "date": "2026-03-25",
+        "subject": "chore: regenerate manifests after merge",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f49b8c08",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8c5b3cf1",
+        "date": "2026-03-25",
+        "subject": "feat: add Sprott attractor family + Kelvin-Helmholtz instability",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "dcd105d3",
+        "date": "2026-03-25",
+        "subject": "chore: update commit-stats",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "67224f61",
+        "date": "2026-03-25",
+        "subject": "Merge remote-tracking branch 'origin/main'",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b5cd8d5b",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c58a1083",
+        "date": "2026-03-25",
+        "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "6965ee18",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4d75f741",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8f1801a1",
+        "date": "2026-03-24",
+        "subject": "docs: add artifact quality standards to CLAUDE.md (iframe hiding, mobile layout requirements)",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "f11b96d3",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4a511826",
+        "date": "2026-03-24",
+        "subject": "fix: remove overflow:hidden from .nav-inner so Contributors submenu isn't clipped",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "95ddd147",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "94ffeffd",
+        "date": "2026-03-24",
+        "subject": "fix: mobile responsive layout for hatmonotile/gradient/astar; fix submit-artifact.yml duplicate const + env bugs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "5f198eff",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c65a47b8",
+        "date": "2026-03-24",
+        "subject": "fix: iframe sandbox allow-same-origin so artifact top-frame check hides controls correctly",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "b8bbee8b",
+        "date": "2026-03-24",
+        "subject": "fix: astar iframe — auto-demo loop so it's not a dead static grid",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "5f3a9e4f",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8e1a2cb0",
+        "date": "2026-03-24",
+        "subject": "fix: lotkavolterra mobile layout — controls no longer overlay canvases on narrow viewport",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "d614773b",
+        "date": "2026-03-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "176a7632",
         "date": "2026-03-24",
@@ -3043,25 +3335,117 @@
     ]
   },
   "unknown": {
-    "totalCommits": 40,
+    "totalCommits": 51,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
       "2026-03-20": 3,
       "2026-03-21": 10,
-      "2026-03-23": 2
+      "2026-03-23": 2,
+      "2026-03-24": 4,
+      "2026-03-25": 5,
+      "2026-03-26": 2
     },
     "categoryCounts": {
-      "other": 25,
-      "fix": 7,
-      "blog": 2,
-      "chore": 1,
+      "other": 27,
+      "fix": 12,
+      "blog": 3,
+      "chore": 2,
       "refactor": 2,
       "style": 1,
       "docs": 1,
-      "mobile": 1
+      "mobile": 2,
+      "artifact": 1
     },
     "commits": [
+      {
+        "sha": "6f26cd8d",
+        "date": "2026-03-26",
+        "subject": "optimize homepage: iframe lifecycle, unified rAF, containment",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "46e8a6d8",
+        "date": "2026-03-26",
+        "subject": "fix: scope dadras mobile layout rules to html.standalone — prevents iframe canvas breakage",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "e6a4e09a",
+        "date": "2026-03-25",
+        "subject": "fix: defer resize() in sprott+stablefluid for iframe black-card bug; fix dadras manifest (Unknown→Petrarch, flags)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "7e73dd9e",
+        "date": "2026-03-25",
+        "subject": "artifact: dadras attractor — five-parameter strange attractor (Dadras & Momeni 2009)",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "4bcf6383",
+        "date": "2026-03-25",
+        "subject": "chore: update manifest for dadras artifact",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "cdd3314c",
+        "date": "2026-03-25",
+        "subject": "mobile: touch-action:none on dadras + hatmonotile artifact iframes",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "3e632847",
+        "date": "2026-03-25",
+        "subject": "merge: sync with upstream before mobile fixes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c6de58a5",
+        "date": "2026-03-24",
+        "subject": "fix: hide .ui, .overlay, #params, #seed, #epoch, #mode-label, .mode in 7 gallery iframes",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "daf36b16",
+        "date": "2026-03-24",
+        "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9d80ae01",
+        "date": "2026-03-24",
+        "subject": "fix: hide .panel/.controls in 19 gallery iframes; unclip nav submenu",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "b62bc759",
+        "date": "2026-03-24",
+        "subject": "microblog: entry-31 — Mandelbrot set, smooth coloring, Julia/Fatou/Mandelbrot history",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "c464c987",
         "date": "2026-03-23",

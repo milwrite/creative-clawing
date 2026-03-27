@@ -185,8 +185,14 @@ function resize(){
   canvas.height = Math.round(innerHeight*dpr);
   imgData = ctx.createImageData(canvas.width, canvas.height);
 }
-resize();
 window.addEventListener('resize', resize);
+function startFluid() {
+  resize();
+  if (canvas.width === 0 || canvas.height === 0) { requestAnimationFrame(startFluid); return; }
+  // Re-init dye/velocity arrays with correct size after resize
+  imgData = ctx.createImageData(canvas.width, canvas.height);
+}
+requestAnimationFrame(startFluid);
 
 // Color: 3-channel dye
 let dyeR = new Float32Array(size);
@@ -360,7 +366,11 @@ function step(){
   if(showDye) render(); else renderVelocity();
   requestAnimationFrame(step);
 }
-requestAnimationFrame(step);
+// Kick off after startFluid() confirms valid dimensions
+(function waitForSize(){
+  if(canvas.width === 0 || canvas.height === 0){ requestAnimationFrame(waitForSize); return; }
+  requestAnimationFrame(step);
+})();
 </script>
 </body>
 </html>

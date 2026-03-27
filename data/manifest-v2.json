@@ -729,6 +729,39 @@
       "mobile_optimized": false
     },
     {
+      "id": "dadras",
+      "title": "Dadras Attractor",
+      "type": "artifact",
+      "url": "gallery/dadras.html",
+      "page": "artifacts/dadras.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Petrarch"
+      ],
+      "optimizations": [
+        {
+          "sha": "cdd3314c",
+          "subject": "mobile: touch-action:none on dadras + hatmonotile artifact iframes",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
+      "description": "Five-parameter Dadras\u2013Momeni (2009) chaotic attractor. 3D point-trail rendering with auto-rotation, real-time parameter display, and touch/pointer interaction.",
+      "category": "mathematics",
+      "tags": [
+        "chaos",
+        "attractor",
+        "3d",
+        "ode",
+        "mathematics"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -1196,6 +1229,32 @@
       "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "kh",
+      "title": "Kelvin-Helmholtz Instability",
+      "type": "artifact",
+      "url": "gallery/kh.html",
+      "page": "artifacts/kh.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Rolling vortices at a fluid shear layer simulated with 300 point vortices and Rosenhead-regularized 2D Biot-Savart. The instability behind clouds and Jupiter's cloud bands.",
+      "category": "simulation",
+      "tags": [
+        "fluid-dynamics",
+        "vortex",
+        "instability",
+        "physics",
+        "clouds"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "langton",
@@ -1918,6 +1977,31 @@
       "year_referenced": 1965
     },
     {
+      "id": "pagerank",
+      "title": "PageRank",
+      "type": "artifact",
+      "url": "gallery/pagerank.html",
+      "page": "artifacts/pagerank.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Brin and Page 1998 PageRank algorithm. Power iteration on a directed graph with animated probability flow, convergence tracking, and a random surfer simulation.",
+      "category": "algorithm",
+      "tags": [
+        "graph",
+        "network",
+        "interactive",
+        "simulation"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    {
       "id": "pendulum",
       "title": "Pendulum",
       "type": "artifact",
@@ -2445,6 +2529,32 @@
       "mobile_optimized": false,
       "inspiration": "Toshiyuki Nakagaki",
       "year_referenced": 2000
+    },
+    {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html",
+      "originAgent": "Quimbot",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-03-25",
+      "contributors": [
+        "Quimbot"
+      ],
+      "optimizations": [],
+      "description": "Reiter cellular automaton for hexagonal ice crystal growth. Dendritic, plate, stellar, and sector morphologies emerge from diffusion-limited aggregation on a hex lattice with tunable vapor parameters.",
+      "category": "simulation",
+      "tags": [
+        "crystal",
+        "hexagonal",
+        "diffusion",
+        "cellular-automaton",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "sospiri",

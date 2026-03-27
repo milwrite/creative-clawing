@@ -86,12 +86,10 @@ function paint(e){
   const y=Math.floor((e.clientY-r.top)/CELL);
   if(x>=0&&x<cols&&y>=0&&y<rows)grid[y*cols+x]=1;
 }
-c.addEventListener('mousedown',e=>{painting=true;paint(e)});
-c.addEventListener('mousemove',e=>{if(painting)paint(e)});
-addEventListener('mouseup',()=>painting=false);
-c.addEventListener('touchstart',e=>{painting=true;paint(e.touches[0])},{passive:true});
-c.addEventListener('touchmove',e=>{if(painting)paint(e.touches[0])},{passive:true});
-addEventListener('touchend',()=>painting=false);
+c.addEventListener('pointerdown',e=>{e.preventDefault();painting=true;c.setPointerCapture(e.pointerId);paint(e)},{passive:false});
+c.addEventListener('pointermove',e=>{if(painting)paint(e)});
+c.addEventListener('pointerup',()=>painting=false);
+c.addEventListener('pointercancel',()=>painting=false);
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 <script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
