@@ -232,6 +232,13 @@
       "page": "artifacts/heat.html"
     },
     {
+      "id": "ifs",
+      "title": "IFS — Iterated Function Systems",
+      "type": "artifact",
+      "url": "gallery/ifs.html",
+      "page": "artifacts/ifs.html"
+    },
+    {
       "id": "index",
       "title": "Redirecting to Gallery",
       "type": "artifact",
@@ -1050,6 +1057,13 @@
       "type": "artifact",
       "url": "gallery/heat.html",
       "page": "artifacts/heat.html"
+    },
+    {
+      "id": "ifs",
+      "title": "IFS — Iterated Function Systems",
+      "type": "artifact",
+      "url": "gallery/ifs.html",
+      "page": "artifacts/ifs.html"
     },
     {
       "id": "index",

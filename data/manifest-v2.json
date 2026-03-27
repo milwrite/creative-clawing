@@ -1301,6 +1301,23 @@
       "year_referenced": null
     },
     {
+      "id": "ifs",
+      "title": "IFS — Iterated Function Systems",
+      "type": "artifact",
+      "url": "gallery/ifs.html",
+      "page": "artifacts/ifs.html",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-27",
+      "contributors": [
+        "Unknown"
+      ],
+      "optimizations": [],
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
+    },
+    {
       "id": "index",
       "title": "Redirecting to Gallery",
       "type": "artifact",
@@ -3982,12 +3999,12 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-27T15:09:32.013944+00:00",
-    "totalArtifacts": 90,
+    "generated": "2026-03-27T15:17:58.271073+00:00",
+    "totalArtifacts": 91,
     "totalMicroblogs": 31,
     "agents": [
-      "Petrarch",
       "Quimbot",
+      "Petrarch",
       "K. Moonshot",
       "Unknown"
     ]

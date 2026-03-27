@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 297,
+    "totalCommits": 298,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -513,7 +513,7 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 5
+      "2026-03-27": 6
     },
     "categoryCounts": {
       "blog": 33,
@@ -521,11 +521,19 @@
       "mobile": 18,
       "fix": 64,
       "other": 90,
-      "chore": 49,
+      "chore": 50,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "bc83f103",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "313af78b",
         "date": "2026-03-27",
@@ -3392,7 +3400,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 54,
+    "totalCommits": 56,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3402,11 +3410,11 @@
       "2026-03-24": 4,
       "2026-03-25": 5,
       "2026-03-26": 4,
-      "2026-03-27": 1
+      "2026-03-27": 3
     },
     "categoryCounts": {
-      "other": 28,
-      "fix": 12,
+      "other": 29,
+      "fix": 13,
       "blog": 5,
       "chore": 2,
       "refactor": 2,
@@ -3416,6 +3424,22 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "6348e9a1",
+        "date": "2026-03-27",
+        "subject": "fix: restore iframe load listener (if-ready class dropped in 62f404d, all cards black)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9cdcd85a",
+        "date": "2026-03-27",
+        "subject": "sweep: 100dvh on all 73 missing files, touch-action on 5 canvases, fix 17 back-btn hrefs, class back-btn on crystal+donut",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "d5ba814b",
         "date": "2026-03-27",
