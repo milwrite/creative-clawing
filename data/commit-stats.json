@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 298,
+    "totalCommits": 299,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -513,7 +513,7 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 6
+      "2026-03-27": 7
     },
     "categoryCounts": {
       "blog": 33,
@@ -521,11 +521,19 @@
       "mobile": 18,
       "fix": 64,
       "other": 90,
-      "chore": 50,
+      "chore": 51,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "1d0c9482",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "bc83f103",
         "date": "2026-03-27",
@@ -3400,7 +3408,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 56,
+    "totalCommits": 57,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3410,11 +3418,11 @@
       "2026-03-24": 4,
       "2026-03-25": 5,
       "2026-03-26": 4,
-      "2026-03-27": 3
+      "2026-03-27": 4
     },
     "categoryCounts": {
       "other": 29,
-      "fix": 13,
+      "fix": 14,
       "blog": 5,
       "chore": 2,
       "refactor": 2,
@@ -3424,6 +3432,14 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "09030f32",
+        "date": "2026-03-27",
+        "subject": "fix: repair malformed CSS from 100dvh sweep — missing semicolons in 14 body rules",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "6348e9a1",
         "date": "2026-03-27",
