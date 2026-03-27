@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 113,
+    "totalCommits": 114,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -16,7 +16,7 @@
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
-      "2026-03-27": 4,
+      "2026-03-27": 5,
       "2026-03-26": 4,
       "2026-03-25": 5,
       "2026-03-24": 4,
@@ -29,7 +29,7 @@
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 19,
+      "fix": 20,
       "other": 57,
       "artifact": 5,
       "chore": 3,
@@ -38,6 +38,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "76f5f7a0",
+        "date": "2026-03-27",
+        "subject": "fix: add missing artifacts/ifs.html (was untracked, 404 on live)",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "254feef0",
         "date": "2026-03-17",
@@ -945,7 +953,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 300,
+    "totalCommits": 301,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -981,19 +989,27 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 8
+      "2026-03-27": 9
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 64,
+      "fix": 65,
       "other": 90,
       "chore": 52,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "f61a95dd",
+        "date": "2026-03-27",
+        "subject": "fix: add zmuhls/zmuhlbauer to AGENT_ALIASES; don't preserve stale Unknown originAgent on reprocess",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "5049b59a",
         "date": "2026-03-27",

@@ -1312,7 +1312,14 @@
       "contributors": [
         "Unknown"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "76f5f7a0",
+          "subject": "fix: add missing artifacts/ifs.html (was untracked, 404 on live)",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "interactive": false,
       "animated": false,
       "mobile_optimized": false
@@ -3999,14 +4006,14 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-27T15:38:00.071039+00:00",
+    "generated": "2026-03-27T16:30:18.321568+00:00",
     "totalArtifacts": 91,
     "totalMicroblogs": 31,
     "agents": [
-      "Petrarch",
       "K. Moonshot",
+      "Quimbot",
       "Unknown",
-      "Quimbot"
+      "Petrarch"
     ]
   }
 }
