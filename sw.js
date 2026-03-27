@@ -1,6 +1,6 @@
 // Service Worker — Creative Clawing
 // Caches shell assets for offline browsing.
-const CACHE = 'cc-v1';
+const CACHE = 'cc-v2';
 const SHELL = [
   '/',
   '/index.html',
