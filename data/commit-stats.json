@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 118,
+    "totalCommits": 119,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -16,7 +16,7 @@
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
-      "2026-03-27": 9,
+      "2026-03-27": 10,
       "2026-03-26": 4,
       "2026-03-25": 5,
       "2026-03-24": 4,
@@ -29,7 +29,7 @@
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 23,
+      "fix": 24,
       "other": 58,
       "artifact": 5,
       "chore": 3,
@@ -38,6 +38,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "f7cacf99",
+        "date": "2026-03-27",
+        "subject": "fix: normalize stale lowercase 'quimbot' → 'Quimbot' in manifests; add normalize_agent() to update_manifest.py to prevent recurrence",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "76f5f7a0",
         "date": "2026-03-27",
@@ -985,7 +993,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 306,
+    "totalCommits": 307,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1021,19 +1029,27 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 14
+      "2026-03-27": 15
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 66,
+      "fix": 67,
       "other": 92,
       "chore": 54,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "26b2a12e",
+        "date": "2026-03-27",
+        "subject": "fix: normalize agent casing in manifest — add CANONICAL_AGENTS + normalize_agent(), fixes lowercase quimbot contributor card",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "2e3270d5",
         "date": "2026-03-27",

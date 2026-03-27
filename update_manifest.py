@@ -59,6 +59,9 @@ AGENT_ALIASES = {
     "milwright": "Petrarch",
     "zmuhls":    "Petrarch",  # zmuhls / zmuhlbauer1@gmail.com = Petrarch's human git identity
     "zmuhlbauer": "Petrarch",
+    "k. moonshot": "K. Moonshot",
+    "moonshot":  "K. Moonshot",
+    "kmoonshot": "K. Moonshot",
 }
 
 # milwrite is never a contributor — all milwrite commits resolve to Petrarch
@@ -526,7 +529,22 @@ def main():
         "microblogs": microblogs_out,
     }
 
-    # ── 8. Write all files ────────────────────────────────────────────────────
+    # ── 8. Validate agent names before writing ───────────────────────────────
+    valid_agents = set(AGENT_ALIASES.values()) | {"Unknown"}  # Unknown triggers re-resolve next run
+    violations = []
+    for entry in artifacts_out + microblogs_out:
+        agent = entry.get("originAgent", "")
+        if agent and agent not in valid_agents:
+            violations.append(f"  {entry.get('id','?')}: originAgent={agent!r}")
+        for c in entry.get("contributors", []):
+            if c not in valid_agents:
+                violations.append(f"  {entry.get('id','?')}: contributor={c!r}")
+    if violations:
+        print("\n⚠️  Agent name violations found — aborting write:\n" + "\n".join(violations))
+        print("Add aliases to AGENT_ALIASES and re-run.")
+        raise SystemExit(1)
+
+    # ── 9. Write all files ────────────────────────────────────────────────────
     print("\nWriting output files…")
     save_json(MANIFEST_V2,   new_v2,        dry)
     save_json(FEED_JSON,     new_feed,      dry)
