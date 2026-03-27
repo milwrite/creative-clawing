@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 293,
+    "totalCommits": 294,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -513,19 +513,27 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 1
+      "2026-03-27": 2
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 64,
-      "other": 88,
+      "other": 89,
       "chore": 47,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "f965c8cd",
+        "date": "2026-03-27",
+        "subject": "sweep: fix back button hrefs (astar/gradient/hatmonotile/schelling), add 100dvh to antcolony",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "ab0077db",
         "date": "2026-03-27",
