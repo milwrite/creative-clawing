@@ -685,6 +685,7 @@
       iframe.loading = 'lazy';
       iframe.title = f.dataset.title || '';
       iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
       f.insertBefore(iframe, f.firstChild);
       liveIframeFrames.add(f);
     });
