@@ -222,7 +222,7 @@ function loop(){
 if(document.readyState==='complete'){
   resize(); loop();
 } else {
-  addEventListener('load',()=>{ resize(); loop(); });
+  addEventListener('load',()=>{ setTimeout(() => { resize(); loop(); }, 100); });
 }
 })();
 </script>

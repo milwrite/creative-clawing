@@ -312,7 +312,7 @@ canvas.addEventListener('click', regenerate);
 canvas.addEventListener('touchend', e => { e.preventDefault(); regenerate(); }, {passive:false});
 
 if(document.readyState === 'complete'){ resize(); requestAnimationFrame(loop); }
-else window.addEventListener('load', () => { resize(); requestAnimationFrame(loop); });
+else window.addEventListener('load', () => { setTimeout(() => { resize(); requestAnimationFrame(loop); }, 100); });
 
 })();
 </script>
