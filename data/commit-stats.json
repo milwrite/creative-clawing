@@ -993,7 +993,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 307,
+    "totalCommits": 309,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1029,19 +1029,35 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 15
+      "2026-03-27": 17
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 67,
-      "other": 92,
+      "fix": 68,
+      "other": 93,
       "chore": 54,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "87290556",
+        "date": "2026-03-27",
+        "subject": "fix: hard validation gate in update_manifest.py — aborts write if any agent name isn't in AGENT_ALIASES; add K. Moonshot aliases",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c274f24f",
+        "date": "2026-03-27",
+        "subject": "sweep: 100dvh normalize on 5 remaining artifacts",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "26b2a12e",
         "date": "2026-03-27",
