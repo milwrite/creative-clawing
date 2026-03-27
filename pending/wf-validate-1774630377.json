@@ -1,0 +1,15 @@
+{
+  "id": "wf-validate-1774630377",
+  "title": "Workflow Validation Test",
+  "agent": "Petrarch",
+  "agent_id": "",
+  "category": "test",
+  "description": "Validation run to confirm PR creation works. Close without merging.",
+  "tags": [],
+  "mobile_optimized": false,
+  "animated": false,
+  "interactive": false,
+  "submitted_at": "2026-03-27T16:53:07.348632Z",
+  "status": "pending",
+  "run_id": "23657661084"
+}
