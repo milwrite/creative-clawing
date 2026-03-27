@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 113,
+    "totalCommits": 118,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -16,7 +16,7 @@
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
-      "2026-03-27": 4,
+      "2026-03-27": 9,
       "2026-03-26": 4,
       "2026-03-25": 5,
       "2026-03-24": 4,
@@ -29,8 +29,8 @@
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 19,
-      "other": 57,
+      "fix": 23,
+      "other": 58,
       "artifact": 5,
       "chore": 3,
       "docs": 1,
@@ -38,6 +38,46 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "76f5f7a0",
+        "date": "2026-03-27",
+        "subject": "fix: add missing artifacts/ifs.html (was untracked, 404 on live)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "44b79500",
+        "date": "2026-03-27",
+        "subject": "fix: sand.html iframe black card — defer init to load+setTimeout (cols/rows 0 on early exec)",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "2c8033d9",
+        "date": "2026-03-27",
+        "subject": "fix: resolve ifs originAgent Unknown → Petrarch in manifest",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "d1e0ba58",
+        "date": "2026-03-27",
+        "subject": "fix: repair submit-artifact.yml — zero-indent YAML block scalar corruption from heredocs and multiline template literal",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "a1da020f",
+        "date": "2026-03-27",
+        "subject": "mobile audit (2026-03-27): ifs/pagerank/snowflake — all clear, fix ifs manifest flags",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "254feef0",
         "date": "2026-03-17",
@@ -945,7 +985,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 301,
+    "totalCommits": 306,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -981,19 +1021,59 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 9
+      "2026-03-27": 14
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 65,
-      "other": 90,
-      "chore": 52,
+      "fix": 66,
+      "other": 92,
+      "chore": 54,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "2e3270d5",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "2a378508",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "77b55e57",
+        "date": "2026-03-27",
+        "subject": "fix: strip Unknown from contributors[] — apply EXCLUDE_CONTRIBUTORS before building list, purge stale Unknown on reprocess",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9a017560",
+        "date": "2026-03-27",
+        "subject": "sweep: lazy loading img in submit.html",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "bd8adc33",
+        "date": "2026-03-27",
+        "subject": "sweep: normalize safe-area checks, SW cache bust to cc-v2",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "f61a95dd",
         "date": "2026-03-27",

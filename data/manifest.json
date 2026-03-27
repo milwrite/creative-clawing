@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-27T17:15:27.553049+00:00",
+  "generated": "2026-03-27T18:56:27.045087+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1328,7 +1328,7 @@
       "originConfidence": "reported",
       "origin_date": "2026-03-27",
       "contributors": [
-        "Unknown"
+        "Petrarch"
       ],
       "optimizations": [
         {
@@ -1336,11 +1336,26 @@
           "subject": "fix: add missing artifacts/ifs.html (was untracked, 404 on live)",
           "agent": "Petrarch",
           "confidence": "confirmed"
+        },
+        {
+          "sha": null,
+          "subject": "mobile audit (2026-03-27 cron): touch-action:none, DPR capped at 2, viewport-fit=cover, safe-area-insets — all confirmed present",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
         }
       ],
-      "interactive": false,
-      "animated": false,
-      "mobile_optimized": false
+      "description": "Iterated function systems via the chaos game — Barnsley fern, Sierpiński triangle, dragon curve, and more emerge from four affine transforms and random coin flips.",
+      "category": "mathematics",
+      "tags": [
+        "fractal",
+        "ifs",
+        "chaos-game",
+        "generative",
+        "interactive"
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "index",
@@ -2309,7 +2324,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": null,
+          "subject": "mobile audit (2026-03-27 cron): touch-action:none, DPR capped at 2, viewport-fit=cover, safe-area-insets on back-btn and panel — all confirmed present",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Brin and Page 1998 PageRank algorithm. Power iteration on a directed graph with animated probability flow, convergence tracking, and a random surfer simulation.",
       "category": "algorithm",
       "tags": [
@@ -2943,7 +2965,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": null,
+          "subject": "mobile audit (2026-03-27 cron): touch-action:none, DPR capped at 2, viewport-fit=cover, safe-area-insets on UI elements — all confirmed present",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Reiter cellular automaton for hexagonal ice crystal growth. Dendritic, plate, stellar, and sector morphologies emerge from diffusion-limited aggregation on a hex lattice with tunable vapor parameters.",
       "category": "simulation",
       "tags": [

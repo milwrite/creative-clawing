@@ -1338,9 +1338,6 @@
           "confidence": "confirmed"
         }
       ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
       "description": "Iterated function systems via the chaos game — Barnsley fern, Sierpiński triangle, dragon curve, and more emerge from four affine transforms and random coin flips.",
       "category": "mathematics",
       "tags": [
@@ -1349,7 +1346,10 @@
         "chaos-game",
         "generative",
         "interactive"
-      ]
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "index",
@@ -4069,14 +4069,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-27T17:15:27.553049+00:00",
+    "generated": "2026-03-27T18:56:27.045087+00:00",
     "totalArtifacts": 91,
     "totalMicroblogs": 30,
     "agents": [
-      "K. Moonshot",
-      "Quimbot",
       "Petrarch",
-      "Unknown"
+      "Quimbot",
+      "K. Moonshot"
     ]
   }
 }
