@@ -22,6 +22,13 @@
       "page": "artifacts/asciireactive.html"
     },
     {
+      "id": "astar",
+      "title": "A* Pathfinding",
+      "type": "artifact",
+      "url": "gallery/astar.html",
+      "page": "artifacts/astar.html"
+    },
+    {
       "id": "audiomountain",
       "title": "Audiomountain",
       "type": "artifact",
@@ -162,6 +169,13 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "fitzhughnagumo",
+      "title": "FitzHugh-Nagumo Excitable Media",
+      "type": "artifact",
+      "url": "gallery/fitzhughnagumo.html",
+      "page": "artifacts/fitzhughnagumo.html"
+    },
+    {
       "id": "flow",
       "title": "Flow",
       "type": "artifact",
@@ -174,6 +188,13 @@
       "type": "artifact",
       "url": "gallery/fourier.html",
       "page": "artifacts/fourier.html"
+    },
+    {
+      "id": "gradient",
+      "title": "Gradient Descent",
+      "type": "artifact",
+      "url": "gallery/gradient.html",
+      "page": "artifacts/gradient.html"
     },
     {
       "id": "grayscott",
@@ -195,6 +216,13 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
+    },
+    {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -274,6 +302,13 @@
       "page": "artifacts/lorenz.html"
     },
     {
+      "id": "lotkavolterra",
+      "title": "Lotka–Volterra",
+      "type": "artifact",
+      "url": "gallery/lotkavolterra.html",
+      "page": "artifacts/lotkavolterra.html"
+    },
+    {
       "id": "lsystem",
       "title": "L-System",
       "type": "artifact",
@@ -324,7 +359,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -356,6 +391,13 @@
       "type": "artifact",
       "url": "gallery/nake.html",
       "page": "artifacts/nake.html"
+    },
+    {
+      "id": "nbody",
+      "title": "N-Body Gravity",
+      "type": "artifact",
+      "url": "gallery/nbody.html",
+      "page": "artifacts/nbody.html"
     },
     {
       "id": "newton",
@@ -393,6 +435,13 @@
       "page": "artifacts/penrose.html"
     },
     {
+      "id": "percolation",
+      "title": "Percolation",
+      "type": "artifact",
+      "url": "gallery/percolation.html",
+      "page": "artifacts/percolation.html"
+    },
+    {
       "id": "phyllotaxis",
       "title": "Phyllotaxis",
       "type": "artifact",
@@ -415,7 +464,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -440,6 +489,13 @@
       "type": "artifact",
       "url": "gallery/scandrift.html",
       "page": "artifacts/scandrift.html"
+    },
+    {
+      "id": "schelling",
+      "title": "Schelling Segregation",
+      "type": "artifact",
+      "url": "gallery/schelling.html",
+      "page": "artifacts/schelling.html"
     },
     {
       "id": "schotter",
@@ -489,6 +545,20 @@
       "type": "artifact",
       "url": "gallery/springwires.html",
       "page": "artifacts/springwires.html"
+    },
+    {
+      "id": "sprott",
+      "title": "Sprott Attractors",
+      "type": "artifact",
+      "url": "gallery/sprott.html",
+      "page": "artifacts/sprott.html"
+    },
+    {
+      "id": "stablefluid",
+      "title": "Stable Fluids",
+      "type": "artifact",
+      "url": "gallery/stablefluid.html",
+      "page": "artifacts/stablefluid.html"
     },
     {
       "id": "starfield",
@@ -678,7 +748,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -693,6 +763,24 @@
       "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html"
+    },
+    {
+      "id": "entry-30",
+      "title": "Lotka-Volterra: The Predator’s Clock",
+      "type": "microblog",
+      "url": "microblog/entry-30.html"
+    },
+    {
+      "id": "entry-31",
+      "title": "The Boundary That Has No Length",
+      "type": "microblog",
+      "url": "microblog/entry-31.html"
+    },
+    {
+      "id": "entry-32",
+      "title": "The One-Liner That Wrote a Book",
+      "type": "microblog",
+      "url": "microblog/entry-32.html"
     },
     {
       "id": "entry-4",
@@ -729,24 +817,6 @@
       "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-30",
-      "title": "Lotka-Volterra: The Predator\u2019s Clock",
-      "type": "microblog",
-      "url": "microblog/entry-30.html"
-    },
-    {
-      "id": "entry-31",
-      "title": "The Boundary That Has No Length",
-      "type": "microblog",
-      "url": "microblog/entry-31.html"
-    },
-    {
-      "id": "entry-32",
-      "title": "The One-Liner That Wrote a Book",
-      "type": "microblog",
-      "url": "microblog/entry-32.html"
     }
   ],
   "feed": [
@@ -770,6 +840,13 @@
       "type": "artifact",
       "url": "gallery/asciireactive.html",
       "page": "artifacts/asciireactive.html"
+    },
+    {
+      "id": "astar",
+      "title": "A* Pathfinding",
+      "type": "artifact",
+      "url": "gallery/astar.html",
+      "page": "artifacts/astar.html"
     },
     {
       "id": "audiomountain",
@@ -912,6 +989,13 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "fitzhughnagumo",
+      "title": "FitzHugh-Nagumo Excitable Media",
+      "type": "artifact",
+      "url": "gallery/fitzhughnagumo.html",
+      "page": "artifacts/fitzhughnagumo.html"
+    },
+    {
       "id": "flow",
       "title": "Flow",
       "type": "artifact",
@@ -924,6 +1008,13 @@
       "type": "artifact",
       "url": "gallery/fourier.html",
       "page": "artifacts/fourier.html"
+    },
+    {
+      "id": "gradient",
+      "title": "Gradient Descent",
+      "type": "artifact",
+      "url": "gallery/gradient.html",
+      "page": "artifacts/gradient.html"
     },
     {
       "id": "grayscott",
@@ -945,6 +1036,13 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
+    },
+    {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -1024,6 +1122,13 @@
       "page": "artifacts/lorenz.html"
     },
     {
+      "id": "lotkavolterra",
+      "title": "Lotka–Volterra",
+      "type": "artifact",
+      "url": "gallery/lotkavolterra.html",
+      "page": "artifacts/lotkavolterra.html"
+    },
+    {
       "id": "lsystem",
       "title": "L-System",
       "type": "artifact",
@@ -1074,7 +1179,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1106,6 +1211,13 @@
       "type": "artifact",
       "url": "gallery/nake.html",
       "page": "artifacts/nake.html"
+    },
+    {
+      "id": "nbody",
+      "title": "N-Body Gravity",
+      "type": "artifact",
+      "url": "gallery/nbody.html",
+      "page": "artifacts/nbody.html"
     },
     {
       "id": "newton",
@@ -1143,6 +1255,13 @@
       "page": "artifacts/penrose.html"
     },
     {
+      "id": "percolation",
+      "title": "Percolation",
+      "type": "artifact",
+      "url": "gallery/percolation.html",
+      "page": "artifacts/percolation.html"
+    },
+    {
       "id": "phyllotaxis",
       "title": "Phyllotaxis",
       "type": "artifact",
@@ -1165,7 +1284,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1190,6 +1309,13 @@
       "type": "artifact",
       "url": "gallery/scandrift.html",
       "page": "artifacts/scandrift.html"
+    },
+    {
+      "id": "schelling",
+      "title": "Schelling Segregation",
+      "type": "artifact",
+      "url": "gallery/schelling.html",
+      "page": "artifacts/schelling.html"
     },
     {
       "id": "schotter",
@@ -1239,6 +1365,20 @@
       "type": "artifact",
       "url": "gallery/springwires.html",
       "page": "artifacts/springwires.html"
+    },
+    {
+      "id": "sprott",
+      "title": "Sprott Attractors",
+      "type": "artifact",
+      "url": "gallery/sprott.html",
+      "page": "artifacts/sprott.html"
+    },
+    {
+      "id": "stablefluid",
+      "title": "Stable Fluids",
+      "type": "artifact",
+      "url": "gallery/stablefluid.html",
+      "page": "artifacts/stablefluid.html"
     },
     {
       "id": "starfield",
@@ -1426,7 +1566,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -1441,6 +1581,24 @@
       "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html"
+    },
+    {
+      "id": "entry-30",
+      "title": "Lotka-Volterra: The Predator’s Clock",
+      "type": "microblog",
+      "url": "microblog/entry-30.html"
+    },
+    {
+      "id": "entry-31",
+      "title": "The Boundary That Has No Length",
+      "type": "microblog",
+      "url": "microblog/entry-31.html"
+    },
+    {
+      "id": "entry-32",
+      "title": "The One-Liner That Wrote a Book",
+      "type": "microblog",
+      "url": "microblog/entry-32.html"
     },
     {
       "id": "entry-4",
@@ -1477,24 +1635,6 @@
       "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-30",
-      "title": "Lotka-Volterra: The Predator\u2019s Clock",
-      "type": "microblog",
-      "url": "microblog/entry-30.html"
-    },
-    {
-      "id": "entry-31",
-      "title": "The Boundary That Has No Length",
-      "type": "microblog",
-      "url": "microblog/entry-31.html"
-    },
-    {
-      "id": "entry-32",
-      "title": "The One-Liner That Wrote a Book",
-      "type": "microblog",
-      "url": "microblog/entry-32.html"
     }
   ]
 }

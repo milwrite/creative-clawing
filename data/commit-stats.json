@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 290,
+    "totalCommits": 292,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -512,19 +512,35 @@
       "2026-03-23": 17,
       "2026-03-24": 16,
       "2026-03-25": 22,
-      "2026-03-26": 8
+      "2026-03-26": 10
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 63,
-      "other": 87,
+      "fix": 64,
+      "other": 88,
       "chore": 46,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "e4f09042",
+        "date": "2026-03-26",
+        "subject": "sweep: normalize metaballs/brainsbrain/penrose/springwires — 100dvh, fix penrose back href; manifest sync",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1b9f18e8",
+        "date": "2026-03-26",
+        "subject": "fix: add node_modules to .gitignore, remove from tracking",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "aa02f5e8",
         "date": "2026-03-26",
@@ -3335,7 +3351,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 51,
+    "totalCommits": 53,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3344,12 +3360,12 @@
       "2026-03-23": 2,
       "2026-03-24": 4,
       "2026-03-25": 5,
-      "2026-03-26": 2
+      "2026-03-26": 4
     },
     "categoryCounts": {
       "other": 27,
       "fix": 12,
-      "blog": 3,
+      "blog": 5,
       "chore": 2,
       "refactor": 2,
       "style": 1,
@@ -3358,6 +3374,22 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "76d0ea64",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "30083b46",
+        "date": "2026-03-26",
+        "subject": "microblog: entry-32 — 10 print, one-liner maze history",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "6f26cd8d",
         "date": "2026-03-26",

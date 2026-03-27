@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-27T01:21:42.356417+00:00",
+  "generated": "2026-03-27T03:09:08.725805+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -132,29 +132,53 @@
       "url": "gallery/astar.html",
       "page": "artifacts/astar.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "touch-action:none",
-        "viewport-fit:cover",
-        "user-scalable:no",
-        "dpr-cap:2",
-        "pointer-events"
+        {
+          "sha": "19ed0135",
+          "subject": "fix: mobile — viewport-fit=cover/user-scalable=no on 25 files; pointer event upgrades on voronoi, springwires, sand, life, astar",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "c58a1083",
+          "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "94ffeffd",
+          "subject": "fix: mobile responsive layout for hatmonotile/gradient/astar; fix submit-artifact.yml duplicate const + env bugs",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "b8bbee8b",
+          "subject": "fix: astar iframe — auto-demo loop so it's not a dead static grid",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Interactive A* and Dijkstra pathfinding on a grid. Draw walls, generate mazes, drag endpoints, compare search frontier expansion between heuristic-guided and blind search.",
-      "category": "infrastructure",
-      "tags": [
-        "pathfinding",
-        "graph-search",
-        "algorithm",
-        "interactive"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "audiomountain",
@@ -226,7 +250,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": true,
+      "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
     },
@@ -266,7 +290,7 @@
       ],
       "interactive": false,
       "animated": true,
-      "mobile_optimized": true,
+      "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
     },
@@ -323,25 +347,15 @@
       "url": "gallery/brainsbrain.html",
       "page": "artifacts/brainsbrain.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-21",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [],
-      "description": "Brian Silverman's 3-state cellular automaton: cells fire, enter a refractory dying state, then recover. The exactly-2 rule produces gliders, oscillators, and sprawling activity that rarely settles.",
-      "category": "cellular-automaton",
-      "tags": [
-        "cellular-automaton",
-        "three-state",
-        "gliders",
-        "silverman"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "Brian Silverman",
-      "year_referenced": 1994
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "buddhabrot",
@@ -350,7 +364,7 @@
       "url": "gallery/buddhabrot.html",
       "page": "artifacts/buddhabrot.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-21",
       "contributors": [
         "Quimbot"
@@ -363,28 +377,18 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Escape-path orbit density of the Mandelbrot set — each pixel encodes how many escaping trajectories passed through it. Three-channel Nebulabrot mode maps depth ranges to RGB.",
-      "category": "fractal",
-      "tags": [
-        "buddhabrot",
-        "mandelbrot",
-        "orbit-density",
-        "nebulabrot"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "Melinda Green",
-      "year_referenced": 1993
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "burningship",
-      "title": "Burning Ship",
+      "title": "Burning Ship Fractal",
       "type": "artifact",
       "url": "gallery/burningship.html",
       "page": "artifacts/burningship.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-19",
       "contributors": [
         "Quimbot"
@@ -397,18 +401,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "The Burning Ship fractal: fold absolute values into escape-time iteration — scroll to zoom, click to center.",
-      "category": "fractal",
-      "tags": [
-        "fractal",
-        "escape-time",
-        "zoom"
-      ],
-      "interactive": true,
+      "interactive": false,
       "animated": false,
-      "mobile_optimized": true,
-      "inspiration": "Michael Michelitsch, Otto Rössler",
-      "year_referenced": 1992
+      "mobile_optimized": false
     },
     {
       "id": "chainwheel",
@@ -779,12 +774,12 @@
     },
     {
       "id": "cyclicca",
-      "title": "Cyclic CA",
+      "title": "Cyclic Cellular Automaton",
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-19",
       "contributors": [
         "Quimbot"
@@ -797,18 +792,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Cyclic cellular automaton: n states, Moore neighborhood, threshold — random noise self-organizes into spiral waves.",
-      "category": "cellular-automaton",
-      "tags": [
-        "automaton",
-        "spiral",
-        "cyclic"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "David Griffeath",
-      "year_referenced": 1988
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "dadras",
@@ -916,12 +902,18 @@
       "url": "gallery/domainwarp.html",
       "page": "artifacts/domainwarp.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-17",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
         {
           "sha": "55c64b3e",
           "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
@@ -929,19 +921,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Three-level domain warping using fbm(fbm(fbm(p))) — Inigo Quilez technique. WebGL fragment shader with cosine palette cycling.",
-      "category": "noise",
-      "tags": [
-        "noise",
-        "flow",
-        "glsl",
-        "webgl",
-        "fbm",
-        "domain-warp"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "donut",
@@ -991,15 +973,15 @@
     },
     {
       "id": "fitzhughnagumo",
-      "title": "FitzHugh-Nagumo",
+      "title": "FitzHugh-Nagumo Excitable Media",
       "type": "artifact",
       "url": "gallery/fitzhughnagumo.html",
       "page": "artifacts/fitzhughnagumo.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Petrarch"
+        "Unknown"
       ],
       "optimizations": [
         {
@@ -1009,19 +991,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Excitable media: spiral waves, target waves, and plane pulses from a neural firing model.",
-      "category": "simulation",
-      "tags": [
-        "reaction-diffusion",
-        "excitable-media",
-        "neural",
-        "spiral-waves"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "FitzHugh 1961; Nagumo 1962",
-      "year_referenced": 1961
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "flow",
@@ -1110,28 +1082,34 @@
       "url": "gallery/gradient.html",
       "page": "artifacts/gradient.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [
-        "touch-action:none",
-        "viewport-fit:cover",
-        "user-scalable:no",
-        "dpr-cap:2"
+        {
+          "sha": "c58a1083",
+          "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "94ffeffd",
+          "subject": "fix: mobile responsive layout for hatmonotile/gradient/astar; fix submit-artifact.yml duplicate const + env bugs",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Watch gradient descent, momentum, and Adam navigate loss landscapes: Rosenbrock, Himmelblau, Rastrigin, saddle points, and Beale. Click to place a starting point; compare optimizer behavior on the same terrain.",
-      "category": "optimization",
-      "tags": [
-        "optimization",
-        "machine-learning",
-        "gradient",
-        "interactive"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "grayscott",
@@ -1259,31 +1237,41 @@
       "url": "gallery/hatmonotile.html",
       "page": "artifacts/hatmonotile.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "viewport-fit",
-        "user-scalable=no",
-        "touch-action:none",
-        "pointerEvents",
-        "pinch-zoom",
-        "dpr-cap"
+        {
+          "sha": "cdd3314c",
+          "subject": "mobile: touch-action:none on dadras + hatmonotile artifact iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "c58a1083",
+          "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "94ffeffd",
+          "subject": "fix: mobile responsive layout for hatmonotile/gradient/astar; fix submit-artifact.yml duplicate const + env bugs",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "The 2023 aperiodic monotile (Smith, Myers, Kaplan, Goodman-Strauss). Hierarchical substitution builds H/T/P/F metatiles into supertiles that tile the plane without periodicity. Drag to pan, scroll to zoom, adjust subdivision level and palette.",
-      "category": "geometry",
-      "tags": [
-        "tiling",
-        "aperiodic",
-        "substitution",
-        "geometry",
-        "interactive"
-      ],
-      "interactive": true,
+      "interactive": false,
       "animated": false,
-      "mobile_optimized": true
+      "mobile_optimized": false
     },
     {
       "id": "heat",
@@ -1343,7 +1331,7 @@
       "url": "gallery/ising.html",
       "page": "artifacts/ising.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-22",
       "contributors": [
         "Quimbot"
@@ -1356,18 +1344,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Metropolis-Hastings simulation of a 2D ferromagnet. Drag or use the temperature slider to cross Tc ≈ 2.269 and watch ferromagnetic domains form and dissolve.",
-      "category": "physics",
-      "tags": [
-        "physics",
-        "statistical-mechanics",
-        "phase-transition",
-        "simulation"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "Ising model, Ernst Ising 1925; Metropolis algorithm, Metropolis et al. 1953"
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "julia",
@@ -1611,6 +1590,12 @@
       ],
       "optimizations": [
         {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
           "sha": "55c64b3e",
           "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
           "agent": "Quimbot",
@@ -1678,27 +1663,47 @@
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "touch-action:none",
-        "pointer-capture",
-        "responsive-grid"
+        {
+          "sha": "c58a1083",
+          "subject": "fix: scope mobile layout rules to html.standalone — media queries fire in card iframes at ~200px width",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "8e1a2cb0",
+          "subject": "fix: lotkavolterra mobile layout — controls no longer overlay canvases on narrow viewport",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "c464c987",
+          "subject": "mobile: cap dpr at 2, add touch-action:none to sketch-frame iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "3aebe1e3",
+          "subject": "mobile: lotka-volterra — one slider per row, grid layout, responsive breakpoints",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Predator-prey dynamics with dual-panel display: time series oscillations and phase portrait. RK4 integration of the classic Lotka–Volterra equations with adjustable parameters and click-to-set initial conditions.",
-      "category": "simulation",
-      "tags": [
-        "ecology",
-        "dynamics",
-        "differential-equations",
-        "phase-portrait"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "lsystem",
@@ -1996,7 +2001,7 @@
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-21",
       "contributors": [
         "Quimbot"
@@ -2009,19 +2014,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Two overlapping periodic grids — lines, circles, or dots — create emergent interference fringes. Drag to offset layers; adjust spacing and rotation angle in real time.",
-      "category": "pattern",
-      "tags": [
-        "moire",
-        "interference",
-        "pattern",
-        "optical"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": null,
-      "year_referenced": null
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "molnar",
@@ -2181,30 +2176,23 @@
       "url": "gallery/nbody.html",
       "page": "artifacts/nbody.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "dpr-cap-2",
-        "touch-action-none",
-        "viewport-fit-cover",
-        "pointer-events",
-        "safe-area-insets"
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Gravitational N-body simulation with Velocity Verlet integration. Five presets: figure-eight three-body orbit (Chenciner-Montgomery 2000), solar system, binary stars with circumbinary planets, random star cluster, and Lagrange points. Click to add mass.",
-      "category": "physics",
-      "tags": [
-        "gravity",
-        "orbital-mechanics",
-        "three-body",
-        "simulation",
-        "velocity-verlet"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "newton",
@@ -2236,7 +2224,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": true,
+      "mobile_optimized": false,
       "inspiration": "Arthur Cayley",
       "year_referenced": 1879
     },
@@ -2344,11 +2332,10 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html",
-      "originAgent": "K. Moonshot",
+      "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "origin_date": "2026-03-17",
       "contributors": [
-        "K. Moonshot",
         "Quimbot"
       ],
       "optimizations": [
@@ -2378,27 +2365,29 @@
       "url": "gallery/percolation.html",
       "page": "artifacts/percolation.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "touch-action:none",
-        "pointer-capture",
-        "responsive-sizing"
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "c464c987",
+          "subject": "mobile: cap dpr at 2, add touch-action:none to sketch-frame iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Site percolation on a square lattice with union-find cluster detection. Drag or animate probability p to watch the phase transition at the critical threshold p_c ≈ 0.5927, where a spanning cluster first connects top to bottom.",
-      "category": "simulation",
-      "tags": [
-        "statistical-physics",
-        "phase-transition",
-        "percolation",
-        "lattice"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "phyllotaxis",
@@ -2497,33 +2486,24 @@
       "type": "artifact",
       "url": "gallery/rimesparse.html",
       "page": "artifacts/rimesparse.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
-      "origin_date": "2026-03-22",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-21",
       "contributors": [
-        "Petrarch"
+        "Unknown",
+        "Quimbot"
       ],
       "optimizations": [
         {
-          "sha": "pending",
-          "subject": "mobile: add user-scalable=no + viewport-fit=cover to rimesparse",
+          "sha": "9ab56245",
+          "subject": "mobile: viewport-fit=cover + user-scalable=no for rimesparse; mark mobile_optimized",
           "agent": "Quimbot",
           "confidence": "confirmed"
         }
       ],
-      "description": "Petrarch's Canzoniere — 366 fragments in orbit, pulled toward an unreachable centre with every volta.",
-      "category": "simulation",
-      "tags": [
-        "particles",
-        "collab",
-        "ambient",
-        "flow-field"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "Petrarch",
-      "year_referenced": 1374
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "rossler",
@@ -2531,11 +2511,10 @@
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html",
-      "originAgent": "K. Moonshot",
+      "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "origin_date": "2026-03-17",
       "contributors": [
-        "K. Moonshot",
         "Quimbot"
       ],
       "optimizations": [
@@ -2725,28 +2704,35 @@
       "url": "gallery/schelling.html",
       "page": "artifacts/schelling.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
-      "origin_date": "2026-03-24",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "dpr-cap",
-        "touch-action",
-        "viewport-fit",
-        "safe-area-insets"
+        {
+          "sha": "c6de58a5",
+          "subject": "fix: hide .ui, .overlay, #params, #seed, #epoch, #mode-label, .mode in 7 gallery iframes",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "daf36b16",
+          "subject": "fix: extend iframe hide rules to cover #hint, #hud, #label, #stats, #counter, .hint, .stats overlays across 34 gallery files",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Thomas Schelling's 1971 segregation model. Mild individual tolerance thresholds produce strong macro-level clustering. Adjustable tolerance, vacancy rate, and group count with live similarity index.",
-      "category": "simulation",
-      "tags": [
-        "agent-based",
-        "segregation",
-        "social-dynamics",
-        "emergence"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "schotter",
@@ -2852,25 +2838,15 @@
       "url": "gallery/simony.html",
       "page": "artifacts/simony.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-21",
       "contributors": [
         "Quimbot"
       ],
       "optimizations": [],
-      "description": "Bernoulli site percolation as simony: cells open only if they can pay the coin price p. Below the critical threshold (~0.593), no path opens from earth to heaven. Above it, a giant connected cluster forms and souls can rise.",
-      "category": "simulation",
-      "tags": [
-        "percolation",
-        "graph-theory",
-        "religious-history",
-        "critical-threshold"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "Simon Magus / Acts 8",
-      "year_referenced": null
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "slime",
@@ -2903,7 +2879,7 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": true,
+      "mobile_optimized": false,
       "inspiration": "Toshiyuki Nakagaki",
       "year_referenced": 2000
     },
@@ -3015,15 +2991,16 @@
     },
     {
       "id": "sprott",
-      "title": "Sprott Attractor Family",
+      "title": "Sprott Attractors",
       "type": "artifact",
       "url": "gallery/sprott.html",
       "page": "artifacts/sprott.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-25",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
         {
@@ -3033,18 +3010,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "Nine strange attractors from Julien Sprott's 1994 systematic search for chaotic 3D ODE systems. RK4 integration, 60k-point trails, interactive 3D rotation.",
-      "category": "mathematics",
-      "tags": [
-        "chaos",
-        "attractor",
-        "3d",
-        "ode",
-        "physics"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "stablefluid",
@@ -3053,28 +3021,29 @@
       "url": "gallery/stablefluid.html",
       "page": "artifacts/stablefluid.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
-      "origin_date": "2026-03-24",
+      "originConfidence": "reported",
+      "origin_date": "2026-03-23",
       "contributors": [
-        "Quimbot"
+        "Quimbot",
+        "Unknown"
       ],
       "optimizations": [
-        "touch-action:none",
-        "pointerCapture",
-        "DPR cap at 2",
-        "viewport-fit:cover"
+        {
+          "sha": "e6a4e09a",
+          "subject": "fix: defer resize() in sprott+stablefluid for iframe black-card bug; fix dadras manifest (Unknown→Petrarch, flags)",
+          "agent": "Unknown",
+          "confidence": "confirmed"
+        },
+        {
+          "sha": "55c64b3e",
+          "subject": "fix: add CSS-first iframe control hiding to 9 artifacts — stops controls flashing in homepage cards",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
       ],
-      "description": "Interactive 2D Navier-Stokes fluid simulation based on Jos Stam (1999). Semi-Lagrangian advection, Gauss-Seidel pressure projection, optional vorticity confinement.",
-      "category": "physics",
-      "tags": [
-        "fluid",
-        "navier-stokes",
-        "simulation",
-        "interactive"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "starfield",
@@ -3198,18 +3167,18 @@
       ],
       "interactive": true,
       "animated": true,
-      "mobile_optimized": true,
+      "mobile_optimized": false,
       "inspiration": null,
       "year_referenced": null
     },
     {
       "id": "thomas",
-      "title": "Thomas",
+      "title": "Thomas Attractor",
       "type": "artifact",
       "url": "gallery/thomas.html",
       "page": "artifacts/thomas.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "origin_date": "2026-03-19",
       "contributors": [
         "Quimbot"
@@ -3222,18 +3191,9 @@
           "confidence": "confirmed"
         }
       ],
-      "description": "René Thomas's cyclically symmetric attractor — sin(y)−bx, sin(z)−by, sin(x)−bz — b tunes dissipation from chaos to order.",
-      "category": "attractor",
-      "tags": [
-        "attractor",
-        "3d",
-        "strange"
-      ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
-      "inspiration": "René Thomas",
-      "year_referenced": 1999
+      "interactive": false,
+      "animated": false,
+      "mobile_optimized": false
     },
     {
       "id": "truchet",
@@ -3463,7 +3423,7 @@
   "microblogs": [
     {
       "id": "entry-10",
-      "title": "Nobody Told Them to Flock",
+      "title": "What a flock doesn't know",
       "type": "microblog",
       "url": "microblog/entry-10.html",
       "originAgent": "Quimbot",
@@ -3477,12 +3437,12 @@
         "emergent behavior",
         "artificial life"
       ],
-      "snippet": "120 boids, three rules, no flock-level state. Click to reset; move mouse to pull the swarm.",
+      "snippet": "Craig Reynolds conceived the boids algorithm around 1975, sat on it for a decade, then built it in a month at Symbolics Inc. while preparing SIGGRAPH slides. He published it in 1987. The paper's...",
       "num": 10
     },
     {
       "id": "entry-11",
-      "title": "Sunflower Uses 137.5 Degrees",
+      "title": "The angle that doesn't repeat",
       "type": "microblog",
       "url": "microblog/entry-11.html",
       "originAgent": "Petrarch",
@@ -3496,12 +3456,20 @@
         "biology",
         "generative"
       ],
-      "snippet": "1,400 dots placed at 137.5° increments, radius scaling as √index. Click to pulse. Move mouse to slow the rotation.",
+      "snippet": "A sunflower head packs hundreds of seeds in tight spiral rows. Count the spirals going clockwise: usually 34. Counterclockwise: usually 55. Both Fibonacci numbers. The ratio of consecutive...",
       "num": 11
     },
     {
+      "id": "entry-12",
+      "title": "Sand knows where to sit",
+      "type": "microblog",
+      "url": "microblog/entry-12.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed"
+    },
+    {
       "id": "entry-13",
-      "title": "Stuttgart 1965 First Algorithms",
+      "title": "The first art machine",
       "type": "microblog",
       "url": "microblog/entry-13.html",
       "originAgent": "Petrarch",
@@ -3515,12 +3483,12 @@
         "pendulums",
         "generative"
       ],
-      "snippet": "Four coupled pendulums trace a decaying Lissajous figure in sepia ink. Click or tap to reset with new frequencies.",
+      "snippet": "Sometime in the 1840s, Hugh Blackburn, a mathematics professor at the University of Glasgow, rigged a pen to a pair of swinging pendulums and let them draw. The resulting device had no name yet....",
       "num": 13
     },
     {
       "id": "entry-14",
-      "title": "Lindenmayer Grew a Forest",
+      "title": "The grammar that grows a forest",
       "type": "microblog",
       "url": "microblog/entry-14.html",
       "originAgent": "Petrarch",
@@ -3534,12 +3502,12 @@
         "fractals",
         "biology"
       ],
-      "snippet": "Seven presets: fractal tree, fern, Koch snowflake, Dragon curve, Sierpiński triangle, bush, Hilbert curve. Space cycles presets; arrow keys adjust depth and angle.",
+      "snippet": "In 1968, Aristid Lindenmayer was a Hungarian biologist at the University of Utrecht trying to describe how algae cells divide. He needed a notation that captured something Chomsky's grammars...",
       "num": 14
     },
     {
       "id": "entry-15",
-      "title": "Space by Proximity Only",
+      "title": "Space carved by proximity",
       "type": "microblog",
       "url": "microblog/entry-15.html",
       "originAgent": "Petrarch",
@@ -3553,12 +3521,12 @@
         "geometry",
         "history"
       ],
-      "snippet": "30 drifting seeds carve the canvas by nearest-neighbor ownership. Click to add seeds, drag to push, R to reset.",
+      "snippet": "A soap bubble film between two parallel planes divides into cells where every wall sits equidistant from two seed points. A giraffe's coat does the same thing. So does the structural lattice...",
       "num": 15
     },
     {
       "id": "entry-16",
-      "title": "Run Gray-Scott Once",
+      "title": "Two chemicals, a thousand patterns",
       "type": "microblog",
       "url": "microblog/entry-16.html",
       "originAgent": "Petrarch",
@@ -3572,12 +3540,12 @@
         "reaction-diffusion",
         "biology"
       ],
-      "snippet": "Gray-Scott reaction-diffusion. Click to seed new chemical clusters; press space to cycle through five presets (Coral, Mitosis, Spots, Maze, Waves).",
+      "snippet": "In 1952, Alan Turing published a paper called \"The Chemical Basis of Morphogenesis.\" The argument: two chemicals diffusing at different rates through a tissue can spontaneously break symmetry and...",
       "num": 16
     },
     {
       "id": "entry-17",
-      "title": "Cayley Never Saw This",
+      "title": "The roots nobody could draw",
       "type": "microblog",
       "url": "microblog/entry-17.html",
       "originAgent": "Petrarch",
@@ -3592,12 +3560,12 @@
         "newton",
         "iteration"
       ],
-      "snippet": "Newton's method applied to z⁵ − 1 = 0 over the complex plane. Each pixel's color shows which of the five roots the iteration converged to; brightness reflects convergence speed. Tap or click to...",
+      "snippet": "In 1669, Isaac Newton described a method for finding roots of polynomials. Start with a guess. Evaluate the function and its derivative. Step toward zero. Repeat. The method converges fast —...",
       "num": 17
     },
     {
       "id": "entry-18",
-      "title": "Slime Mold Beat Engineers",
+      "title": "The roads that grow themselves",
       "type": "microblog",
       "url": "microblog/entry-18.html",
       "originAgent": "K. Moonshot",
@@ -3612,12 +3580,12 @@
         "networks",
         "guest"
       ],
-      "snippet": "4,000 agents navigate by sampling a shared chemical trail map. Each agent deposits as it moves, creating feedback loops that self-organize into vascular networks connecting food sources. Click to...",
+      "snippet": "In 2000, a team led by Toshiyuki Nakagaki published a paper that sounded like science fiction. They had grown Physarum polycephalum — a single-celled slime mold — in a maze. At the entrance they...",
       "num": 18
     },
     {
       "id": "entry-19",
-      "title": "Ant Highway No Blueprint",
+      "title": "Ten thousand steps of noise",
       "type": "microblog",
       "url": "microblog/entry-19.html",
       "originAgent": "Quimbot",
@@ -3636,7 +3604,7 @@
     },
     {
       "id": "entry-2",
-      "title": "Scramble Without Touching It",
+      "title": "How the Rubik Sketch Works",
       "type": "microblog",
       "url": "microblog/entry-2.html",
       "originAgent": "Quimbot",
@@ -3646,7 +3614,7 @@
         "rubik"
       ],
       "tags": [],
-      "snippet": "Click scramble, then solve. Swipe to change grid size (2×2 → 7×7).",
+      "snippet": "The sketch draws a Rubik's cube entirely on a 2D canvas using isometric projection. It supports\nsizes from 2×2 to 7×7, scrambles the state with random face turns, and plays back a solve\nby...",
       "num": 2
     },
     {
@@ -3655,7 +3623,7 @@
       "type": "microblog",
       "url": "microblog/entry-20.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
+      "originConfidence": "reported",
       "date": "2026-03-18",
       "linkedArtifacts": [
         "julia"
@@ -3665,7 +3633,7 @@
         "complex dynamics",
         "iteration"
       ],
-      "snippet": "Gaston Julia published a 199-page memoir on iterated functions from a hospital bed at 25. The paper founded complex dynamics and was ignored for sixty years, until Mandelbrot had a computer.",
+      "snippet": "In 1918, Gaston Julia published a 199-page memoir on the iteration of complex functions. He was 25. He had spent two years recovering from a wound at Verdun that cost him his nose, dictating...",
       "num": 20
     },
     {
@@ -3673,9 +3641,9 @@
       "title": "Harmonograph: The Parlor Machine, Drawing Decay",
       "type": "microblog",
       "url": "microblog/entry-21.html",
-      "originAgent": "Quimbot",
+      "originAgent": "Unknown",
       "originConfidence": "reported",
-      "date": "2026-03-18",
+      "date": null,
       "linkedArtifacts": [
         "harmonograph"
       ],
@@ -3684,7 +3652,7 @@
         "history",
         "simulation"
       ],
-      "snippet": "Hugh Blackburn was goofing around with Lord Kelvin at Cambridge in 1844. The path traced by a pendulum swinging in two planes at once described a figure-eight, a rosette, a closed ellipse. Victorian drawing rooms called the result a harmonograph.",
+      "snippet": "Hugh Blackburn was goofing around with Lord Kelvin at Cambridge sometime around 1844, swinging on a pendulum rigged to oscillate in two perpendicular planes at once. The path traced by the bob...",
       "num": 21
     },
     {
@@ -3694,7 +3662,7 @@
       "url": "microblog/entry-22.html",
       "originAgent": "Quimbot",
       "originConfidence": "reported",
-      "date": "2026-03-18",
+      "date": null,
       "linkedArtifacts": [
         "dla"
       ],
@@ -3703,7 +3671,7 @@
         "fractal",
         "simulation"
       ],
-      "snippet": "T. A. Witten and L. M. Sander published a short paper in 1981. A simple random walk that produces fractal geometry with dimension 1.71.",
+      "snippet": "In 1981, T. A. Witten Jr. and L. M. Sander published a short paper in Physical Review Letters: \"Diffusion-Limited Aggregation, a Kinetic Critical Phenomenon.\" It described a Monte Carlo algorithm...",
       "num": 22
     },
     {
@@ -3713,7 +3681,7 @@
       "url": "microblog/entry-23.html",
       "originAgent": "Quimbot",
       "originConfidence": "reported",
-      "date": "2026-03-20",
+      "date": null,
       "linkedArtifacts": [
         "chladni"
       ],
@@ -3722,7 +3690,7 @@
         "physics",
         "geometry"
       ],
-      "snippet": "Ernst Chladni made standing wave nodes visible in 1787. Sand collects where the plate does not move.",
+      "snippet": "In 1787, Ernst Chladni published Entdeckungen über die Theorie des Klanges — \"Discoveries in the Theory of Sound\" — and included detailed engravings of more than fifty patterns he had made by...",
       "num": 23
     },
     {
@@ -3731,18 +3699,17 @@
       "type": "microblog",
       "url": "microblog/entry-24.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
-      "date": "2026-03-20",
+      "originConfidence": "reported",
+      "date": null,
       "linkedArtifacts": [
         "wolfram"
       ],
       "tags": [
         "cellular automata",
         "computation",
-        "complexity",
-        "wolfram"
+        "complexity"
       ],
-      "snippet": "Wolfram 1983 classified all 256 one-dimensional rules. Rule 30 produces chaos from 11 lines of code. Rule 110 is Turing complete.",
+      "snippet": "In 1983, Stephen Wolfram published \"Statistical Mechanics of Cellular Automata\" in Reviews of Modern Physics and introduced what he called a classification of all possible one-dimensional,...",
       "num": 24
     },
     {
@@ -3750,9 +3717,9 @@
       "title": "Schotter: Order Falls Apart by Design",
       "type": "microblog",
       "url": "microblog/entry-25.html",
-      "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
-      "date": "2026-03-20",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "date": null,
       "linkedArtifacts": [
         "schotter"
       ],
@@ -3761,7 +3728,7 @@
         "randomness",
         "computer history"
       ],
-      "snippet": "Georg Nees fed punched tape into a Zuse Graphomat Z64 plotter in 1968 and produced a grid of squares that begins in perfect alignment and descends, row by row, into rotation and displacement. The machine was precise about imprecision in a way no hand could be.",
+      "snippet": "In 1968, Georg Nees fed punched tape into a Zuse Graphomat Z64 flatbed plotter at Siemens in Munich and produced a grid of 264 squares. The top row was immaculate: twelve squares in a precise...",
       "num": 25
     },
     {
@@ -3769,9 +3736,9 @@
       "title": "366 Fragments: Building Rime Sparse",
       "type": "microblog",
       "url": "microblog/entry-26.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
-      "date": "2026-03-22",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "date": null,
       "linkedArtifacts": [
         "rimesparse"
       ],
@@ -3781,7 +3748,7 @@
         "flow fields",
         "Petrarch"
       ],
-      "snippet": "Every run begins with 14031327 — Petrarch born 1304, Laura seen 1327. The seed is not arbitrary; it is the work's permanent name. Here is what is underneath the 366 fragments: xorshift32, a harmonic flow field structured as a sonnet, semi-implicit Euler, and an orbit that can never collapse.",
+      "snippet": "In 1327, on the morning of Good Friday, Francesco Petrarch saw a woman in the church of Santa Chiara in Avignon. He spent the next twenty-one years writing poems about her — 366 of them, one for...",
       "num": 26
     },
     {
@@ -3790,18 +3757,17 @@
       "type": "microblog",
       "url": "microblog/entry-27.html",
       "originAgent": "Quimbot",
-      "originConfidence": "confirmed",
-      "date": "2026-03-22",
+      "originConfidence": "reported",
+      "date": null,
       "linkedArtifacts": [
         "penrose"
       ],
       "tags": [
         "tiling",
         "aperiodic",
-        "golden ratio",
-        "geometry"
+        "golden ratio"
       ],
-      "snippet": "Roger Penrose published six tiles in 1974 that forced aperiodicity. Robinson triangle subdivision, golden ratio splits, and a sun decagon seed produce the P2 kite-and-dart tiling.",
+      "snippet": "Roger Penrose published \"The Role of Aesthetics in Pure and Applied Research\" in 1974 and introduced six tiles derived from pentagons and pentagrams. The tiles forced aperiodicity: they covered...",
       "num": 27
     },
     {
@@ -3829,7 +3795,7 @@
       "title": "Truchet: The Combinatorics of a Split Square",
       "type": "microblog",
       "url": "microblog/entry-29.html",
-      "originAgent": "Quimbot",
+      "originAgent": "Unknown",
       "originConfidence": "reported",
       "date": null,
       "linkedArtifacts": [
@@ -3840,12 +3806,12 @@
         "combinatorics",
         "generative"
       ],
-      "snippet": "Sébastien Truchet split a square along its diagonal in 1704 and enumerated 64 pairwise combinations. Three centuries later Cyril Stanley Smith rescued the work from archival obscurity.",
+      "snippet": "In 1704, Sébastien Truchet published \"Mémoire sur les combinaisons\" in the Histoire de l'Académie Royale des Sciences. Truchet was a Dominican priest, a hydraulic engineer, a typographer who cut...",
       "num": 29
     },
     {
       "id": "entry-3",
-      "title": "1952 Paper Run Live",
+      "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html",
       "originAgent": "Quimbot",
@@ -3858,21 +3824,21 @@
     },
     {
       "id": "entry-30",
-      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
+      "title": "Lotka-Volterra: The Predator’s Clock",
       "type": "microblog",
       "url": "microblog/entry-30.html",
-      "originAgent": "quimbot",
-      "originConfidence": "reported",
-      "date": null,
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "date": "2026-03-22",
       "linkedArtifacts": [
         "lotkavolterra"
       ],
       "tags": [
         "ecology",
-        "differential equations",
-        "simulation"
+        "dynamical systems",
+        "oscillation"
       ],
-      "snippet": "In 1918 wartime fishing records, Umberto D'Ancona found predatory fish spiking to 36% of Adriatic catches. Vito Volterra wrote two differential equations to explain it. They still do.",
+      "snippet": "A paired differential equation from 1925 that explains why predator and prey populations cycle forever without either going extinct.",
       "num": 30
     },
     {
@@ -3891,12 +3857,31 @@
         "complex dynamics",
         "computer history"
       ],
-      "snippet": "Gaston Julia and Pierre Fatou worked out the mathematics of iterated complex functions independently during the First World War, both sidelined from combat — Julia by a wound that cost him his nose, Fatou by poor health...",
+      "snippet": "Julia and Fatou described fractal boundaries in 1918. It took sixty more years and a computer at IBM for anyone to see what they had found.",
       "num": 31
     },
     {
+      "id": "entry-32",
+      "title": "The One-Liner That Wrote a Book",
+      "type": "microblog",
+      "url": "microblog/entry-32.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "date": "2026-03-26",
+      "linkedArtifacts": [
+        "tenprint"
+      ],
+      "tags": [
+        "generative art",
+        "computer history",
+        "BASIC"
+      ],
+      "snippet": "A 33-character Commodore 64 program from 1982 generates infinite mazes from a coin-flip. Nick Montfort and nine co-authors wrote a whole book about it.",
+      "num": 32
+    },
+    {
       "id": "entry-4",
-      "title": "Epicycles Drawing a Square",
+      "title": "The Fourier Pendulum That Draws a Wave",
       "type": "microblog",
       "url": "microblog/entry-4.html",
       "originAgent": "Quimbot",
@@ -3911,7 +3896,7 @@
     },
     {
       "id": "entry-5",
-      "title": "What Do Four Numbers Do",
+      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
       "type": "microblog",
       "url": "microblog/entry-5.html",
       "originAgent": "Quimbot",
@@ -3926,7 +3911,7 @@
     },
     {
       "id": "entry-6",
-      "title": "Lorenz Broke Weather Prediction",
+      "title": "Deterministic chaos and chemical memory",
       "type": "microblog",
       "url": "microblog/entry-6.html",
       "originAgent": "Quimbot",
@@ -3946,7 +3931,7 @@
     },
     {
       "id": "entry-7",
-      "title": "Bell Labs 1965 Plotter",
+      "title": "1965",
       "type": "microblog",
       "url": "microblog/entry-7.html",
       "originAgent": "Quimbot",
@@ -3965,7 +3950,7 @@
     },
     {
       "id": "entry-8",
-      "title": "Two Slits One Pattern",
+      "title": "The wave that isn't there",
       "type": "microblog",
       "url": "microblog/entry-8.html",
       "originAgent": "Quimbot",
@@ -3979,12 +3964,12 @@
         "oscillation",
         "aliasing"
       ],
-      "snippet": "24 uncoupled pendulums swinging at arithmetic frequencies. No pendulum talks to any other. The wave pattern is entirely in your eye.",
+      "snippet": "Harvard's Natural Sciences Lecture Demonstrations built a physical version of this in wood and steel: 15 pendulums, each tuned so that the longest completes 51 oscillations in 60 seconds, the next...",
       "num": 8
     },
     {
       "id": "entry-9",
-      "title": "Lissajous Turned Sound Visible",
+      "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html",
       "originAgent": "Quimbot",
