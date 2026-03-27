@@ -477,7 +477,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 296,
+    "totalCommits": 297,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -513,7 +513,7 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 4
+      "2026-03-27": 5
     },
     "categoryCounts": {
       "blog": 33,
@@ -521,11 +521,19 @@
       "mobile": 18,
       "fix": 64,
       "other": 90,
-      "chore": 48,
+      "chore": 49,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "313af78b",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "d48d5832",
         "date": "2026-03-27",
@@ -3384,7 +3392,7 @@
     ]
   },
   "unknown": {
-    "totalCommits": 53,
+    "totalCommits": 54,
     "dailyCounts": {
       "2026-03-17": 21,
       "2026-03-18": 4,
@@ -3393,10 +3401,11 @@
       "2026-03-23": 2,
       "2026-03-24": 4,
       "2026-03-25": 5,
-      "2026-03-26": 4
+      "2026-03-26": 4,
+      "2026-03-27": 1
     },
     "categoryCounts": {
-      "other": 27,
+      "other": 28,
       "fix": 12,
       "blog": 5,
       "chore": 2,
@@ -3407,6 +3416,14 @@
       "artifact": 1
     },
     "commits": [
+      {
+        "sha": "d5ba814b",
+        "date": "2026-03-27",
+        "subject": "fix thomas attractor scale (4.5 → 0.22, was projecting off-canvas)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "76d0ea64",
         "date": "2026-03-26",
