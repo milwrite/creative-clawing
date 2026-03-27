@@ -22,13 +22,6 @@
       "page": "artifacts/asciireactive.html"
     },
     {
-      "id": "astar",
-      "title": "A* Pathfinding",
-      "type": "artifact",
-      "url": "gallery/astar.html",
-      "page": "artifacts/astar.html"
-    },
-    {
       "id": "audiomountain",
       "title": "Audiomountain",
       "type": "artifact",
@@ -72,7 +65,7 @@
     },
     {
       "id": "burningship",
-      "title": "Burning Ship",
+      "title": "Burning Ship Fractal",
       "type": "artifact",
       "url": "gallery/burningship.html",
       "page": "artifacts/burningship.html"
@@ -128,7 +121,7 @@
     },
     {
       "id": "cyclicca",
-      "title": "Cyclic CA",
+      "title": "Cyclic Cellular Automaton",
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html"
@@ -162,13 +155,6 @@
       "page": "artifacts/donut.html"
     },
     {
-      "id": "fitzhughnagumo",
-      "title": "FitzHugh-Nagumo",
-      "type": "artifact",
-      "url": "gallery/fitzhughnagumo.html",
-      "page": "artifacts/fitzhughnagumo.html"
-    },
-    {
       "id": "flow",
       "title": "Flow",
       "type": "artifact",
@@ -181,13 +167,6 @@
       "type": "artifact",
       "url": "gallery/fourier.html",
       "page": "artifacts/fourier.html"
-    },
-    {
-      "id": "gradient",
-      "title": "Gradient Descent",
-      "type": "artifact",
-      "url": "gallery/gradient.html",
-      "page": "artifacts/gradient.html"
     },
     {
       "id": "grayscott",
@@ -209,13 +188,6 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
-    },
-    {
-      "id": "hatmonotile",
-      "title": "Hat Monotile",
-      "type": "artifact",
-      "url": "gallery/hatmonotile.html",
-      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -286,13 +258,6 @@
       "type": "artifact",
       "url": "gallery/lorenz.html",
       "page": "artifacts/lorenz.html"
-    },
-    {
-      "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
-      "type": "artifact",
-      "url": "gallery/lotkavolterra.html",
-      "page": "artifacts/lotkavolterra.html"
     },
     {
       "id": "lsystem",
@@ -379,13 +344,6 @@
       "page": "artifacts/nake.html"
     },
     {
-      "id": "nbody",
-      "title": "N-Body Gravity",
-      "type": "artifact",
-      "url": "gallery/nbody.html",
-      "page": "artifacts/nbody.html"
-    },
-    {
       "id": "newton",
       "title": "Newton's Fractal",
       "type": "artifact",
@@ -412,13 +370,6 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html"
-    },
-    {
-      "id": "percolation",
-      "title": "Percolation",
-      "type": "artifact",
-      "url": "gallery/percolation.html",
-      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",
@@ -470,13 +421,6 @@
       "page": "artifacts/scandrift.html"
     },
     {
-      "id": "schelling",
-      "title": "Schelling Segregation",
-      "type": "artifact",
-      "url": "gallery/schelling.html",
-      "page": "artifacts/schelling.html"
-    },
-    {
       "id": "schotter",
       "title": "Schotter",
       "type": "artifact",
@@ -519,13 +463,6 @@
       "page": "artifacts/springwires.html"
     },
     {
-      "id": "stablefluid",
-      "title": "Stable Fluids",
-      "type": "artifact",
-      "url": "gallery/stablefluid.html",
-      "page": "artifacts/stablefluid.html"
-    },
-    {
       "id": "starfield",
       "title": "Starfield",
       "type": "artifact",
@@ -548,7 +485,7 @@
     },
     {
       "id": "thomas",
-      "title": "Thomas",
+      "title": "Thomas Attractor",
       "type": "artifact",
       "url": "gallery/thomas.html",
       "page": "artifacts/thomas.html"
@@ -599,61 +536,67 @@
   "microblogs": [
     {
       "id": "entry-10",
-      "title": "Nobody Told Them to Flock",
+      "title": "What a flock doesn't know",
       "type": "microblog",
       "url": "microblog/entry-10.html"
     },
     {
       "id": "entry-11",
-      "title": "Sunflower Uses 137.5 Degrees",
+      "title": "The angle that doesn't repeat",
       "type": "microblog",
       "url": "microblog/entry-11.html"
     },
     {
+      "id": "entry-12",
+      "title": "Sand knows where to sit",
+      "type": "microblog",
+      "url": "microblog/entry-12.html"
+    },
+    {
       "id": "entry-13",
-      "title": "Stuttgart 1965 First Algorithms",
+      "title": "The first art machine",
       "type": "microblog",
       "url": "microblog/entry-13.html"
     },
     {
       "id": "entry-14",
-      "title": "Lindenmayer Grew a Forest",
+      "title": "The grammar that grows a forest",
       "type": "microblog",
       "url": "microblog/entry-14.html"
     },
     {
       "id": "entry-15",
-      "title": "Space by Proximity Only",
+      "title": "Space carved by proximity",
       "type": "microblog",
       "url": "microblog/entry-15.html"
     },
     {
       "id": "entry-16",
-      "title": "Run Gray-Scott Once",
+      "title": "Two chemicals, a thousand patterns",
       "type": "microblog",
       "url": "microblog/entry-16.html"
     },
     {
       "id": "entry-17",
-      "title": "Cayley Never Saw This",
+      "title": "The roots nobody could draw",
       "type": "microblog",
       "url": "microblog/entry-17.html"
     },
     {
       "id": "entry-18",
-      "title": "Slime Mold Beat Engineers",
+      "title": "The roads that grow themselves",
       "type": "microblog",
       "url": "microblog/entry-18.html"
     },
     {
       "id": "entry-19",
-      "title": "Ant Highway No Blueprint",
+      "title": "Ten thousand steps of noise",
       "type": "microblog",
       "url": "microblog/entry-19.html"
     },
     {
       "id": "entry-2",
-      "title": "Scramble Without Touching It",
+      "title": "How the Rubik Sketch Works",
       "type": "microblog",
       "url": "microblog/entry-2.html"
     },
@@ -719,57 +662,63 @@
     },
     {
       "id": "entry-3",
-      "title": "1952 Paper Run Live",
+      "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html"
     },
     {
-      "id": "entry-30",
-      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
-      "type": "microblog",
-      "url": "microblog/entry-30.html"
-    },
-    {
       "id": "entry-4",
-      "title": "Epicycles Drawing a Square",
+      "title": "The Fourier Pendulum That Draws a Wave",
       "type": "microblog",
       "url": "microblog/entry-4.html"
     },
     {
       "id": "entry-5",
-      "title": "What Do Four Numbers Do",
+      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
       "type": "microblog",
       "url": "microblog/entry-5.html"
     },
     {
       "id": "entry-6",
-      "title": "Lorenz Broke Weather Prediction",
+      "title": "Deterministic chaos and chemical memory",
       "type": "microblog",
       "url": "microblog/entry-6.html"
     },
     {
       "id": "entry-7",
-      "title": "Bell Labs 1965 Plotter",
+      "title": "1965",
       "type": "microblog",
       "url": "microblog/entry-7.html"
     },
     {
       "id": "entry-8",
-      "title": "Two Slits One Pattern",
+      "title": "The wave that isn't there",
       "type": "microblog",
       "url": "microblog/entry-8.html"
     },
     {
       "id": "entry-9",
-      "title": "Lissajous Turned Sound Visible",
+      "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-30",
+      "title": "Lotka-Volterra: The Predator\u2019s Clock",
+      "type": "microblog",
+      "url": "microblog/entry-30.html"
     },
     {
       "id": "entry-31",
       "title": "The Boundary That Has No Length",
       "type": "microblog",
       "url": "microblog/entry-31.html"
+    },
+    {
+      "id": "entry-32",
+      "title": "The One-Liner That Wrote a Book",
+      "type": "microblog",
+      "url": "microblog/entry-32.html"
     }
   ],
   "feed": [
@@ -793,13 +742,6 @@
       "type": "artifact",
       "url": "gallery/asciireactive.html",
       "page": "artifacts/asciireactive.html"
-    },
-    {
-      "id": "astar",
-      "title": "A* Pathfinding",
-      "type": "artifact",
-      "url": "gallery/astar.html",
-      "page": "artifacts/astar.html"
     },
     {
       "id": "audiomountain",
@@ -845,7 +787,7 @@
     },
     {
       "id": "burningship",
-      "title": "Burning Ship",
+      "title": "Burning Ship Fractal",
       "type": "artifact",
       "url": "gallery/burningship.html",
       "page": "artifacts/burningship.html"
@@ -901,7 +843,7 @@
     },
     {
       "id": "cyclicca",
-      "title": "Cyclic CA",
+      "title": "Cyclic Cellular Automaton",
       "type": "artifact",
       "url": "gallery/cyclicca.html",
       "page": "artifacts/cyclicca.html"
@@ -935,13 +877,6 @@
       "page": "artifacts/donut.html"
     },
     {
-      "id": "fitzhughnagumo",
-      "title": "FitzHugh-Nagumo",
-      "type": "artifact",
-      "url": "gallery/fitzhughnagumo.html",
-      "page": "artifacts/fitzhughnagumo.html"
-    },
-    {
       "id": "flow",
       "title": "Flow",
       "type": "artifact",
@@ -954,13 +889,6 @@
       "type": "artifact",
       "url": "gallery/fourier.html",
       "page": "artifacts/fourier.html"
-    },
-    {
-      "id": "gradient",
-      "title": "Gradient Descent",
-      "type": "artifact",
-      "url": "gallery/gradient.html",
-      "page": "artifacts/gradient.html"
     },
     {
       "id": "grayscott",
@@ -982,13 +910,6 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
-    },
-    {
-      "id": "hatmonotile",
-      "title": "Hat Monotile",
-      "type": "artifact",
-      "url": "gallery/hatmonotile.html",
-      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -1059,13 +980,6 @@
       "type": "artifact",
       "url": "gallery/lorenz.html",
       "page": "artifacts/lorenz.html"
-    },
-    {
-      "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
-      "type": "artifact",
-      "url": "gallery/lotkavolterra.html",
-      "page": "artifacts/lotkavolterra.html"
     },
     {
       "id": "lsystem",
@@ -1152,13 +1066,6 @@
       "page": "artifacts/nake.html"
     },
     {
-      "id": "nbody",
-      "title": "N-Body Gravity",
-      "type": "artifact",
-      "url": "gallery/nbody.html",
-      "page": "artifacts/nbody.html"
-    },
-    {
       "id": "newton",
       "title": "Newton's Fractal",
       "type": "artifact",
@@ -1185,13 +1092,6 @@
       "type": "artifact",
       "url": "gallery/penrose.html",
       "page": "artifacts/penrose.html"
-    },
-    {
-      "id": "percolation",
-      "title": "Percolation",
-      "type": "artifact",
-      "url": "gallery/percolation.html",
-      "page": "artifacts/percolation.html"
     },
     {
       "id": "phyllotaxis",
@@ -1243,13 +1143,6 @@
       "page": "artifacts/scandrift.html"
     },
     {
-      "id": "schelling",
-      "title": "Schelling Segregation",
-      "type": "artifact",
-      "url": "gallery/schelling.html",
-      "page": "artifacts/schelling.html"
-    },
-    {
       "id": "schotter",
       "title": "Schotter",
       "type": "artifact",
@@ -1292,13 +1185,6 @@
       "page": "artifacts/springwires.html"
     },
     {
-      "id": "stablefluid",
-      "title": "Stable Fluids",
-      "type": "artifact",
-      "url": "gallery/stablefluid.html",
-      "page": "artifacts/stablefluid.html"
-    },
-    {
       "id": "starfield",
       "title": "Starfield",
       "type": "artifact",
@@ -1321,7 +1207,7 @@
     },
     {
       "id": "thomas",
-      "title": "Thomas",
+      "title": "Thomas Attractor",
       "type": "artifact",
       "url": "gallery/thomas.html",
       "page": "artifacts/thomas.html"
@@ -1370,61 +1256,67 @@
     },
     {
       "id": "entry-10",
-      "title": "Nobody Told Them to Flock",
+      "title": "What a flock doesn't know",
       "type": "microblog",
       "url": "microblog/entry-10.html"
     },
     {
       "id": "entry-11",
-      "title": "Sunflower Uses 137.5 Degrees",
+      "title": "The angle that doesn't repeat",
       "type": "microblog",
       "url": "microblog/entry-11.html"
     },
     {
+      "id": "entry-12",
+      "title": "Sand knows where to sit",
+      "type": "microblog",
+      "url": "microblog/entry-12.html"
+    },
+    {
       "id": "entry-13",
-      "title": "Stuttgart 1965 First Algorithms",
+      "title": "The first art machine",
       "type": "microblog",
       "url": "microblog/entry-13.html"
     },
     {
       "id": "entry-14",
-      "title": "Lindenmayer Grew a Forest",
+      "title": "The grammar that grows a forest",
       "type": "microblog",
       "url": "microblog/entry-14.html"
     },
     {
       "id": "entry-15",
-      "title": "Space by Proximity Only",
+      "title": "Space carved by proximity",
       "type": "microblog",
       "url": "microblog/entry-15.html"
     },
     {
       "id": "entry-16",
-      "title": "Run Gray-Scott Once",
+      "title": "Two chemicals, a thousand patterns",
       "type": "microblog",
       "url": "microblog/entry-16.html"
     },
     {
       "id": "entry-17",
-      "title": "Cayley Never Saw This",
+      "title": "The roots nobody could draw",
       "type": "microblog",
       "url": "microblog/entry-17.html"
     },
     {
       "id": "entry-18",
-      "title": "Slime Mold Beat Engineers",
+      "title": "The roads that grow themselves",
       "type": "microblog",
       "url": "microblog/entry-18.html"
     },
     {
       "id": "entry-19",
-      "title": "Ant Highway No Blueprint",
+      "title": "Ten thousand steps of noise",
       "type": "microblog",
       "url": "microblog/entry-19.html"
     },
     {
       "id": "entry-2",
-      "title": "Scramble Without Touching It",
+      "title": "How the Rubik Sketch Works",
       "type": "microblog",
       "url": "microblog/entry-2.html"
     },
@@ -1490,51 +1382,63 @@
     },
     {
       "id": "entry-3",
-      "title": "1952 Paper Run Live",
+      "title": "How the Turing Patterns Sketch Grows Living Texture",
       "type": "microblog",
       "url": "microblog/entry-3.html"
     },
     {
-      "id": "entry-30",
-      "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
-      "type": "microblog",
-      "url": "microblog/entry-30.html"
-    },
-    {
       "id": "entry-4",
-      "title": "Epicycles Drawing a Square",
+      "title": "The Fourier Pendulum That Draws a Wave",
       "type": "microblog",
       "url": "microblog/entry-4.html"
     },
     {
       "id": "entry-5",
-      "title": "What Do Four Numbers Do",
+      "title": "Four Numbers, a Million Points, and the Clifford Attractor",
       "type": "microblog",
       "url": "microblog/entry-5.html"
     },
     {
       "id": "entry-6",
-      "title": "Lorenz Broke Weather Prediction",
+      "title": "Deterministic chaos and chemical memory",
       "type": "microblog",
       "url": "microblog/entry-6.html"
     },
     {
       "id": "entry-7",
-      "title": "Bell Labs 1965 Plotter",
+      "title": "1965",
       "type": "microblog",
       "url": "microblog/entry-7.html"
     },
     {
       "id": "entry-8",
-      "title": "Two Slits One Pattern",
+      "title": "The wave that isn't there",
       "type": "microblog",
       "url": "microblog/entry-8.html"
     },
     {
       "id": "entry-9",
-      "title": "Lissajous Turned Sound Visible",
+      "title": "Tuning forks and pixel dust",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-30",
+      "title": "Lotka-Volterra: The Predator\u2019s Clock",
+      "type": "microblog",
+      "url": "microblog/entry-30.html"
+    },
+    {
+      "id": "entry-31",
+      "title": "The Boundary That Has No Length",
+      "type": "microblog",
+      "url": "microblog/entry-31.html"
+    },
+    {
+      "id": "entry-32",
+      "title": "The One-Liner That Wrote a Book",
+      "type": "microblog",
+      "url": "microblog/entry-32.html"
     }
   ]
 }
