@@ -157,8 +157,7 @@ function render(){
   }
   offCtx.putImageData(id,0,0);
   ctx.setTransform(1,0,0,1,0,0);
-  ctx.drawImage(offscreen,0,0,W,H);
-  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.drawImage(offscreen,0,0,cW,cH);
 
   if(document.documentElement.classList.contains('standalone')){
     infoEl.textContent=`${(iterCount/1e6).toFixed(2)}M pts\na=${a.toFixed(2)} b=${b.toFixed(2)}\nc=${c.toFixed(2)} d=${d.toFixed(2)}`;
@@ -239,8 +238,13 @@ function frame(){
   requestAnimationFrame(frame);
 }
 
-resize();
-frame();
+// Defer first resize so flex layout is fully painted before we read dimensions
+requestAnimationFrame(()=>{
+  resize();
+  frame();
+  // second pass catches iOS safe-area / toolbar settling
+  setTimeout(()=>{ resize(); },200);
+});
 })();
 </script>
 </body>
