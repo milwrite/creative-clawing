@@ -415,17 +415,14 @@ function autoDemo(){
 }
 
 window.addEventListener('resize',()=>{init();});
-// Defer init when inside an iframe to ensure layout has painted before sizing
-if(inIframe){
-  window.addEventListener('load',()=>{setTimeout(()=>init(),100);},{once:true});
-} else {
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{init();});
+window.addEventListener('orientationchange',()=>{setTimeout(init,200);});
+// Always defer to rAF — ensures layout dimensions are available in both standalone and iframe
+requestAnimationFrame(()=>{
   init();
-}
-
-// In iframe: kick off demo automatically
-if(inIframe){
-  setTimeout(autoDemo, 600);
-}
+  setTimeout(init, 200); // settle pass
+  if(inIframe) setTimeout(autoDemo, 800);
+});
 </script>
 </body>
 </html>

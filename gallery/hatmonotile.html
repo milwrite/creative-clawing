@@ -243,11 +243,13 @@ function drawGeom(geom,S,lev){
 
 function render(){
   const dpr=Math.min(devicePixelRatio||1,2);
-  canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+  const VW=canvas.offsetWidth||innerWidth;
+  const VH=canvas.offsetHeight||innerHeight;
+  canvas.width=VW*dpr;canvas.height=VH*dpr;
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  ctx.fillStyle=pal.bg;ctx.fillRect(0,0,innerWidth,innerHeight);
+  ctx.fillStyle=pal.bg;ctx.fillRect(0,0,VW,VH);
 
-  const S=[viewScale,0,viewX+innerWidth/2,0,-viewScale,viewY+innerHeight/2];
+  const S=[viewScale,0,viewX+VW/2,0,-viewScale,viewY+VH/2];
   // Draw H metatile (index 0) which contains the full patch
   drawGeom(tiles[0],S,level);
 }
@@ -294,8 +296,8 @@ canvas.addEventListener('touchmove',e=>{
 canvas.addEventListener('wheel',e=>{
   e.preventDefault();
   const factor=e.deltaY<0?1.1:0.9;
-  const mx=e.clientX-innerWidth/2-viewX;
-  const my=e.clientY-innerHeight/2-viewY;
+  const mx=e.clientX-(canvas.offsetWidth||innerWidth)/2-viewX;
+  const my=e.clientY-(canvas.offsetHeight||innerHeight)/2-viewY;
   viewX-=mx*(factor-1);viewY-=my*(factor-1);
   viewScale*=factor;
   render();
@@ -342,7 +344,7 @@ if(window.self!==window.top){
 }
 
 // Init — defer to rAF so iframe has final layout dimensions before reading innerWidth/H
-requestAnimationFrame(()=>{ rebuild(); });
+requestAnimationFrame(()=>{ rebuild(); setTimeout(render, 200); });
 </script>
 </body>
 </html>
