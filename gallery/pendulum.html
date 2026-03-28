@@ -9,7 +9,9 @@
 <title>Pendulum Wave</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0a; overflow: hidden; min-height:100dvh}
+  html,body { height:100%;height:100dvh;background: #0a0a0a; overflow: hidden; }
+  body { display:flex;flex-direction:column; }
+  canvas { flex:1;min-height:0; }
   canvas { display: block; touch-action: none; }
   #back { position: fixed; top: max(1rem, env(safe-area-inset-top)); left: max(1rem, env(safe-area-inset-left)); background: #222; color: #ccc; border: 1px solid #444; padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.8rem; z-index: 10; text-decoration: none; }
   #back:hover { background: #333; }
@@ -24,11 +26,16 @@ if (window.self !== window.top) { document.getElementById('back').style.display 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 let W, H;
-function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+function resize() {
+  const w = canvas.offsetWidth || innerWidth;
+  const h = canvas.offsetHeight || innerHeight;
+  if (!w || !h) return;
+  W = canvas.width = w;
+  H = canvas.height = h;
+}
 addEventListener('resize', resize);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
-requestAnimationFrame(()=>{resize()});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 const N = 24;
 const baseFreq = 0.8;
@@ -127,7 +134,7 @@ function frame() {
 
   requestAnimationFrame(frame);
 }
-frame();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);frame();});
 </script>
 </body>
 </html>
