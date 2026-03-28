@@ -35,7 +35,6 @@ function resize(){
   maxP=Math.max(120,Math.min(280,Math.round(area/7000)));
 }
 
-resize();
 addEventListener('resize',resize);
 addEventListener('orientationchange',()=>setTimeout(resize,140));
 window.visualViewport?.addEventListener('resize',resize);
@@ -138,7 +137,7 @@ function loop(t){
   }
   requestAnimationFrame(loop);
 }
-requestAnimationFrame(loop);
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(loop);});
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 </body>

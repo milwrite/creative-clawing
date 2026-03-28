@@ -76,14 +76,14 @@ function makeGrid(){
   }
 }
 
-resize();
-makeGrid();
 let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
   resizeTimer=setTimeout(()=>{resize();makeGrid();},120);
 });
 window.addEventListener('orientationchange',()=>setTimeout(()=>{resize();makeGrid();},200));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{resize();makeGrid();},120);});
+requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();makeGrid();},200);makeGrid();});
 
 // Physics step
 function step(){

@@ -386,9 +386,9 @@ function loop() {
 }
 
 // Init
-computeAccel();
-loadPreset(0);
-loop();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);computeAccel();loadPreset(0);loop();});
 </script>
 </body>
 </html>

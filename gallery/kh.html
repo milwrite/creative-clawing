@@ -177,9 +177,9 @@ document.getElementById('btnReset').addEventListener('click', () => {
 });
 
 window.addEventListener('resize', resize);
-resize();
-init();
-frame();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);init();frame();});
 </script>
 </body>
 </html>

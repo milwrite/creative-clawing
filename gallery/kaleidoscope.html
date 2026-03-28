@@ -272,13 +272,9 @@ canvas.addEventListener('pointerup', endPointer);
 canvas.addEventListener('pointercancel', endPointer);
 
 window.addEventListener('resize', resize);
-window.addEventListener('orientationchange', resize);
-
-randomizeLook();
-resize();
-syncControls();
-render(0);
-requestAnimationFrame(loop);
+window.addEventListener('orientationchange', ()=>{setTimeout(resize,200);});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);randomizeLook();syncControls();render(0);requestAnimationFrame(loop);});
 </script>
 </body>
 </html>

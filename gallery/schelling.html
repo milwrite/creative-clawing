@@ -250,11 +250,10 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   resetGrid();
 });
 
-window.addEventListener('resize', () => {
-  resize();
-});
-
-resize();
+window.addEventListener('resize', () => { resize(); });
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
 </script>
 </body>
 </html>

@@ -59,7 +59,9 @@ function resize() {
   W = canvas.width = window.innerWidth;
   H = canvas.height = window.innerHeight;
 }
-resize();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
 window.addEventListener('resize', resize);
 
 // ── parameters ─────────────────────────────────────────────
@@ -190,7 +192,7 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-draw();
+requestAnimationFrame(()=>{draw();});
 </script>
 </body>
 </html>

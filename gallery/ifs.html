@@ -251,7 +251,9 @@ function switchSystem(key, btn) {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 window.addEventListener('resize', () => { start(); });
-start();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',start);
+window.addEventListener('orientationchange',()=>{setTimeout(start,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);start();});
 </script>
 </body>
 </html>

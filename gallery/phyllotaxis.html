@@ -55,7 +55,6 @@ function resize() {
 addEventListener('resize', resize);
 addEventListener('orientationchange', () => setTimeout(resize, 140));
 window.visualViewport?.addEventListener('resize', resize);
-resize();
 
 function triggerPulse() {
   pulse = 1;
@@ -100,7 +99,7 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-loop();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 </body>

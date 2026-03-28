@@ -325,8 +325,7 @@ function loop() {
 function togglePause() { paused = !paused; }
 function reverseDir() { dir *= -1; }
 
-resize();
-loop();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
 </script>
 </body>
 </html>

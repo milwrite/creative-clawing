@@ -40,7 +40,9 @@ function resize(){
   ctx.setTransform(DPR,0,0,DPR,0,0);
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${CELL}px ui-monospace,Menlo,monospace`;
 }
-resize();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
 addEventListener('resize',()=>setTimeout(resize,80));
 addEventListener('pointermove',e=>{pointerX=e.clientX/W;pointerY=e.clientY/H;});
 addEventListener('touchmove',e=>e.preventDefault(),{passive:false});

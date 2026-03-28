@@ -99,8 +99,10 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-init();loop();
 addEventListener('resize',init);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',init);
+addEventListener('orientationchange',()=>{setTimeout(init,200);});
+requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 addEventListener('keydown',e=>{
   if(e.code==='Space'){e.preventDefault();running=!running}
   if(e.code==='KeyR')init();

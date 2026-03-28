@@ -162,10 +162,7 @@ canvas.addEventListener('click', handleTap);
 canvas.addEventListener('touchstart', e => { e.preventDefault(); handleTap(); }, { passive: false });
 
 // Init — animation starts immediately
-resize();
-modeEl.textContent = `m=${nextM} n=${nextN}`;
-resetAuto();
-requestAnimationFrame(tick);
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);modeEl.textContent=`m=${nextM} n=${nextN}`;resetAuto();requestAnimationFrame(tick);});
 </script>
 </body>
 </html>

@@ -40,7 +40,9 @@ function resize(){
   canvas.height=Math.round(H*DPR);
   ctx.setTransform(DPR,0,0,DPR,0,0);
 }
-resize();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
 let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);

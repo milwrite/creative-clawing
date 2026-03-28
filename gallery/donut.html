@@ -196,7 +196,9 @@ function loop(ts) {
   draw();
   requestAnimationFrame(loop);
 }
-requestAnimationFrame(loop);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(loop);});
 </script>
 </body>
 </html>

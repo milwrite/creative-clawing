@@ -434,12 +434,9 @@ canvas.addEventListener('pointerup', endPointer);
 canvas.addEventListener('pointercancel', endPointer);
 
 window.addEventListener('resize', resize);
-window.addEventListener('orientationchange', resize);
-
-resize();
-syncControls();
-setMode('synth fallback');
-requestAnimationFrame(frame);
+window.addEventListener('orientationchange', ()=>{setTimeout(resize,200);});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);syncControls();setMode('synth fallback');requestAnimationFrame(frame);});
 </script>
 </body>
 </html>

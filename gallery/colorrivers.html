@@ -223,8 +223,7 @@ function loop() {
 
 function togglePause() { paused = !paused; }
 
-reset();
-loop();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);reset();loop();});
 </script>
 </body>
 </html>

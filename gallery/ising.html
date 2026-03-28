@@ -265,10 +265,9 @@ canvas.addEventListener('pointercancel', () => { touchStartX = null; }, {passive
 
 // ── boot ──────────────────────────────────────────────────
 window.addEventListener('resize', () => { resize(); });
-resize();
-grid = makeGrid(true);
-showPhase();
-loop();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);grid=makeGrid(true);showPhase();loop();});
 </script>
 </body>
 </html>

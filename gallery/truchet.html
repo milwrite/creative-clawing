@@ -172,8 +172,9 @@ function animate(t) {
   requestAnimationFrame(animate);
 }
 
-resize();
-generate();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);generate();});
 requestAnimationFrame(animate);
 
 window.addEventListener('resize', () => { resize(); generate(); });

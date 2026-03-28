@@ -201,7 +201,9 @@ canvas.addEventListener('touchend', e => {
   e.preventDefault();
 }, { passive: false });
 
-draw();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
 </script>
 </body>
 </html>

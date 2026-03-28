@@ -451,11 +451,9 @@ window.addEventListener('resize', resize);
 
 // ── Init ──
 
-resize();
-initCube();
-selfTest();
-doScramble();
-animate();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);initCube();selfTest();doScramble();animate();});
 </script>
 </body>
 </html>

@@ -215,10 +215,9 @@ function resize() {
 }
 
 window.addEventListener('resize', () => { resize(); });
-window.addEventListener('orientationchange', () => setTimeout(resize, 150));
-
-resize();
-if (running) rafId = requestAnimationFrame(loop);
+window.addEventListener('orientationchange', () => setTimeout(resize, 200));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);if(running)rafId=requestAnimationFrame(loop);});
 </script>
 </body>
 </html>

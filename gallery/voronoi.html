@@ -150,10 +150,10 @@ function frame() {
   requestAnimationFrame(frame);
 }
 
-resize();
-init(30);
 window.addEventListener('resize', () => { resize(); });
-requestAnimationFrame(frame);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);init(30);requestAnimationFrame(frame);});
 
 // Interaction
 let dragging = false;

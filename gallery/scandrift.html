@@ -68,7 +68,9 @@ function draw(){
 
   requestAnimationFrame(draw);
 }
-requestAnimationFrame(draw);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(draw);});
 </script>
 </body>
 </html>

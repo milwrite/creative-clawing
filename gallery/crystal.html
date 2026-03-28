@@ -280,9 +280,7 @@ if (resetBtn) {
 }
 
 // initial draw
-updateImage();
-drawDisplay();
-loop();
+requestAnimationFrame(()=>{updateImage();drawDisplay();setTimeout(()=>{updateImage();drawDisplay();},200);loop();});
 </script>
 </body>
 </html>

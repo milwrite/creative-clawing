@@ -73,13 +73,12 @@ function draw(){
     }
   }
 }
-resize();
-draw();
 addEventListener('resize',()=>{resize();draw();});
 addEventListener('orientationchange',()=>setTimeout(()=>{resize();draw();},140));
 window.visualViewport?.addEventListener('resize',()=>{resize();draw();});
 addEventListener('click',draw);
 addEventListener('touchstart',draw,{passive:true});
+requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();draw();},200);draw();});
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 <script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>

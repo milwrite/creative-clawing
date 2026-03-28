@@ -122,11 +122,12 @@ function start() {
   raf = requestAnimationFrame(draw);
 }
 
-start();
-
 c.addEventListener('click', start);
 c.addEventListener('touchstart', e => { e.preventDefault(); start(); }, { passive: false });
 window.addEventListener('resize', () => { if (!drawing) { resize(); } });
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);start();});
 </script>
 <!-- iframe handled by .in-iframe class -->
 </body>

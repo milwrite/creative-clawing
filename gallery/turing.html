@@ -200,7 +200,7 @@ if (window.self !== window.top) {
   initSim();
 }
 
-draw();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
 </script>
 </body>
 </html>

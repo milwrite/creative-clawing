@@ -210,12 +210,9 @@ document.getElementById('viewBtn').addEventListener('click', function() {
 });
 
 window.addEventListener('resize', resize);
-resize();
-
-(function loop() {
-  requestAnimationFrame(loop);
-  draw();
-})();
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);(function loop(){requestAnimationFrame(loop);draw();})();});
 </script>
 </body>
 </html>

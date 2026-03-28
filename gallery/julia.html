@@ -224,8 +224,7 @@ if (window.visualViewport) {
 }
 window.addEventListener('orientationchange', () => { setTimeout(() => { resize(); scheduleRender(); }, 200); });
 
-resize();
-scheduleRender();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);scheduleRender();});
 </script>
 </body>
 </html>

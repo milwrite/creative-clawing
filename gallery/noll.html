@@ -105,11 +105,12 @@ function generate() {
   ctx.strokeRect(margin, margin, W - margin * 2, H - margin * 2);
 }
 
-generate();
-
 c.addEventListener('click', generate);
 c.addEventListener('touchstart', e => { e.preventDefault(); generate(); }, { passive: false });
 window.addEventListener('resize', generate);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',generate);
+window.addEventListener('orientationchange',()=>{setTimeout(generate,200);});
+requestAnimationFrame(()=>{generate();setTimeout(generate,200);});
 </script>
 <script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
 </body>
