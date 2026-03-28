@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 131,
+    "totalCommits": 132,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 11
+      "2026-03-28": 12
     },
     "categoryCounts": {
       "blog": 14,
       "mobile": 12,
       "fix": 28,
-      "other": 65,
+      "other": 66,
       "artifact": 8,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "961a2b3b",
+        "date": "2026-03-28",
+        "subject": "fix(pendulum): construct pendulums inside rAF after resize so W/H are valid",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "2fdc9838",
         "date": "2026-03-28",
@@ -1093,7 +1101,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 368,
+    "totalCommits": 369,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1130,7 +1138,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 56
+      "2026-03-28": 57
     },
     "categoryCounts": {
       "blog": 33,
@@ -1138,11 +1146,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 119,
-      "chore": 80,
+      "chore": 81,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "887876f5",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "d332d745",
         "date": "2026-03-28",
