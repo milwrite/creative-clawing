@@ -43,8 +43,8 @@ if(window.self !== window.top){
   document.getElementById('back').style.display='none';
 }
 
-// Grid
-const N = 128;
+// Grid — higher resolution in standalone view for sharpness; lower in iframe for performance
+const N = (window.self === window.top) ? 256 : 128;
 const size = (N+2)*(N+2);
 const dt = 0.15;
 const diffusion = 0.00001;
