@@ -120,7 +120,9 @@
 (function(){
   var sf = document.querySelector('.sketch-frame');
   if (sf) sf.addEventListener('load', function() {
-    try { sf.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+    setTimeout(function() {
+      try { sf.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+    }, 100);
   }, { once: true });
   const contributorMenu = document.querySelector('.menu-group');
   if (!contributorMenu) return;

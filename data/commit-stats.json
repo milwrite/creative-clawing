@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 133,
+    "totalCommits": 136,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 13
+      "2026-03-28": 16
     },
     "categoryCounts": {
       "blog": 14,
       "mobile": 12,
       "fix": 29,
-      "other": 66,
+      "other": 69,
       "artifact": 8,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,30 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "884166dc",
+        "date": "2026-03-28",
+        "subject": "remove snowflake from sitemap",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2c82cfe8",
+        "date": "2026-03-28",
+        "subject": "fix lazy loading: drop iframe loading=lazy (conflicts with intersection observer)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f2ff0a1c",
+        "date": "2026-03-28",
+        "subject": "remove hatmonotile from sitemap (file deleted)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "4e535ef1",
         "date": "2026-03-28",
@@ -1109,7 +1133,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 376,
+    "totalCommits": 377,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1146,7 +1170,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 64
+      "2026-03-28": 65
     },
     "categoryCounts": {
       "blog": 33,
@@ -1154,11 +1178,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 122,
-      "chore": 85,
+      "chore": 86,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "867e9a21",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "f2563890",
         "date": "2026-03-28",
