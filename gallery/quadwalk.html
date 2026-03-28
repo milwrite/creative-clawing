@@ -44,8 +44,9 @@ if (isIframe) {
 
 let W, H;
 function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
-resize();
 addEventListener('resize', () => { resize(); scheduleRender(); });
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();scheduleRender();});
+addEventListener('orientationchange',()=>{setTimeout(()=>{resize();scheduleRender();},200);});
 
 // q values: [numerator, denominator] — each produces a distinct symmetric figure
 const qList = [
@@ -238,8 +239,7 @@ addEventListener('pointerdown', () => {
   }
 });
 
-updateInfo();
-requestAnimationFrame(t => { lastT = t; tick(t); });
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);updateInfo();requestAnimationFrame(t=>{lastT=t;tick(t);});});
 </script>
 </body>
 </html>

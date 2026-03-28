@@ -284,8 +284,9 @@ function resize() {
   H = c.height = innerHeight;
   regrow();
 }
-resize();
 addEventListener('resize', resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 function loop() {
   if (growing) {
@@ -296,8 +297,7 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-loadPreset();
-loop();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);loadPreset();loop();});
 
 addEventListener('click', e => {
   if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;

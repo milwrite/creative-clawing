@@ -331,6 +331,8 @@ resetBtn.addEventListener('click',()=>{
 });
 
 window.addEventListener('resize',render);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',render);
+window.addEventListener('orientationchange',()=>{setTimeout(render,200);});
 
 // Hide UI in iframe
 if(window.self!==window.top){
@@ -340,7 +342,7 @@ if(window.self!==window.top){
 }
 
 // Init
-rebuild();
+requestAnimationFrame(()=>{rebuild();setTimeout(render,200);});
 </script>
 </body>
 </html>

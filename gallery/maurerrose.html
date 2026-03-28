@@ -42,8 +42,9 @@ function resize() {
   CX = W / 2; CY = H / 2;
   R = Math.min(W, H) * 0.42;
 }
-resize();
 addEventListener('resize', resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 // curated interesting (n, d) pairs
 const presets = [
@@ -223,7 +224,7 @@ function tick(t) {
   requestAnimationFrame(tick);
 }
 
-requestAnimationFrame(t => { lastT = t; tick(t); });
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(t=>{lastT=t;tick(t);});});
 </script>
 </body>
 </html>

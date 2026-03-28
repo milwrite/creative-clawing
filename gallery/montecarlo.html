@@ -106,11 +106,12 @@ function loop(){
   if(frame%4===0)updateHUD();
 }
 
-resize();
 addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 addEventListener('click',resize);
-addEventListener('touchend',e=>{e.preventDefault();resize()},{passive:false});
-loop();
+addEventListener('touchend',e=>{e.preventDefault();resize();},{passive:false});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
 </script>
 </body>
 </html>

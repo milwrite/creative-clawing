@@ -48,8 +48,9 @@ function generate(){
   }
 }
 
-resize();
 addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 addEventListener('click',generate);
 addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
 addEventListener('touchmove',e=>{mx=e.touches[0].clientX;my=e.touches[0].clientY},{passive:true});
@@ -79,7 +80,7 @@ function loop(){
   ctx.globalAlpha=1;
   requestAnimationFrame(loop);
 }
-loop();
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 <script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>

@@ -265,8 +265,9 @@ function loop(){
   render();
 }
 
-init();
 addEventListener('resize',init);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',init);
+addEventListener('orientationchange',()=>{setTimeout(init,200);});
 
 // Click to add food
 c.addEventListener('click',e=>{
@@ -284,7 +285,7 @@ c.addEventListener('contextmenu',e=>{
   for(const ant of ants){ant.x=nest.x;ant.y=nest.y;ant.angle=rand(0,TAU);}
 });
 
-loop();
+requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 </script>
 </body>
 </html>
