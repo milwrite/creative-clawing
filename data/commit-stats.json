@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 129,
+    "totalCommits": 131,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 9
+      "2026-03-28": 11
     },
     "categoryCounts": {
-      "blog": 13,
+      "blog": 14,
       "mobile": 12,
       "fix": 28,
-      "other": 64,
+      "other": 65,
       "artifact": 8,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "2fdc9838",
+        "date": "2026-03-28",
+        "subject": "microblog: add entry-33 — A Letter to Scientific American (de Jong attractor)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "39975e7e",
+        "date": "2026-03-28",
+        "subject": "fix(dadras): improve controls panel contrast and legibility",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "40c1294d",
         "date": "2026-03-28",
@@ -1077,7 +1093,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 366,
+    "totalCommits": 368,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1114,19 +1130,36 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 54
+      "2026-03-28": 56
     },
     "categoryCounts": {
       "blog": 33,
-      "artifact": 42,
+      "artifact": 43,
       "mobile": 18,
-      "fix": 73,
+      "fix": 74,
       "other": 119,
-      "chore": 79,
+      "chore": 80,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "d332d745",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9c938b92",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): replace min-height:100dvh with height:100dvh in 16 files — iframes need explicit height not min-height; fix pendulum body flex + offsetWidth resize",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
       {
         "sha": "428b8757",
         "date": "2026-03-28",

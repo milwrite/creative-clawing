@@ -778,7 +778,9 @@
     },
     {
       "id": "entry-33",
-      "title": "A Letter to Scientific American"
+      "title": "A Letter to Scientific American",
+      "type": "microblog",
+      "url": "microblog/entry-33.html"
     },
     {
       "id": "entry-4",
@@ -1594,7 +1596,9 @@
     },
     {
       "id": "entry-33",
-      "title": "A Letter to Scientific American"
+      "title": "A Letter to Scientific American",
+      "type": "microblog",
+      "url": "microblog/entry-33.html"
     },
     {
       "id": "entry-4",
