@@ -297,6 +297,7 @@ function renderTrail(){
 }
 
 function renderInfo(){
+  if(window.self!==window.top) return; // hide info overlay in iframe cards
   ctx.fillStyle='rgba(10,10,15,0.75)';
   ctx.fillRect(8,8,200,60);
   ctx.fillStyle='#ccc';

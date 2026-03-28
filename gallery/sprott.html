@@ -261,10 +261,24 @@ c.addEventListener('pointerup', () => { dragging = false; });
 c.addEventListener('pointercancel', () => { dragging = false; });
 
 window.addEventListener('resize', () => { resize(); resetSystem(); });
+if(window.visualViewport) window.visualViewport.addEventListener('resize', () => { resize(); resetSystem(); });
+window.addEventListener('orientationchange', () => { setTimeout(() => { resize(); resetSystem(); }, 200); });
+
 function start() {
   resize();
   if (c.width === 0 || c.height === 0) { requestAnimationFrame(start); return; }
   resetSystem();
+  // In iframe: pre-fill trail so it's immediately visible, not just a dot
+  if (window.self !== window.top) {
+    const sys = SYSTEMS[sysIdx];
+    const dt = 0.004;
+    for (let i = 0; i < 20000; i++) {
+      [px,py,pz] = rk4(sys.fn, px, py, pz, dt);
+      if (!isFinite(px)||!isFinite(py)||!isFinite(pz)) { px=sys.init[0]; py=sys.init[1]; pz=sys.init[2]; }
+      trail.push([px, py, pz]);
+      if (trail.length > MAX_TRAIL) trail.shift();
+    }
+  }
   frame();
 }
 requestAnimationFrame(start);
