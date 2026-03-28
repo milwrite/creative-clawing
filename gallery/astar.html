@@ -75,9 +75,9 @@ function init(){
   canvas.style.width=W+'px';
   canvas.style.height=H+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  const uiH = (window.self===window.top) ? 60 : 0;
-  cellSize=Math.max(12,Math.min(28,Math.floor(Math.min(W,H)/32)));
+  cellSize=Math.max(12,Math.min(28,Math.floor(Math.min(W,H)/40)));
   cols=Math.floor(W/cellSize);
+  const uiH = (window.self!==window.top) ? 0 : 60; // no UI bar in iframe
   rows=Math.floor((H-uiH)/cellSize);
   grid=[];
   for(let r=0;r<rows;r++){
@@ -177,9 +177,8 @@ function runSearch(useHeuristic){
 
 const COL={
   bg:'#0a0a0f',
-  empty:'#0f1018',
-  emptyBorder:'rgba(50,55,80,0.6)',
-  wall:'#2a2a40',
+  empty:'#12121a',
+  wall:'#2a2a3a',
   start:'#00e87b',
   end:'#ff4466',
   visitA:'rgba(60,140,255,0.35)',
@@ -198,13 +197,12 @@ function render(){
   for(let r=0;r<rows;r++){
     for(let c=0;c<cols;c++){
       const x=c*cellSize,y=r*cellSize;
-      const isWall=grid[r][c]===WALL;
-      ctx.fillStyle=isWall?COL.wall:COL.empty;
-      ctx.fillRect(x,y,cellSize,cellSize);
-      // draw subtle border to make grid structure visible
-      ctx.strokeStyle=isWall?'rgba(60,65,100,0.5)':'rgba(40,45,70,0.7)';
-      ctx.lineWidth=0.5;
-      ctx.strokeRect(x+0.25,y+0.25,cellSize-0.5,cellSize-0.5);
+      if(grid[r][c]===WALL){
+        ctx.fillStyle=COL.wall;
+      } else {
+        ctx.fillStyle=COL.empty;
+      }
+      ctx.fillRect(x+0.5,y+0.5,cellSize-1,cellSize-1);
     }
   }
   // visited overlay
@@ -406,24 +404,29 @@ if(inIframe){
 }
 
 function autoDemo(){
-  // Generate a random maze, run A*, then loop
+  if(!inIframe) return;
+  // Generate a random maze, run A*, then loop after a pause
   generateMaze();
-  speed = inIframe ? 8 : 4;
+  speed = 8;
   const rA = runSearch(true);
   animateSearch(rA, null);
-  const delay = Math.max(2500, (rA.frames.length / speed) * 16 + 2500);
+  // Re-trigger after animation + display time
+  const delay = Math.max(3000, (rA.frames.length / speed) * 16 + 3000);
   setTimeout(autoDemo, delay);
 }
 
 window.addEventListener('resize',()=>{init();});
-if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{init();});
-window.addEventListener('orientationchange',()=>{setTimeout(init,200);});
-// Always defer to rAF — ensures layout dimensions are available in both standalone and iframe
-requestAnimationFrame(()=>{
+// Defer init when inside an iframe to ensure layout has painted before sizing
+if(inIframe){
+  window.addEventListener('load',()=>{setTimeout(()=>init(),100);},{once:true});
+} else {
   init();
-  setTimeout(init, 200); // settle pass
-  setTimeout(autoDemo, inIframe ? 800 : 1200);
-});
+}
+
+// In iframe: kick off demo automatically
+if(inIframe){
+  setTimeout(autoDemo, 600);
+}
 </script>
 </body>
 </html>
