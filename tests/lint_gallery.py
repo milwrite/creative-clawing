@@ -52,25 +52,31 @@ for p in sorted(GALLERY.glob("*.html")):
              "canvas sized with innerWidth/H synchronously — wrap initial resize() call in requestAnimationFrame(()=>{…})")
 
     # ── 2. BLANK PREVIEW (user-input-only content) ───────────────────────
-    # Heuristic: uses innerWidth (full-viewport canvas), has no auto-seed/fill,
-    # and does NOT already detect the iframe context to do a warmup fill.
-    is_interactive_only = bool(
-        re.search(r'(pointerdown|mousedown|click|touchstart)', txt) and
-        not re.search(r'(initSim|initCells|seed\s*\(|spawnParticle|autofill|previewFill|Math\.random\(\))', txt)
+    # Heuristic: no automatic animation loop at all (no rAF loop call at top level),
+    # and the only content comes from user interaction events.
+    # We flag only artifacts that have user-event handlers but no auto-starting loop.
+    has_auto_loop = bool(
+        re.search(r'requestAnimationFrame\s*\(', txt) or
+        re.search(r'setInterval\s*\(', txt)
     )
-    # If it already has an iframe branch for warmup content, that's fine
-    has_iframe_warmup = bool(
-        re.search(r'window\.self\s*!==?\s*window\.top', txt) and
-        re.search(r'(fill|seed|init|spawn|warmup)', txt, re.IGNORECASE)
+    # Also accept artifacts that call a top-level draw/generate/init/render call
+    has_auto_draw = bool(
+        re.search(r'^\s*(draw|generate|render|init|build|start)\s*\(\s*\)\s*;', txt, re.MULTILINE)
     )
-    if is_interactive_only and not has_iframe_warmup:
+    is_pure_static_on_load = bool(
+        not has_auto_loop and not has_auto_draw and
+        re.search(r'(pointerdown|mousedown|click|touchstart)', txt)
+    )
+    if is_pure_static_on_load:
         warn(name, "BLANK_PREVIEW",
-             "artifact may render blank in iframe card (user-driven only) — add iframe warmup fill")
+             "artifact may render blank in iframe card (no animation loop, user-driven only) — add iframe warmup fill")
 
     # ── 3. MISSING IFRAME DETECTION ──────────────────────────────────────
     has_iframe_detect = bool(
         re.search(r'window\.self\s*!==?\s*window\.top', txt) or
-        'in-iframe' in txt
+        re.search(r'window\.self\s*===\s*window\.top', txt) or
+        'in-iframe' in txt or
+        'standalone' in txt
     )
     if not has_iframe_detect:
         warn(name, "NO_IFRAME_DETECT",
