@@ -29,11 +29,23 @@ canvas{display:block;width:100%;flex:1;min-height:0;touch-action:none}
 .val{min-width:36px;text-align:right;font-variant-numeric:tabular-nums;color:#9060e0}
 #ui button,#ui select{background:rgba(144,96,224,0.15);border:1px solid #3a2860;color:#c0a0f0;padding:5px 12px;border-radius:4px;cursor:pointer;font:12px ui-monospace,monospace;transition:all .2s;min-height:34px}
 #ui button:hover{background:rgba(144,96,224,0.3);border-color:#8060c0}
+#ui input[type=range]{height:28px}
 @media(max-width:600px){
-  #ui input[type=range]{width:90px}
-  #ui{gap:6px;font-size:11px}
-  .val{font-size:11px}
+  #ui{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px 10px;
+    font-size:11px;
+    padding-top:6px;
+    padding-bottom:max(env(safe-area-inset-bottom),8px)
+  }
+  #ui label{white-space:normal}
+  #ui input[type=range]{width:100%;min-width:0;height:32px}
+  #ui select{grid-column:1/-1}
+  #ui button{min-height:40px}
+  .val{font-size:11px;min-width:28px}
   #back{font-size:11px;padding:6px 10px}
+  #info{display:none!important}
 }
 </style>
 </head>
@@ -74,13 +86,15 @@ const presets=document.getElementById('presets');
 let a=-2.24, b=0.43, c=-0.65, d=-2.43;
 let morphTarget=null, morphT=0;
 const DPR=Math.min(window.devicePixelRatio||1,2);
+const isMobile=('ontouchstart' in window)||window.innerWidth<600;
 let W=0,H=0,cW=0,cH=0;
 let density=null, maxDensity=1;
 let px=0.1, py=0.1;
-const BATCH=40000;
-const MAX_DENSITY_ITER=4000000;
+const BATCH=isMobile?15000:40000;
+const MAX_DENSITY_ITER=isMobile?1500000:4000000;
 let iterCount=0;
 let dirty=true;
+let offscreen=null, offCtx=null; // reusable offscreen canvas
 
 function resize(){
   const rect=canvas.getBoundingClientRect();
@@ -93,8 +107,12 @@ function resize(){
 }
 
 function resetAccum(){
+  if(!cW||!cH) return;
   density=new Uint32Array(cW*cH);
   maxDensity=1; iterCount=0; px=0.1; py=0.1; dirty=true;
+  // reset/resize offscreen
+  if(!offscreen){offscreen=document.createElement('canvas');offCtx=offscreen.getContext('2d');}
+  offscreen.width=cW; offscreen.height=cH;
 }
 
 function iterate(n){
@@ -120,36 +138,25 @@ function iterate(n){
 }
 
 function render(){
-  if(!density) return;
-  const imgData=ctx.createImageData(cW/DPR,cH/DPR);
-  // Work in device pixels
-  const raw=new Uint8ClampedArray(cW*cH*4);
+  if(!density||!offscreen) return;
   const logMax=Math.log(maxDensity+1);
+  const id=offCtx.createImageData(cW,cH);
+  const raw=id.data;
   for(let i=0;i<cW*cH;i++){
     const v=density[i];
-    if(!v){raw[i*4]=8;raw[i*4+1]=5;raw[i*4+2]=18;raw[i*4+3]=255;continue;}
-    const t=Math.log(v+1)/logMax; // gamma correction via log
-    // palette: dark purple → violet → lavender → white
-    const r=Math.floor(20+200*t*t);
-    const g=Math.floor(5+120*Math.pow(t,1.5));
-    const b2=Math.floor(40+215*t);
-    raw[i*4]=Math.min(r,255);
-    raw[i*4+1]=Math.min(g,255);
-    raw[i*4+2]=Math.min(b2,255);
-    raw[i*4+3]=255;
+    const base=i*4;
+    if(!v){raw[base]=8;raw[base+1]=5;raw[base+2]=18;raw[base+3]=255;continue;}
+    const t=Math.log(v+1)/logMax;
+    raw[base]=Math.min(Math.floor(20+200*t*t),255);
+    raw[base+1]=Math.min(Math.floor(5+120*Math.pow(t,1.5)),255);
+    raw[base+2]=Math.min(Math.floor(40+215*t),255);
+    raw[base+3]=255;
   }
-  // scale down by DPR when putting: use putImageData on a temp canvas
-  const tmp=document.createElement('canvas');
-  tmp.width=cW; tmp.height=cH;
-  const tctx=tmp.getContext('2d');
-  const id=tctx.createImageData(cW,cH);
-  id.data.set(raw);
-  tctx.putImageData(id,0,0);
+  offCtx.putImageData(id,0,0);
   ctx.setTransform(1,0,0,1,0,0);
-  ctx.drawImage(tmp,0,0,W,H);
+  ctx.drawImage(offscreen,0,0,W,H);
   ctx.setTransform(DPR,0,0,DPR,0,0);
 
-  // info
   if(document.documentElement.classList.contains('standalone')){
     infoEl.textContent=`${(iterCount/1e6).toFixed(2)}M pts\na=${a.toFixed(2)} b=${b.toFixed(2)}\nc=${c.toFixed(2)} d=${d.toFixed(2)}`;
   }
