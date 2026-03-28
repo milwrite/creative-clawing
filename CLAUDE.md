@@ -156,6 +156,70 @@ Every artifact must work on a narrow viewport (≤600px). Required:
 
 For `position:absolute` canvases (sized to `window.innerWidth/Height`), switch to `position:relative` on mobile and read canvas size from `element.getBoundingClientRect()` — not `window.innerWidth/Height` — after the layout shift.
 
+### HiDPI canvas rendering — the upper-left corner bug
+
+**Never mix CSS pixel dimensions with a scaled canvas context.**
+
+The pattern that causes the bug:
+
+```js
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+canvas.width  = W * dpr;   // physical pixels
+canvas.height = H * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+// ... later, in a render function:
+ctx.drawImage(offscreen, 0, 0, W, H);  // ← WRONG on HiDPI
+```
+
+`ctx.setTransform(dpr, …)` scales up everything drawn through `ctx`. When you then call `ctx.drawImage(offscreen, 0, 0, W, H)` using CSS pixel dimensions, the image is drawn at CSS size but the context transform scales it _down_ — on a 3× iPhone screen the result lands at 1/9th of the canvas area in the upper-left corner.
+
+**The correct pattern — two options:**
+
+Option A: reset transform before drawing the offscreen, draw to physical pixels:
+
+```js
+ctx.setTransform(1, 0, 0, 1, 0, 0);   // identity
+ctx.drawImage(offscreen, 0, 0, cW, cH); // cW/cH = physical pixel dims
+// do NOT restore the dpr transform — only use it for vector drawing
+```
+
+Option B: don't use `setTransform` at all; scale drawing coordinates manually using DPR throughout.
+
+If you're using an offscreen canvas as a pixel buffer (e.g. writing `ImageData` directly and blitting), option A is correct. Keep `cW`/`cH` as explicit variables for physical dimensions and never confuse them with `W`/`H`.
+
+### Canvas resize initialization — the blank/tiny canvas on load
+
+**Never call `resize()` synchronously at script end.**
+
+```js
+// WRONG — reads offsetWidth/innerWidth before flex/grid layout is painted
+resize();
+frame();
+```
+
+On mobile, and often in desktop Safari, the canvas has zero or stale dimensions at script-parse time. The DPR-scaled canvas is allocated at 0×0 or at the previous viewport size, and the artifact renders blank or tiny.
+
+**The correct pattern:**
+
+```js
+window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+
+requestAnimationFrame(() => {
+  resize();              // reads real post-layout dimensions
+  setTimeout(resize, 200); // catches iOS safe-area / toolbar settle
+  init();                // any state that depends on W/H goes here, not before
+  frame();
+});
+```
+
+- `requestAnimationFrame` defers until after the browser has painted the layout, so `offsetWidth` / `getBoundingClientRect()` return real values.
+- The 200ms `setTimeout` catch handles iOS Safari's toolbar animation which shifts the viewport after the first rAF.
+- `visualViewport` events fire on keyboard show/hide and pinch-zoom, which `window resize` misses on iOS.
+- `orientationchange` fires before the new dimensions are stable; the 200ms delay gives the browser time to reflow.
+
 ## Adding a new artifact
 
 1. Create `gallery/X.html` (self-contained canvas sketch — must pass quality standards above)
