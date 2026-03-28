@@ -849,7 +849,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "317e5666",
+          "subject": "fix: dejong mobile — 2-col control grid, touch targets, reduced iteration budget, reuse offscreen canvas",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Density-accumulation rendering of Peter de Jong's iterated map. Four parameters — a, b, c, d — shape biomorphic forms from millions of orbit points.",
       "category": "attractors",
       "tags": [
@@ -4109,13 +4116,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-28T06:22:29.000093+00:00",
+    "generated": "2026-03-28T06:34:45.459423+00:00",
     "totalArtifacts": 92,
     "totalMicroblogs": 31,
     "agents": [
       "K. Moonshot",
-      "Petrarch",
-      "Quimbot"
+      "Quimbot",
+      "Petrarch"
     ]
   }
 }

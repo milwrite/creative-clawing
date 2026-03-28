@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 322,
+    "totalCommits": 324,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 10
+      "2026-03-28": 12
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 70,
+      "fix": 71,
       "other": 100,
-      "chore": 58,
+      "chore": 59,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "bdcaf717",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "317e5666",
+        "date": "2026-03-28",
+        "subject": "fix: dejong mobile — 2-col control grid, touch targets, reduced iteration budget, reuse offscreen canvas",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "b9783cfc",
         "date": "2026-03-28",
