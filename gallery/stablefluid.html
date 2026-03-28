@@ -369,16 +369,49 @@ function step(){
 // Kick off after startFluid() confirms valid dimensions
 (function waitForSize(){
   if(canvas.width === 0 || canvas.height === 0){ requestAnimationFrame(waitForSize); return; }
-  // In iframe card: inject initial dye so it shows a live fluid pattern instead of a blank canvas
+
+  // In iframe card: seed dye directly into the persistent state arrays (not sources, which get
+  // cleared every step). Pump force for the first 30 frames so fluid has visible motion.
   if(window.self !== window.top){
-    const cx = innerWidth * 0.5, cy = innerHeight * 0.5;
-    const offsets = [[0.2,0.4],[0.35,0.6],[0.5,0.35],[0.65,0.55],[0.8,0.45],[0.5,0.7]];
-    offsets.forEach(([fx, fy], i) => {
-      applyForce(innerWidth*fx, innerHeight*fy, (i%2?1:-1)*60, (i<3?1:-1)*40);
-      applyForce(innerWidth*fx, innerHeight*fy, (i%2?-1:1)*30, (i<3?-1:1)*50);
-    });
+    let warmupFrames = 30;
+    const offsets = [[0.2,0.4],[0.38,0.6],[0.5,0.32],[0.62,0.58],[0.8,0.42],[0.5,0.72]];
+    function seedDye(){
+      offsets.forEach(([fx, fy], idx) => {
+        const ci = Math.floor(1 + fx * N);
+        const cj = Math.floor(1 + fy * N);
+        const r = 4;
+        for(let di=-r;di<=r;di++) for(let dj=-r;dj<=r;dj++){
+          if(di*di+dj*dj > r*r) continue;
+          const i2=ci+di, j2=cj+dj;
+          if(i2<1||i2>N||j2<1||j2>N) continue;
+          const w = Math.exp(-(di*di+dj*dj)/(r*r*0.6));
+          const hh = (idx / offsets.length) * 360;
+          const [rr,gg,bb] = hsl2rgb(hh, 0.9, 0.55);
+          dyeR[IX(i2,j2)] = Math.min(1, dyeR[IX(i2,j2)] + w * rr * 0.9);
+          dyeG[IX(i2,j2)] = Math.min(1, dyeG[IX(i2,j2)] + w * gg * 0.9);
+          dyeB[IX(i2,j2)] = Math.min(1, dyeB[IX(i2,j2)] + w * bb * 0.9);
+          u0[IX(i2,j2)] += w * (idx%2?1:-1) * 18;
+          v0[IX(i2,j2)] += w * (idx<3?1:-1) * 14;
+        }
+      });
+    }
+    seedDye();
+    const origStep = step;
+    // Override step to keep pumping dye for the first N frames
+    window._warmupStep = function(){
+      if(warmupFrames-- > 0) seedDye();
+      velStep(); dyeStep();
+      u0.fill(0); v0.fill(0);
+      dyeR0.fill(0); dyeG0.fill(0); dyeB0.fill(0);
+      decay(dyeR, 0.997); decay(dyeG, 0.997); decay(dyeB, 0.997);
+      if(showDye) render(); else renderVelocity();
+      if(warmupFrames > 0) requestAnimationFrame(window._warmupStep);
+      else requestAnimationFrame(step);
+    };
+    requestAnimationFrame(window._warmupStep);
+  } else {
+    requestAnimationFrame(step);
   }
-  requestAnimationFrame(step);
 })();
 </script>
 </body>
