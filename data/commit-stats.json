@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 128,
+    "totalCommits": 129,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,12 +25,12 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 8
+      "2026-03-28": 9
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 27,
+      "fix": 28,
       "other": 64,
       "artifact": 8,
       "chore": 3,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "40c1294d",
+        "date": "2026-03-28",
+        "subject": "fix: delete hatmonotile+snowflake; fix lotkavolterra canvas fill; fix astar grid uses full height in iframe",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "8a4bdbeb",
         "date": "2026-03-28",
@@ -1069,7 +1077,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 363,
+    "totalCommits": 366,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1106,19 +1114,43 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 51
+      "2026-03-28": 54
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 42,
       "mobile": 18,
       "fix": 73,
-      "other": 117,
-      "chore": 78,
+      "other": 119,
+      "chore": 79,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "428b8757",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9e3d2f8b",
+        "date": "2026-03-28",
+        "subject": "fix(dadras): wider scale /18, faster STEPS_PER_FRAME, iframe warmup 25k, raise trail alpha floor",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8fb64c90",
+        "date": "2026-03-28",
+        "subject": "fix(astar): run autoDemo in standalone too — maze loops automatically on page load",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "709871d0",
         "date": "2026-03-28",
