@@ -13,6 +13,8 @@
 html,body{height:100%;height:100dvh;background:#0a0a0a;overflow:hidden;font-family:ui-monospace,monospace}
 canvas{display:block;touch-action:none}
 #wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+html:not(.standalone) #wrap{align-items:stretch;justify-content:stretch}
+html:not(.standalone) canvas{width:100%!important;height:100%!important;flex:1}
 /* back button */
 .back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.85);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color .2s}
 .back-btn:hover{border-color:#888}
@@ -72,7 +74,7 @@ let sweepCount = 0;
 let colorMode = true;
 let checkerboardSweep = false; // random site vs checkerboard
 let rafId;
-let W, H, cellPx;
+let W, H, cellPx, cellPxY;
 
 // ── init ─────────────────────────────────────────────────
 function makeGrid(randomize = true) {
@@ -142,10 +144,11 @@ function draw() {
       const s = grid[i * N + j];
       const col = colorMode ? (s === 1 ? warm : cool) : (s === 1 ? [240,236,224] : [20,20,20]);
 
+      const cpY = cellPxY || cellPx;
       const x0 = Math.round(j * cellPx);
       const x1 = Math.round((j + 1) * cellPx);
-      const y0 = Math.round(i * cellPx);
-      const y1 = Math.round((i + 1) * cellPx);
+      const y0 = Math.round(i * cpY);
+      const y1 = Math.round((i + 1) * cpY);
 
       for (let py = y0; py < y1; py++) {
         for (let px = x0; px < x1; px++) {
@@ -185,32 +188,44 @@ function loop() {
 // ── resize ────────────────────────────────────────────────
 function resize() {
   const canvas = document.getElementById('c');
-  const dpr = window.devicePixelRatio || 1;
   const container = document.getElementById('wrap');
-  const cw = container.clientWidth;
-  const ch = container.clientHeight;
-  const side = Math.min(cw, ch - (window.self === window.top ? 100 : 0));
-  const px = Math.max(1, Math.floor(side / N));
-  cellPx = px;
-  W = N * px;
-  H = N * px;
-  canvas.width  = W;
-  canvas.height = H;
-  canvas.style.width  = W + 'px';
-  canvas.style.height = H + 'px';
-  // Recalculate N to fill available space better
-  const targetN = Math.floor(side / 3); // 3px per cell target
-  const newN = Math.min(200, Math.max(60, targetN));
-  if (newN !== N) {
-    N = newN;
-    cellPx = Math.max(1, Math.floor(side / N));
-    W = N * cellPx;
-    H = N * cellPx;
+  const inIframe = window.self !== window.top;
+  const cw = container.clientWidth  || innerWidth;
+  const ch = container.clientHeight || innerHeight;
+  const uiH = inIframe ? 0 : 100;
+
+  if (inIframe) {
+    // Fill the full container
+    W = Math.max(1, cw);
+    H = Math.max(1, ch);
+    const side = Math.min(W, H);
+    const targetN = Math.floor(side / 3);
+    N = Math.min(200, Math.max(60, targetN));
+    // Float cellPx so grid tiles exactly fill W and H
+    cellPx  = W / N;
+    cellPxY = H / N;
     canvas.width  = W;
     canvas.height = H;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
+    canvas.style.width  = '100%';
+    canvas.style.height = '100%';
     resetGrid();
+  } else {
+    const side = Math.min(cw, ch - uiH);
+    const px = Math.max(1, Math.floor(side / N));
+    cellPx = px;
+    W = N * px; H = N * px;
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    const targetN = Math.floor(side / 3);
+    const newN = Math.min(200, Math.max(60, targetN));
+    if (newN !== N) {
+      N = newN;
+      cellPx = Math.max(1, Math.floor(side / N));
+      W = N * cellPx; H = N * cellPx;
+      canvas.width = W; canvas.height = H;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      resetGrid();
+    }
   }
 }
 
