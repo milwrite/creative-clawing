@@ -144,7 +144,7 @@
     .card-frame { position: relative; overflow: hidden; }
     .card-overlay { position: absolute; inset: 0; z-index: 1; touch-action: auto; }
     .card:hover { border-color: rgba(255,255,255,.35); }
-    .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .recent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .recent-grid .card { width: auto; min-width: 0; height: 240px; contain: layout paint; }
     .card iframe {
       width: 100%;
@@ -620,8 +620,19 @@
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+  // MIN_LANE_CARDS: 8 × 230px = 1840px > 1380px max viewport, so duplicates are never
+  // simultaneously visible. Pad any short last group by cycling from the front of shuffled.
+  const MIN_LANE_CARDS = 8;
   const artGroups = [];
-  for (let i = 0; i < shuffled.length; i += 8) artGroups.push(shuffled.slice(i, i + 8));
+  for (let i = 0; i < shuffled.length; i += MIN_LANE_CARDS) {
+    const group = shuffled.slice(i, i + MIN_LANE_CARDS);
+    let pad = 0;
+    while (group.length < MIN_LANE_CARDS) {
+      group.push(shuffled[pad % shuffled.length]);
+      pad++;
+    }
+    artGroups.push(group);
+  }
 
   // Shuffle blogs for variety on each visit
   for (let i = blogs.length - 1; i > 0; i--) {
