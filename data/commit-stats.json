@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 132,
+    "totalCommits": 133,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,12 +25,12 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 12
+      "2026-03-28": 13
     },
     "categoryCounts": {
       "blog": 14,
       "mobile": 12,
-      "fix": 28,
+      "fix": 29,
       "other": 66,
       "artifact": 8,
       "chore": 3,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "4e535ef1",
+        "date": "2026-03-28",
+        "subject": "fix: dispatch resize into iframes on load — systemic blank canvas fix",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "961a2b3b",
         "date": "2026-03-28",
@@ -1101,7 +1109,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 375,
+    "totalCommits": 376,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1138,7 +1146,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 63
+      "2026-03-28": 64
     },
     "categoryCounts": {
       "blog": 33,
@@ -1146,11 +1154,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 122,
-      "chore": 84,
+      "chore": 85,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "f2563890",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "7d4ee86f",
         "date": "2026-03-28",

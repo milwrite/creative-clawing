@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-28T19:03:23.306734+00:00",
+  "generated": "2026-03-28T21:23:51.184732+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -2925,7 +2925,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "4e535ef1",
+          "subject": "fix: dispatch resize into iframes on load — systemic blank canvas fix",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Bernoulli site percolation as simony: cells open only if they can pay the coin price p. Below the critical threshold (~0.593), no path opens from earth to heaven. Above it, a giant connected cluster forms and souls can rise.",
       "category": "simulation",
       "tags": [
