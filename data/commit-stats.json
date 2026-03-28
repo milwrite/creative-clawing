@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 120,
+    "totalCommits": 122,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -24,13 +24,14 @@
       "2026-03-21": 10,
       "2026-03-20": 3,
       "2026-03-18": 4,
-      "2026-03-17": 21
+      "2026-03-17": 21,
+      "2026-03-28": 2
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
       "fix": 24,
-      "other": 59,
+      "other": 61,
       "artifact": 5,
       "chore": 3,
       "docs": 1,
@@ -38,6 +39,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "98c87222",
+        "date": "2026-03-28",
+        "subject": "fix short lane duplicates and lock recent-grid to 3 cols",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b6c00afc",
+        "date": "2026-03-28",
+        "subject": "fix(mitosis): defer resize+seed to rAF so iframe has layout dims before reading innerWidth/H",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "2c8033d9",
         "date": "2026-03-27",
@@ -1001,7 +1018,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 333,
+    "totalCommits": 334,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,7 +1055,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 21
+      "2026-03-28": 22
     },
     "categoryCounts": {
       "blog": 33,
@@ -1046,11 +1063,19 @@
       "mobile": 18,
       "fix": 72,
       "other": 104,
-      "chore": 63,
+      "chore": 64,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "bb8e2baa",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "7101c7f7",
         "date": "2026-03-28",
