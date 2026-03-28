@@ -254,12 +254,9 @@ window.addEventListener('resize',()=>{
   }
 });
 
-// Defer until canvas has layout dimensions
-if (document.readyState === 'complete') {
-  init(); loop();
-} else {
-  window.addEventListener('load', () => { init(); loop(); });
-}
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{init();});
+window.addEventListener('orientationchange',()=>{setTimeout(init,200);});
+requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 </script>
 </body>
 </html>

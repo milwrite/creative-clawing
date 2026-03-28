@@ -265,8 +265,9 @@
       ctx.drawImage(offC, 0, 0);
     }
 
-    resize();
-    frame();
+    if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+    window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+    requestAnimationFrame(()=>{resize();setTimeout(resize,200);frame();});
   </script>
 </body>
 </html>

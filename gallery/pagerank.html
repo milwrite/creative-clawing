@@ -56,8 +56,9 @@ function resize() {
   cv.width = W * DPR; cv.height = H * DPR;
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
-resize();
 window.addEventListener('resize', resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 // ── Graph state ───────────────────────────────────────────────────────────
 const DAMPING = 0.85;
@@ -741,8 +742,7 @@ document.getElementById('speedSlider')?.addEventListener('input', e => {
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────
-buildGraph(rndInt(15,20));
-requestAnimationFrame(ts => { lastTime = ts; loop(ts); });
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);buildGraph(rndInt(15,20));requestAnimationFrame(ts=>{lastTime=ts;loop(ts);});});
 </script>
 </body>
 </html>

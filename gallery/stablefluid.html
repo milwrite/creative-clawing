@@ -186,11 +186,14 @@ function resize(){
   imgData = ctx.createImageData(canvas.width, canvas.height);
 }
 window.addEventListener('resize', resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 function startFluid() {
   resize();
   if (canvas.width === 0 || canvas.height === 0) { requestAnimationFrame(startFluid); return; }
   // Re-init dye/velocity arrays with correct size after resize
   imgData = ctx.createImageData(canvas.width, canvas.height);
+  setTimeout(resize, 200); // iOS toolbar settle
 }
 requestAnimationFrame(startFluid);
 
@@ -366,11 +369,11 @@ function step(){
   if(showDye) render(); else renderVelocity();
   requestAnimationFrame(step);
 }
-// Kick off after startFluid() confirms valid dimensions
-(function waitForSize(){
-  if(canvas.width === 0 || canvas.height === 0){ requestAnimationFrame(waitForSize); return; }
+// Kick off after startFluid() confirms valid dimensions — wait one extra frame so startFluid runs first
+requestAnimationFrame(function waitForSize(){
+  if(canvas.width === 0 || canvas.height === 0 || !imgData){ requestAnimationFrame(waitForSize); return; }
   requestAnimationFrame(step);
-})();
+});
 </script>
 </body>
 </html>

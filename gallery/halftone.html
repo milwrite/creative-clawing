@@ -56,7 +56,8 @@
       H = canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resize);
-    resize();
+    if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+    window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
     // --- value noise ---
     function hash2(x, y) {
@@ -178,7 +179,7 @@
       }
     }
 
-    frame();
+    requestAnimationFrame(()=>{resize();setTimeout(resize,200);frame();});
   </script>
 </body>
 </html>
