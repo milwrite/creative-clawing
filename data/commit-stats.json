@@ -1069,7 +1069,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 349,
+    "totalCommits": 351,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1106,19 +1106,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 37
+      "2026-03-28": 39
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 111,
-      "chore": 71,
+      "other": 112,
+      "chore": 72,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "3f940009",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "604e4590",
+        "date": "2026-03-28",
+        "subject": "remove hatmonotile from manifest+files; fix rossler iframe preview (warmup 30k steps, larger scale, higher trail alpha)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "7a925313",
         "date": "2026-03-28",
