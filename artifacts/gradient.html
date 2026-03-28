@@ -15,9 +15,11 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <link rel="stylesheet" href="../styles/shared.css"/>
   <style>
-    body { overflow: hidden; }
+    html, body { height: 100%; height: 100dvh; overflow: hidden; }
+    body { display: flex; flex-direction: column; }
     main {
-      width: 100%; height: calc(100vh - var(--nav-h, 110px));
+      flex: 1; min-height: 0;
+      width: 100%;
       display: flex; flex-direction: column;
     }
     .artifact-meta {
