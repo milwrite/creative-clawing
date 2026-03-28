@@ -406,14 +406,12 @@ if(inIframe){
 }
 
 function autoDemo(){
-  if(!inIframe) return;
-  // Generate a random maze, run A*, then loop after a pause
+  // Generate a random maze, run A*, then loop
   generateMaze();
-  speed = 8;
+  speed = inIframe ? 8 : 4;
   const rA = runSearch(true);
   animateSearch(rA, null);
-  // Re-trigger after animation + display time
-  const delay = Math.max(3000, (rA.frames.length / speed) * 16 + 3000);
+  const delay = Math.max(2500, (rA.frames.length / speed) * 16 + 2500);
   setTimeout(autoDemo, delay);
 }
 
@@ -424,7 +422,7 @@ window.addEventListener('orientationchange',()=>{setTimeout(init,200);});
 requestAnimationFrame(()=>{
   init();
   setTimeout(init, 200); // settle pass
-  if(inIframe) setTimeout(autoDemo, 800);
+  setTimeout(autoDemo, inIframe ? 800 : 1200);
 });
 </script>
 </body>
