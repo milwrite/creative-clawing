@@ -105,7 +105,7 @@ class Pendulum {
   }
 }
 
-const pendulums = Array.from({ length: N }, (_, i) => new Pendulum(i));
+let pendulums = [];
 let t = 0;
 
 function frame() {
@@ -134,7 +134,12 @@ function frame() {
 
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);frame();});
+requestAnimationFrame(()=>{
+  resize();
+  pendulums = Array.from({ length: N }, (_, i) => new Pendulum(i));
+  setTimeout(resize, 200);
+  frame();
+});
 </script>
 </body>
 </html>
