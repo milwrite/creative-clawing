@@ -194,7 +194,34 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-window.addEventListener('load', () => { setTimeout(() => { init(); loop(); }, 100); });
+// Pre-fill with materials for iframe card preview so it looks alive immediately
+function previewFill() {
+  if (window.self === window.top) return;
+  // Horizontal wall shelf near middle
+  const midY = Math.floor(rows * 0.55);
+  for (let x = Math.floor(cols * 0.15); x < Math.floor(cols * 0.85); x++) set(x, midY, WALL);
+  // Gap in the middle so things fall through
+  for (let x = Math.floor(cols * 0.45); x <= Math.floor(cols * 0.55); x++) set(x, midY, EMPTY);
+
+  // Rain of sand above the shelf
+  for (let i = 0; i < Math.floor(cols * rows * 0.08); i++) {
+    const rx = Math.floor(Math.random() * cols);
+    const ry = Math.floor(Math.random() * midY);
+    set(rx, ry, Math.random() < 0.75 ? SAND : WATER);
+  }
+
+  // Small pool of water at the bottom
+  for (let x = Math.floor(cols * 0.1); x < Math.floor(cols * 0.9); x++) {
+    for (let y = rows - Math.floor(rows * 0.12); y < rows; y++) {
+      if (Math.random() < 0.6) set(x, y, WATER);
+    }
+  }
+
+  // Advance sim to let things settle a bit
+  for (let i = 0; i < 80; i++) tick();
+}
+
+window.addEventListener('load', () => { setTimeout(() => { init(); previewFill(); loop(); }, 100); });
 addEventListener('resize',init);
 
 function setMat(m){

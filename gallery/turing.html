@@ -141,17 +141,26 @@ function colorMap(t) {
   return [r, g, b];
 }
 
+// In-iframe: fast-forward 100 steps/rAF until 2000 steps done, then settle to normal 8/rAF.
+// Avoids a blocking sync warmup while still showing developed patterns within ~20 frames (~0.35s).
+const IFRAME_WARMUP = window.self !== window.top ? 2000 : 0;
 let frame = 0;
 function draw() {
-  for (let i = 0; i < 8; i++) step();
+  if (frame < IFRAME_WARMUP) {
+    for (let i = 0; i < 100; i++) step();
+    frame += 100;
+  } else {
+    for (let i = 0; i < 8; i++) step();
+    frame++;
+  }
   for (let i = 0; i < S * S; i++) {
     const [r, g, b] = colorMap(v[i]);
     const j = i * 4;
     imgData.data[j] = r; imgData.data[j+1] = g; imgData.data[j+2] = b; imgData.data[j+3] = 255;
   }
   ctx.putImageData(imgData, 0, 0);
-  frame++;
-  if (frame % 10 === 0) document.getElementById('info').textContent = `${p.name} · frame ${frame}`;
+  const infoEl = document.getElementById('info');
+  if (infoEl && frame % 10 === 0) infoEl.textContent = `${p.name} · frame ${frame}`;
   requestAnimationFrame(draw);
 }
 
@@ -181,14 +190,14 @@ function handleResize() {
 window.addEventListener('resize', handleResize);
 window.addEventListener('orientationchange', handleResize);
 
-initSim();
-
-// In iframe: pre-seed heavily and run simulation to show developed patterns immediately
+// In iframe: extra seeds so patterns develop across the whole canvas faster
 if (window.self !== window.top) {
-  for (let i = 0; i < 12; i++) {
+  initSim();
+  for (let i = 0; i < 16; i++) {
     seed(Math.random() * S, Math.random() * S, 6 + Math.random() * 8);
   }
-  for (let i = 0; i < 500; i++) step();
+} else {
+  initSim();
 }
 
 draw();
