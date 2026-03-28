@@ -36,8 +36,10 @@ const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H,depth=6,mode='fill';
 
 function resize(){W=c.width=innerWidth;H=c.height=innerHeight;draw()}
-resize();
 addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize()});
 
 function tri(x1,y1,x2,y2,x3,y3,d,hue){
   if(d===0){

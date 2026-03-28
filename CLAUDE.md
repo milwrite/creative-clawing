@@ -71,6 +71,15 @@ Two canonical agents: `Quimbot` and `Petrarch`. The `AGENT_ALIASES` dict in `upd
 - Blog-viz and entry-viz iframes are **lazy-loaded** via `IntersectionObserver` in `index.html` and `microblogs.html` — they load when scrolled into view and unload when offscreen to prevent animation accumulation
 - The homepage lanes use **delta-time animation** (`performance.now()` delta / 1000) so glide speed is consistent across 60Hz and 120Hz displays
 
+## CI and lint
+
+Before pushing any `gallery/` change, run:
+```bash
+python3 tests/lint_gallery.py
+```
+
+This catches three recurring bugs (see below). It also runs automatically on every push via `.github/workflows/lint-gallery.yml`. New artifacts must pass lint before merging.
+
 ## Artifact quality standards (required for every new gallery file)
 
 ### Iframe control hiding
@@ -85,6 +94,43 @@ Every `gallery/X.html` **must** hide its controls and back button when loaded in
 Include **all** control selectors used in the file (`#ui`, `.panel`, `.controls`, `.back-btn`, `#back`, etc.). Missing any selector means controls bleed into homepage and gallery card thumbnails.
 
 Note: the homepage iframes use `sandbox="allow-scripts allow-same-origin"`. The `allow-same-origin` flag is required so `window.self !== window.top` evaluates correctly — without it the sandboxed frame gets an opaque origin and the check may return `true`.
+
+### Canvas sizing — defer to rAF (prevents upper-left tiny canvas)
+
+**Never call `canvas.width = innerWidth` synchronously at script parse time.** When the gallery file loads inside a card iframe, the iframe may not have its final layout dimensions yet — `innerWidth` can read as 0 or a stale value, causing the canvas to render in the upper-left corner at the wrong size.
+
+**Always defer the initial resize + seed to `requestAnimationFrame`:**
+
+```js
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+function init() { resize(); /* seed particles, reset state, etc. */ }
+
+// ✗ Wrong — fires before iframe has layout dimensions
+resize(); init();
+
+// ✓ Correct — deferred one frame so iframe layout is settled
+addEventListener('resize', init);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => requestAnimationFrame(resize));
+requestAnimationFrame(() => { init(); startLoop(); });
+```
+
+The `visualViewport` and `orientationchange` listeners are required for iOS Safari where the standard `resize` event doesn't always fire on orientation change or keyboard appearance.
+
+### Iframe preview warmup (prevents blank cards)
+
+Artifacts driven purely by user interaction (no auto-seeded state on load) render as a solid-black card in homepage lane thumbnails. Add an iframe branch that pre-fills content:
+
+```js
+if (window.self !== window.top) {
+  // pre-fill with representative state so the card thumbnail shows something
+  for (let i = 0; i < 20; i++) spawnParticle(Math.random() * W, Math.random() * H);
+  // optionally fast-forward simulation steps
+  for (let i = 0; i < 500; i++) step();
+}
+```
+
+For reaction-diffusion / cellular automata that need many steps to show developed patterns, use a fast-forward rAF loop (run 50–100 steps/frame until warmed up) rather than a blocking sync loop — the sync approach can freeze the browser tab for several seconds.
 
 ### Mobile responsiveness
 Every artifact must work on a narrow viewport (≤600px). Required:

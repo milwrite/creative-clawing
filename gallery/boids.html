@@ -31,8 +31,10 @@ function reset(){
   boid.length=0;
   for(let i=0;i<N;i++)boid.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()*2-1)*0.8,vy:(Math.random()*2-1)*0.8});
 }
-resize();reset();
 addEventListener('resize',()=>{resize();reset()});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize();reset()});
 addEventListener('click',reset);
 addEventListener('mousemove',e=>{px=e.clientX;py=e.clientY});
 addEventListener('mouseleave',()=>{px=py=null});

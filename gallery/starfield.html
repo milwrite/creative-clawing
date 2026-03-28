@@ -28,8 +28,10 @@ const N=600,stars=[];
 
 function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
 function initStars(){stars.length=0;for(let i=0;i<N;i++)stars.push({x:(Math.random()-0.5)*W*2,y:(Math.random()-0.5)*H*2,z:Math.random()*W})}
-resize();initStars();
 addEventListener('resize',()=>{resize();initStars()});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize();initStars()});
 addEventListener('mousemove',e=>{mx=e.clientX/W;my=e.clientY/H});
 addEventListener('touchmove',e=>{e.preventDefault();mx=e.touches[0].clientX/W;my=e.touches[0].clientY/H},{passive:false});
 

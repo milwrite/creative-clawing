@@ -27,8 +27,10 @@ let W,H,x=0,y=0;
 const SIZE=22;
 
 function resize(){W=c.width=innerWidth;H=c.height=innerHeight;x=0;y=0;ctx.fillStyle='#050b07';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#c0c0c0';ctx.lineWidth=2;ctx.lineCap='square'}
-resize();
 addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize()});
 addEventListener('click',resize);
 
 var _inIframe=false;try{_inIframe=window.self!==window.top}catch(e){_inIframe=true}
