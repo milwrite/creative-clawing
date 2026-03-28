@@ -333,8 +333,8 @@ resetBtn.addEventListener('click',()=>{
 });
 
 window.addEventListener('resize',render);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',render);
+window.addEventListener('orientationchange',()=>setTimeout(render,200));
 
 // Hide UI in iframe
 if(window.self!==window.top){
@@ -343,8 +343,8 @@ if(window.self!==window.top){
   document.getElementById('info').style.display='none';
 }
 
-// Init — defer to rAF so iframe has final layout dimensions before reading innerWidth/H
-requestAnimationFrame(()=>{ rebuild(); setTimeout(render, 200); });
+// Init — defer to rAF so iframe has final layout dimensions before reading canvas.offsetWidth/H
+requestAnimationFrame(()=>{ rebuild(); setTimeout(rebuild, 200); });
 </script>
 </body>
 </html>
