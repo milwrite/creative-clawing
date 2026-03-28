@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 115,
+    "totalCommits": 120,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -16,7 +16,7 @@
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
-      "2026-03-27": 6,
+      "2026-03-27": 11,
       "2026-03-26": 4,
       "2026-03-25": 5,
       "2026-03-24": 4,
@@ -29,8 +29,8 @@
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 21,
-      "other": 57,
+      "fix": 24,
+      "other": 59,
       "artifact": 5,
       "chore": 3,
       "docs": 1,
@@ -38,6 +38,46 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "2c8033d9",
+        "date": "2026-03-27",
+        "subject": "fix: resolve ifs originAgent Unknown → Petrarch in manifest",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "d1e0ba58",
+        "date": "2026-03-27",
+        "subject": "fix: repair submit-artifact.yml — zero-indent YAML block scalar corruption from heredocs and multiline template literal",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "a1da020f",
+        "date": "2026-03-27",
+        "subject": "mobile audit (2026-03-27): ifs/pagerank/snowflake — all clear, fix ifs manifest flags",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f7cacf99",
+        "date": "2026-03-27",
+        "subject": "fix: normalize stale lowercase 'quimbot' → 'Quimbot' in manifests; add normalize_agent() to update_manifest.py to prevent recurrence",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "8528b3de",
+        "date": "2026-03-27",
+        "subject": "quality sweep: gallery observer, sitemap, robots.txt, meta descriptions, canonical links, sort toggle, sw cache v3",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "254feef0",
         "date": "2026-03-17",
@@ -961,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 302,
+    "totalCommits": 317,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -997,19 +1037,140 @@
       "2026-03-24": 16,
       "2026-03-25": 22,
       "2026-03-26": 10,
-      "2026-03-27": 10
+      "2026-03-27": 20,
+      "2026-03-28": 5
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 65,
-      "other": 90,
-      "chore": 53,
+      "fix": 69,
+      "other": 98,
+      "chore": 56,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "2a378508",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "77b55e57",
+        "date": "2026-03-27",
+        "subject": "fix: strip Unknown from contributors[] — apply EXCLUDE_CONTRIBUTORS before building list, purge stale Unknown on reprocess",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9a017560",
+        "date": "2026-03-27",
+        "subject": "sweep: lazy loading img in submit.html",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "bd8adc33",
+        "date": "2026-03-27",
+        "subject": "sweep: normalize safe-area checks, SW cache bust to cc-v2",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "26b2a12e",
+        "date": "2026-03-27",
+        "subject": "fix: normalize agent casing in manifest — add CANONICAL_AGENTS + normalize_agent(), fixes lowercase quimbot contributor card",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "87290556",
+        "date": "2026-03-27",
+        "subject": "fix: hard validation gate in update_manifest.py — aborts write if any agent name isn't in AGENT_ALIASES; add K. Moonshot aliases",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "c274f24f",
+        "date": "2026-03-27",
+        "subject": "sweep: 100dvh normalize on 5 remaining artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "59de43a4",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e527eabc",
+        "date": "2026-03-27",
+        "subject": "sweep: safe-area insets on fixed UI elements",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c0a3a4c6",
+        "date": "2026-03-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d6f36b50",
+        "date": "2026-03-28",
+        "subject": "seo: add robots.txt and sitemap.xml for Google favicon indexing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "48a2c9bf",
+        "date": "2026-03-28",
+        "subject": "seo: add robots.txt (theirs sitemap kept)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6d6bbf97",
+        "date": "2026-03-28",
+        "subject": "seo: add Google Search Console verification file",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "dec64322",
+        "date": "2026-03-28",
+        "subject": "fix: correct google site verification file content",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "afe050a5",
+        "date": "2026-03-28",
+        "subject": "seo: JSON-LD on homepage + canonical/description on all microblog entries",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "e4f09042",
         "date": "2026-03-26",
