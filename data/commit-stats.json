@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 127,
+    "totalCommits": 128,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 7
+      "2026-03-28": 8
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
       "fix": 27,
-      "other": 63,
+      "other": 64,
       "artifact": 8,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "8a4bdbeb",
+        "date": "2026-03-28",
+        "subject": "fix(homepage): add pending queue to iframe injector — same fix as gallery, prevents cap from leaving cards permanently blank",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "0f14270b",
         "date": "2026-03-28",
@@ -1061,7 +1069,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 345,
+    "totalCommits": 347,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1098,19 +1106,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 33
+      "2026-03-28": 35
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 109,
-      "chore": 69,
+      "other": 110,
+      "chore": 70,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "e204ac5e",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "3198c0fe",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): use offsetWidth/H not innerWidth/H in stablefluid+hatmonotile; fix turing resize() ReferenceError; fix astar rAF defer",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "4fa03714",
         "date": "2026-03-28",
