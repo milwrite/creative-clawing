@@ -685,17 +685,18 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // Lazy-load lane iframes: inject when lane is near viewport; never eject (prevents black-card flash on mobile)
-  // rootMargin is capped to avoid pre-loading too many iframes on large/4K screens.
-  // Max concurrent live iframes is capped — lanes that scroll out of view get their iframes
-  // replaced with static placeholders to free GPU resources.
-  const MAX_LIVE_IFRAMES = 32; // hard cap: ~2 lanes worth
+  // Lazy-load lane iframes via IntersectionObserver.
+  // Cap is set high enough that all initially-visible lanes load immediately.
+  // Lanes that scroll far out of view get ejected to free GPU resources.
+  // pendingFrames: cards that were blocked by the cap when all lanes fired at once on page load.
+  const MAX_LIVE_IFRAMES = 72; // enough for the full homepage in one viewport
   const liveIframeFrames = new Set();
-  const pendingFrames = new Set(); // frames blocked by cap — retried when slots free
+  const pendingFrames = new Set();
 
   function injectOneFrame(f) {
-    if (f.querySelector('iframe') || liveIframeFrames.size >= MAX_LIVE_IFRAMES) {
-      if (!f.querySelector('iframe')) pendingFrames.add(f);
+    if (f.querySelector('iframe')) return; // already live
+    if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) {
+      pendingFrames.add(f);
       return;
     }
     pendingFrames.delete(f);
@@ -704,7 +705,7 @@
     iframe.loading = 'lazy';
     iframe.title = f.dataset.title || '';
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-    iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
+    iframe.addEventListener('load', () => { iframe.classList.add('if-ready'); drainPending(); }, { once: true });
     f.insertBefore(iframe, f.firstChild);
     liveIframeFrames.add(f);
   }
@@ -718,6 +719,8 @@
 
   function injectFrames(el) {
     el.querySelectorAll('.card-frame[data-src]').forEach(injectOneFrame);
+    // Drain any cards that queued up while the cap was temporarily hit
+    drainPending();
   }
 
   function ejectFrames(el) {
@@ -732,18 +735,18 @@
     drainPending();
   }
 
-  // Use a tighter rootMargin: 300px fixed (not viewport-relative) — enough to preload
-  // the next lane before it scrolls into view, without saturating GPU with 5+ lanes at once.
   const laneObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         injectFrames(e.target);
       } else {
-        pendingFrames.forEach(f => { if (e.target.contains(f)) pendingFrames.delete(f); });
-        if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) ejectFrames(e.target);
+        // Remove from pending if it scrolled out before loading
+        e.target.querySelectorAll('.card-frame[data-src]').forEach(f => pendingFrames.delete(f));
+        // Only eject if well over cap (give room for visible lanes)
+        if (liveIframeFrames.size > MAX_LIVE_IFRAMES * 0.75) ejectFrames(e.target);
       }
     });
-  }, { rootMargin: '300px' });
+  }, { rootMargin: '400px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders

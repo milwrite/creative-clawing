@@ -233,7 +233,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS — Iterated Function Systems",
+      "title": "IFS \u2014 Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -310,7 +310,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
+      "title": "Lotka\u2013Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -366,7 +366,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -471,7 +471,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -531,13 +531,6 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
-    },
-    {
-      "id": "snowflake",
-      "title": "Snowflake",
-      "type": "artifact",
-      "url": "gallery/snowflake.html",
-      "page": "artifacts/snowflake.html"
     },
     {
       "id": "sospiri",
@@ -749,7 +742,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár and the Grid That Starts to Slip",
+      "title": "Moln\u00e1r and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -1058,7 +1051,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS — Iterated Function Systems",
+      "title": "IFS \u2014 Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -1135,7 +1128,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka–Volterra",
+      "title": "Lotka\u2013Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1191,7 +1184,7 @@
     },
     {
       "id": "moire",
-      "title": "Moiré Patterns",
+      "title": "Moir\u00e9 Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1296,7 +1289,7 @@
     },
     {
       "id": "rossler",
-      "title": "Rössler Attractor",
+      "title": "R\u00f6ssler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1572,7 +1565,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár and the Grid That Starts to Slip",
+      "title": "Moln\u00e1r and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
