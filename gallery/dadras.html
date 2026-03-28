@@ -64,7 +64,7 @@ let presetIdx = 0;
 let pp = 3.0, pq = 2.7, pr = 1.7, ps = 2.0, pe = 9.0;
 const dt = 0.004;
 const MAX_POINTS = 70000;
-const STEPS_PER_FRAME = 8;
+const STEPS_PER_FRAME = 16;
 
 let points = [];
 let x = 0.1, y = 0.0, z = 0.1;
@@ -110,7 +110,7 @@ function project(px, py, pz) {
   const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
   let ry = py * cosX - rz * sinX;
   rz = py * sinX + rz * cosX;
-  const scale = Math.min(W, H) / 28;
+  const scale = Math.min(W, H) / 18;
   return {
     sx: W / 2 + rx * scale,
     sy: H / 2 + ry * scale,
@@ -129,7 +129,7 @@ function draw() {
     const p0 = project(points[i - 1].x, points[i - 1].y, points[i - 1].z);
     const p1 = project(points[i].x, points[i].y, points[i].z);
     const age = i / len;
-    const alpha = age * age * 0.85;
+    const alpha = 0.12 + age * age * 0.73;
     // Depth-based lightness; teal-to-ice palette
     const light = 35 + age * 28 + (p1.depth + 15) * 0.6;
     const sat = 55 + age * 20;
@@ -203,6 +203,11 @@ canvas.addEventListener('pointermove', function (e) {
 });
 canvas.addEventListener('pointerup', function () { dragging = false; });
 canvas.addEventListener('pointercancel', function () { dragging = false; });
+
+// In iframe: pre-run so trail is immediately dense and visible
+if (window.self !== window.top) {
+  for (let i = 0; i < 25000; i++) step();
+}
 
 requestAnimationFrame(function () { requestAnimationFrame(loop); });
 </script>
