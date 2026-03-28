@@ -271,10 +271,12 @@ input[type=range].pred{accent-color:#ef476f}
     ctxP.lineTo(w - pad, h - pad);
     ctxP.stroke();
 
-    ctxP.fillStyle = 'rgba(255,255,255,0.3)';
-    ctxP.font = '10px ui-monospace,monospace';
-    ctxP.fillText('predators ↑', pad + 2, pad - 4);
-    ctxP.fillText('prey →', w - pad - 28, h - pad + 14);
+    if(window.self === window.top){
+      ctxP.fillStyle = 'rgba(255,255,255,0.3)';
+      ctxP.font = '10px ui-monospace,monospace';
+      ctxP.fillText('predators ↑', pad + 2, pad - 4);
+      ctxP.fillText('prey →', w - pad - 28, h - pad + 14);
+    }
 
     // Fixed point marker
     const fpX = gamma / delta;

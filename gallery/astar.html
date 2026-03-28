@@ -77,7 +77,8 @@ function init(){
   ctx.setTransform(dpr,0,0,dpr,0,0);
   cellSize=Math.max(12,Math.min(28,Math.floor(Math.min(W,H)/40)));
   cols=Math.floor(W/cellSize);
-  rows=Math.floor((H-60)/cellSize);
+  const uiH = window.self===window.top ? 60 : 0;
+  rows=Math.floor((H-uiH)/cellSize);
   grid=[];
   for(let r=0;r<rows;r++){
     grid[r]=[];
