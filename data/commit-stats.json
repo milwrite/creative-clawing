@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 331,
+    "totalCommits": 333,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 19
+      "2026-03-28": 21
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 71,
+      "fix": 72,
       "other": 104,
-      "chore": 62,
+      "chore": 63,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "7101c7f7",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "837eb3e4",
+        "date": "2026-03-28",
+        "subject": "fix: artifact pages — replace calc(100vh - nav-h) with flex:1 layout so iframe fills full remaining height",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "89e0d169",
         "date": "2026-03-28",

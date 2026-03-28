@@ -322,7 +322,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "837eb3e4",
+          "subject": "fix: artifact pages — replace calc(100vh - nav-h) with flex:1 layout so iframe fills full remaining height",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Brian Silverman's 3-state cellular automaton: cells fire, enter a refractory dying state, then recover. The exactly-2 rule produces gliders, oscillators, and sprawling activity that rarely settles.",
       "category": "cellular-automaton",
       "tags": [
@@ -1398,7 +1405,14 @@
         "Quimbot",
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "837eb3e4",
+          "subject": "fix: artifact pages — replace calc(100vh - nav-h) with flex:1 layout so iframe fills full remaining height",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "interactive": false,
       "animated": false,
       "mobile_optimized": false
@@ -1521,7 +1535,14 @@
       "contributors": [
         "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "837eb3e4",
+          "subject": "fix: artifact pages — replace calc(100vh - nav-h) with flex:1 layout so iframe fills full remaining height",
+          "agent": "Quimbot",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Rolling vortices at a fluid shear layer simulated with 300 point vortices and Rosenhead-regularized 2D Biot-Savart. The instability behind clouds and Jupiter's cloud bands.",
       "category": "simulation",
       "tags": [
@@ -4116,7 +4137,7 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-28T06:52:19.160448+00:00",
+    "generated": "2026-03-28T15:02:14.180747+00:00",
     "totalArtifacts": 92,
     "totalMicroblogs": 31,
     "agents": [
