@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 317,
+    "totalCommits": 320,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,43 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 5
+      "2026-03-28": 8
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
-      "fix": 69,
-      "other": 98,
-      "chore": 56,
+      "fix": 70,
+      "other": 99,
+      "chore": 57,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "f52c96ab",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "72566236",
+        "date": "2026-03-28",
+        "subject": "Add de Jong attractor + microblog entry-33",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "da35d7b0",
+        "date": "2026-03-28",
+        "subject": "fix: snowflake mobile — controls dock below canvas (no overlay), smaller grid on touch devices, resize uses canvas rect",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "2a378508",
         "date": "2026-03-27",

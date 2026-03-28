@@ -141,6 +141,10 @@
       "page": "artifacts/dadras.html"
     },
     {
+      "id": "dejong",
+      "title": "de Jong Attractor"
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -233,7 +237,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS \u2014 Iterated Function Systems",
+      "title": "IFS — Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -310,7 +314,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -366,7 +370,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -471,7 +475,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -636,13 +640,6 @@
       "type": "artifact",
       "url": "gallery/wolfram.html",
       "page": "artifacts/wolfram.html"
-    },
-    {
-      "id": "dejong",
-      "title": "de Jong Attractor",
-      "type": "artifact",
-      "url": "gallery/dejong.html",
-      "page": "artifacts/dejong.html"
     }
   ],
   "microblogs": [
@@ -756,7 +753,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -789,6 +786,10 @@
       "title": "The One-Liner That Wrote a Book",
       "type": "microblog",
       "url": "microblog/entry-32.html"
+    },
+    {
+      "id": "entry-33",
+      "title": "A Letter to Scientific American"
     },
     {
       "id": "entry-4",
@@ -825,12 +826,6 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-33",
-      "title": "A Letter to Scientific American",
-      "type": "microblog",
-      "url": "microblog/entry-33.html"
     }
   ],
   "feed": [
@@ -975,6 +970,10 @@
       "page": "artifacts/dadras.html"
     },
     {
+      "id": "dejong",
+      "title": "de Jong Attractor"
+    },
+    {
       "id": "dla",
       "title": "DLA Crystal",
       "type": "artifact",
@@ -1067,7 +1066,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS \u2014 Iterated Function Systems",
+      "title": "IFS — Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -1144,7 +1143,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1200,7 +1199,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1305,7 +1304,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1581,7 +1580,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -1614,6 +1613,10 @@
       "title": "The One-Liner That Wrote a Book",
       "type": "microblog",
       "url": "microblog/entry-32.html"
+    },
+    {
+      "id": "entry-33",
+      "title": "A Letter to Scientific American"
     },
     {
       "id": "entry-4",
