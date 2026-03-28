@@ -1035,7 +1035,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 339,
+    "totalCommits": 342,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1072,19 +1072,43 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 27
+      "2026-03-28": 30
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 106,
-      "chore": 66,
+      "other": 108,
+      "chore": 67,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "1277dcb2",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "5b0c7abd",
+        "date": "2026-03-28",
+        "subject": "fix(lint): tighten NO_IFRAME_DETECT and BLANK_PREVIEW heuristics — accept standalone pattern, exclude auto-draw artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "39f38276",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer resize/init to rAF on stablefluid, pagerank, aurora, newton, slime, dla, halftone",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "33e913f5",
         "date": "2026-03-28",
