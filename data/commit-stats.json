@@ -1101,7 +1101,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 371,
+    "totalCommits": 373,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1138,19 +1138,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 59
+      "2026-03-28": 61
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 74,
-      "other": 120,
-      "chore": 82,
+      "other": 121,
+      "chore": 83,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "4e965f63",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "23bec16f",
+        "date": "2026-03-28",
+        "subject": "fix(antcolony,boids): loop() was firing before rAF init — moved inside rAF callback",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "872488fd",
         "date": "2026-03-28",
