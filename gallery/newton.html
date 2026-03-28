@@ -197,7 +197,7 @@ setTimeout(() => hint && hint.classList.add('gone'), 3500);
 window.addEventListener('resize', () => { resize(); startRender(); });
 if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();startRender();});
 window.addEventListener('orientationchange',()=>{setTimeout(()=>{resize();startRender();},200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);startRender();});
+requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();startRender()},200);startRender();});
 </script>
 </body>
 </html>

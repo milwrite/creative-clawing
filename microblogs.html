@@ -231,7 +231,16 @@
       if (e.isIntersecting && !e.target.querySelector('iframe')) {
         const src = e.target.dataset.iframeSrc;
         const title = e.target.dataset.iframeTitle || '';
-        if (src) e.target.innerHTML = `<iframe src="${src}" loading="lazy" sandbox="allow-scripts" title="${title}"></iframe>`;
+        if (src) {
+          const ifr = document.createElement('iframe');
+          ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
+          ifr.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+          ifr.addEventListener('load', () => {
+            try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
+          }, { once: true });
+          e.target.innerHTML = '';
+          e.target.appendChild(ifr);
+        }
       } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
         e.target.innerHTML = '';
       }

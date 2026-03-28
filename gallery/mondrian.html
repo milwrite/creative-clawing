@@ -222,7 +222,7 @@ function easeInOut(t){
 addEventListener('click',generate);
 addEventListener('keydown',e=>{if(e.key===' ')generate()});
 
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);generate();requestAnimationFrame(loop);});
+requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();generate()},200);generate();requestAnimationFrame(loop);});
 })();
 </script>
 </body>

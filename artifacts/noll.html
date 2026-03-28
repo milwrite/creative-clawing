@@ -119,6 +119,10 @@
 
 <script>
 (function(){
+  var sf = document.querySelector('.sketch-frame');
+  if (sf) sf.addEventListener('load', function() {
+    try { sf.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+  }, { once: true });
   const contributorMenu = document.querySelector('.menu-group');
   if (!contributorMenu) return;
   contributorMenu.querySelectorAll('a').forEach(link => {

@@ -34,7 +34,7 @@ function reset(){
 addEventListener('resize',()=>{resize();reset()});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
 window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);reset();loop();});
+requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();reset()},200);reset();loop();});
 addEventListener('click',reset);
 addEventListener('mousemove',e=>{px=e.clientX;py=e.clientY});
 addEventListener('mouseleave',()=>{px=py=null});

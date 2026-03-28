@@ -75,9 +75,9 @@ function loop(){
   requestAnimationFrame(loop);
 }
 addEventListener('resize',init);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
-requestAnimationFrame(()=>{init();loop()});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',init);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(init));
+requestAnimationFrame(()=>{init();setTimeout(init,200);loop()});
 addEventListener('keydown',e=>{
   if(e.code==='Space'){e.preventDefault();running=!running}
   if(e.code==='KeyR')randomize();
