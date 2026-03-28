@@ -701,9 +701,8 @@
     }
     pendingFrames.delete(f);
     const iframe = document.createElement('iframe');
-    iframe.src = f.dataset.src;
-    iframe.loading = 'lazy';
     iframe.title = f.dataset.title || '';
+    iframe.src = f.dataset.src;
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.addEventListener('load', () => {
       try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
