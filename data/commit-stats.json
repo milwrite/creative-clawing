@@ -1069,7 +1069,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 351,
+    "totalCommits": 353,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1106,19 +1106,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 39
+      "2026-03-28": 41
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 112,
-      "chore": 72,
+      "other": 113,
+      "chore": 73,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "98a79299",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "1564bd9a",
+        "date": "2026-03-28",
+        "subject": "fix(stablefluid): 256-grid standalone for sharp rendering (128 kept for iframe perf)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "3f940009",
         "date": "2026-03-28",
