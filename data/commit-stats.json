@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 123,
+    "totalCommits": 124,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,20 +25,29 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 3
+      "2026-03-28": 4
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 24,
+      "fix": 25,
       "other": 62,
-      "artifact": 5,
+      "artifact": 6,
       "chore": 3,
       "docs": 1,
       "style": 1,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "d09f8462",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): defer resize to rAF on 7 files; add lint_gallery.py + CI workflow; document in CLAUDE.md",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
       {
         "sha": "7f2b2e45",
         "date": "2026-03-28",
@@ -1026,7 +1035,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 335,
+    "totalCommits": 339,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1063,19 +1072,51 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 23
+      "2026-03-28": 27
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 104,
-      "chore": 65,
-      "docs": 1,
+      "other": 106,
+      "chore": 66,
+      "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "33e913f5",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "336ef3db",
+        "date": "2026-03-28",
+        "subject": "docs: add QUALITY.md — shared pre-ship checklist for Petrarch and Quimbot",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "39c1d786",
+        "date": "2026-03-28",
+        "subject": "docs(CLAUDE.md): explicit rules for HiDPI drawImage bug and sync resize init bug",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "84c7d013",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer initial resize to rAF on 11 more artifacts (TINY_CANVAS lint class)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "0699fcbf",
         "date": "2026-03-28",
