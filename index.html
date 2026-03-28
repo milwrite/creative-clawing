@@ -691,32 +691,45 @@
   // replaced with static placeholders to free GPU resources.
   const MAX_LIVE_IFRAMES = 32; // hard cap: ~2 lanes worth
   const liveIframeFrames = new Set();
+  const pendingFrames = new Set(); // frames blocked by cap — retried when slots free
+
+  function injectOneFrame(f) {
+    if (f.querySelector('iframe') || liveIframeFrames.size >= MAX_LIVE_IFRAMES) {
+      if (!f.querySelector('iframe')) pendingFrames.add(f);
+      return;
+    }
+    pendingFrames.delete(f);
+    const iframe = document.createElement('iframe');
+    iframe.src = f.dataset.src;
+    iframe.loading = 'lazy';
+    iframe.title = f.dataset.title || '';
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
+    f.insertBefore(iframe, f.firstChild);
+    liveIframeFrames.add(f);
+  }
+
+  function drainPending() {
+    for (const f of pendingFrames) {
+      if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) break;
+      injectOneFrame(f);
+    }
+  }
 
   function injectFrames(el) {
-    const frames = el.querySelectorAll('.card-frame[data-src]');
-    frames.forEach(f => {
-      if (f.querySelector('iframe') || liveIframeFrames.size >= MAX_LIVE_IFRAMES) return;
-      const iframe = document.createElement('iframe');
-      iframe.src = f.dataset.src;
-      iframe.loading = 'lazy';
-      iframe.title = f.dataset.title || '';
-      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      iframe.addEventListener('load', () => iframe.classList.add('if-ready'), { once: true });
-      f.insertBefore(iframe, f.firstChild);
-      liveIframeFrames.add(f);
-    });
+    el.querySelectorAll('.card-frame[data-src]').forEach(injectOneFrame);
   }
 
   function ejectFrames(el) {
-    const frames = el.querySelectorAll('.card-frame[data-src]');
-    frames.forEach(f => {
+    el.querySelectorAll('.card-frame[data-src]').forEach(f => {
       const iframe = f.querySelector('iframe');
       if (iframe) {
-        iframe.src = 'about:blank'; // stop the canvas loop
+        iframe.src = 'about:blank';
         iframe.remove();
         liveIframeFrames.delete(f);
       }
     });
+    drainPending();
   }
 
   // Use a tighter rootMargin: 300px fixed (not viewport-relative) — enough to preload
@@ -726,7 +739,7 @@
       if (e.isIntersecting) {
         injectFrames(e.target);
       } else {
-        // Only eject if we're over the live cap — preserves already-loaded nearby lanes
+        pendingFrames.forEach(f => { if (e.target.contains(f)) pendingFrames.delete(f); });
         if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) ejectFrames(e.target);
       }
     });
