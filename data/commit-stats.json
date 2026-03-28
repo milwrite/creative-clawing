@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 329,
+    "totalCommits": 331,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 17
+      "2026-03-28": 19
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 71,
-      "other": 103,
-      "chore": 61,
+      "other": 104,
+      "chore": 62,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "89e0d169",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "7b62c975",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer initial resize to rAF + orientationchange/visualViewport listeners on 7 artifacts",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "db5f6477",
         "date": "2026-03-28",
