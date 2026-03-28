@@ -34,7 +34,7 @@ function reset(){
 addEventListener('resize',()=>{resize();reset()});
 if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();});
 window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
-requestAnimationFrame(()=>{resize();reset()});
+requestAnimationFrame(()=>{resize();setTimeout(resize,200);reset();loop();});
 addEventListener('click',reset);
 addEventListener('mousemove',e=>{px=e.clientX;py=e.clientY});
 addEventListener('mouseleave',()=>{px=py=null});
@@ -75,7 +75,6 @@ function loop(){
   }
   requestAnimationFrame(loop);
 }
-loop();
 </script>
 <script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
 <script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
