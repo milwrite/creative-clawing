@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 125,
+    "totalCommits": 127,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,20 +25,37 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 5
+      "2026-03-28": 7
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 26,
-      "other": 62,
-      "artifact": 7,
+      "fix": 27,
+      "other": 63,
+      "artifact": 8,
       "chore": 3,
       "docs": 1,
       "style": 1,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "0f14270b",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): raise MAX_LIVE to 60, add pending queue so capped cards load when slots free",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "f1186893",
+        "date": "2026-03-28",
+        "subject": "fix(stablefluid): inject warmup dye directly into state arrays (not sources which get cleared each step)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "00f56815",
         "date": "2026-03-28",
@@ -1044,7 +1061,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 344,
+    "totalCommits": 345,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1081,7 +1098,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 32
+      "2026-03-28": 33
     },
     "categoryCounts": {
       "blog": 33,
@@ -1089,11 +1106,19 @@
       "mobile": 18,
       "fix": 72,
       "other": 109,
-      "chore": 68,
+      "chore": 69,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "4fa03714",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "fbf3baf1",
         "date": "2026-03-28",
