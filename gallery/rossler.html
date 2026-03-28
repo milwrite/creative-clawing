@@ -104,7 +104,7 @@ function project(px,py,pz){
   let ry=py*cosX-rz*sinX;
   rz=py*sinX+rz*cosX;
 
-  const scale=Math.min(W,H)/40;
+  const scale=Math.min(W,H)/28;
   return {
     x: W/2+rx*scale,
     y: H/2+ry*scale,
@@ -124,7 +124,7 @@ function draw(){
     const p1=project(points[i].x,points[i].y,points[i].z);
 
     const age=i/len;
-    const alpha=age*age*0.9;
+    const alpha=0.15+age*age*0.75;
     // Color: depth-mapped warm palette
     const hue=200+(p1.z+20)*4;
     ctx.strokeStyle=`hsla(${hue},70%,${45+age*20}%,${alpha})`;
@@ -198,6 +198,11 @@ canvas.addEventListener('pointermove',function(e){
 });
 canvas.addEventListener('pointerup',function(){dragging=false;});
 canvas.addEventListener('pointercancel',function(){dragging=false;});
+
+// In iframe: pre-run many steps so the trail is dense and visible immediately
+if(window.self!==window.top){
+  for(let i=0;i<30000;i++) step();
+}
 
 requestAnimationFrame(function(){requestAnimationFrame(loop);});
 </script>
