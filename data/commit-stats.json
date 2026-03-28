@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 324,
+    "totalCommits": 327,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,43 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 12
+      "2026-03-28": 15
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 71,
-      "other": 100,
-      "chore": 59,
+      "other": 102,
+      "chore": 60,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "53048ba4",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "44ff4163",
+        "date": "2026-03-28",
+        "subject": "fix(dejong,clifford): larger tap targets for back btn + buttons on mobile (min 44px)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "db1b44c4",
+        "date": "2026-03-28",
+        "subject": "sweep: donut safe-area fix, normalize pass on dadras/dna/domainwarp/fitzhughnagumo (all clean)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "bdcaf717",
         "date": "2026-03-28",
