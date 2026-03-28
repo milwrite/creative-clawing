@@ -25,8 +25,11 @@ const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 let W, H;
 function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-resize();
+// Defer initial resize to rAF so iframe has final layout dimensions before we read innerWidth/H
+requestAnimationFrame(() => { resize(); seedCells(); frame(); });
 addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => requestAnimationFrame(resize));
 
 class Cell {
   constructor(x, y, r, hue) {
@@ -140,14 +143,17 @@ class Cell {
 
 let cells = [];
 const MAX_CELLS = 80;
+let started = false;
 
-// Seed
-for (let i = 0; i < 8; i++) {
-  cells.push(new Cell(
-    W * 0.2 + Math.random() * W * 0.6,
-    H * 0.2 + Math.random() * H * 0.6,
-    15 + Math.random() * 10
-  ));
+function seedCells() {
+  if (started) return; started = true;
+  for (let i = 0; i < 8; i++) {
+    cells.push(new Cell(
+      W * 0.2 + Math.random() * W * 0.6,
+      H * 0.2 + Math.random() * H * 0.6,
+      15 + Math.random() * 10
+    ));
+  }
 }
 
 canvas.addEventListener('click', e => {
@@ -192,7 +198,6 @@ function frame() {
 
   requestAnimationFrame(frame);
 }
-frame();
 </script>
 </body>
 </html>
