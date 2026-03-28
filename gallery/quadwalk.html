@@ -45,8 +45,9 @@ if (isIframe) {
 let W, H;
 function resize() { W = c.width = innerWidth; H = c.height = innerHeight; }
 addEventListener('resize', () => { resize(); scheduleRender(); });
-if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();scheduleRender();});
-addEventListener('orientationchange',()=>{setTimeout(()=>{resize();scheduleRender();},200);});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize();scheduleRender()});
 
 // q values: [numerator, denominator] — each produces a distinct symmetric figure
 const qList = [
@@ -239,7 +240,8 @@ addEventListener('pointerdown', () => {
   }
 });
 
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);updateInfo();requestAnimationFrame(t=>{lastT=t;tick(t);});});
+updateInfo();
+requestAnimationFrame(t => { lastT = t; tick(t); });
 </script>
 </body>
 </html>

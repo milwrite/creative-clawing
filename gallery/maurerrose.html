@@ -44,7 +44,8 @@ function resize() {
 }
 addEventListener('resize', resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize()});
 
 // curated interesting (n, d) pairs
 const presets = [
@@ -224,7 +225,7 @@ function tick(t) {
   requestAnimationFrame(tick);
 }
 
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(t=>{lastT=t;tick(t);});});
+requestAnimationFrame(t => { lastT = t; tick(t); });
 </script>
 </body>
 </html>

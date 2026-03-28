@@ -108,10 +108,11 @@ function loop(){
 
 addEventListener('resize',resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize();});
 addEventListener('click',resize);
-addEventListener('touchend',e=>{e.preventDefault();resize();},{passive:false});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
+addEventListener('touchend',e=>{e.preventDefault();resize()},{passive:false});
+loop();
 </script>
 </body>
 </html>

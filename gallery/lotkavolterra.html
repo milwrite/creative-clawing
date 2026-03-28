@@ -360,9 +360,9 @@ input[type=range].pred{accent-color:#ef476f}
   });
 
   window.addEventListener('resize', () => { resize(); });
-  resize();
-  reset();
-  frame();
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+  window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+  requestAnimationFrame(()=>{ resize(); reset(); frame(); });
 })();
 </script>
 </body>

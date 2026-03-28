@@ -310,11 +310,11 @@ presetEl.addEventListener('change',()=>{
 document.getElementById('btnReset').addEventListener('click',init);
 
 window.addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
 
 /* ── Init ──────────────────────────────────────────────────── */
-resize();
-init();
-frame();
+requestAnimationFrame(()=>{resize();init();frame();});
 </script>
 </body>
 </html>

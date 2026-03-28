@@ -52,29 +52,35 @@ for p in sorted(GALLERY.glob("*.html")):
              "canvas sized with innerWidth/H synchronously — wrap initial resize() call in requestAnimationFrame(()=>{…})")
 
     # ── 2. BLANK PREVIEW (user-input-only content) ───────────────────────
-    # Heuristic: no automatic animation loop at all (no rAF loop call at top level),
-    # and the only content comes from user interaction events.
-    # We flag only artifacts that have user-event handlers but no auto-starting loop.
-    has_auto_loop = bool(
-        re.search(r'requestAnimationFrame\s*\(', txt) or
-        re.search(r'setInterval\s*\(', txt)
+    # Heuristic: canvas starts empty AND there is no autonomous animation loop
+    # that produces visible content. Only flag when there is NO auto-rendering loop.
+    # Key signal: the file starts a render loop (requestAnimationFrame calling draw/frame/loop/render/step)
+    # but ALL initial canvas population depends on user interaction (click/pointer).
+    has_auto_render_loop = bool(
+        re.search(r'requestAnimationFrame\s*\(\s*(frame|loop|draw|render|step|tick)\b', txt) or
+        re.search(r'requestAnimationFrame\s*\(function', txt) or
+        re.search(r'requestAnimationFrame\s*\(\s*\(\s*(ts|t|time|now)?\s*\)\s*=>', txt)
     )
-    # Also accept artifacts that call a top-level draw/generate/init/render call
-    has_auto_draw = bool(
-        re.search(r'^\s*(draw|generate|render|init|build|start)\s*\(\s*\)\s*;', txt, re.MULTILINE)
+    # Auto-seeds: produces initial visible content without user interaction
+    has_auto_seed = bool(
+        re.search(r'(initSim\(\)|initCells\(\)|fullReset\(\)|reset\(\)|init\(\)|rebuild\(\)|buildGraph\(\)|startRender\(\)|frame\(\)|loop\(\)|render\(\))', txt) or
+        re.search(r'Math\.random\(\)', txt)
     )
-    is_pure_static_on_load = bool(
-        not has_auto_loop and not has_auto_draw and
-        re.search(r'(pointerdown|mousedown|click|touchstart)', txt)
+    # Truly blank: interactive-only with no auto-render AND no auto-seed
+    is_truly_blank = has_auto_render_loop and not has_auto_seed
+    # If it already has an iframe branch for warmup content, that's fine
+    has_iframe_warmup = bool(
+        re.search(r'window\.self\s*!==?\s*window\.top', txt) and
+        re.search(r'(fill|seed|init|spawn|warmup|applyForce)', txt, re.IGNORECASE)
     )
-    if is_pure_static_on_load:
+    if is_truly_blank and not has_iframe_warmup:
         warn(name, "BLANK_PREVIEW",
-             "artifact may render blank in iframe card (no animation loop, user-driven only) — add iframe warmup fill")
+             "artifact may render blank in iframe card (user-driven only) — add iframe warmup fill")
 
     # ── 3. MISSING IFRAME DETECTION ──────────────────────────────────────
     has_iframe_detect = bool(
         re.search(r'window\.self\s*!==?\s*window\.top', txt) or
-        re.search(r'window\.self\s*===\s*window\.top', txt) or
+        re.search(r'window\.self\s*===\s*window\.top', txt) or  # standalone class pattern
         'in-iframe' in txt or
         'standalone' in txt
     )

@@ -186,14 +186,11 @@ function resize(){
   imgData = ctx.createImageData(canvas.width, canvas.height);
 }
 window.addEventListener('resize', resize);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 function startFluid() {
   resize();
   if (canvas.width === 0 || canvas.height === 0) { requestAnimationFrame(startFluid); return; }
   // Re-init dye/velocity arrays with correct size after resize
   imgData = ctx.createImageData(canvas.width, canvas.height);
-  setTimeout(resize, 200); // iOS toolbar settle
 }
 requestAnimationFrame(startFluid);
 
@@ -369,11 +366,20 @@ function step(){
   if(showDye) render(); else renderVelocity();
   requestAnimationFrame(step);
 }
-// Kick off after startFluid() confirms valid dimensions — wait one extra frame so startFluid runs first
-requestAnimationFrame(function waitForSize(){
-  if(canvas.width === 0 || canvas.height === 0 || !imgData){ requestAnimationFrame(waitForSize); return; }
+// Kick off after startFluid() confirms valid dimensions
+(function waitForSize(){
+  if(canvas.width === 0 || canvas.height === 0){ requestAnimationFrame(waitForSize); return; }
+  // In iframe card: inject initial dye so it shows a live fluid pattern instead of a blank canvas
+  if(window.self !== window.top){
+    const cx = innerWidth * 0.5, cy = innerHeight * 0.5;
+    const offsets = [[0.2,0.4],[0.35,0.6],[0.5,0.35],[0.65,0.55],[0.8,0.45],[0.5,0.7]];
+    offsets.forEach(([fx, fy], i) => {
+      applyForce(innerWidth*fx, innerHeight*fy, (i%2?1:-1)*60, (i<3?1:-1)*40);
+      applyForce(innerWidth*fx, innerHeight*fy, (i%2?-1:1)*30, (i<3?-1:1)*50);
+    });
+  }
   requestAnimationFrame(step);
-});
+})();
 </script>
 </body>
 </html>

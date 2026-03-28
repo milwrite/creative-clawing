@@ -30,6 +30,11 @@ function resize(){
   W=c.width=innerWidth;H=c.height=innerHeight;
   RADIUS_BASE=Math.min(W,H)*0.16; // responsive helix radius
 }
+addEventListener('resize',resize);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+requestAnimationFrame(()=>{resize();});
+
 // hide UI when in iframe
 if(window.self!==window.top){
   document.querySelector('.back-btn').style.display='none';
@@ -216,10 +221,11 @@ function loop(){
   requestAnimationFrame(loop);
 }
 // defer start until layout is complete so innerWidth/Height are non-zero
-addEventListener('resize',resize);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);loop();});
+if(document.readyState==='complete'){
+  resize(); loop();
+} else {
+  addEventListener('load',()=>{ setTimeout(() => { resize(); loop(); }, 100); });
+}
 })();
 </script>
 </body>
