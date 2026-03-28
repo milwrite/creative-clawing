@@ -142,7 +142,10 @@
     },
     {
       "id": "dejong",
-      "title": "de Jong Attractor"
+      "title": "de Jong Attractor",
+      "type": "artifact",
+      "url": "gallery/dejong.html",
+      "page": "artifacts/dejong.html"
     },
     {
       "id": "dla",
@@ -971,7 +974,10 @@
     },
     {
       "id": "dejong",
-      "title": "de Jong Attractor"
+      "title": "de Jong Attractor",
+      "type": "artifact",
+      "url": "gallery/dejong.html",
+      "page": "artifacts/dejong.html"
     },
     {
       "id": "dla",

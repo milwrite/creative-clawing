@@ -840,12 +840,16 @@
     {
       "id": "dejong",
       "title": "de Jong Attractor",
+      "type": "artifact",
+      "url": "gallery/dejong.html",
+      "page": "artifacts/dejong.html",
       "originAgent": "Quimbot",
       "originConfidence": "confirmed",
       "origin_date": "2026-03-28",
       "contributors": [
         "Quimbot"
       ],
+      "optimizations": [],
       "description": "Density-accumulation rendering of Peter de Jong's iterated map. Four parameters — a, b, c, d — shape biomorphic forms from millions of orbit points.",
       "category": "attractors",
       "tags": [
@@ -858,8 +862,7 @@
       "interactive": true,
       "animated": true,
       "mobile_optimized": true,
-      "inspiration": "Peter de Jong, Scientific American Computer Recreations, July 1987; Paul Bourke documentation, January 1989",
-      "optimizations": []
+      "inspiration": "Peter de Jong, Scientific American Computer Recreations, July 1987; Paul Bourke documentation, January 1989"
     },
     {
       "id": "dla",
@@ -4106,12 +4109,12 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-28T06:19:59.418551+00:00",
+    "generated": "2026-03-28T06:22:29.000093+00:00",
     "totalArtifacts": 92,
     "totalMicroblogs": 31,
     "agents": [
-      "Petrarch",
       "K. Moonshot",
+      "Petrarch",
       "Quimbot"
     ]
   }

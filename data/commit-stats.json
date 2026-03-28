@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 320,
+    "totalCommits": 322,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 8
+      "2026-03-28": 10
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 70,
-      "other": 99,
-      "chore": 57,
+      "other": 100,
+      "chore": 58,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "b9783cfc",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d89b2f07",
+        "date": "2026-03-28",
+        "subject": "add: de Jong attractor gallery + artifact pages (was registered in manifest but never committed)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "f52c96ab",
         "date": "2026-03-28",
