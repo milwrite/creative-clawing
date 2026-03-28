@@ -1101,7 +1101,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 373,
+    "totalCommits": 375,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1138,19 +1138,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 61
+      "2026-03-28": 63
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 74,
-      "other": 121,
-      "chore": 83,
+      "other": 122,
+      "chore": 84,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "7d4ee86f",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "56fb045f",
+        "date": "2026-03-28",
+        "subject": "fix(mondrian): fill full iframe — remove centering in iframe mode, use offsetWidth for sizing, zero PAD in iframe",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "4e965f63",
         "date": "2026-03-28",
