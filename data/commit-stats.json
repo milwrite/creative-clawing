@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 124,
+    "totalCommits": 125,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,20 +25,29 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 4
+      "2026-03-28": 5
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
-      "fix": 25,
+      "fix": 26,
       "other": 62,
-      "artifact": 6,
+      "artifact": 7,
       "chore": 3,
       "docs": 1,
       "style": 1,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "00f56815",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): rAF defer + stablefluid/pagerank blank warmup — 18 files, lint clean",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
       {
         "sha": "d09f8462",
         "date": "2026-03-28",
@@ -1035,7 +1044,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 342,
+    "totalCommits": 344,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1072,19 +1081,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 30
+      "2026-03-28": 32
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 108,
-      "chore": 67,
+      "other": 109,
+      "chore": 68,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "fbf3baf1",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d79f9932",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer resize/init to rAF across all remaining gallery artifacts — 46 files",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "1277dcb2",
         "date": "2026-03-28",
