@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#ui,#info{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui,html.standalone #info{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>de Jong Attractor</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;height:100dvh;background:#080510;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+body{display:flex;flex-direction:column}
+canvas{display:block;width:100%;flex:1;min-height:0;touch-action:none}
+#back{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));background:rgba(10,6,20,0.85);border:1px solid #3a2860;color:#c0a0f0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;z-index:100;transition:border-color .2s}
+#back:hover{border-color:#8060c0;color:#e0c8ff}
+#info{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));color:rgba(180,150,240,0.6);font:11px/1.6 ui-monospace,monospace;pointer-events:none;text-align:right;z-index:90}
+#ui{
+  flex-shrink:0;
+  position:relative;
+  background:rgba(8,5,18,0.97);
+  border-top:1px solid #2a1850;
+  padding:8px max(env(safe-area-inset-right),12px) max(env(safe-area-inset-bottom),10px) max(env(safe-area-inset-left),12px);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
+  z-index:100;font-size:12px;color:#c0a0f0
+}
+#ui label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+#ui input[type=range]{width:80px;accent-color:#9060e0}
+.val{min-width:36px;text-align:right;font-variant-numeric:tabular-nums;color:#9060e0}
+#ui button,#ui select{background:rgba(144,96,224,0.15);border:1px solid #3a2860;color:#c0a0f0;padding:5px 12px;border-radius:4px;cursor:pointer;font:12px ui-monospace,monospace;transition:all .2s;min-height:34px}
+#ui button:hover{background:rgba(144,96,224,0.3);border-color:#8060c0}
+@media(max-width:600px){
+  #ui input[type=range]{width:90px}
+  #ui{gap:6px;font-size:11px}
+  .val{font-size:11px}
+  #back{font-size:11px;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<a id="back" href="./">← gallery</a>
+<canvas id="c"></canvas>
+<div id="info" id="info"></div>
+<div id="ui">
+  <label>a <input type="range" id="sA" min="-3" max="3" step="0.01" value="-2.24"><span class="val" id="vA">-2.24</span></label>
+  <label>b <input type="range" id="sB" min="-3" max="3" step="0.01" value="0.43"><span class="val" id="vB">0.43</span></label>
+  <label>c <input type="range" id="sC" min="-3" max="3" step="0.01" value="-0.65"><span class="val" id="vC">-0.65</span></label>
+  <label>d <input type="range" id="sD" min="-3" max="3" step="0.01" value="-2.43"><span class="val" id="vD">-2.43</span></label>
+  <select id="presets">
+    <option value="-2.24,0.43,-0.65,-2.43">shell</option>
+    <option value="-2,0.5,-1.2,0.5">wing</option>
+    <option value="1.4,-2.3,2.4,-2.1">coral</option>
+    <option value="-2.5,0.9,1.9,-1.4">spine</option>
+    <option value="1.6,-0.6,-1.2,1.6">membrane</option>
+    <option value="-1.8,1.2,-1.8,1.2">iris</option>
+    <option value="2.01,-2.53,1.61,-0.33">fern</option>
+    <option value="-0.827,−0.46,0.47,0.97">radial</option>
+  </select>
+  <button id="btnMorph">morph</button>
+  <button id="btnReset">reset</button>
+</div>
+<script>
+(function(){
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const infoEl=document.getElementById('info');
+
+const sA=document.getElementById('sA'), vA=document.getElementById('vA');
+const sB=document.getElementById('sB'), vB=document.getElementById('vB');
+const sC=document.getElementById('sC'), vC=document.getElementById('vC');
+const sD=document.getElementById('sD'), vD=document.getElementById('vD');
+const presets=document.getElementById('presets');
+
+let a=-2.24, b=0.43, c=-0.65, d=-2.43;
+let morphTarget=null, morphT=0;
+const DPR=Math.min(window.devicePixelRatio||1,2);
+let W=0,H=0,cW=0,cH=0;
+let density=null, maxDensity=1;
+let px=0.1, py=0.1;
+const BATCH=40000;
+const MAX_DENSITY_ITER=4000000;
+let iterCount=0;
+let dirty=true;
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+  W=rect.width; H=rect.height;
+  if(!W||!H) return;
+  cW=Math.round(W*DPR); cH=Math.round(H*DPR);
+  canvas.width=cW; canvas.height=cH;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  resetAccum();
+}
+
+function resetAccum(){
+  density=new Uint32Array(cW*cH);
+  maxDensity=1; iterCount=0; px=0.1; py=0.1; dirty=true;
+}
+
+function iterate(n){
+  // accumulate density
+  // find bounds on first pass (lazy): use fixed map range [-2.5,2.5]
+  const scale=Math.min(cW,cH)*0.9/5; // 5 = range of [-2.5,2.5]
+  const ox=cW/2, oy=cH/2;
+  let localMax=maxDensity;
+  for(let i=0;i<n;i++){
+    const nx=Math.sin(a*py)-Math.cos(b*px);
+    const ny=Math.sin(c*px)-Math.cos(d*py);
+    px=nx; py=ny;
+    const ix=Math.round(ox+px*scale);
+    const iy=Math.round(oy+py*scale);
+    if(ix>=0&&ix<cW&&iy>=0&&iy<cH){
+      const idx=iy*cW+ix;
+      density[idx]++;
+      if(density[idx]>localMax) localMax=density[idx];
+    }
+  }
+  maxDensity=localMax;
+  iterCount+=n;
+}
+
+function render(){
+  if(!density) return;
+  const imgData=ctx.createImageData(cW/DPR,cH/DPR);
+  // Work in device pixels
+  const raw=new Uint8ClampedArray(cW*cH*4);
+  const logMax=Math.log(maxDensity+1);
+  for(let i=0;i<cW*cH;i++){
+    const v=density[i];
+    if(!v){raw[i*4]=8;raw[i*4+1]=5;raw[i*4+2]=18;raw[i*4+3]=255;continue;}
+    const t=Math.log(v+1)/logMax; // gamma correction via log
+    // palette: dark purple → violet → lavender → white
+    const r=Math.floor(20+200*t*t);
+    const g=Math.floor(5+120*Math.pow(t,1.5));
+    const b2=Math.floor(40+215*t);
+    raw[i*4]=Math.min(r,255);
+    raw[i*4+1]=Math.min(g,255);
+    raw[i*4+2]=Math.min(b2,255);
+    raw[i*4+3]=255;
+  }
+  // scale down by DPR when putting: use putImageData on a temp canvas
+  const tmp=document.createElement('canvas');
+  tmp.width=cW; tmp.height=cH;
+  const tctx=tmp.getContext('2d');
+  const id=tctx.createImageData(cW,cH);
+  id.data.set(raw);
+  tctx.putImageData(id,0,0);
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.drawImage(tmp,0,0,W,H);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+
+  // info
+  if(document.documentElement.classList.contains('standalone')){
+    infoEl.textContent=`${(iterCount/1e6).toFixed(2)}M pts\na=${a.toFixed(2)} b=${b.toFixed(2)}\nc=${c.toFixed(2)} d=${d.toFixed(2)}`;
+  }
+}
+
+// morph
+function startMorph(){
+  const p=presets.options[Math.floor(Math.random()*presets.options.length)].value.split(',').map(Number);
+  if(p.length<4) return;
+  morphTarget={a:p[0],b:p[1],c:p[2],d:p[3]};
+  morphT=0;
+}
+
+function applySliders(){
+  sA.value=a; vA.textContent=a.toFixed(2);
+  sB.value=b; vB.textContent=b.toFixed(2);
+  sC.value=c; vC.textContent=c.toFixed(2);
+  sD.value=d; vD.textContent=d.toFixed(2);
+}
+
+// drag to sweep a/b
+let dragging=false, dragX0=0, dragY0=0, a0=0, b0=0;
+canvas.addEventListener('pointerdown',e=>{
+  dragging=true; dragX0=e.clientX; dragY0=e.clientY; a0=a; b0=b;
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+  const dx=(e.clientX-dragX0)/W*3;
+  const dy=(e.clientY-dragY0)/H*3;
+  a=Math.max(-3,Math.min(3,a0+dx));
+  b=Math.max(-3,Math.min(3,b0-dy));
+  applySliders();
+  resetAccum();
+});
+canvas.addEventListener('pointerup',()=>{dragging=false;});
+canvas.addEventListener('pointercancel',()=>{dragging=false;});
+
+[{s:sA,v:vA,set:v=>{a=v;}},{s:sB,v:vB,set:v=>{b=v;}},
+ {s:sC,v:vC,set:v=>{c=v;}},{s:sD,v:vD,set:v=>{d=v;}}].forEach(({s,v,set})=>{
+  s.addEventListener('input',()=>{set(parseFloat(s.value));v.textContent=parseFloat(s.value).toFixed(2);resetAccum();});
+});
+
+presets.addEventListener('change',()=>{
+  const p=presets.value.split(',').map(Number);
+  if(p.length<4) return;
+  a=p[0];b=p[1];c=p[2];d=p[3];
+  applySliders(); resetAccum();
+});
+
+document.getElementById('btnMorph').addEventListener('click',startMorph);
+document.getElementById('btnReset').addEventListener('click',()=>{morphTarget=null;resetAccum();});
+window.addEventListener('resize',()=>{resize();});
+
+function frame(){
+  if(morphTarget){
+    morphT=Math.min(morphT+0.02,1);
+    const ease=morphT<0.5?2*morphT*morphT:1-Math.pow(-2*morphT+2,2)/2;
+    const prev={a,b,c,d};
+    a=prev.a+(morphTarget.a-prev.a)*0.03;
+    b=prev.b+(morphTarget.b-prev.b)*0.03;
+    c=prev.c+(morphTarget.c-prev.c)*0.03;
+    d=prev.d+(morphTarget.d-prev.d)*0.03;
+    applySliders(); resetAccum();
+    if(Math.abs(a-morphTarget.a)<0.01&&Math.abs(b-morphTarget.b)<0.01&&
+       Math.abs(c-morphTarget.c)<0.01&&Math.abs(d-morphTarget.d)<0.01){
+      a=morphTarget.a;b=morphTarget.b;c=morphTarget.c;d=morphTarget.d;
+      applySliders(); resetAccum(); morphTarget=null;
+    }
+  }
+  if(iterCount<MAX_DENSITY_ITER){
+    iterate(BATCH);
+    render();
+  } else if(dirty){
+    render(); dirty=false;
+  }
+  requestAnimationFrame(frame);
+}
+
+resize();
+frame();
+})();
+</script>
+</body>
+</html>
