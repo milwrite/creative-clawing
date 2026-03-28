@@ -234,33 +234,57 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     attachObserver();
   }
 
-  // IntersectionObserver-based iframe injection/eviction — avoids blasting 91 canvases at once
-  const MAX_LIVE = 24;
+  // IntersectionObserver-based iframe injection/eviction
+  // MAX_LIVE: cap concurrent canvas loops to avoid GPU overload.
+  // Gallery uses 60 (vs homepage's 32) — cards are static in a grid, not scrolling lanes.
+  // Pending set: cards that were in-view but blocked by the cap — drained whenever a slot frees.
+  const MAX_LIVE = 60;
   const liveSet = new Set();
+  const pendingSet = new Set();
   let observer = null;
+
+  function injectIframe(f) {
+    if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
+      if (!f.querySelector('iframe')) pendingSet.add(f);
+      return;
+    }
+    pendingSet.delete(f);
+    const iframe = document.createElement('iframe');
+    iframe.src = f.dataset.src;
+    iframe.sandbox = 'allow-scripts allow-same-origin';
+    iframe.title = f.dataset.title || '';
+    iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
+    iframe.addEventListener('load', () => { iframe.style.opacity = '1'; }, { once: true });
+    f.insertBefore(iframe, f.firstChild);
+    liveSet.add(f);
+  }
+
+  function ejectIframe(f) {
+    const iframe = f.querySelector('iframe');
+    if (!iframe) return;
+    iframe.src = 'about:blank';
+    iframe.remove();
+    liveSet.delete(f);
+    // Drain pending queue now that a slot freed
+    for (const pf of pendingSet) {
+      if (liveSet.size >= MAX_LIVE) break;
+      injectIframe(pf);
+    }
+  }
 
   function attachObserver() {
     if (observer) observer.disconnect();
     observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         const f = e.target;
-        if (e.isIntersecting && !f.querySelector('iframe') && liveSet.size < MAX_LIVE) {
-          const iframe = document.createElement('iframe');
-          iframe.src = f.dataset.src;
-          iframe.sandbox = 'allow-scripts allow-same-origin';
-          iframe.title = f.dataset.title || '';
-          iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
-          iframe.addEventListener('load', () => { iframe.style.opacity = '1'; }, { once: true });
-          f.insertBefore(iframe, f.firstChild);
-          liveSet.add(f);
-        } else if (!e.isIntersecting && f.querySelector('iframe')) {
-          const iframe = f.querySelector('iframe');
-          iframe.src = 'about:blank';
-          iframe.remove();
-          liveSet.delete(f);
+        if (e.isIntersecting) {
+          injectIframe(f);
+        } else {
+          pendingSet.delete(f);
+          ejectIframe(f);
         }
       });
-    }, { rootMargin: '200px' });
+    }, { rootMargin: '400px' });
     document.querySelectorAll('.card-preview[data-src]').forEach(el => observer.observe(el));
   }
 
