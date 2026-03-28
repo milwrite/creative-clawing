@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 122,
+    "totalCommits": 123,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 2
+      "2026-03-28": 3
     },
     "categoryCounts": {
       "blog": 13,
       "mobile": 12,
       "fix": 24,
-      "other": 61,
+      "other": 62,
       "artifact": 5,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "7f2b2e45",
+        "date": "2026-03-28",
+        "subject": "fix(turing,sand): show developed preview state in iframe cards — turing fast-warmup rAF, sand pre-fills with materials",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "98c87222",
         "date": "2026-03-28",
@@ -1018,7 +1026,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 334,
+    "totalCommits": 335,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1055,7 +1063,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 22
+      "2026-03-28": 23
     },
     "categoryCounts": {
       "blog": 33,
@@ -1063,11 +1071,19 @@
       "mobile": 18,
       "fix": 72,
       "other": 104,
-      "chore": 64,
+      "chore": 65,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "0699fcbf",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "bb8e2baa",
         "date": "2026-03-28",
