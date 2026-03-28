@@ -1069,7 +1069,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 347,
+    "totalCommits": 349,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1106,19 +1106,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 35
+      "2026-03-28": 37
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 72,
-      "other": 110,
-      "chore": 70,
+      "other": 111,
+      "chore": 71,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "7a925313",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "2b4b9b27",
+        "date": "2026-03-28",
+        "subject": "fix(hatmonotile): remove calls to undefined resize() — use render() consistently for all resize handlers",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "e204ac5e",
         "date": "2026-03-28",
