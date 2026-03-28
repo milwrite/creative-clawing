@@ -184,9 +184,14 @@ function draw(angleDeg, ox, oy) {
 }
 
 window.addEventListener('resize', () => { resize(); });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', () => { resize(); });
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 
-resize();
-render();
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(resize, 200);
+  render();
+});
 </script>
 </body>
 </html>

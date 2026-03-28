@@ -212,16 +212,21 @@ function updateInfo() {
 const STEPS_PER_FRAME = 8;
 
 window.addEventListener('resize', resize);
-resize();
-init();
-updateInfo();
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 
-function frame() {
-  for (let s = 0; s < STEPS_PER_FRAME; s++) step();
-  drawSim();
-  requestAnimationFrame(frame);
-}
-frame();
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(resize, 200);
+  init();
+  updateInfo();
+  function frame() {
+    for (let s = 0; s < STEPS_PER_FRAME; s++) step();
+    drawSim();
+    requestAnimationFrame(frame);
+  }
+  frame();
+});
 </script>
 </body>
 </html>

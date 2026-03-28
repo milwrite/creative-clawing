@@ -392,9 +392,15 @@ if(window.self!==window.top){
 }
 
 window.addEventListener('resize',resize);
-resize();
-updateLR();
-init();
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(resize, 200);
+  updateLR();
+  init();
+});
 </script>
 </body>
 </html>

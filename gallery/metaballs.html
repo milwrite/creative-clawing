@@ -153,14 +153,19 @@ canvas.addEventListener('touchmove', e => {
 canvas.addEventListener('touchend', () => { mx = -1; my = -1; });
 
 window.addEventListener('resize', resize);
-resize();
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 
-function frame() {
-  update();
-  render();
-  requestAnimationFrame(frame);
-}
-frame();
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(resize, 200);
+  function frame() {
+    update();
+    render();
+    requestAnimationFrame(frame);
+  }
+  frame();
+});
 </script>
 </body>
 </html>

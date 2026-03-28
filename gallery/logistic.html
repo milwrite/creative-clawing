@@ -504,9 +504,15 @@ reseedBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('resize', resize);
-resize();
-resetOrbit();
-requestAnimationFrame(render);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(resize, 200);
+  resetOrbit();
+  requestAnimationFrame(render);
+});
 </script>
 </body>
 </html>
