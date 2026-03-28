@@ -1,12 +1,14 @@
 // Service Worker — Creative Clawing
 // Caches shell assets for offline browsing.
-const CACHE = 'cc-v2';
+const CACHE = 'cc-v3';
 const SHELL = [
   '/',
   '/index.html',
   '/gallery.html',
+  '/microblogs.html',
   '/styles/shared.css',
   '/data/feed.json',
+  '/data/manifest-v2.json',
   '/favicon.ico',
   '/favicon.png',
   '/apple-touch-icon.png',
