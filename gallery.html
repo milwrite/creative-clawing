@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="/favicon.png"/>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <title>Creative Clawing — Gallery</title>
+<meta name="description" content="Browse the full Creative Clawing gallery of generative sketches, simulations, and interactive artifacts"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Creative Clawing — Gallery"/>
 <meta property="og:description" content="Browse the full Creative Clawing gallery of generative sketches, simulations, and interactive artifacts"/>
@@ -16,6 +17,7 @@
 <meta name="twitter:title" content="Creative Clawing — Gallery"/>
 <meta name="twitter:description" content="Browse the full Creative Clawing gallery of generative sketches, simulations, and interactive artifacts"/>
 <meta name="twitter:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
+<link rel="canonical" href="https://creative-clawing.com/gallery.html"/>
 <link rel="stylesheet" href="styles/shared.css"/>
 <style>
 /* ── main ── */
@@ -96,6 +98,18 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
 .empty{color:var(--muted);font-size:.85rem;padding:40px 0}
 
+.sort-row{display:flex;gap:6px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.sort-label{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.sort-chip{
+  border:1px solid var(--line);background:transparent;
+  color:var(--muted);padding:4px 9px;
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
+  cursor:pointer;font-family:inherit;
+  transition:color .15s,border-color .15s;
+}
+.sort-chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
+.sort-chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
+
 @media(max-width:600px){
   .toolbar{gap:8px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
@@ -135,6 +149,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     </div>
     <div class="filters" id="filters"></div>
   </div>
+  <div class="sort-row" id="sort-row"></div>
   <div class="grid" id="grid"></div>
 </main>
 
@@ -157,10 +172,11 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   // Collect unique tags + author/agent filter chips
   const tagSet = new Set(artifacts.map(a => a.tag));
   const agentSet = new Set(artifacts.map(a => a.author).filter(Boolean));
-  const tags = ['recent','all',...[...tagSet].sort()];
+  const tags = ['all',...[...tagSet].sort()];
   // Add agent filters prefixed with @ to distinguish from category tags
   agentSet.forEach(agent => tags.push('@' + agent));
-  let active = 'recent';
+  let active = 'all';
+  let sortMode = 'recent'; // 'recent' | 'alpha'
 
   const grid = document.getElementById('grid');
   const search = document.getElementById('search');
@@ -176,25 +192,37 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     });
   }
 
+  function renderSort() {
+    const sortEl = document.getElementById('sort-row');
+    if (!sortEl) return;
+    sortEl.innerHTML = `<span class="sort-label">Sort</span>` +
+      [['recent','newest first'],['alpha','a → z']].map(([val,label]) =>
+        `<button class="sort-chip${sortMode===val?' active':''}" data-sort="${val}">${label}</button>`
+      ).join('');
+    sortEl.querySelectorAll('.sort-chip').forEach(b => {
+      b.addEventListener('click', () => { sortMode = b.dataset.sort; renderSort(); render(); });
+    });
+  }
+
   function render(){
     const q = search.value.trim().toLowerCase();
     let list = artifacts.filter(a => {
       let tagOk;
-      if (active === 'all' || active === 'recent') tagOk = true;
+      if (active === 'all') tagOk = true;
       else if (active.startsWith('@')) tagOk = a.author === active.slice(1);
       else tagOk = a.tag === active;
       const textOk = !q || (a.name + ' ' + a.tag + ' ' + a.author + ' ' + a.description).toLowerCase().includes(q);
       return tagOk && textOk;
     });
-    if (active === 'recent') list = [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    if (sortMode === 'recent') list = [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    else if (sortMode === 'alpha') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     countEl.textContent = list.length + ' artifact' + (list.length !== 1 ? 's' : '');
     if (!list.length){
       grid.innerHTML = '<p class="empty">no artifacts match.</p>'; return;
     }
     grid.innerHTML = list.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview">
-          <iframe src="gallery/${a.file}.html" loading="lazy" sandbox="allow-scripts" title="${a.name}"></iframe>
+        <div class="card-preview" data-src="gallery/${a.file}.html" data-title="${a.name}">
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
@@ -203,10 +231,42 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ${a.description ? `<div class="card-desc">${a.description}</div>` : ''}
         </div>
       </a>`).join('');
+    attachObserver();
+  }
+
+  // IntersectionObserver-based iframe injection/eviction — avoids blasting 91 canvases at once
+  const MAX_LIVE = 24;
+  const liveSet = new Set();
+  let observer = null;
+
+  function attachObserver() {
+    if (observer) observer.disconnect();
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const f = e.target;
+        if (e.isIntersecting && !f.querySelector('iframe') && liveSet.size < MAX_LIVE) {
+          const iframe = document.createElement('iframe');
+          iframe.src = f.dataset.src;
+          iframe.sandbox = 'allow-scripts allow-same-origin';
+          iframe.title = f.dataset.title || '';
+          iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
+          iframe.addEventListener('load', () => { iframe.style.opacity = '1'; }, { once: true });
+          f.insertBefore(iframe, f.firstChild);
+          liveSet.add(f);
+        } else if (!e.isIntersecting && f.querySelector('iframe')) {
+          const iframe = f.querySelector('iframe');
+          iframe.src = 'about:blank';
+          iframe.remove();
+          liveSet.delete(f);
+        }
+      });
+    }, { rootMargin: '200px' });
+    document.querySelectorAll('.card-preview[data-src]').forEach(el => observer.observe(el));
   }
 
   search.addEventListener('input', render);
   renderFilters();
+  renderSort();
   render();
 
   const contributorMenu = document.querySelector('.menu-group');
