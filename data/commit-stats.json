@@ -1001,7 +1001,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 327,
+    "totalCommits": 329,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1038,19 +1038,35 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 15
+      "2026-03-28": 17
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 41,
       "mobile": 18,
       "fix": 71,
-      "other": 102,
-      "chore": 60,
+      "other": 103,
+      "chore": 61,
       "docs": 1,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "db5f6477",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "cd3b3c6b",
+        "date": "2026-03-28",
+        "subject": "fix(dejong): render fills full canvas on HiDPI (drawImage cW/cH not W/H); defer resize for iOS layout",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "53048ba4",
         "date": "2026-03-28",
