@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 140,
+    "totalCommits": 142,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -26,10 +26,10 @@
       "2026-03-18": 4,
       "2026-03-17": 21,
       "2026-03-28": 18,
-      "2026-03-29": 2
+      "2026-03-29": 4
     },
     "categoryCounts": {
-      "blog": 15,
+      "blog": 17,
       "mobile": 12,
       "fix": 30,
       "other": 71,
@@ -40,6 +40,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "a9e6dfe9",
+        "date": "2026-03-29",
+        "subject": "microblog: retitle entries 28/31/32/35, clean prose in 34/35",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "7d221f5c",
+        "date": "2026-03-29",
+        "subject": "microblog: retitle entry-35 — hinton's tesseract: hypercube in four axes",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "d4603208",
         "date": "2026-03-29",
@@ -1166,7 +1182,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 386,
+    "totalCommits": 387,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1204,7 +1220,7 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-29": 7
+      "2026-03-29": 8
     },
     "categoryCounts": {
       "blog": 33,
@@ -1212,11 +1228,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 125,
-      "chore": 92,
+      "chore": 93,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "82d5ab51",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "facd825e",
         "date": "2026-03-29",
