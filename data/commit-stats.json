@@ -1149,7 +1149,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 381,
+    "totalCommits": 382,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1187,19 +1187,27 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-29": 2
+      "2026-03-29": 3
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 74,
-      "other": 123,
+      "other": 124,
       "chore": 89,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "6cb32bf0",
+        "date": "2026-03-29",
+        "subject": "sweep: normalize newton back-btn href (../gallery/ → ./)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "68eb40a5",
         "date": "2026-03-29",
