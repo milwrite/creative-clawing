@@ -365,6 +365,13 @@
       "page": "artifacts/mitosis.html"
     },
     {
+      "id": "mohr",
+      "title": "Mohr Hypercube",
+      "type": "artifact",
+      "url": "gallery/mohr.html",
+      "page": "artifacts/mohr.html"
+    },
+    {
       "id": "moire",
       "title": "Moiré Patterns",
       "type": "artifact",
@@ -1189,6 +1196,13 @@
       "type": "artifact",
       "url": "gallery/mitosis.html",
       "page": "artifacts/mitosis.html"
+    },
+    {
+      "id": "mohr",
+      "title": "Mohr Hypercube",
+      "type": "artifact",
+      "url": "gallery/mohr.html",
+      "page": "artifacts/mohr.html"
     },
     {
       "id": "moire",
