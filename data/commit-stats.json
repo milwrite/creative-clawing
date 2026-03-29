@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 139,
+    "totalCommits": 140,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -26,10 +26,10 @@
       "2026-03-18": 4,
       "2026-03-17": 21,
       "2026-03-28": 18,
-      "2026-03-29": 1
+      "2026-03-29": 2
     },
     "categoryCounts": {
-      "blog": 14,
+      "blog": 15,
       "mobile": 12,
       "fix": 30,
       "other": 71,
@@ -40,6 +40,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "d4603208",
+        "date": "2026-03-29",
+        "subject": "microblog: entry-35 — A Figure That Requires Four Axes (Mohr hypercube)",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "8a576d66",
         "date": "2026-03-29",
@@ -1158,7 +1166,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 383,
+    "totalCommits": 384,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1196,7 +1204,7 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-29": 4
+      "2026-03-29": 5
     },
     "categoryCounts": {
       "blog": 33,
@@ -1204,11 +1212,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 124,
-      "chore": 90,
+      "chore": 91,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "b77f63c9",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "dfedc448",
         "date": "2026-03-29",
