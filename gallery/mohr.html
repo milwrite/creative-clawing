@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Mohr Hypercube</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #080808;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  canvas { display: block; cursor: pointer; touch-action: none; }
+  #ui {
+    position: fixed;
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    left: 50%;
+    transform: translateX(-50%);
+    color: #3a3a3a;
+    font-size: 11px;
+    text-align: center;
+    pointer-events: none;
+    line-height: 1.8;
+    white-space: nowrap;
+  }
+  #back {
+    position: fixed;
+    top: max(14px, env(safe-area-inset-top, 14px));
+    left: max(14px, env(safe-area-inset-left, 14px));
+    color: #555;
+    text-decoration: none;
+    font-size: 11px;
+    border: 1px solid #1e1e1e;
+    padding: 5px 11px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    transition: color .15s, border-color .15s;
+  }
+  #back:hover { color: #bbb; border-color: #444; }
+  @media (max-width: 500px) {
+    #ui { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">tap to cycle rotation mode</div>
+<a href="../gallery.html" id="back">← gallery</a>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+resize();
+
+// ── 4D hypercube geometry ─────────────────────────────────
+// 16 vertices: all combinations of (±1, ±1, ±1, ±1)
+const verts4 = [];
+for (let i = 0; i < 16; i++) {
+  verts4.push([
+    (i & 1) ? 1 : -1,
+    (i & 2) ? 1 : -1,
+    (i & 4) ? 1 : -1,
+    (i & 8) ? 1 : -1
+  ]);
+}
+
+// 32 edges: connect vertices differing in exactly one bit
+const edges = [];
+for (let i = 0; i < 16; i++) {
+  for (let j = i + 1; j < 16; j++) {
+    const diff = i ^ j;
+    if (diff && (diff & (diff - 1)) === 0) { // exactly one bit differs
+      edges.push([i, j]);
+    }
+  }
+}
+
+// ── rotation modes ────────────────────────────────────────
+// Each mode is two (plane, speed) pairs for the two rotation planes
+const MODES = [
+  { planes: [['XZ', 0.0031], ['YW', 0.0047]], name: 'slow drift' },
+  { planes: [['XW', 0.0055], ['YZ', 0.0039]], name: 'crossing planes' },
+  { planes: [['XZ', 0.0088], ['XW', 0.0061]], name: 'coupled spin' },
+  { planes: [['YW', 0.0029], ['ZW', 0.0073]], name: 'w-axis wander' },
+];
+
+let modeIdx = 0;
+let t = 0;
+
+canvas.addEventListener('click', () => { modeIdx = (modeIdx + 1) % MODES.length; });
+canvas.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  modeIdx = (modeIdx + 1) % MODES.length;
+}, { passive: false });
+
+// ── 4D rotation ───────────────────────────────────────────
+function rot4(v, plane, angle) {
+  const [x, y, z, w] = v;
+  const c = Math.cos(angle), s = Math.sin(angle);
+  switch(plane) {
+    case 'XY': return [ x*c - y*s, x*s + y*c, z, w];
+    case 'XZ': return [ x*c - z*s, y, x*s + z*c, w];
+    case 'XW': return [ x*c - w*s, y, z, x*s + w*c];
+    case 'YZ': return [ x, y*c - z*s, y*s + z*c, w];
+    case 'YW': return [ x, y*c - w*s, z, y*s + w*c];
+    case 'ZW': return [ x, y, z*c - w*s, z*s + w*c];
+  }
+  return v;
+}
+
+// ── perspective projections ───────────────────────────────
+// 4D → 3D: perspective divide on w
+function proj4to3(v, d4 = 2.8) {
+  const [x, y, z, w] = v;
+  const s = d4 / (d4 - w);
+  return [x * s, y * s, z * s];
+}
+
+// 3D → 2D: perspective divide on z
+function proj3to2(v, d3 = 3.5) {
+  const [x, y, z] = v;
+  const s = d3 / (d3 - z);
+  return [x * s, y * s, s]; // return scale too for line weight
+}
+
+// ── draw ──────────────────────────────────────────────────
+function draw() {
+  t++;
+  const mode = MODES[modeIdx];
+
+  // Apply rotations
+  const projected = verts4.map(v => {
+    let r = v;
+    for (const [plane, speed] of mode.planes) {
+      r = rot4(r, plane, t * speed);
+    }
+    return r;
+  });
+
+  // Project to 2D
+  const scale = Math.min(W, H) * 0.32;
+  const cx = W / 2, cy = H / 2;
+
+  const pts2d = projected.map(v => {
+    const v3 = proj4to3(v);
+    const [px, py, ps] = proj3to2(v3);
+    return { x: cx + px * scale, y: cy + py * scale, s: ps };
+  });
+
+  // Clear
+  ctx.fillStyle = '#080808';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw edges
+  for (const [a, b] of edges) {
+    const pa = pts2d[a], pb = pts2d[b];
+    // Line weight and opacity from average projected scale (depth cue)
+    const avgS = (pa.s + pb.s) * 0.5;
+    const alpha = Math.min(0.9, Math.max(0.08, (avgS - 0.5) * 0.7));
+    const lw = Math.max(0.4, (avgS - 0.4) * 1.1);
+
+    // Subtle warm grey — not pure white, not blue
+    const bright = Math.round(140 + avgS * 55);
+    ctx.strokeStyle = `rgba(${bright}, ${bright - 4}, ${bright - 10}, ${alpha})`;
+    ctx.lineWidth = lw;
+    ctx.beginPath();
+    ctx.moveTo(pa.x, pa.y);
+    ctx.lineTo(pb.x, pb.y);
+    ctx.stroke();
+  }
+
+  // Draw vertices — small dots at projected positions
+  for (const p of pts2d) {
+    const r = Math.max(1, (p.s - 0.4) * 2.2);
+    const bright = Math.round(120 + p.s * 60);
+    ctx.fillStyle = `rgba(${bright}, ${bright - 6}, ${bright - 14}, ${Math.min(0.85, (p.s - 0.5) * 1.2)})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
