@@ -234,7 +234,7 @@
         if (src) {
           const ifr = document.createElement('iframe');
           ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
-          ifr.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+          ifr.setAttribute('sandbox', 'allow-scripts');
           ifr.addEventListener('load', () => {
             try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
           }, { once: true });
