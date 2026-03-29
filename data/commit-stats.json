@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 142,
+    "totalCommits": 143,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -26,11 +26,11 @@
       "2026-03-18": 4,
       "2026-03-17": 21,
       "2026-03-28": 18,
-      "2026-03-29": 4
+      "2026-03-29": 5
     },
     "categoryCounts": {
       "blog": 17,
-      "mobile": 12,
+      "mobile": 13,
       "fix": 30,
       "other": 71,
       "artifact": 8,
@@ -40,6 +40,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "207baaa4",
+        "date": "2026-03-29",
+        "subject": "mobile: add sandbox+touch-action+viewport listeners to mohr/ifs/astar",
+        "categories": [
+          "mobile"
+        ]
+      },
       {
         "sha": "a9e6dfe9",
         "date": "2026-03-29",
@@ -1182,7 +1190,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 389,
+    "totalCommits": 390,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1220,7 +1228,7 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-29": 10
+      "2026-03-29": 11
     },
     "categoryCounts": {
       "blog": 33,
@@ -1228,11 +1236,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 126,
-      "chore": 94,
+      "chore": 95,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "e7a7729d",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "00e88828",
         "date": "2026-03-29",
