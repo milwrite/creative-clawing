@@ -1182,7 +1182,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 387,
+    "totalCommits": 389,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1220,19 +1220,35 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-29": 8
+      "2026-03-29": 10
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 74,
-      "other": 125,
-      "chore": 93,
+      "other": 126,
+      "chore": 94,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "00e88828",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b8274281",
+        "date": "2026-03-29",
+        "subject": "sweep: normalize back-btn hrefs (../ → ./) across 16 gallery artifacts",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "82d5ab51",
         "date": "2026-03-29",
