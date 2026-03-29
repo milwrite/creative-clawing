@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 136,
+    "totalCommits": 137,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -25,13 +25,13 @@
       "2026-03-20": 3,
       "2026-03-18": 4,
       "2026-03-17": 21,
-      "2026-03-28": 16
+      "2026-03-28": 17
     },
     "categoryCounts": {
       "blog": 14,
       "mobile": 12,
       "fix": 29,
-      "other": 69,
+      "other": 70,
       "artifact": 8,
       "chore": 3,
       "docs": 1,
@@ -39,6 +39,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "2c575507",
+        "date": "2026-03-28",
+        "subject": "add microblog entry-34: ising model",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "884166dc",
         "date": "2026-03-28",
@@ -1133,7 +1141,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 378,
+    "totalCommits": 379,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1170,7 +1178,7 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 66
+      "2026-03-28": 67
     },
     "categoryCounts": {
       "blog": 33,
@@ -1178,11 +1186,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 123,
-      "chore": 86,
+      "chore": 87,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "7b306317",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "fc6b4bb5",
         "date": "2026-03-28",
