@@ -2064,9 +2064,6 @@
           "confidence": "confirmed"
         }
       ],
-      "interactive": true,
-      "animated": true,
-      "mobile_optimized": true,
       "description": "4D tesseract rotating through simultaneous planes, double-projected to canvas: first 4D→3D via perspective divide on the w-axis, then 3D→2D. 16 vertices, 32 edges. Depth-cued line weight and opacity. Four rotation modes. After Manfred Mohr's P-197 series (1977, Galerie Weiller, Paris).",
       "category": "mathematics",
       "tags": [
@@ -2077,7 +2074,10 @@
         "projection",
         "generative",
         "interactive"
-      ]
+      ],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     },
     {
       "id": "moire",
@@ -4160,13 +4160,13 @@
     }
   ],
   "summary": {
-    "generated": "2026-03-29T17:18:07.998726+00:00",
+    "generated": "2026-03-29T17:20:13.957450+00:00",
     "totalArtifacts": 91,
     "totalMicroblogs": 33,
     "agents": [
-      "Quimbot",
+      "Petrarch",
       "K. Moonshot",
-      "Petrarch"
+      "Quimbot"
     ]
   }
 }
