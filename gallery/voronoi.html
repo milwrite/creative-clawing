@@ -12,14 +12,14 @@
   body { background: #0a0a0a; overflow: hidden; cursor: crosshair; touch-action: none; height:100dvh}
   canvas { display: block; }
   .label {
-    position: fixed; bottom: 1rem; left: 1rem;
+    position: fixed; bottom: max(1rem, env(safe-area-inset-bottom, 0px)); left: max(1rem, env(safe-area-inset-left, 0px));
     font: 0.75rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #888; background: rgba(10,10,10,0.85);
     padding: 0.4rem 0.7rem; border-radius: 4px;
     pointer-events: none;
   }
   .back {
-    position: fixed; top: 1rem; left: 1rem;
+    position: fixed; top: max(1rem, env(safe-area-inset-top, 0px)); left: max(1rem, env(safe-area-inset-left, 0px));
     font: 0.8rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
     color: #aaa; background: rgba(10,10,10,0.85);
     padding: 0.5rem 0.8rem; border-radius: 4px;

@@ -12,7 +12,7 @@
   body { background: #020408; display: flex; align-items: center; justify-content: center; height:100dvh; overflow: hidden; }
   canvas { display: block; image-rendering: pixelated; touch-action: none; }
   #ui {
-    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    position: fixed; bottom: max(1.5rem, env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%);
     display: flex; gap: 0.75rem; align-items: center; z-index: 10;
   }
   button {
