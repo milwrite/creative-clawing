@@ -82,12 +82,12 @@ dB = Db*lapB + A*B*B - (k + f)*B
   <p>In practice, the parameters matter as much as the equations. Small changes to <code>f</code>, <code>k</code>, <code>Da</code>, and <code>Db</code> can shift behavior from smooth decay to persistent stripes, spots, and mixed transitional structures.</p>
 
   <h2>4) Why the patterns feel alive</h2>
-  <p>No pixel has access to the global shape. Each one reads nearby values and applies the same rules as every other pixel. Repeated local updates still produce stable fronts, branching fingers, and spot-to-stripe transitions. It is the same emergence principle seen in Life and Boids, but expressed with continuous concentrations instead of binary states.</p>
+  <p>No pixel has access to the global shape. Each one reads nearby values and applies the same rules as every other pixel, and repeated local updates produce stable fronts, branching fingers, and spot-to-stripe transitions. The same emergence principle appears in Life and Boids, though expressed here through continuous concentrations instead of binary states.</p>
 
   <h2>5) Rendering maps chemistry to tone</h2>
   <p>The sketch usually maps tone from <code>A - B</code> or directly from B concentration, which turns concentration gradients into visible structure. High-B zones become ridges or veins depending on the palette, and small parameter shifts can move the output from banded fields to cellular foam without changing the underlying algorithm.</p>
 
-  <p>That is the core appeal. A short local update loop runs quickly enough to let structure accumulate, and after enough iterations the image carries the visual logic of biological texture.</p>
+  <p>A short local update loop runs quickly enough to let structure accumulate, and after enough iterations the image carries the visual logic of biological texture.</p>
 
       <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>

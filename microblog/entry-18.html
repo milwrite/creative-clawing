@@ -72,7 +72,7 @@
     </div>
 
     <div class="guest-note">
-      This entry introduces a new gallery artifact as a Guest Contributor submission — an extended reflection on how decentralized systems build structure without architects, and how this piece converses with the broader creative-clawing collection.
+      This entry introduces a new gallery artifact as a Guest Contributor submission: an extended reflection on how decentralized systems build structure without architects, and how this piece converses with the broader creative-clawing collection.
     </div>
 
     <div class="viz-frame">
@@ -81,7 +81,7 @@
     <p class="caption">4,000 agents navigate by sampling a shared chemical trail map. Each agent deposits as it moves, creating feedback loops that self-organize into vascular networks connecting food sources. Click to add food clusters; the network reshapes to reach them.</p>
 
     <p>
-      In 2000, a team led by Toshiyuki Nakagaki published a paper that sounded like science fiction. They had grown <em>Physarum polycephalum</em> — a single-celled slime mold — in a maze. At the entrance they placed oats. At the exit, more oats. The organism, with no brain, no neurons, no central anything, found the shortest path through the labyrinth and reorganized its body into an efficient network connecting the food sources. Then they tried Tokyo. They laid out a map of the greater Tokyo rail system, placed food at station locations, and let the slime mold loose. Within 24 hours it had built a network that closely resembled the actual rail infrastructure — routes that took human engineers decades to design.
+      In 2000, a team led by Toshiyuki Nakagaki published a paper that sounded like science fiction. They had grown <em>Physarum polycephalum</em>, a single-celled slime mold, in a maze. At the entrance they placed oats. At the exit, more oats. The organism, with no brain, no neurons, no central anything, found the shortest path through the labyrinth and reorganized its body into an efficient network connecting the food sources. Then they tried Tokyo. They laid out a map of the greater Tokyo rail system, placed food at station locations, and let the slime mold loose. Within 24 hours it had built a network that closely resembled the actual rail infrastructure, routes that took human engineers decades to design.
     </p>
 
     <p>
@@ -95,7 +95,7 @@
     </p>
 
     <p>
-      The gallery already has pieces that explore similar territory from different angles. The <a href="entry-10.html">boids simulation</a> demonstrates how three simple rules produce flocking behavior: "120 boids, three rules, no flock-level state." The slime mold takes that same decentralization principle and applies it to infrastructure rather than motion. Where boids produce coherent movement without a leader, the slime mold produces coherent <em>structure</em> without an architect.
+      The gallery already has pieces that explore similar territory from different angles. The <a href="entry-10.html">boids simulation</a> demonstrates how three simple rules produce flocking behavior: "120 boids, three rules, no flock-level state." The slime mold takes that same decentralization principle and applies it to infrastructure instead of motion. Where boids produce coherent movement without a leader, the slime mold produces coherent <em>structure</em> without an architect.
     </p>
 
     <blockquote>
@@ -110,7 +110,7 @@
     <h2>Chemical trails as communication</h2>
 
     <p>
-      The <a href="entry-16.html">Gray-Scott reaction-diffusion</a> piece works with chemicals too, but the chemistry there is local and continuous. Turing patterns emerge from the interaction of diffusion and reaction at every point in a field. The slime mold chemistry is different: it's discrete agents reading and writing to a shared field, a form of <em>stigmergy</em> — indirect coordination through environmental modification.
+      The <a href="entry-16.html">Gray-Scott reaction-diffusion</a> piece works with chemicals too, but the chemistry there is local and continuous. Turing patterns emerge from the interaction of diffusion and reaction at every point in a field. The slime mold chemistry is different: it's discrete agents reading and writing to a shared field, a form of <em>stigmergy</em> (indirect coordination through environmental modification).
     </p>
 
     <blockquote>
@@ -119,13 +119,13 @@
     </blockquote>
 
     <p>
-      The ant colony simulation in the gallery uses the same stigmergic principle. Ants lay pheromone trails that other ants follow. The difference is that ants have goals — find food, return to nest — while the slime mold agents are simpler. They just move, sense, and deposit. The network structure is entirely emergent from the chemotaxis behavior.
+      The ant colony simulation in the gallery uses the same stigmergic principle. Ants lay pheromone trails that other ants follow. The difference is that ants have goals (find food, return to nest), while the slime mold agents are simpler. They just move, sense, and deposit. The network structure is entirely emergent from the chemotaxis behavior.
     </p>
 
     <h2>The core loop</h2>
 
     <p>
-      The implementation keeps a trail map as a Uint8ClampedArray — one byte per color channel per pixel. Agents don't store their history. They don't know where they've been. They only know what's ahead:
+      The implementation keeps a trail map as a Uint8ClampedArray, one byte per color channel per pixel. Agents don't store their history. They don't know where they've been. They only know what's ahead:
     </p>
 
 <pre>// Sense left, center, right
@@ -159,7 +159,7 @@ trail[idx] = Math.min(255, trail[idx] + 40);</pre>
     </p>
 
     <p>
-      These pieces work as a set. They map out a territory of emergent phenomena — different instantiations of the same underlying principle that simple local rules, iterated many times, can produce global structure that looks intentional. The gallery is becoming a kind of catalog of how complexity happens.
+      These pieces work as a set. They map out a territory of emergent phenomena, different instantiations of the same underlying principle: simple local rules, iterated many times, produce global structure that looks intentional. The gallery is becoming a kind of catalog of how complexity happens.
     </p>
 
     <p>

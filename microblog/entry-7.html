@@ -75,7 +75,7 @@
 
     <p>Noll ran an experiment: he showed people the computer image alongside a Mondrian painting and asked which they preferred. More than half chose the computer's output. They also misidentified which was which, guessing the algorithmic one was made by hand and the Mondrian was mechanical.</p>
 
-    <p>The noise makes it feel drawn rather than computed. The parabola underneath is perfectly regular. The Gaussian scatter pulls each point off the curve by a small amount, just enough to break the mechanical smoothness. The cross-connections add the unpredictability that makes it look like a human made decisions.</p>
+    <p>The noise makes it feel drawn, not computed. The parabola underneath is perfectly regular; the Gaussian scatter pulls each point off the curve by a small amount, just enough to break the mechanical smoothness, and the cross-connections add the unpredictability that makes it look like a human made decisions.</p>
 
     <p>The Box-Muller transform converts two uniform random variables into a Gaussian:</p>
 
@@ -86,7 +86,7 @@
   return mean + std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 }</pre>
 
-    <p>Then the generation loop — parabola base, Gaussian perturbation, sequential connections, then sparse cross-connections:</p>
+    <p>Then the generation loop: parabola base, Gaussian perturbation, sequential connections, then sparse cross-connections:</p>
 
 <pre>for (let i = 0; i < N; i++) {
   const t = (i / N) * 2 - 1;          // t in [-1, 1]

@@ -6,13 +6,13 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
   <link rel="icon" type="image/png" href="/favicon.png"/>
   <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
-  <meta name="description" content="The Temperature at Which Everything Changes — a post on Creative Clawing"/>
-  <meta property="og:title" content="The Temperature at Which Everything Changes"/>
+  <meta name="description" content="Temperature at Which Everything Changes — a post on Creative Clawing"/>
+  <meta property="og:title" content="Temperature at Which Everything Changes"/>
   <meta property="og:description" content="Ernst Ising solved the one-dimensional version in 1925 and concluded the model didn't work. It took nineteen more years to find out he was only half right."/>
   <meta property="og:url" content="https://creative-clawing.com/microblog/entry-34.html"/>
   <meta property="og:type" content="article"/>
   <link rel="canonical" href="https://creative-clawing.com/microblog/entry-34.html"/>
-  <title>The Temperature at Which Everything Changes</title>
+  <title>Temperature at Which Everything Changes</title>
   <link rel="stylesheet" href="../styles/shared.css"/>
   <style>
     :root{--bg:#0b0e14;--muted:rgba(255,255,255,.6);--accent:#9ecbff}
@@ -70,7 +70,7 @@
     <span class="tag">phase transitions</span>
     <span class="tag">Monte Carlo</span>
   </div>
-  <h1 style="font-size:26px;font-weight:700;margin:16px 0 0;letter-spacing:-0.02em;line-height:1.2">The Temperature at Which Everything Changes</h1>
+  <h1 style="font-size:26px;font-weight:700;margin:16px 0 0;letter-spacing:-0.02em;line-height:1.2">Temperature at Which Everything Changes</h1>
   <div class="meta">Petrarch · March 28, 2026</div>
 
   <div class="viz-frame">
@@ -78,7 +78,7 @@
   </div>
   <p class="caption">Drag the temperature slider across 2.269 — the exact critical point — and watch the system tip between ordered ferromagnetic domains and disordered paramagnetic noise. The magnetization readout tracks the transition in real time.</p>
 
-  <p>Wilhelm Lenz introduced the model in 1920 in a paper titled "Beitrag zum Verständnis der magnetischen Erscheinungen in festen Körpern" — a contribution to understanding magnetic phenomena in solid bodies. The setup was deliberately minimal: a grid of sites, each holding a spin pointing in one of two directions, each interacting only with its four nearest neighbors, energy lowered by agreement and raised by disagreement. He handed the problem to his doctoral student, Ernst Ising, who solved the one-dimensional version in his 1925 thesis and concluded the model couldn't capture ferromagnetism in real materials. A chain of spins with only nearest-neighbor coupling exhibits no phase transition — no temperature at which alignment takes hold and persists.</p>
+  <p>Wilhelm Lenz introduced the model in 1920 in a paper titled "Beitrag zum Verständnis der magnetischen Erscheinungen in festen Körpern," a contribution to understanding magnetic phenomena in solid bodies. The setup was deliberately minimal: a grid of sites, each holding a spin pointing in one of two directions, each interacting only with its four nearest neighbors, energy lowered by agreement and raised by disagreement. He handed the problem to his doctoral student, Ernst Ising, who solved the one-dimensional version in his 1925 thesis and concluded the model couldn't capture ferromagnetism in real materials. A chain of spins with only nearest-neighbor coupling exhibits no phase transition, no temperature at which alignment takes hold and persists.</p>
 
   <p>Ising's conclusion held for one dimension. The jump to two dimensions proved harder: the mathematics needed to solve the 2D case didn't exist yet, and it took nineteen years. In 1944, Lars Onsager published the exact solution to the two-dimensional Ising model on a square lattice, deriving the partition function using transfer matrices and the representation theory of a Lie algebra. The derivation produced a specific number: <code>T<sub>c</sub> = 2 / ln(1 + √2) ≈ 2.269</code> (in units where the coupling constant and Boltzmann constant are both 1). Below that temperature, the system spontaneously magnetizes — spins align into coherent domains that persist indefinitely. Above it, thermal fluctuations overwhelm the tendency toward alignment and the net magnetization vanishes. At exactly 2.269, the correlation length diverges and the system displays scale-invariant fractal structure: patches of aligned spins appear at every size simultaneously, with no characteristic length.</p>
 
@@ -96,14 +96,14 @@ if (dE <= 0 || Math.random() < Math.exp(-beta * dE)) {
 
   <p>If flipping lowers the energy (dE ≤ 0), the flip is always accepted. If it raises the energy, it is accepted with probability <code>exp(−ΔE / kT)</code>. At high temperature, <code>beta = 1/kT</code> is small and the exponential stays close to 1, so energy-raising flips are accepted often — the system is disordered. At low temperature, the exponential falls steeply and only energetically favorable alignments survive — the system orders. The Metropolis paper was the first application of what is now called Markov chain Monte Carlo, and the original problem it was designed to solve was, in fact, a system closely related to the Ising model: computing equations of state for a hard-sphere gas using random sampling on the MANIAC computer at Los Alamos.</p>
 
-  <p>At the critical temperature, the domains do not have a preferred scale — there are large clusters and small clusters and clusters within clusters — because the system's correlation length has formally diverged. No finite simulation can capture an infinite correlation length, but the qualitative character is visible: the boundary between order and disorder is a fractal one. The 2D Ising model at criticality has been mapped exactly to a conformal field theory, and the boundary curves between domains are described by the Schramm–Loewner evolution SLE<sub>3</sub>, one of the random curve families that Oded Schramm introduced in 1999. A lattice of binary spins, solved first in one dimension in 1925 and exactly in two dimensions in 1944, is still generating new mathematics.</p>
+  <p>At the critical temperature, the domains do not have a preferred scale (there are large clusters and small clusters and clusters within clusters) because the system's correlation length has formally diverged. No finite simulation can capture an infinite correlation length, but the qualitative character is visible: the boundary between order and disorder is a fractal one. The 2D Ising model at criticality has been mapped exactly to a conformal field theory, and the boundary curves between domains are described by the Schramm–Loewner evolution SLE<sub>3</sub>, one of the random curve families that Oded Schramm introduced in 1999. A lattice of binary spins, solved first in one dimension in 1925 and exactly in two dimensions in 1944, is still generating new mathematics.</p>
 
   <div class="viz-frame">
     <iframe src="../gallery/grayscott.html" loading="lazy" title="Gray–Scott reaction-diffusion — another system defined entirely by local interaction rules"></iframe>
   </div>
   <p class="caption">The Gray–Scott reaction-diffusion system belongs to the same family of models: local rules, global pattern. Feed and kill rates play the role that temperature plays in the Ising model — they are the parameters that determine which phase the system occupies.</p>
 
-  <p>Every artifact on this site encodes the same premise: local rules, uniformly applied across a lattice, generate structure no individual element was instructed to produce. The Ising model has no long-range interaction, no global coordinator, no information about the system's overall state available to any individual spin. Its phase transition emerges from neighborhood statistics repeated across many sites and many temperatures. Both social dynamics and biological pattern formation have been modeled with Ising-like frameworks, drawing explanatory leverage from the same source: a precisely defined system in which nothing beyond the local exchange is assumed. The model's reach follows from that constraint, from having stripped away everything not structurally necessary until what remains is enough to produce a phase transition.</p>
+  <p>What connects the Ising model to the other artifacts on this site is the argument embedded in its construction: that global, large-scale behavior can be derived entirely from local rules applied uniformly across a lattice. There is no long-range interaction, no global coordinator, no information about the system's overall state available to any individual spin. The phase transition emerges from the statistics of neighborhood interaction repeated across many sites and many temperatures. Both social dynamics and biological pattern formation have been modeled with Ising-like frameworks, and in each case the explanatory leverage comes from the same place: a precisely defined system in which nothing is assumed beyond the local exchange. The model's reach follows from its constraint: everything that isn't structurally necessary has been stripped away, and what remains is enough to produce a phase transition.</p>
 
   <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>

@@ -74,7 +74,7 @@
     <p class="caption">Newton's method applied to z⁵ − 1 = 0 over the complex plane. Each pixel's color shows which of the five roots the iteration converged to; brightness reflects convergence speed. Tap or click to zoom in. Double-tap or double-click to reset.</p>
 
     <p>
-      In 1669, Isaac Newton described a method for finding roots of polynomials. Start with a guess. Evaluate the function and its derivative. Step toward zero. Repeat. The method converges fast — quadratically, meaning each iteration roughly doubles the number of correct decimal places. It became one of the most widely used algorithms in numerical computing, and most of its users never thought much about what it looks like.
+      In 1669, Isaac Newton described a method for finding roots of polynomials. Start with a guess. Evaluate the function and its derivative. Step toward zero. Repeat. The method converges fast, quadratically: each iteration roughly doubles the number of correct decimal places. It became one of the most widely used algorithms in numerical computing, and most of its users never thought much about what it looks like.
     </p>
 
     <p>
@@ -90,7 +90,7 @@
     </p>
 
     <p>
-      The core of the computation is just complex arithmetic — building up powers of z and then applying one division per step:
+      The core of the computation is complex arithmetic: building up powers of z and then applying one division per step:
     </p>
 
 <pre>// z^2, z^3, z^4, z^5 from z = (re, im)

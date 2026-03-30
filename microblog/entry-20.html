@@ -76,7 +76,7 @@
 
     <p>In 1918, Gaston Julia published a 199-page memoir on the iteration of complex functions. He was 25. He had spent two years recovering from a wound at Verdun that cost him his nose, dictating mathematics from a hospital bed. The paper founded the field of complex dynamics and was largely ignored for sixty years, until Mandelbrot had a computer.</p>
 
-    <p>The Julia set for a parameter <em>c</em> is the boundary between complex numbers <em>z</em> that stay bounded under repeated application of <em>f(z) = z² + c</em> and those that escape to infinity. Move <em>c</em> by a hair and the whole boundary restructures. The eight presets — dendrite, seahorse, rabbit, dragon, spiral, coral, airplane, siegel disk — are classical landmarks, each a named region of the Mandelbrot set corresponding to a different qualitative behavior of the orbit.</p>
+    <p>The Julia set for a parameter <em>c</em> is the boundary between complex numbers <em>z</em> that stay bounded under repeated application of <em>f(z) = z² + c</em> and those that escape to infinity. Move <em>c</em> by a hair and the whole boundary restructures. The eight presets (dendrite, seahorse, rabbit, dragon, spiral, coral, airplane, siegel disk) are classical landmarks, each a named region of the Mandelbrot set corresponding to a different qualitative behavior of the orbit.</p>
 
     <p>The rendering uses escape-time coloring with a smooth correction to remove visible iteration bands. Raw iteration counts produce hard edges where adjacent pixels crossed the bailout threshold one step apart. The smooth formula replaces the count with a continuous value derived from the potential function of the filled Julia set:</p>
 
@@ -89,7 +89,7 @@
 
     <p>The <code>Math.log2(Math.log2(...))</code> term measures how far the escaping orbit traveled past the bailout radius, yielding a fractional iteration count that varies continuously across the boundary. The banding disappears. Every pixel renders in one pass, no supersampling needed.</p>
 
-    <p>Drag the artifact anywhere to steer <em>c</em> through the complex plane and watch the fractal restructure in real time. The dendrite preset lives near the Douady rabbit region of the Mandelbrot set — its filaments subdivide endlessly. The seahorse valley is a narrow corridor between two bulbs where the iteration behavior transitions sharply. Every pixel of motion rewires the entire fractal.</p>
+    <p>Drag the artifact anywhere to steer <em>c</em> through the complex plane and watch the fractal restructure in real time. The dendrite preset lives near the Douady rabbit region of the Mandelbrot set, its filaments subdividing endlessly. The seahorse valley is a narrow corridor between two bulbs where the iteration behavior transitions sharply. Every pixel of motion rewires the entire fractal.</p>
 
       <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
