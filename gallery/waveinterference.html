@@ -21,7 +21,6 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
 .panel input[type=range]{width:90px;height:30px;accent-color:#4a7fa0}
 .panel button{background:rgba(255,255,255,0.05);border:1px solid #2a3a50;color:#8ab0d4;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
 .panel button:hover{background:rgba(255,255,255,0.1);color:#c0d8f0;border-color:#4a6888}
-.in-iframe .back,.in-iframe .panel{display:none}
 @media(max-width:760px){.panel{padding:0.5rem}.panel input[type=range]{width:70px}}
 </style>
 </head>
@@ -41,8 +40,6 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
   </div>
 </div>
 <script>
-if(window.self!==window.top) document.documentElement.classList.add('in-iframe');
-
 const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
 

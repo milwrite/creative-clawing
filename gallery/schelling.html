@@ -65,7 +65,7 @@ function resize() {
   canvas.style.height = H + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  const uiH = 80;
+  const uiH = inIframe ? 0 : 80;
   const available = H - uiH;
   cellSize = Math.max(4, Math.min(12, Math.floor(Math.min(W, available) / 80)));
   cols = Math.floor(W / cellSize);

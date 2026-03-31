@@ -22,10 +22,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <canvas id="c"></canvas>
 <div id="info">Ant Colony · click to place food · right-click to move nest</div>
 <script>
-if(window.self!==window.top){
-  document.querySelectorAll('.back-btn,#info').forEach(el=>el.style.display='none');
-}
-
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H;
 

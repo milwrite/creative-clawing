@@ -22,10 +22,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none;image-rendering:pi
 <canvas id="c"></canvas>
 <div id="info">Gray-Scott · click to seed · space to cycle preset</div>
 <script>
-if (window.self !== window.top) {
-  document.querySelectorAll('.back-btn,#info').forEach(e => e.style.display = 'none');
-}
-
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 

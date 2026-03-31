@@ -11,7 +11,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;height:100dvh;background:#0a0a0f;overflow:hidden}
-canvas{display:block;width:100%;height:100%;touch-action:manipulation}
+canvas{display:block;width:100%;height:100%;touch-action:none}
 #info{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.6);padding:6px 12px;border-radius:6px;text-shadow:0 1px 3px rgba(0,0,0,0.9);font:13px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;max-width:min(92vw,620px)}
 .back-btn{position:fixed;top:calc(12px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
 .back-btn:hover{border-color:#888}
@@ -80,7 +80,6 @@ addEventListener('click',draw);
 addEventListener('touchstart',draw,{passive:true});
 requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();draw();},200);draw();});
 </script>
-<script>(function(){var inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}if(inFrame)document.querySelectorAll("#info,.info,#ctrl,#buttons,#depth,.controls,#mode,button,.back-btn").forEach(function(e){e.style.display="none"})})()</script>
-<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+
 </body>
 </html>

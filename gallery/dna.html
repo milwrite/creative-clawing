@@ -33,14 +33,6 @@ function resize(){
 addEventListener('resize',resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
-requestAnimationFrame(()=>{resize();});
-
-// hide UI when in iframe
-if(window.self!==window.top){
-  document.querySelector('.back-btn').style.display='none';
-  document.getElementById('info').style.display='none';
-}
-
 // parameters
 const RUNGS=60;         // base pairs
 const PITCH=32;         // px per full turn (vertical)

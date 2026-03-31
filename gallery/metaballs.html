@@ -22,10 +22,6 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;touch-acti
 <canvas id="c"></canvas>
 <div id="info">Metaballs · move mouse to interact</div>
 <script>
-if (window.self !== window.top) {
-  document.querySelectorAll('.back-btn,#info').forEach(e => e.style.display = 'none');
-}
-
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 

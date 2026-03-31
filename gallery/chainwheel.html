@@ -51,11 +51,6 @@ const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 
 // Hide chrome when embedded
-if (window.self !== window.top) {
-  document.querySelector('.back-btn').style.display = 'none';
-  document.querySelector('.controls').style.display = 'none';
-}
-
 // --- State ---
 let W, H, dpr;
 let paused = false;

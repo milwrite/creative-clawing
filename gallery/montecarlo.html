@@ -30,10 +30,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <div id="info">Monte Carlo method · click to reset</div>
 <script>
 // Hide chrome when inside an iframe (gallery card preview)
-if(window.self!==window.top){
-  document.querySelectorAll('.back-btn,#info,#hud').forEach(el=>el.style.display='none');
-}
-
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 const pival=document.getElementById('pival'),pierr=document.getElementById('pierr');
 

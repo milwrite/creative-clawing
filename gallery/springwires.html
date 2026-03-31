@@ -23,10 +23,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <div id="info">Spring Wires · drag nodes · double-click canvas to add · click node to pin/unpin</div>
 <script>
 // Hide UI when inside iframe
-if(window.self!==window.top){
-  document.querySelectorAll('.back-btn,#info').forEach(e=>e.style.display='none');
-}
-
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
 let W,H,DPR=1;
 

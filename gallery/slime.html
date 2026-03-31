@@ -29,10 +29,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <canvas id="c"></canvas>
 <div id="info">Slime Mold · click to add food · organisms find paths through trails</div>
 <script>
-if(window.self!==window.top){
-  document.querySelectorAll('.back-btn,#info,#ui').forEach(el=>el.style.display='none');
-}
-
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H,imgData;
 

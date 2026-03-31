@@ -23,9 +23,9 @@ canvas{display:block;touch-action:none;position:absolute;top:0;left:0}
 input[type=range]{width:80px;height:20px;cursor:pointer;accent-color:#7ecfff}
 .val{color:#aaa;font-size:11px;min-width:24px;text-align:right}
 @media(max-width:600px){
-  #ui{flex-direction:column;align-items:stretch;gap:8px}
-  .info{margin-left:0;text-align:center}
-  .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  html.standalone #ui{flex-direction:column;align-items:stretch;gap:8px}
+  html.standalone .info{margin-left:0;text-align:center}
+  html.standalone .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 }
 </style>
 </head>

@@ -35,11 +35,6 @@
   <span id="count">0 particles</span>
 </div>
 <script>
-// ── hide UI in iframes ────────────────────────────────────
-if (window.self !== window.top) {
-  document.getElementById('ui').style.display = 'none';
-}
-
 // ── simulation grid ───────────────────────────────────────
 const GSIZE = 401;       // grid side length (odd so center is exact)
 const CX    = 200;       // grid center x

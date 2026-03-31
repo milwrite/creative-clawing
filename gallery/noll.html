@@ -20,7 +20,7 @@
 </style>
 </head>
 <body>
-<script>if(window.self!==window.top)document.body.classList.add("in-iframe");</script>
+
 <a href="./" class="back-btn">← Gallery</a>
 <canvas id="c"></canvas>
 <div id="info">click to regenerate · after A. Michael Noll, Bell Labs 1965</div>
@@ -112,6 +112,6 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',generat
 window.addEventListener('orientationchange',()=>{setTimeout(generate,200);});
 requestAnimationFrame(()=>{generate();setTimeout(generate,200);});
 </script>
-<script>if(window!==window.top){document.querySelectorAll("#info,#epoch,#seed,#params,#gen,#ctrl,#depth,.info,#buttons,.back-btn").forEach(function(e){e.style.display="none"})}</script>
+
 </body>
 </html>

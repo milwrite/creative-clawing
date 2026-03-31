@@ -24,7 +24,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <div id="info" class="overlay">ASCII Reactive · no mic needed · move pointer to bias frequencies</div>
 <canvas id="c"></canvas>
 <script>
-if(window.self!==window.top){document.querySelectorAll('.overlay,.back-btn').forEach(el=>el.style.display='none');}
 const c=document.getElementById('c');
 const ctx=c.getContext('2d',{alpha:false,desynchronized:true});
 const glyphs=' .,:;irsXA253hMHGS#9B&@';
