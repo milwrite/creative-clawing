@@ -253,7 +253,11 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 window.addEventListener('resize', () => { resize(); });
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
+if(window.self!==window.top){
+  window.addEventListener('load',()=>{setTimeout(()=>{resize();setTimeout(resize,200);},100);},{once:true});
+}else{
+  requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
+}
 </script>
 </body>
 </html>
