@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 146,
+    "totalCommits": 147,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -27,13 +27,13 @@
       "2026-03-17": 21,
       "2026-03-28": 18,
       "2026-03-29": 5,
-      "2026-03-30": 3
+      "2026-03-30": 4
     },
     "categoryCounts": {
       "blog": 18,
       "mobile": 13,
       "fix": 30,
-      "other": 72,
+      "other": 73,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -41,6 +41,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "7ffef447",
+        "date": "2026-03-30",
+        "subject": "add microblog entry-36: percolation threshold",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "922a5e85",
         "date": "2026-03-30",
@@ -1215,7 +1223,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 395,
+    "totalCommits": 396,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1254,7 +1262,7 @@
       "2026-03-27": 20,
       "2026-03-28": 67,
       "2026-03-29": 12,
-      "2026-03-30": 4
+      "2026-03-30": 5
     },
     "categoryCounts": {
       "blog": 33,
@@ -1262,11 +1270,19 @@
       "mobile": 18,
       "fix": 74,
       "other": 128,
-      "chore": 98,
+      "chore": 99,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "69b9318c",
+        "date": "2026-03-30",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "3d122cdc",
         "date": "2026-03-30",
