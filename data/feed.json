@@ -225,6 +225,13 @@
       "page": "artifacts/harmonograph.html"
     },
     {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
+    },
+    {
       "id": "heat",
       "title": "Heat",
       "type": "artifact",
@@ -540,6 +547,13 @@
       "page": "artifacts/slime.html"
     },
     {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
+    },
+    {
       "id": "sospiri",
       "title": "Sospiri",
       "type": "artifact",
@@ -749,7 +763,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár's Interruptions",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -757,8 +771,7 @@
       "id": "entry-29",
       "title": "Truchet: The Combinatorics of a Split Square",
       "type": "microblog",
-      "url": "microblog/entry-29.html",
-      "date": "2026-03-24"
+      "url": "microblog/entry-29.html"
     },
     {
       "id": "entry-3",
@@ -770,21 +783,19 @@
       "id": "entry-30",
       "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
-      "url": "microblog/entry-30.html",
-      "date": "2026-03-24"
+      "url": "microblog/entry-30.html"
     },
     {
       "id": "entry-31",
-      "title": "Infinite Length, Zero Area",
+      "title": "The Boundary That Has No Length",
       "type": "microblog",
       "url": "microblog/entry-31.html"
     },
     {
       "id": "entry-32",
-      "title": "33 Characters, A Book-Length Reading",
+      "title": "The One-Liner That Wrote a Book",
       "type": "microblog",
-      "url": "microblog/entry-32.html",
-      "date": "2026-03-26"
+      "url": "microblog/entry-32.html"
     },
     {
       "id": "entry-33",
@@ -794,13 +805,13 @@
     },
     {
       "id": "entry-34",
-      "title": "The Temperature at Which Everything Changes",
+      "title": "Temperature at Which Everything Changes",
       "type": "microblog",
       "url": "microblog/entry-34.html"
     },
     {
       "id": "entry-35",
-      "title": "Hinton's Tesseract: Hypercube in Four Axes",
+      "title": "Hinton's Tesseract, Hypercube in Four Axes",
       "type": "microblog",
       "url": "microblog/entry-35.html"
     },
@@ -1079,6 +1090,13 @@
       "page": "artifacts/harmonograph.html"
     },
     {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
+    },
+    {
       "id": "heat",
       "title": "Heat",
       "type": "artifact",
@@ -1394,6 +1412,13 @@
       "page": "artifacts/slime.html"
     },
     {
+      "id": "snowflake",
+      "title": "Snowflake",
+      "type": "artifact",
+      "url": "gallery/snowflake.html",
+      "page": "artifacts/snowflake.html"
+    },
+    {
       "id": "sospiri",
       "title": "Sospiri",
       "type": "artifact",
@@ -1601,7 +1626,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Molnár's Interruptions",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -1625,13 +1650,13 @@
     },
     {
       "id": "entry-31",
-      "title": "Infinite Length, Zero Area",
+      "title": "The Boundary That Has No Length",
       "type": "microblog",
       "url": "microblog/entry-31.html"
     },
     {
       "id": "entry-32",
-      "title": "33 Characters, A Book-Length Reading",
+      "title": "The One-Liner That Wrote a Book",
       "type": "microblog",
       "url": "microblog/entry-32.html"
     },
@@ -1643,13 +1668,13 @@
     },
     {
       "id": "entry-34",
-      "title": "The Temperature at Which Everything Changes",
+      "title": "Temperature at Which Everything Changes",
       "type": "microblog",
       "url": "microblog/entry-34.html"
     },
     {
       "id": "entry-35",
-      "title": "Hinton's Tesseract: Hypercube in Four Axes",
+      "title": "Hinton's Tesseract, Hypercube in Four Axes",
       "type": "microblog",
       "url": "microblog/entry-35.html"
     },
