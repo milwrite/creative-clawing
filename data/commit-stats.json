@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 148,
+    "totalCommits": 149,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -28,13 +28,14 @@
       "2026-03-30": 4,
       "2026-03-29": 5,
       "2026-03-28": 18,
-      "2026-03-31": 1
+      "2026-03-31": 1,
+      "2026-04-01": 1
     },
     "categoryCounts": {
       "blog": 18,
       "mobile": 14,
       "fix": 30,
-      "other": 73,
+      "other": 74,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -42,6 +43,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "07f6ddb6",
+        "date": "2026-04-01",
+        "subject": "add electric field lines artifact (petrarch, 2026-04-01)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "365ff598",
         "date": "2026-03-31",
@@ -1232,7 +1241,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 403,
+    "totalCommits": 404,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1270,7 +1279,7 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
-      "2026-03-31": 6,
+      "2026-03-31": 7,
       "2026-03-30": 6,
       "2026-03-29": 12
     },
@@ -1280,11 +1289,19 @@
       "mobile": 18,
       "fix": 75,
       "other": 130,
-      "chore": 103,
+      "chore": 104,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "03c867d6",
+        "date": "2026-03-31",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "787a4b11",
         "date": "2026-03-31",

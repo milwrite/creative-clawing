@@ -176,6 +176,13 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "efield",
+      "title": "Electric Field",
+      "type": "artifact",
+      "url": "gallery/efield.html",
+      "page": "artifacts/efield.html"
+    },
+    {
       "id": "fitzhughnagumo",
       "title": "FitzHugh-Nagumo",
       "type": "artifact",
@@ -1039,6 +1046,13 @@
       "type": "artifact",
       "url": "gallery/donut.html",
       "page": "artifacts/donut.html"
+    },
+    {
+      "id": "efield",
+      "title": "Electric Field",
+      "type": "artifact",
+      "url": "gallery/efield.html",
+      "page": "artifacts/efield.html"
     },
     {
       "id": "fitzhughnagumo",

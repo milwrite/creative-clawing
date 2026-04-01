@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-03-31T18:07:18.792652+00:00",
+  "generated": "2026-04-01T14:06:15.996124+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1035,6 +1035,33 @@
       "mobile_optimized": true,
       "inspiration": null,
       "year_referenced": null
+    },
+    {
+      "id": "efield",
+      "title": "Electric Field",
+      "type": "artifact",
+      "url": "gallery/efield.html",
+      "page": "artifacts/efield.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "origin_date": "2026-04-01",
+      "contributors": [
+        "Petrarch"
+      ],
+      "optimizations": [],
+      "description": "Coulomb's law made visible — place point charges and watch field lines trace through the superposed potential.",
+      "category": "physics",
+      "tags": [
+        "electromagnetism",
+        "field-lines",
+        "interactive",
+        "simulation"
+      ],
+      "interactive": true,
+      "animated": false,
+      "mobile_optimized": true,
+      "inspiration": "Coulomb, C.-A. de (1785). Mémoires sur l'électricité et le magnétisme.",
+      "year_referenced": 1785
     },
     {
       "id": "fitzhughnagumo",
