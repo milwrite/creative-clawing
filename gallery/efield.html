@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back,.back-btn,#back,#info,#ui,#mode-btn,.panel,.controls,.hint{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back,html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls,html.standalone .hint{display:revert!important}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Electric Field Lines</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#04080f;overflow:hidden;display:flex;flex-direction:column}
+canvas{display:block;flex:1;width:100%;touch-action:none;cursor:crosshair}
+.back{position:fixed;top:max(1rem,env(safe-area-inset-top));left:max(1rem,env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(4,8,15,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
+.back:hover{border-color:#666;color:#fff}
+.panel{background:#060c18;border-top:1px solid #0f1e38;padding:0.65rem max(0.9rem,env(safe-area-inset-right)) 0.65rem max(0.9rem,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
+.panel .meta{display:flex;align-items:center;gap:0.6rem;color:#6090d8}
+.panel .hint{color:#253050}
+.panel .controls{display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap}
+.panel button{background:rgba(255,255,255,0.05);border:1px solid #102040;color:#5088c8;font:0.75rem ui-monospace,SFMono-Regular,Menlo,monospace;padding:8px 14px;border-radius:4px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+.panel button:hover{background:rgba(255,255,255,0.1);color:#80b0f0;border-color:#304880}
+@media(max-width:760px){.panel{padding:0.5rem max(0.5rem,env(safe-area-inset-right)) 0.5rem max(0.5rem,env(safe-area-inset-left))}}
+</style>
+</head>
+<body>
+<a class="back" href="./">← gallery</a>
+<canvas id="c"></canvas>
+<div class="panel">
+  <div class="meta">
+    <span>Electric Field</span>
+    <span class="hint" id="modeHint">tap: +charge · long-press / right-click: −charge</span>
+  </div>
+  <div class="controls">
+    <button id="toggleMode">mode: +</button>
+    <button id="clearBtn">clear</button>
+  </div>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const toggleBtn = document.getElementById('toggleMode');
+const clearBtn = document.getElementById('clearBtn');
+const modeHint = document.getElementById('modeHint');
+
+let W, H;
+let charges = []; // {x, y, q}  q = +1 or -1
+let placeSign = +1;
+const LINES_PER_CHARGE = 16;
+const LINE_STEPS = 600;
+const DT = 2.5;
+const MIN_DIST2 = 9;
+const CHARGE_RADIUS = 10;
+
+// Colors
+const POS_COLOR  = '#e8c86a'; // warm gold for positive
+const NEG_COLOR  = '#6aace8'; // cool blue for negative
+const LINE_COLOR = 'rgba(170, 210, 255, 0.55)';
+const EQUIP_ALPHA = 0.18;
+
+function resize() {
+  const pr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  W = rect.width;
+  H = rect.height;
+  canvas.width  = Math.round(W * pr);
+  canvas.height = Math.round(H * pr);
+  ctx.setTransform(pr, 0, 0, pr, 0, 0);
+  draw();
+}
+
+function eField(x, y) {
+  let ex = 0, ey = 0;
+  for (const c of charges) {
+    const dx = x - c.x, dy = y - c.y;
+    const r2 = dx*dx + dy*dy;
+    if (r2 < 0.01) continue;
+    const r = Math.sqrt(r2);
+    const mag = c.q / r2;
+    ex += mag * dx / r;
+    ey += mag * dy / r;
+  }
+  return {ex, ey};
+}
+
+function traceLines() {
+  if (charges.length === 0) return;
+
+  for (const c of charges) {
+    const n = LINES_PER_CHARGE;
+    for (let i = 0; i < n; i++) {
+      const angle = (2 * Math.PI * i) / n;
+      let x = c.x + Math.cos(angle) * (CHARGE_RADIUS + 2);
+      let y = c.y + Math.sin(angle) * (CHARGE_RADIUS + 2);
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+
+      for (let s = 0; s < LINE_STEPS; s++) {
+        const {ex, ey} = eField(x, y);
+        const mag = Math.sqrt(ex*ex + ey*ey);
+        if (mag < 1e-9) break;
+        // follow field in direction of c.q (positive: follow E, negative: follow -E)
+        const nx = (ex / mag) * c.q;
+        const ny = (ey / mag) * c.q;
+        x += nx * DT;
+        y += ny * DT;
+
+        // stop if we hit another charge
+        let absorbed = false;
+        for (const cc of charges) {
+          const dx = x - cc.x, dy = y - cc.y;
+          if (dx*dx + dy*dy < MIN_DIST2 * 4) { absorbed = true; break; }
+        }
+        if (absorbed) { ctx.lineTo(x, y); break; }
+        // stop if off screen (with margin)
+        if (x < -20 || x > W+20 || y < -20 || y > H+20) break;
+
+        ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = LINE_COLOR;
+      ctx.lineWidth = 0.85;
+      ctx.stroke();
+
+      // Arrow midpoint
+      drawArrow(c, angle);
+    }
+  }
+}
+
+function drawArrow(c, angle) {
+  // place a small arrowhead ~40% along a field line
+  const startX = c.x + Math.cos(angle) * (CHARGE_RADIUS + 2);
+  const startY = c.y + Math.sin(angle) * (CHARGE_RADIUS + 2);
+  let x = startX, y = startY;
+  const steps = Math.floor(LINE_STEPS * 0.25);
+  let px = x, py = y;
+  for (let s = 0; s < steps; s++) {
+    const {ex, ey} = eField(x, y);
+    const mag = Math.sqrt(ex*ex + ey*ey);
+    if (mag < 1e-9) return;
+    const nx = (ex / mag) * c.q;
+    const ny = (ey / mag) * c.q;
+    px = x; py = y;
+    x += nx * DT;
+    y += ny * DT;
+    if (x < -20 || x > W+20 || y < -20 || y > H+20) return;
+    let absorbed = false;
+    for (const cc of charges) {
+      const dx = x - cc.x, dy = y - cc.y;
+      if (dx*dx + dy*dy < MIN_DIST2 * 4) { absorbed = true; break; }
+    }
+    if (absorbed) return;
+  }
+  const adx = x - px, ady = y - py;
+  const am = Math.sqrt(adx*adx + ady*ady);
+  if (am < 0.01) return;
+  const ax = adx/am, ay = ady/am;
+  const aSize = 5;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x - ax*aSize + ay*aSize*0.45, y - ay*aSize - ax*aSize*0.45);
+  ctx.lineTo(x - ax*aSize - ay*aSize*0.45, y - ay*aSize + ax*aSize*0.45);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(150,195,255,0.6)';
+  ctx.fill();
+}
+
+function drawCharges() {
+  for (const c of charges) {
+    // glow
+    const grd = ctx.createRadialGradient(c.x, c.y, 2, c.x, c.y, CHARGE_RADIUS * 2.8);
+    const col = c.q > 0 ? '232, 200, 106' : '106, 172, 232';
+    grd.addColorStop(0, `rgba(${col}, 0.35)`);
+    grd.addColorStop(1, `rgba(${col}, 0)`);
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, CHARGE_RADIUS * 2.8, 0, Math.PI * 2);
+    ctx.fillStyle = grd;
+    ctx.fill();
+
+    // circle
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, CHARGE_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = c.q > 0 ? POS_COLOR : NEG_COLOR;
+    ctx.fill();
+
+    // + or −
+    ctx.fillStyle = '#040810';
+    ctx.font = `bold ${CHARGE_RADIUS * 1.3}px ui-monospace, monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(c.q > 0 ? '+' : '−', c.x, c.y + 0.5);
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  if (charges.length === 0) {
+    ctx.fillStyle = 'rgba(96, 140, 200, 0.22)';
+    ctx.font = `0.8rem ui-monospace, monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('tap to place charges', W/2, H/2);
+    return;
+  }
+
+  traceLines();
+  drawCharges();
+}
+
+// Input
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  if (e.changedTouches) {
+    const t = e.changedTouches[0];
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+let longPressTimer = null;
+let didLong = false;
+
+canvas.addEventListener('mousedown', e => {
+  if (e.button === 2) return; // handled in contextmenu
+  const {x, y} = getPos(e);
+  charges.push({x, y, q: placeSign});
+  draw();
+});
+canvas.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const {x, y} = getPos(e);
+  charges.push({x, y, q: -1});
+  draw();
+});
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  didLong = false;
+  const {x, y} = getPos(e);
+  longPressTimer = setTimeout(() => {
+    didLong = true;
+    charges.push({x, y, q: -1});
+    draw();
+  }, 500);
+}, {passive: false});
+
+canvas.addEventListener('touchend', e => {
+  clearTimeout(longPressTimer);
+  if (!didLong) {
+    const {x, y} = getPos(e);
+    charges.push({x, y, q: placeSign});
+    draw();
+  }
+}, {passive: false});
+
+canvas.addEventListener('touchmove', e => {
+  clearTimeout(longPressTimer);
+}, {passive: false});
+
+toggleBtn.addEventListener('click', () => {
+  placeSign = -placeSign;
+  toggleBtn.textContent = `mode: ${placeSign > 0 ? '+' : '−'}`;
+});
+
+clearBtn.addEventListener('click', () => {
+  charges = [];
+  draw();
+});
+
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>
