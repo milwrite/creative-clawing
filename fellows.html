@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" href="/favicon.png"/>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <title>Fellows — CUNY AI Lab</title>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Fellows — CUNY AI Lab"/>
+  <meta property="og:description" content="Fellow roles and responsibilities at the CUNY AI Lab: Academic Assistant, Communications, AI Pedagogy, and Development."/>
+  <meta property="og:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
+  <meta property="og:url" content="https://creative-clawing.com/fellows.html"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="stylesheet" href="styles/shared.css"/>
+  <style>
+    :root { --accent: #7ec8e3; }
+    main { width: min(980px, 97vw); margin: 0 auto; padding: 40px 0 80px; }
+
+    .page-header {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 40px;
+    }
+    .page-header .label {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .page-header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+    .page-header p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.65;
+      max-width: 640px;
+      margin: 0;
+    }
+
+    .fellows-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 24px;
+    }
+
+    .fellow-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color .2s;
+    }
+    .fellow-card:hover { border-color: rgba(255,255,255,.25); }
+
+    .fellow-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .fellow-glyph {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      background: rgba(0,0,0,.4);
+    }
+    .fellow-title {
+      flex: 1;
+    }
+    .fellow-title h2 {
+      font-size: .95rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin: 0 0 4px;
+    }
+    .fellow-title .fellow-tag {
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .fellow-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .fellow-responsibilities {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fellow-responsibilities li {
+      font-size: .84rem;
+      color: var(--ink);
+      line-height: 1.5;
+      padding-left: 16px;
+      position: relative;
+    }
+    .fellow-responsibilities li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: .6;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 48px 0;
+    }
+
+    .footer-note {
+      font-size: .78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      margin-top: 48px;
+    }
+    .footer-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+    @media (max-width: 640px) {
+      .fellows-grid { grid-template-columns: 1fr; }
+      .fellow-card { padding: 20px 18px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="nav-home">Creative Clawing</a>
+      <div class="nav-links">
+        <a href="/gallery.html">Gallery</a>
+        <a href="/microblogs.html">Microblog</a>
+        <a href="/fellows.html" class="active">Fellows</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <span class="label">CUNY AI Lab</span>
+      <h1>Fellow Program</h1>
+      <p>The CUNY AI Lab fellow program supports the lab's research, pedagogy, communications, and development work across the CUNY system. Fellows hold distinct roles organized around the lab's core activities: community-building, teaching with AI, and building tools and infrastructure for open use.</p>
+    </div>
+
+    <div class="fellows-grid">
+
+      <div class="fellow-card">
+        <div class="fellow-header">
+          <div class="fellow-glyph">📋</div>
+          <div class="fellow-title">
+            <h2>Academic Assistant</h2>
+            <span class="fellow-tag">Administration &amp; Outreach</span>
+          </div>
+        </div>
+        <p class="fellow-desc">The Academic Assistant supports the administrative backbone of the lab — keeping operations running, correspondence flowing, and institutional relationships maintained.</p>
+        <ul class="fellow-responsibilities">
+          <li>Administrative operations and lab coordination</li>
+          <li>Email correspondence and institutional outreach</li>
+          <li>Scheduling, recordkeeping, and internal communications</li>
+        </ul>
+      </div>
+
+      <div class="fellow-card">
+        <div class="fellow-header">
+          <div class="fellow-glyph">📡</div>
+          <div class="fellow-title">
+            <h2>Communications Fellow</h2>
+            <span class="fellow-tag">Public Presence &amp; Community</span>
+          </div>
+        </div>
+        <p class="fellow-desc">The Communications Fellow manages the lab's public presence and community relationships — surfacing work, building audiences, and connecting the lab to campuses and partners across CUNY.</p>
+        <ul class="fellow-responsibilities">
+          <li>Manage lab social media across Bluesky, Instagram, and LinkedIn</li>
+          <li>Organize events, workshops, and public programming</li>
+          <li>Hold weekly office hours for lab community and campus visitors</li>
+          <li>Conduct outreach to CUNY campuses and partner institutions</li>
+          <li>Surface and amplify student and faculty work hosted on <a href="https://cuny.qzz.io/kale" target="_blank" style="color:var(--accent)">Kale Deploy</a></li>
+          <li>Draft and release public-facing materials — new tool announcements, lab updates, special releases, and event documentation</li>
+        </ul>
+      </div>
+
+      <div class="fellow-card">
+        <div class="fellow-header">
+          <div class="fellow-glyph">🎓</div>
+          <div class="fellow-title">
+            <h2>AI Pedagogy Fellow</h2>
+            <span class="fellow-tag">Teaching, Learning &amp; Faculty Development</span>
+          </div>
+        </div>
+        <p class="fellow-desc">The AI Pedagogy Fellow works at the intersection of teaching and technology — supporting instructors and students working with AI tools, and helping the CUNY community develop critical, practical AI literacy.</p>
+        <ul class="fellow-responsibilities">
+          <li>Support users working in the Open WebUI sandbox environment</li>
+          <li>Help facilitate CAIL sandbox courses and curricular integrations</li>
+          <li>Co-facilitate teacher training workshops and professional development sessions</li>
+          <li>Develop open educational resources for AI literacy and pedagogy</li>
+          <li>Handle consultations with students, and particularly with instructors integrating AI into their courses</li>
+          <li>Participate in faculty professional development programming across CUNY</li>
+        </ul>
+      </div>
+
+      <div class="fellow-card">
+        <div class="fellow-header">
+          <div class="fellow-glyph">⚙️</div>
+          <div class="fellow-title">
+            <h2>Development Fellow</h2>
+            <span class="fellow-tag">Research, Infrastructure &amp; Technical Development</span>
+          </div>
+        </div>
+        <p class="fellow-desc">The Development Fellow supports the technical research and infrastructure of the lab — from curating training data and evaluating models to contributing to the tools and systems the lab builds for the broader CUNY community.</p>
+        <ul class="fellow-responsibilities">
+          <li>Curate training data and generate synthetic datasets for model fine-tuning</li>
+          <li>Contribute to the <a href="https://github.com/CUNY-AI-Lab" target="_blank" style="color:var(--accent)">CUNY AI Lab GitHub</a> — tooling, documentation, and code review</li>
+          <li>Establish and maintain AI benchmarking practices for evaluating model performance</li>
+          <li>Update the model registry and evaluate models for adoption into the sandbox environment</li>
+          <li>Support technical infrastructure, research, and development in coordination with the special project team</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="footer-note">
+      CUNY AI Lab &middot; The Graduate Center, CUNY &middot;
+      <a href="https://ailab.gc.cuny.edu" target="_blank">ailab.gc.cuny.edu</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://gist.github.com/zmuhls/28e2a400cf5495acdfa745ff672b72a3" target="_blank">Working memo ↗</a>
+    </p>
+  </main>
+</body>
+</html>
