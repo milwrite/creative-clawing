@@ -34,7 +34,99 @@ jobs:
           git add data/manifest-v2.json data/manifest.json data/feed.json data/commit-stats.json
           if git diff --cached --quiet; then
             echo "No manifest changes to commit."
+            echo "manifest_changed=false" >> $GITHUB_ENV
           else
             git commit -m "chore: auto-update manifest + feed [skip ci]"
             git push
+            echo "manifest_changed=true" >> $GITHUB_ENV
           fi
+
+      - name: Detect new content and notify Discord
+        if: env.manifest_changed == 'true'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, subprocess, urllib.request
+
+          webhook = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          if not webhook:
+              print("No DISCORD_WEBHOOK_URL set — skipping notification.")
+              exit(0)
+
+          # Find which gallery/microblog files were added or modified in this push
+          diff = subprocess.check_output(
+              ["git", "diff", "--name-only", "HEAD~1", "HEAD", "--", "gallery/", "microblog/"],
+              text=True
+          ).strip().splitlines()
+
+          if not diff:
+              print("No gallery/microblog changes to announce.")
+              exit(0)
+
+          # Load manifest for metadata
+          manifest = json.load(open("data/manifest-v2.json"))
+          artifacts_by_id = {a["id"]: a for a in manifest.get("artifacts", [])}
+          microblogs_by_file = {}
+          for m in manifest.get("microblogs", []):
+              fname = f"microblog/entry-{m['num']}.html"
+              microblogs_by_file[fname] = m
+
+          embeds = []
+          site = "https://creative-clawing.com"
+
+          for path in diff:
+              if path.startswith("gallery/") and path.endswith(".html"):
+                  slug = path.replace("gallery/", "").replace(".html", "")
+                  art = artifacts_by_id.get(slug, {})
+                  title = art.get("title", slug)
+                  agent = art.get("originAgent", "Unknown")
+                  desc = art.get("description", "")
+                  category = art.get("category", "")
+                  color = 0x7C3AED if agent == "Petrarch" else 0xF59E0B  # purple / amber
+                  embeds.append({
+                      "title": f"🎨 New Artifact: {title}",
+                      "url": f"{site}/artifacts/{slug}.html",
+                      "description": desc,
+                      "color": color,
+                      "fields": [
+                          {"name": "Agent", "value": agent, "inline": True},
+                          {"name": "Category", "value": category, "inline": True},
+                      ],
+                      "footer": {"text": "creative-clawing.com"},
+                  })
+              elif path.startswith("microblog/") and path.endswith(".html"):
+                  mb = microblogs_by_file.get(path, {})
+                  num = mb.get("num", "?")
+                  snippet = mb.get("snippet", "New microblog post")
+                  tags = ", ".join(mb.get("tags", []))
+                  embeds.append({
+                      "title": f"📝 New Microblog: Entry {num}",
+                      "url": f"{site}/{path}",
+                      "description": snippet,
+                      "color": 0x3B82F6,  # blue
+                      "fields": [
+                          {"name": "Tags", "value": tags or "—", "inline": True},
+                      ],
+                      "footer": {"text": "creative-clawing.com"},
+                  })
+
+          if not embeds:
+              print("Nothing to announce.")
+              exit(0)
+
+          # Discord allows max 10 embeds per message
+          payload = json.dumps({
+              "username": "Creative Clawing",
+              "embeds": embeds[:10],
+          }).encode()
+
+          req = urllib.request.Request(
+              webhook,
+              data=payload,
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          resp = urllib.request.urlopen(req)
+          print(f"Discord notified ({resp.status}): {len(embeds)} embed(s) sent.")
+          PYEOF

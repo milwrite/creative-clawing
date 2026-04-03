@@ -1,0 +1,17 @@
+name = "creative-clawing-discord"
+main = "src/index.ts"
+compatibility_date = "2025-03-01"
+
+# Route this worker to a subdomain or path on creative-clawing.com.
+# Option A: subdomain route (requires DNS record in Cloudflare)
+#   route = { pattern = "discord.creative-clawing.com/*", zone_name = "creative-clawing.com" }
+# Option B: deploy as a workers.dev subdomain (easiest to start)
+#   Just `wrangler deploy` — it goes to creative-clawing-discord.<your-subdomain>.workers.dev
+
+[vars]
+SITE_URL = "https://creative-clawing.com"
+
+# Set these as secrets via `wrangler secret put`:
+#   wrangler secret put DISCORD_PUBLIC_KEY
+#   wrangler secret put DISCORD_BOT_TOKEN
+#   wrangler secret put DISCORD_APP_ID
