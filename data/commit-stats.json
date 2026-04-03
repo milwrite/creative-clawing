@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 405,
+    "totalCommits": 407,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1307,19 +1307,36 @@
       "2026-03-31": 7,
       "2026-03-30": 6,
       "2026-03-29": 12,
-      "2026-04-01": 1
+      "2026-04-01": 1,
+      "2026-04-03": 2
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 75,
-      "other": 130,
-      "chore": 105,
+      "other": 131,
+      "chore": 106,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "c50acec8",
+        "date": "2026-04-03",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "2993f904",
+        "date": "2026-04-03",
+        "subject": "sweep: fix iframe timing and gallery back links",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "f2de85f6",
         "date": "2026-04-01",
