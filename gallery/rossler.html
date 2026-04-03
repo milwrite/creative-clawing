@@ -24,7 +24,7 @@ canvas{display:block;flex:1;width:100%;touch-action:none}
 </style>
 </head>
 <body>
-<a class="back" href="./">← gallery</a>
+<a class="back" href="../">← gallery</a>
 <canvas id="c"></canvas>
 <div class="panel">
   <div class="meta">
@@ -197,11 +197,18 @@ canvas.addEventListener('pointerup',function(){dragging=false;});
 canvas.addEventListener('pointercancel',function(){dragging=false;});
 
 // In iframe: pre-run many steps so the trail is dense and visible immediately
-if(window.self!==window.top){
+const inIframe = window.self !== window.top;
+if(inIframe){
   for(let i=0;i<30000;i++) step();
+  window.addEventListener('load',()=>{
+    setTimeout(()=>{
+      resize();
+      requestAnimationFrame(()=>requestAnimationFrame(loop));
+    },100);
+  },{once:true});
+} else {
+  requestAnimationFrame(()=>requestAnimationFrame(loop));
 }
-
-requestAnimationFrame(function(){requestAnimationFrame(loop);});
 </script>
 </body>
 </html>
