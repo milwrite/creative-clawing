@@ -310,5 +310,12 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   }
 })();
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>
