@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 409,
+    "totalCommits": 412,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1308,19 +1308,44 @@
       "2026-03-30": 6,
       "2026-03-29": 12,
       "2026-04-01": 1,
-      "2026-04-03": 4
+      "2026-04-03": 6,
+      "2026-04-04": 1
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 75,
-      "other": 132,
-      "chore": 107,
+      "other": 134,
+      "chore": 108,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "66d57a11",
+        "date": "2026-04-03",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "fb2e2ea0",
+        "date": "2026-04-03",
+        "subject": "sweep: register service worker on gallery and microblogs",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "a1a5fec5",
+        "date": "2026-04-04",
+        "subject": "sweep: paginate gallery and normalize back links",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "a52c7e7c",
         "date": "2026-04-03",
