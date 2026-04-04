@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 412,
+    "totalCommits": 414,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1309,19 +1309,35 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 1
+      "2026-04-04": 3
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 75,
-      "other": 134,
-      "chore": 108,
+      "other": 135,
+      "chore": 109,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "5e1d838f",
+        "date": "2026-04-04",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "591c1f59",
+        "date": "2026-04-04",
+        "subject": "sweep: normalize legacy gallery back links",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "66d57a11",
         "date": "2026-04-03",
