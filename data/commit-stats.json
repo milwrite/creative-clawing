@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 416,
+    "totalCommits": 418,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1309,19 +1309,35 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 5
+      "2026-04-04": 7
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 75,
-      "other": 136,
-      "chore": 110,
+      "other": 137,
+      "chore": 111,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "8c934fac",
+        "date": "2026-04-04",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f24000ce",
+        "date": "2026-04-04",
+        "subject": "sweep: extend offline registration and back links",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "74cb3110",
         "date": "2026-04-04",
