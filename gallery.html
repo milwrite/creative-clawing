@@ -110,6 +110,20 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 .sort-chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .sort-chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
 
+.pager{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
+.pager:empty{display:none}
+.pager-status{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.pager-btn{
+  border:1px solid var(--line);background:transparent;
+  color:var(--muted);padding:4px 9px;
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
+  cursor:pointer;font-family:inherit;
+  transition:color .15s,border-color .15s,background .15s;
+}
+.pager-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
+.pager-btn.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
+.pager-btn:disabled{opacity:.45;cursor:default}
+
 @media(max-width:600px){
   .toolbar{gap:8px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
@@ -150,6 +164,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     <div class="filters" id="filters"></div>
   </div>
   <div class="sort-row" id="sort-row"></div>
+  <div class="pager" id="pager"></div>
   <div class="grid" id="grid"></div>
 </main>
 
@@ -177,18 +192,22 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   agentSet.forEach(agent => tags.push('@' + agent));
   let active = 'all';
   let sortMode = 'recent'; // 'recent' | 'alpha'
+  const PAGE_SIZE = 24;
+  const params = new URLSearchParams(location.search);
+  let currentPage = Math.max(1, parseInt(params.get('page') || '1', 10) || 1);
 
   const grid = document.getElementById('grid');
   const search = document.getElementById('search');
   const filtersEl = document.getElementById('filters');
   const countEl = document.getElementById('count');
+  const pagerEl = document.getElementById('pager');
 
   function renderFilters(){
     filtersEl.innerHTML = tags.map(t =>
       `<button class="chip${t===active?' active':''}" data-tag="${t}">${t.startsWith('@') ? t.slice(1) : t}</button>`
     ).join('');
     filtersEl.querySelectorAll('.chip').forEach(b => {
-      b.addEventListener('click', () => { active = b.dataset.tag; renderFilters(); render(); });
+      b.addEventListener('click', () => { active = b.dataset.tag; currentPage = 1; renderFilters(); render(); });
     });
   }
 
@@ -200,7 +219,29 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
         `<button class="sort-chip${sortMode===val?' active':''}" data-sort="${val}">${label}</button>`
       ).join('');
     sortEl.querySelectorAll('.sort-chip').forEach(b => {
-      b.addEventListener('click', () => { sortMode = b.dataset.sort; renderSort(); render(); });
+      b.addEventListener('click', () => { sortMode = b.dataset.sort; currentPage = 1; renderSort(); render(); });
+    });
+  }
+
+  function renderPager(totalPages) {
+    if (!pagerEl) return;
+    if (totalPages <= 1) {
+      pagerEl.innerHTML = '';
+      return;
+    }
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    pagerEl.innerHTML =
+      `<button class="pager-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>prev</button>` +
+      `<span class="pager-status">page ${currentPage} of ${totalPages}</span>` +
+      pages.map(page => `<button class="pager-btn${page === currentPage ? ' active' : ''}" data-page="${page}">${page}</button>`).join('') +
+      `<button class="pager-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>next</button>`;
+    pagerEl.querySelectorAll('.pager-btn[data-page]').forEach(b => {
+      b.addEventListener('click', () => {
+        const nextPage = parseInt(b.dataset.page, 10);
+        if (!Number.isFinite(nextPage)) return;
+        currentPage = Math.min(totalPages, Math.max(1, nextPage));
+        render();
+      });
     });
   }
 
@@ -218,9 +259,20 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     else if (sortMode === 'alpha') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     countEl.textContent = list.length + ' artifact' + (list.length !== 1 ? 's' : '');
     if (!list.length){
-      grid.innerHTML = '<p class="empty">no artifacts match.</p>'; return;
+      renderPager(0);
+      grid.innerHTML = '<p class="empty">no artifacts match.</p>';
+      return;
     }
-    grid.innerHTML = list.map(a => `
+    const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    currentPage = Math.min(totalPages, Math.max(1, currentPage));
+    const url = new URL(location.href);
+    if (currentPage > 1) url.searchParams.set('page', String(currentPage));
+    else url.searchParams.delete('page');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+    renderPager(totalPages);
+    const pageStart = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
+    grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
         <div class="card-preview" data-src="gallery/${a.file}.html" data-title="${a.name}">
           <div class="card-overlay"></div>
@@ -292,7 +344,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     document.querySelectorAll('.card-preview[data-src]').forEach(el => observer.observe(el));
   }
 
-  search.addEventListener('input', render);
+  search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();
   renderSort();
   render();
