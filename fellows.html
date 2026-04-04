@@ -243,5 +243,12 @@
       <a href="https://gist.github.com/zmuhls/28e2a400cf5495acdfa745ff672b72a3" target="_blank">Working memo ↗</a>
     </p>
   </main>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>
