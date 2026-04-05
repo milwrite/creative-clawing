@@ -235,7 +235,7 @@
         if (src) {
           const ifr = document.createElement('iframe');
           ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
-          ifr.setAttribute('sandbox', 'allow-scripts');
+          // sandbox removed — same-origin trusted artifacts
           ifr.addEventListener('load', () => {
             try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
           }, { once: true });

@@ -305,7 +305,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     const iframe = document.createElement('iframe');
     iframe.src = f.dataset.src;
     iframe.loading = 'lazy';
-    iframe.sandbox = 'allow-scripts';
+    // sandbox removed — same-origin trusted artifacts
     iframe.title = f.dataset.title || '';
     iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
     iframe.addEventListener('load', () => {
