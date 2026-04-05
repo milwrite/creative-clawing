@@ -411,9 +411,10 @@
 
 <script>
 (async function(){
+  const ts = Date.now();
   const [feedRes, manifestRes] = await Promise.all([
-    fetch('data/feed.json'),
-    fetch('data/manifest-v2.json')
+    fetch('data/feed.json?t=' + ts),
+    fetch('data/manifest-v2.json?t=' + ts)
   ]);
   const feed = await feedRes.json();
   const manifest = await manifestRes.json();

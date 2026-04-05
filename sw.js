@@ -1,17 +1,23 @@
 // Service Worker — Creative Clawing
-// Caches shell assets for offline browsing.
-const CACHE = 'cc-v3';
+// Caches static shell assets for offline browsing.
+// Data files (manifest, feed) are ALWAYS fetched from network — never cached here.
+const CACHE = 'cc-v4';
 const SHELL = [
   '/',
   '/index.html',
   '/gallery.html',
   '/microblogs.html',
   '/styles/shared.css',
-  '/data/feed.json',
-  '/data/manifest-v2.json',
   '/favicon.ico',
   '/favicon.png',
   '/apple-touch-icon.png',
+];
+
+// These paths are always served fresh from the network — never from cache.
+const NEVER_CACHE = [
+  '/data/feed.json',
+  '/data/manifest-v2.json',
+  '/data/manifest.json',
 ];
 
 self.addEventListener('install', e => {
@@ -29,23 +35,29 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Only cache GET requests; pass through everything else
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  // Don't cache cross-origin requests
   if (url.origin !== location.origin) return;
 
+  // Data files: always network-first, never serve from cache
+  if (NEVER_CACHE.includes(url.pathname)) {
+    e.respondWith(
+      fetch(e.request).catch(() => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+    );
+    return;
+  }
+
+  // Shell assets: cache-first with network fallback
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(res => {
-        // Cache successful responses for shell assets only
         if (res.ok && SHELL.includes(url.pathname)) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => cached); // offline fallback
+      }).catch(() => cached);
     })
   );
 });
