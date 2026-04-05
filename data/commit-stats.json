@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 157,
+    "totalCommits": 159,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -31,12 +31,12 @@
       "2026-03-31": 1,
       "2026-04-01": 1,
       "2026-04-02": 3,
-      "2026-04-04": 5
+      "2026-04-04": 7
     },
     "categoryCounts": {
       "blog": 18,
       "mobile": 14,
-      "fix": 31,
+      "fix": 33,
       "other": 79,
       "artifact": 8,
       "chore": 4,
@@ -45,6 +45,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "270a57eb",
+        "date": "2026-04-04",
+        "subject": "fix: entry-40 — add cross-links to Lorenz artifact, entry-6, related attractor gallery and microblogs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "439be83b",
+        "date": "2026-04-04",
+        "subject": "fix: entry-40 — cut duplicate Lorenz intro, start at Rössler, point to entry-6 for prior coverage",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "c855db5c",
         "date": "2026-04-04",
@@ -1307,7 +1323,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 435,
+    "totalCommits": 436,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1351,7 +1367,7 @@
       "2026-04-01": 1,
       "2026-04-03": 6,
       "2026-04-04": 16,
-      "2026-04-05": 8
+      "2026-04-05": 9
     },
     "categoryCounts": {
       "blog": 33,
@@ -1359,11 +1375,19 @@
       "mobile": 18,
       "fix": 78,
       "other": 142,
-      "chore": 120,
+      "chore": 121,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "a9225ece",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "9f00c8b2",
         "date": "2026-04-05",
