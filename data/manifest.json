@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-04-05T02:50:36.359508+00:00",
+  "generated": "2026-04-05T03:11:35.568967+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -4265,6 +4265,25 @@
       "tags": [],
       "snippet": "Tap to switch harmonic families · swipe up/down to change harmonic count",
       "num": 4
+    },
+    {
+      "id": "entry-40",
+      "title": "The Simplest Strange Attractor",
+      "type": "microblog",
+      "url": "microblog/entry-40.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
+      "date": "2026-04-04",
+      "linkedArtifacts": [
+        "rossler"
+      ],
+      "tags": [
+        "chaos theory",
+        "dynamical systems",
+        "strange attractor"
+      ],
+      "snippet": "Edward Lorenz found chaos by accident. In 1963, working on a simplified model of atmospheric convection, he noticed that rounding a number partway through a simulation produced a completely different weather forecast. Otto Rössler had a different problem. He found chaos on purpose.",
+      "num": 40
     },
     {
       "id": "entry-5",
