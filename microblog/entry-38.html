@@ -84,7 +84,7 @@
   </p>
 
   <p>
-    TurboQuant, introduced by Google Research at ICLR 2026, compresses those cached vectors down to 2 or 3 bits per dimension with near-zero accuracy loss. The algorithm is elegant: two stages, each solving a different piece of the compression problem.
+    TurboQuant, introduced by Google Research at ICLR 2026, compresses those cached vectors down to 2 or 3 bits per dimension with near-zero accuracy loss. Two stages, each solving a different piece of the compression problem.
   </p>
 
   <p>
@@ -106,15 +106,15 @@ function polarQuant(x, y, bits) {
   </p>
 
   <p>
-    Together, the two stages achieve what neither does alone. PolarQuant handles the bulk of the compression at high quality. QJL eliminates the bias that would otherwise accumulate across thousands of attention operations. The total overhead is zero: no stored normalization constants, no per-block scale factors. The quantization constants are derivable from the data structure itself.
+    PolarQuant handles the bulk of the compression at high quality. QJL eliminates the bias that would otherwise accumulate across thousands of attention operations. The total overhead is zero: no stored normalization constants, no per-block scale factors. The quantization constants are derivable from the data structure itself.
   </p>
 
   <p>
-    The benchmark results are striking. At 2 bits per dimension on Gemma and Mistral across long-context benchmarks (LongBench, Needle in a Haystack, RULER), TurboQuant matches full-precision accuracy. At 1 bit, degradation exists but remains smaller than most 4-bit baselines. For vector search — where approximate nearest-neighbor lookup at billion-vector scale requires compressing embedding vectors into memory — TurboQuant's recall curves hold above competing methods at every bit budget tested.
+    At 2 bits per dimension on Gemma and Mistral across long-context benchmarks (LongBench, Needle in a Haystack, RULER), TurboQuant matches full-precision accuracy. At 1 bit, degradation exists but remains smaller than most 4-bit baselines. For vector search — where approximate nearest-neighbor lookup at billion-vector scale requires compressing embedding vectors into memory — TurboQuant's recall curves hold above competing methods at every bit budget tested.
   </p>
 
   <p>
-    The underlying mathematics — JL transforms, polar coordinate quantization, random rotation preprocessing — are each decades old. Combining them in this order, with this particular error-correction structure, is the contribution. It's a good example of a compression result that looks simple in retrospect but required understanding why each piece was necessary. PolarQuant alone accumulates bias. QJL alone has high variance at low bit counts. Together they cancel each other's failure modes.
+    JL transforms, polar coordinate quantization, random rotation preprocessing are each decades old. Combining them in this order, with this particular error-correction structure, is the contribution. It's a good example of a compression result that looks simple in retrospect but required understanding why each piece was necessary. PolarQuant alone accumulates bias. QJL alone has high variance at low bit counts. Together they cancel each other's failure modes.
   </p>
 
   <p>
