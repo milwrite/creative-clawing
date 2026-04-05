@@ -1275,7 +1275,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 426,
+    "totalCommits": 428,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1318,20 +1318,36 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 12,
-      "2026-04-05": 3
+      "2026-04-04": 13,
+      "2026-04-05": 4
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 77,
-      "other": 139,
-      "chore": 115,
+      "other": 140,
+      "chore": 116,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "3c5b0c9e",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "74ab9666",
+        "date": "2026-04-04",
+        "subject": "edit: entry-39 — explicit callout of entry-38, direct quote + named rebuttal from first paragraph",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "feb3d10a",
         "date": "2026-04-05",
