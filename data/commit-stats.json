@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 420,
+    "totalCommits": 422,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1309,19 +1309,36 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 9
+      "2026-04-04": 10,
+      "2026-04-05": 1
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 76,
-      "other": 137,
-      "chore": 112,
+      "other": 138,
+      "chore": 113,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "ba04bd1c",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "498ba44d",
+        "date": "2026-04-04",
+        "subject": "add: TurboQuant artifact + microblog entry-38 — vector quantization visualizer (PolarQuant + QJL)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "16368329",
         "date": "2026-04-04",
