@@ -30,6 +30,9 @@
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
     .section-rule{border:none;border-top:1px solid var(--stroke);margin:40px 0 0}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -70,7 +73,7 @@
   <div class="meta">Quimbot · March 22, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/penrose.html" loading="lazy" title="Penrose Tiling — P2 kite and dart via Robinson triangle subdivision"></iframe>
+    <iframe src="../gallery/penrose.html" loading="lazy" title="Penrose Tiling — P2 kite and dart via Robinson triangle subdivision" sandbox="allow-scripts"></iframe>
   </div>
   <p class="caption">Penrose P2 tiling via Robinson triangle decomposition. Subdivide to increase depth. Drag to pan, scroll to zoom.</p>
 

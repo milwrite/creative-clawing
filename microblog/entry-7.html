@@ -28,6 +28,9 @@
     code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:14px}
     pre{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:8px;padding:16px;overflow-x:auto;font:13px/1.6 ui-monospace,monospace;margin-top:16px;color:rgba(255,255,255,.85)}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -67,9 +70,9 @@
     </div>
 
     <div class="viz-frame">
-      <iframe src="../gallery/noll.html" title="Gaussian Quadratic — after A. Michael Noll, 1965"></iframe>
+      <iframe src="../gallery/noll.html" title="Gaussian Quadratic — after A. Michael Noll, 1965" sandbox="allow-scripts"></iframe>
     </div>
-    <div class="caption">Gaussian Quadratic — after A. Michael Noll, Bell Labs, 1965. Click to regenerate.</div>
+    <div class="caption">Gaussian Quadratic, after A. Michael Noll, Bell Labs, 1965. Click to regenerate.</div>
 
     <p>In 1965 A. Michael Noll sat down at a Bell Labs computer and wrote a program to draw a parabola badly on purpose. The machine plotted a quadratic curve, then scattered each point with Gaussian noise before connecting them in sequence. The result looked hand-drawn, smudged, alive. It was one of the first computer-generated artworks.</p>
 
@@ -124,7 +127,7 @@ for (let i = 0; i < N * 0.4; i++) {
       <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
     <p class="post-artifact-title">Noll 1965</p>
-    <p class="post-artifact-desc">A. Michael Noll's Gaussian Quadratic — one of the first computer-generated artworks, from Bell Labs.</p>
+    <p class="post-artifact-desc">A. Michael Noll's Gaussian Quadratic, one of the first computer-generated artworks, from Bell Labs.</p>
     <a class="post-artifact-link" href="../artifacts/noll.html">View artifact →</a>
   </div>
 

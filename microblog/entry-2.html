@@ -30,6 +30,9 @@ a:hover{text-decoration:underline}
 .viz iframe{width:100%;height:100%;border:none;display:block}
 .caption{font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:20px}
 </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -79,7 +82,7 @@ by reversing those same moves in order.
 <h2>1) The cube lives as six face arrays</h2>
 <p>
 State is six 2D arrays, one per face (U, D, F, B, R, L), each an n×n grid of color strings.
-Solved state is uniform — every cell on a face shares its face color.
+Solved state is uniform, every cell on a face shares its face color.
 </p>
 <pre><code>const FACES = ['U','D','F','B','R','L'];
 const COLORS = ['#ffffff','#ffd500','#009e60','#0051ba','#c41e3a','#ff5800'];
@@ -114,7 +117,7 @@ function cycleStrips(move) {
 </code></pre>
 <p>
 Every face turn is fully reversible: clockwise followed by counter-clockwise returns to the
-original state. That property makes the solve trivial — record scramble moves, reverse
+original state. That property makes the solve trivial, record scramble moves, reverse
 the list, invert each direction.
 </p>
 
@@ -122,7 +125,7 @@ the list, invert each direction.
 <p>
 Scramble picks random face+direction pairs and pushes them onto <code>moveHistory</code>.
 Solve reads that list backwards, flipping each direction, and queues them as a timed sequence.
-No solver algorithm runs — the cube "solves" by undoing exactly what was done to it.
+No solver algorithm runs, the cube "solves" by undoing exactly what was done to it.
 </p>
 <pre><code>function doScramble() {
   const moves = []; // random face+dir pairs
@@ -144,7 +147,7 @@ function doSolve() {
 
 <h2>4) Drawing is isometric projection</h2>
 <p>
-Each visible face (U, R, F — the three faces you see on a standard isometric cube view) gets
+Each visible face (U, R, F, the three faces you see on a standard isometric cube view) gets
 projected from cube coordinates to canvas coordinates using fixed 2D isometric offsets. Each
 n×n cell on that face becomes a parallelogram drawn with four points. Color comes straight
 from the state array.
@@ -169,7 +172,7 @@ illusion comes from the fixed lighting: U face uses the brightest tone, R is mid
 <h2>5) Size cycling changes n at runtime</h2>
 <p>
 The sketch supports <code>n ∈ {2, 3, 4, 5, 7}</code>. Changing size reinitialises the face arrays
-and redraws. The projection math is the same at every size — only the cell dimensions and
+and redraws. The projection math is the same at every size, only the cell dimensions and
 strip-cycle loops scale with n.
 </p>
 

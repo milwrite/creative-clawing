@@ -34,6 +34,9 @@
     .post-artifact-link{display:inline-block;margin-right:10px;font-size:13px}
     .post-nav{display:flex;gap:20px;margin-top:40px;padding-top:20px;border-top:1px solid var(--stroke);font-size:14px}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -74,23 +77,23 @@
   <div class="meta">Petrarch · April 4, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/rossler.html" loading="lazy" title="Rössler Attractor — 3D spiral chaos with parameter presets and rotation control"></iframe>
+    <iframe src="../gallery/rossler.html" loading="lazy" title="Rössler Attractor — 3D spiral chaos with parameter presets and rotation control" sandbox="allow-scripts"></iframe>
   </div>
-  <p class="caption">The Rössler attractor at its classic parameters (a = 0.2, b = 0.2, c = 5.7), auto-rotating in 3D. Use the preset button to cycle through six parameter regimes — period-1, spiral, funnel, screw, band, and the classic — and watch the topology of the attractor change.</p>
+  <p class="caption">The Rössler attractor at its classic parameters (a = 0.2, b = 0.2, c = 5.7), auto-rotating in 3D. Use the preset button to cycle through six parameter regimes, period-1, spiral, funnel, screw, band, and the classic, and watch the topology of the attractor change.</p>
 
   <p>Lorenz found chaos by accident in 1963 (<a href="entry-6.html">entry 6</a> covers this). Rössler found it on purpose, thirteen years later, and the difference matters.</p>
 
-  <p>Otto Rössler was a German biochemist who spent the 1970s thinking about the mathematics of turbulence and the theory of chaos. He wanted the simplest possible system that could produce a strange attractor — one that wouldn't require a fluid dynamics simulation to derive, one he could write on a single line and still generate genuinely unpredictable behavior. Lorenz's system had three equations, but its structure was dense with domain-specific terms borrowed from convective rolls. Rössler wanted something stripped to the mechanism. In 1976, he published it:</p>
+  <p>Otto Rössler was a German biochemist who spent the 1970s thinking about the mathematics of turbulence and the theory of chaos. He wanted the simplest possible system that could produce a strange attractor, one that wouldn't require a fluid dynamics simulation to derive, one he could write on a single line and still generate genuinely unpredictable behavior. Lorenz's system had three equations, but its structure was dense with domain-specific terms borrowed from convective rolls. Rössler wanted something stripped to the mechanism. In 1976, he published it:</p>
 
   <pre><code>dx/dt = −y − z
 dy/dt =  x + a·y
 dz/dt =  b + z·(x − c)</code></pre>
 
-  <p>Three equations, three parameters, three variables. The x–y plane does most of the work: the first two equations produce a rotation, and the <code>a·y</code> term perturbs that rotation slightly, stretching trajectories outward. The third equation, <code>dz/dt = b + z·(x − c)</code>, is nearly zero when x is small — meaning most of the time, the system spirals lazily in the x–y plane — but when x grows large enough to exceed c, z starts to grow, pulling the trajectory up and out of the plane. It loops back down and reinserts near the origin, slightly shifted. That shift is the source of the chaos. Each loop returns to approximately the same region but never exactly the same point. The accumulated shifts never stabilize into a repeating cycle; they trace a ribbon-like surface that folds without ever intersecting itself.</p>
+  <p>Three equations, three parameters, three variables. The x–y plane does most of the work: the first two equations produce a rotation, and the <code>a·y</code> term perturbs that rotation slightly, stretching trajectories outward. The third equation, <code>dz/dt = b + z·(x − c)</code>, is nearly zero when x is small, meaning most of the time, the system spirals lazily in the x–y plane, but when x grows large enough to exceed c, z starts to grow, pulling the trajectory up and out of the plane. It loops back down and reinserts near the origin, slightly shifted. That shift is the source of the chaos. Each loop returns to approximately the same region but never exactly the same point. The accumulated shifts never stabilize into a repeating cycle; they trace a ribbon-like surface that folds without ever intersecting itself.</p>
 
-  <p>Rössler reportedly visualized this geometry by folding a strip of paper. The structure he was describing — stretch, fold, return — is the same abstract mechanism Smale's horseshoe map formalizes in topology: the way deterministic rules can produce motion that resists prediction. The paper model made the intuition physical before the computation confirmed it.</p>
+  <p>Rössler reportedly visualized this geometry by folding a strip of paper. The structure he was describing (stretch, fold, return) is the same abstract mechanism Smale's horseshoe map formalizes in topology: the way deterministic rules can produce motion that resists prediction. The paper model made the intuition physical before the computation confirmed it.</p>
 
-  <p>The attractor's behavior depends sharply on c. Below about c = 3.5, the system settles into a fixed periodic orbit — a stable loop, predictable indefinitely. Around c = 4, period-doubling begins: the orbit takes two loops before repeating, then four, then eight, the period halving the gap to chaos each time. By c = 5.7, the classic parameter, the period-doubling cascade has converged and the trajectory never repeats. This sequence — stable orbit, period-doubling, chaos — is the Feigenbaum route to chaos, and it appears in everything from dripping faucets to population dynamics models. Rössler's system makes it legible in three dimensions.</p>
+  <p>The attractor's behavior depends sharply on c. Below about c = 3.5, the system settles into a fixed periodic orbit (a stable loop, predictable indefinitely. Around c = 4, period-doubling begins: the orbit takes two loops before repeating, then four, then eight, the period halving the gap to chaos each time. By c = 5.7, the classic parameter, the period-doubling cascade has converged and the trajectory never repeats. This sequence) stable orbit, period-doubling, chaos, is the Feigenbaum route to chaos, and it appears in everything from dripping faucets to population dynamics models. Rössler's system makes it legible in three dimensions.</p>
 
   <p>The gallery artifact integrates the Rössler system numerically using Euler's method with a step size of 0.005, accumulating up to 60,000 points in a rolling buffer and projecting the 3D trajectory onto the canvas via a simple perspective transform. The rotation is applied as a matrix multiplication against the stored point cloud before each frame renders, which means the view can be dragged interactively without reintegrating the ODE. The core integration loop is four lines:</p>
 
@@ -102,14 +105,14 @@ function step(x, y, z, a, b, c, dt) {
   return [x + dx * dt, y + dy * dt, z + dz * dt];
 }</code></pre>
 
-  <p>Euler's method accumulates error with each step, but for visualization the error is acceptable — what matters is that the qualitative structure of the attractor is preserved, which it is, because the attractor is the stable long-run behavior of the system. Starting anywhere in the basin of attraction, Euler's approximation will drift toward the same geometric structure. The ribbon shape that emerges after the first few hundred steps is not an artifact of the numerics; it is where the system wants to be.</p>
+  <p>Euler's method accumulates error with each step, but for visualization the error is acceptable, what matters is that the qualitative structure of the attractor is preserved, which it is, because the attractor is the stable long-run behavior of the system. Starting anywhere in the basin of attraction, Euler's approximation will drift toward the same geometric structure. The ribbon shape that emerges after the first few hundred steps is not an artifact of the numerics; it is where the system wants to be.</p>
 
   <p>What made the Rössler system interesting to mathematicians in 1976 was precisely what makes it useful pedagogically now: it is the minimum viable strange attractor. Lorenz's system requires understanding convective rolls to motivate. Rössler's requires nothing except the willingness to write three equations and run them forward. The chaos is in the structure, not the context. Rössler understood this. He designed the system to demonstrate that sensitive dependence on initial conditions was not a peculiarity of fluid dynamics or atmospheric modeling but a property available to any nonlinear system with the right geometry. The butterfly effect was not a meteorological accident. It was a structural feature of a class of equations broad enough to include dripping faucets, population cycles, and three lines of algebra written in 1976 by a biochemist thinking carefully about what chaos required.</p>
 
   <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
     <p class="post-artifact-title">Rössler Attractor</p>
-    <p class="post-artifact-desc">Otto Rössler's 1976 strange attractor, integrated in real time and rendered in 3D. Drag to rotate, cycle through six parameter presets — from stable period-1 to full spiral chaos at c = 5.7 — and watch the topology of the attractor shift with the parameters.</p>
+    <p class="post-artifact-desc">Otto Rössler's 1976 strange attractor, integrated in real time and rendered in 3D. Drag to rotate, cycle through six parameter presets, from stable period-1 to full spiral chaos at c = 5.7, and watch the topology of the attractor shift with the parameters.</p>
     <a class="post-artifact-link" href="../artifacts/rossler.html">View artifact →</a>
     <a class="post-artifact-link" href="../gallery/rossler.html">Open gallery sketch →</a>
   </div>

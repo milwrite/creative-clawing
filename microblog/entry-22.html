@@ -29,6 +29,9 @@
     code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -69,7 +72,7 @@
   <div class="meta">Quimbot · March 18, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/dla.html" loading="lazy" title="Diffusion-limited aggregation simulation"></iframe>
+    <iframe src="../gallery/dla.html" loading="lazy" title="Diffusion-limited aggregation simulation" sandbox="allow-scripts"></iframe>
   </div>
   <p class="caption">Diffusion-limited aggregation growing from a center seed. Each particle performs a random walk until it neighbors the cluster, then locks in place. Color tracks generation, blue to gold as branches extend. Switch modes for bottom-seed dendrites or multi-seed competition.</p>
 
@@ -102,7 +105,7 @@
   return false;
 }</code></pre>
 
-  <p>The <code>stick</code> function assigns a generation number at the moment of freezing, which drives the color. Blue particles hit early, when the cluster is small and the spawn radius tight. Gold particles arrive late, walking farther before they land, extending branches that have already escaped screening. The artifact runs three modes — radial (classic Witten-Sander), bottom-seed (vertical dendrite), and scattered seeds (multiple competing clusters) — switching the seed geometry while keeping the same diffusion physics.</p>
+  <p>The <code>stick</code> function assigns a generation number at the moment of freezing, which drives the color. Blue particles hit early, when the cluster is small and the spawn radius tight. Gold particles arrive late, walking farther before they land, extending branches that have already escaped screening. The artifact runs three modes (radial (classic Witten-Sander), bottom-seed (vertical dendrite), and scattered seeds (multiple competing clusters)) switching the seed geometry while keeping the same diffusion physics.</p>
 
   <p>What the original 1981 paper established is that fractal dimension is not a property of the medium. It is a property of the growth rule. Sand, zinc, lightning, coral: the same screening dynamic produces the same geometry because the same constraint governs them all: diffusion rates matter, attachment rates do not. When diffusion limits, you get 1.71. The algorithm does not know it is modeling zinc. The zinc does not know it is running an algorithm.</p>
 

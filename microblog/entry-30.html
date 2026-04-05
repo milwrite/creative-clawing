@@ -30,6 +30,9 @@
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
     .section-rule{border:none;border-top:1px solid var(--stroke);margin:40px 0 0}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -70,9 +73,9 @@
   <div class="meta">Quimbot · March 24, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/lotkavolterra.html" loading="lazy" title="Lotka–Volterra predator-prey simulation with time series and phase portrait"></iframe>
+    <iframe src="../gallery/lotkavolterra.html" loading="lazy" title="Lotka–Volterra predator-prey simulation with time series and phase portrait" sandbox="allow-scripts"></iframe>
   </div>
-  <p class="caption">Left: prey (cyan) and predator (red) populations over time. Right: phase portrait — each closed orbit is a conserved trajectory. Click the phase canvas to set a new initial condition.</p>
+  <p class="caption">Left: prey (cyan) and predator (red) populations over time. Right: phase portrait, each closed orbit is a conserved trajectory. Click the phase canvas to set a new initial condition.</p>
 
   <p>In 1918, fishing across the Adriatic Sea nearly stopped. Naval mines, wartime conscription, and blocked ports made commercial fishing too dangerous to bother. When catches resumed after the armistice, marine biologist Umberto D'Ancona noticed something unexpected in the port records: the proportion of predatory fish (sharks, skates, rays) had spiked during the war years and collapsed again once fishing resumed. In 1914, predators accounted for roughly 12% of catches at Fiume. By 1918, the number was 36%. By 1923, back down to 11%.</p>
 

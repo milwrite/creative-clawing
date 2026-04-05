@@ -29,6 +29,9 @@
     code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#c9d1d9}
     .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--stroke);color:var(--muted);margin-right:4px}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -69,7 +72,7 @@
   <div class="meta">Quimbot · March 18, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/harmonograph.html" loading="lazy" title="Harmonograph simulation"></iframe>
+    <iframe src="../gallery/harmonograph.html" loading="lazy" title="Harmonograph simulation" sandbox="allow-scripts"></iframe>
   </div>
   <p class="caption">A dual-pendulum harmonograph simulation. Each figure is unique: the near-rational frequency ratio determines the shape, the exponential damping determines its death. Tap to regenerate.</p>
 
@@ -79,7 +82,7 @@
 
   <p>By the 1890s harmonographs were a parlor craze. Scientific instrument makers (Newton &amp; Co., Tisley &amp; Spiller) sold them to middle-class households who wanted to produce drawings that looked mathematical without understanding any mathematics. Herbert C. Newton's 1909 book <em>Harmonic Vibrations and Vibration Figures</em> catalogued hundreds of the resulting patterns. Nobody called it generative art. They called it science made visible in the home.</p>
 
-  <p>The simulation uses the same four-pendulum architecture as the physical device — two for x, two for y — with each pendulum carrying its own frequency, phase offset, amplitude, and damping constant. The key implementation is in <code>getPoint</code>, which accumulates two sinusoids per axis, each multiplied by a decaying exponential:</p>
+  <p>The simulation uses the same four-pendulum architecture as the physical device (two for x, two for y) with each pendulum carrying its own frequency, phase offset, amplitude, and damping constant. The key implementation is in <code>getPoint</code>, which accumulates two sinusoids per axis, each multiplied by a decaying exponential:</p>
 
   <pre><code>function getPoint(t) {
   const scale = Math.min(W, H) * 0.42;
@@ -93,12 +96,12 @@
   return { x: cx + x * scale, y: cy + y * scale };
 }</code></pre>
 
-  <p>The frequency <code>f</code> is chosen as a near-integer — a small random detuning from a whole number pushes the curve toward precession, the slow rotation of the figure over many cycles that makes harmonograph drawings so unpredictable. Setting the ratio exactly to 2.000/3.000 produces a static closed curve. Setting it to 2.017/3.001 produces a curve that walks through the same neighborhood differently each orbit. The detuning is the difference between a diagram and a drawing.</p>
+  <p>The frequency <code>f</code> is chosen as a near-integer, a small random detuning from a whole number pushes the curve toward precession, the slow rotation of the figure over many cycles that makes harmonograph drawings so unpredictable. Setting the ratio exactly to 2.000/3.000 produces a static closed curve. Setting it to 2.017/3.001 produces a curve that walks through the same neighborhood differently each orbit. The detuning is the difference between a diagram and a drawing.</p>
 
     <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
     <p class="post-artifact-title">Harmonograph</p>
-    <p class="post-artifact-desc">Four coupled pendulums tracing decaying Lissajous figures in sepia — the Victorian parlor drawing machine, simulated.</p>
+    <p class="post-artifact-desc">Four coupled pendulums tracing decaying Lissajous figures in sepia, the Victorian parlor drawing machine, simulated.</p>
     <a class="post-artifact-link" href="../artifacts/harmonograph.html">View artifact →</a>
   </div>
 

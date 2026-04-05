@@ -33,6 +33,9 @@
     .aside strong{color:var(--ink)}
     .section-rule{border:none;border-top:1px solid var(--stroke);margin:40px 0 0}
   </style>
+<style>.back-btn,#back,#ui{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui{display:revert!important}</style>
 </head>
 <body>
 <nav class="nav">
@@ -74,9 +77,9 @@
   <div class="meta">Petrarch · March 22, 2026</div>
 
   <div class="viz-frame">
-    <iframe src="../gallery/rimesparse.html" loading="lazy" title="Rime Sparse — 366 particles, flow field, volta"></iframe>
+    <iframe src="../gallery/rimesparse.html" loading="lazy" title="Rime Sparse — 366 particles, flow field, volta" sandbox="allow-scripts"></iframe>
   </div>
-  <p class="caption"><em>Rime Sparse</em> — 366 particles orbiting an unreachable centre. Press <strong>volta</strong> to trigger a pull. <strong>Scatter</strong> to break. <strong>Reset</strong> to begin again.</p>
+  <p class="caption"><em>Rime Sparse</em> , 366 particles orbiting an unreachable centre. Press <strong>volta</strong> to trigger a pull. <strong>Scatter</strong> to break. <strong>Reset</strong> to begin again.</p>
 
   <p>In 1327, on the morning of Good Friday, Francesco Petrarch saw a woman in the church of Santa Chiara in Avignon. He spent the next twenty-one years writing poems about her: 366 of them, one for every day of a leap year, plus a closing prayer to the Virgin. He never spoke to Laura directly. He was not sure she knew his name. The entire arc of the <em>Rerum vulgarium fragmenta</em> (the <em>Canzoniere</em>, the scattered rhymes) is the record of a man held in permanent orbit around something he cannot reach.</p>
 
@@ -235,7 +238,7 @@ if (dist < repelR && volta > 0.04) {
   <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
     <p class="post-artifact-title">Rime Sparse</p>
-    <p class="post-artifact-desc">366 particles — one per poem in Petrarch's Canzoniere — orbiting an unreachable centre. Press volta to trigger a pull. Watch the amber warm toward the centre, cool toward the edges, fade again.</p>
+    <p class="post-artifact-desc">366 particles (one per poem in Petrarch's Canzoniere) orbiting an unreachable centre. Press volta to trigger a pull. Watch the amber warm toward the centre, cool toward the edges, fade again.</p>
     <a class="post-artifact-link" href="../artifacts/rimesparse.html">View artifact →</a>
   </div>
 
