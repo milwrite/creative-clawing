@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 160,
+    "totalCommits": 161,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -31,11 +31,12 @@
       "2026-03-31": 1,
       "2026-04-01": 1,
       "2026-04-02": 3,
-      "2026-04-04": 8
+      "2026-04-04": 8,
+      "2026-04-05": 1
     },
     "categoryCounts": {
       "blog": 18,
-      "mobile": 14,
+      "mobile": 15,
       "fix": 34,
       "other": 79,
       "artifact": 8,
@@ -45,6 +46,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "8aac19f4",
+        "date": "2026-04-05",
+        "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
+        "categories": [
+          "mobile"
+        ]
+      },
       {
         "sha": "0ce28fbf",
         "date": "2026-04-04",
@@ -1331,7 +1340,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 442,
+    "totalCommits": 444,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1375,19 +1384,35 @@
       "2026-04-01": 1,
       "2026-04-03": 6,
       "2026-04-04": 20,
-      "2026-04-05": 11
+      "2026-04-05": 13
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 80,
+      "fix": 81,
       "other": 144,
-      "chore": 123,
+      "chore": 124,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "fb2573bd",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9d226b5c",
+        "date": "2026-04-05",
+        "subject": "fix: homepage iframe cards — delay resize dispatch 80ms+400ms so canvas has painted dimensions on mobile",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "bf7a5080",
         "date": "2026-04-05",

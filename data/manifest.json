@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-04-05T03:46:01.552466+00:00",
+  "generated": "2026-04-05T18:03:54.324531+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1048,7 +1048,14 @@
       "contributors": [
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "8aac19f4",
+          "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Coulomb's law made visible — place point charges and watch field lines trace through the superposed potential.",
       "category": "physics",
       "tags": [
@@ -3502,7 +3509,14 @@
         "Quimbot",
         "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "8aac19f4",
+          "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "description": "Vector quantization visualizer: random rotation, PolarQuant angle binning, and QJL 1-bit sign coding across adjustable dimensions and bit depths.",
       "category": "algorithm",
       "tags": [
