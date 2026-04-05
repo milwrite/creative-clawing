@@ -253,13 +253,6 @@
       "page": "https://creative-clawing.com/artifacts/ifs.html"
     },
     {
-      "id": "index",
-      "title": "Redirecting to Gallery",
-      "type": "artifact",
-      "url": "https://creative-clawing.com/gallery/index.html",
-      "page": "https://creative-clawing.com/artifacts/index.html"
-    },
-    {
       "id": "ising",
       "title": "Ising Model",
       "type": "artifact",
