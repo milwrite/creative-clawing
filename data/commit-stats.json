@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 152,
+    "totalCommits": 153,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -30,13 +30,14 @@
       "2026-03-28": 18,
       "2026-03-31": 1,
       "2026-04-01": 1,
-      "2026-04-02": 3
+      "2026-04-02": 3,
+      "2026-04-04": 1
     },
     "categoryCounts": {
       "blog": 18,
       "mobile": 14,
       "fix": 30,
-      "other": 77,
+      "other": 78,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -44,6 +45,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "14b61db8",
+        "date": "2026-04-04",
+        "subject": "feat: TurboQuant — vector quantization artifact + microblog entry-39",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "c82262ad",
         "date": "2026-04-02",
@@ -1266,7 +1275,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 422,
+    "totalCommits": 423,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1310,7 +1319,7 @@
       "2026-04-01": 1,
       "2026-04-03": 6,
       "2026-04-04": 10,
-      "2026-04-05": 1
+      "2026-04-05": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1318,11 +1327,19 @@
       "mobile": 18,
       "fix": 76,
       "other": 138,
-      "chore": 113,
+      "chore": 114,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "7bf539a1",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "ba04bd1c",
         "date": "2026-04-05",
