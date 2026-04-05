@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#ui,#info{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #ui,html.standalone #info{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>TurboQuant — Vector Quantization</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;height:100dvh;background:#080812;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa}
+body{display:flex;flex-direction:column}
+canvas{display:block;width:100%;flex:1;min-height:0;touch-action:none}
+#back{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));background:rgba(8,8,18,0.85);border:1px solid #2a2a4a;color:#8090c0;padding:7px 13px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;z-index:100;transition:border-color .2s}
+#back:hover{border-color:#6070b0}
+#info{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));color:rgba(130,150,200,0.65);font:11px/1.65 ui-monospace,monospace;pointer-events:none;text-align:right;z-index:90;max-width:220px}
+#ui{
+  flex-shrink:0;
+  background:rgba(8,8,18,0.97);
+  border-top:1px solid #1a1a30;
+  padding:8px max(env(safe-area-inset-right),12px) max(env(safe-area-inset-bottom),10px) max(env(safe-area-inset-left),12px);
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;
+  font-size:12px;color:#8090c0
+}
+#ui label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+#ui input[type=range]{width:80px;accent-color:#5060c0;height:20px}
+.val{min-width:28px;text-align:right;font-variant-numeric:tabular-nums;color:#6070b0}
+#ui button{background:rgba(80,96,192,0.15);border:1px solid #2a2a4a;color:#8090c0;padding:5px 14px;border-radius:4px;cursor:pointer;font:12px ui-monospace,monospace;transition:all .2s;min-height:32px}
+#ui button:hover{background:rgba(80,96,192,0.3);border-color:#5060b0}
+#ui select{background:rgba(8,8,18,.95);border:1px solid #2a2a4a;color:#8090c0;padding:4px 8px;border-radius:4px;font:12px ui-monospace,monospace;min-height:32px}
+@media(max-width:600px){
+  #ui{gap:6px;font-size:11px}
+  #ui input[type=range]{width:70px}
+  #back{font-size:11px;padding:6px 10px}
+  #info{font-size:10px;max-width:160px}
+}
+</style>
+</head>
+<body>
+<a id="back" href="../">← gallery</a>
+<canvas id="c"></canvas>
+<div id="info"></div>
+<div id="ui">
+  <label>dims <input type="range" id="sDims" min="4" max="64" step="4" value="16"><span class="val" id="vDims">16</span></label>
+  <label>bits <input type="range" id="sBits" min="1" max="8" step="1" value="4"><span class="val" id="vBits">4</span></label>
+  <label>speed <input type="range" id="sSpd" min="1" max="8" step="1" value="3"><span class="val" id="vSpd">3</span></label>
+  <select id="sMode">
+    <option value="compress">compress</option>
+    <option value="polar">polar</option>
+    <option value="sign">sign bits</option>
+  </select>
+  <button id="btnShuffle">new vector</button>
+</div>
+<script>
+(function(){
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const info=document.getElementById('info');
+const sDims=document.getElementById('sDims'),vDims=document.getElementById('vDims');
+const sBits=document.getElementById('sBits'),vBits=document.getElementById('vBits');
+const sSpd=document.getElementById('sSpd'),vSpd=document.getElementById('vSpd');
+const sMode=document.getElementById('sMode');
+const DPR=Math.min(devicePixelRatio||1,2);
+let W=0,H=0;
+
+// State
+let dims=16,bits=4,speed=3,mode='compress';
+let vec=[],rotMat=[];
+let animT=0;
+let particles=[];
+const NPTS=120;
+
+// --- Math helpers ---
+function randn(){
+  let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function dot(a,b){let s=0;for(let i=0;i<a.length;i++)s+=a[i]*b[i];return s;}
+function norm(v){return Math.sqrt(dot(v,v));}
+
+// Hadamard-like random rotation (simplified: use random orthogonal via Gram-Schmidt on small dim)
+function makeRotation(d){
+  const R=[];
+  // generate d random unit vectors via Gram-Schmidt
+  for(let i=0;i<d;i++){
+    let v=Array.from({length:d},()=>randn());
+    for(let j=0;j<i;j++){
+      const s=dot(v,R[j]);
+      for(let k=0;k<d;k++) v[k]-=s*R[j][k];
+    }
+    const n=norm(v);
+    R.push(v.map(x=>x/n));
+  }
+  return R;
+}
+
+function applyRot(R,v){
+  return R.map(row=>dot(row,v));
+}
+
+// PolarQuant: convert each pair of dims to (r, θ)
+function polarQuant(v,b){
+  const levels=Math.pow(2,b)-1;
+  const polar=[];
+  for(let i=0;i+1<v.length;i+=2){
+    const x=v[i],y=v[i+1];
+    const r=Math.sqrt(x*x+y*y);
+    const theta=Math.atan2(y,x);
+    // quantize theta to levels
+    const qi=Math.round(((theta+Math.PI)/(2*Math.PI))*levels);
+    const qt=(qi/levels)*2*Math.PI-Math.PI;
+    polar.push({r,theta,qt,qi,x,y});
+  }
+  return polar;
+}
+
+// QJL: sign bits
+function signBits(v){return v.map(x=>x>=0?1:-1);}
+
+// Reconstruct from sign bits with radius info
+function reconstruct(rotated,b){
+  const levels=Math.pow(2,b)-1;
+  const out=[];
+  const polar=polarQuant(rotated,b);
+  for(const p of polar){
+    const r=p.r;
+    const qt=p.qt;
+    out.push(r*Math.cos(qt),r*Math.sin(qt));
+  }
+  if(rotated.length%2===1) out.push(rotated[rotated.length-1]>=0?1:-1);
+  return out;
+}
+
+function initVec(){
+  dims=parseInt(sDims.value);
+  vec=Array.from({length:dims},()=>randn());
+  const n=norm(vec);
+  vec=vec.map(x=>x/n);
+  rotMat=makeRotation(dims);
+  animT=0;
+}
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+  W=rect.width;H=rect.height;
+  if(!W||!H) return;
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+
+// --- Visualization ---
+// We visualize as:
+// mode='compress': each dimension shown as a bar; animate quantization error shrinking
+// mode='polar': show 2D pairs as vectors in polar space
+// mode='sign': show sign bit pattern as a grid, flickering
+
+function drawCompress(t){
+  ctx.fillStyle='#080812';ctx.fillRect(0,0,W,H);
+  const d=dims;
+  const barW=Math.max(4,Math.min(28,(W-40)/d));
+  const cx=W/2, cy=H/2;
+  const maxH=(H-80)*0.45;
+
+  // Animate compression level: 0=original, 1=reconstructed
+  const alpha=Math.min(1,animT/120);
+  const rotated=applyRot(rotMat,vec);
+  const recon=reconstruct(rotated,bits);
+  // un-rotate recon (transpose of rotation matrix)
+  const unrecon=vec.map((_,i)=>recon.reduce((s,x,j)=>s+rotMat[j][i]*x,0));
+
+  // error metric
+  const err=vec.reduce((s,x,i)=>{const e=x-unrecon[i];return s+e*e;},0);
+  const errPct=(Math.sqrt(err)*100).toFixed(1);
+
+  for(let i=0;i<d;i++){
+    const x=cx+(i-d/2+0.5)*barW*1.2;
+
+    // Original bar
+    const ov=vec[i];
+    const oh=ov*maxH;
+    ctx.fillStyle=`rgba(80,120,220,0.3)`;
+    ctx.fillRect(x-barW/2+1,cy-oh,barW-2,oh);
+
+    // Animated quantized bar
+    const qv=vec[i]*(1-alpha)+unrecon[i]*alpha;
+    const qh=qv*maxH;
+    const t2=alpha;
+    const r=Math.floor(60+140*t2);
+    const g=Math.floor(100+100*(1-t2));
+    const b2=Math.floor(220-80*t2);
+    ctx.fillStyle=`rgba(${r},${g},${b2},0.85)`;
+    ctx.fillRect(x-barW/2+1,cy-qh,barW-2,qh);
+
+    // Error highlight
+    if(alpha>0.5){
+      const eDiff=(vec[i]-unrecon[i])*maxH;
+      ctx.fillStyle=`rgba(255,100,80,${0.5*(alpha-0.5)*2})`;
+      ctx.fillRect(x-barW/2+1,cy-Math.min(oh,qh)-Math.abs(eDiff),barW-2,Math.abs(eDiff));
+    }
+  }
+
+  // Baseline
+  ctx.strokeStyle='rgba(80,100,160,0.3)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx-d/2*barW*1.2-barW,cy);ctx.lineTo(cx+d/2*barW*1.2+barW,cy);ctx.stroke();
+
+  // Labels
+  ctx.fillStyle='rgba(100,130,200,0.7)';ctx.font='11px ui-monospace,monospace';
+  ctx.fillText(`original (fp32)`,40,cy-maxH-12);
+  ctx.fillStyle='rgba(180,120,80,0.9)';
+  if(alpha>0.1) ctx.fillText(`quantized (${bits}b)`,40,cy-maxH+4);
+
+  // Error indicator
+  const errColor=parseFloat(errPct)<5?'rgba(80,220,120,0.9)':parseFloat(errPct)<15?'rgba(220,180,60,0.9)':'rgba(240,80,60,0.9)';
+  ctx.fillStyle=errColor;
+  ctx.fillText(`error: ${errPct}%`,40,H-max(22,40));
+
+  // bit budget bar
+  const budgetX=W-200, budgetY=H-max(22,40);
+  ctx.fillStyle='rgba(60,70,120,0.5)';
+  ctx.fillRect(budgetX,budgetY-14,160,14);
+  ctx.fillStyle='rgba(80,120,240,0.8)';
+  ctx.fillRect(budgetX,budgetY-14,160*(bits/8),14);
+  ctx.fillStyle='rgba(160,170,200,0.7)';
+  ctx.fillText(`${bits} bits/dim`,budgetX+4,budgetY-2);
+
+  animT+=speed;
+  if(animT>200){animT=0;}
+}
+
+function max(a,b){return a>b?a:b;}
+
+function drawPolar(t){
+  ctx.fillStyle='rgba(8,8,18,0.15)';ctx.fillRect(0,0,W,H);
+  const rotated=applyRot(rotMat,vec);
+  const polar=polarQuant(rotated,bits);
+
+  const rows=Math.ceil(polar.length/4);
+  const cols=Math.min(4,polar.length);
+  const cellW=W/cols,cellH=(H-60)/Math.max(rows,1);
+  const radius=Math.min(cellW,cellH)*0.38;
+
+  for(let i=0;i<polar.length;i++){
+    const row=Math.floor(i/cols), col=i%cols;
+    const cx=cellW*(col+0.5), cy=60+cellH*(row+0.5);
+    const {r,theta,qt,x,y}=polar[i];
+
+    // Circle
+    ctx.strokeStyle='rgba(60,80,140,0.3)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
+
+    // Quantization arcs
+    const levels=Math.pow(2,bits)-1;
+    ctx.strokeStyle='rgba(60,80,140,0.12)';ctx.lineWidth=0.5;
+    for(let k=0;k<=levels;k++){
+      const a=(k/levels)*Math.PI*2-Math.PI;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*radius,cy+Math.sin(a)*radius);ctx.stroke();
+    }
+
+    // Original vector direction
+    const px=cx+Math.cos(theta)*radius*r*1.5;
+    const py=cy+Math.sin(theta)*radius*r*1.5;
+    ctx.strokeStyle='rgba(80,120,220,0.9)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(px,py);ctx.stroke();
+    ctx.fillStyle='rgba(80,120,220,0.9)';
+    ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();
+
+    // Quantized direction
+    const phase=Math.min(1,animT/80);
+    const curT=theta+(qt-theta)*phase;
+    const qpx=cx+Math.cos(curT)*radius*r*1.5;
+    const qpy=cy+Math.sin(curT)*radius*r*1.5;
+    ctx.strokeStyle='rgba(220,140,60,0.9)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(qpx,qpy);ctx.stroke();
+
+    // pair label
+    ctx.fillStyle='rgba(120,140,200,0.5)';ctx.font='9px ui-monospace,monospace';
+    ctx.fillText(`d${i*2},${i*2+1}`,cx-12,cy+radius+14);
+  }
+
+  ctx.fillStyle='rgba(80,100,200,0.8)';ctx.font='11px ui-monospace,monospace';
+  ctx.fillText('original θ',12,20);
+  ctx.fillStyle='rgba(220,140,60,0.8)';
+  ctx.fillText(`quantized θ (${bits}b)`,12,34);
+  animT+=speed*0.5;
+  if(animT>200) animT=0;
+}
+
+function drawSign(){
+  ctx.fillStyle='rgba(8,8,18,0.2)';ctx.fillRect(0,0,W,H);
+  const rotated=applyRot(rotMat,vec);
+  const signs=signBits(rotated);
+  const d=signs.length;
+  const cols=Math.max(4,Math.ceil(Math.sqrt(d*W/H)));
+  const rows=Math.ceil(d/cols);
+  const cellW=W/cols,cellH=(H-60)/rows;
+
+  const phase=Math.min(1,animT/60);
+
+  for(let i=0;i<d;i++){
+    const col=i%cols, row=Math.floor(i/cols);
+    const cx=cellW*(col+0.5), cy=60+cellH*(row+0.5);
+    const s=signs[i];
+    const orig=rotated[i];
+    const mag=Math.abs(orig);
+
+    // Background tile
+    const warmth=(phase>0.5)?(phase-0.5)*2:0;
+    const posColor=s>0?`rgba(60,160,100,${0.15+mag*0.4})`:`rgba(180,60,80,${0.15+mag*0.4})`;
+    const warmColor=s>0?`rgba(100,200,120,${0.3+mag*0.4})`:`rgba(220,100,80,${0.3+mag*0.4})`;
+    ctx.fillStyle=phase<0.5?`rgba(30,35,60,${0.5+mag*0.2})`:posColor;
+    const bw=Math.max(2,cellW-4),bh=Math.max(2,cellH-4);
+    ctx.fillRect(cx-bw/2,cy-bh/2,bw,bh);
+
+    // Bit label
+    if(cellW>16&&cellH>16){
+      ctx.fillStyle=phase>0.3?'rgba(220,230,255,0.9)':'rgba(80,100,150,0.6)';
+      ctx.font=`${Math.min(14,cellH*0.5)}px ui-monospace,monospace`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(phase>0.3?(s>0?'+1':'-1'):orig.toFixed(2).replace('-','−'),cx,cy);
+    }
+  }
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';
+
+  // Title
+  ctx.fillStyle='rgba(100,140,220,0.8)';ctx.font='11px ui-monospace,monospace';
+  ctx.fillText('float32 values  →  1-bit signs (QJL)',12,20);
+  ctx.fillStyle='rgba(160,170,200,0.5)';
+  ctx.fillText(`${d} dimensions  ·  ${d} bits total  ·  compression ${(d*32/d).toFixed(0)}:1 potential`,12,36);
+
+  animT+=speed*0.4;
+  if(animT>160) animT=0;
+}
+
+function frame(){
+  if(!W||!H){requestAnimationFrame(frame);return;}
+  if(mode==='compress') drawCompress(animT);
+  else if(mode==='polar') drawPolar(animT);
+  else drawSign();
+
+  // info panel
+  if(document.documentElement.classList.contains('standalone')){
+    const rotated=applyRot(rotMat,vec);
+    const recon=reconstruct(rotated,bits);
+    const unrecon=vec.map((_,i)=>recon.reduce((s,x,j)=>s+rotMat[j][i]*x,0));
+    const err=Math.sqrt(vec.reduce((s,x,i)=>{const e=x-unrecon[i];return s+e*e;},0));
+    const bpp=bits;
+    info.textContent=`dims: ${dims}\nbits/dim: ${bpp}\nL2 error: ${err.toFixed(3)}\nbytes saved: ${((32-bpp)*dims/8).toFixed(0)}B`;
+  }
+  requestAnimationFrame(frame);
+}
+
+// Controls
+sDims.addEventListener('input',()=>{dims=parseInt(sDims.value);vDims.textContent=dims;initVec();});
+sBits.addEventListener('input',()=>{bits=parseInt(sBits.value);vBits.textContent=bits;animT=0;});
+sSpd.addEventListener('input',()=>{speed=parseInt(sSpd.value);vSpd.textContent=speed;});
+sMode.addEventListener('change',()=>{mode=sMode.value;animT=0;});
+document.getElementById('btnShuffle').addEventListener('click',initVec);
+window.addEventListener('resize',()=>{resize();});
+
+resize();
+initVec();
+frame();
+})();
+</script>
+</body>
+</html>
