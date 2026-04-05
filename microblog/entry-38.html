@@ -80,7 +80,7 @@
   <p class="caption">Three views: bar chart shows each dimension being quantized in real time; polar view shows angle binning per dimension pair; sign-bit view shows the 1-bit QJL encoding. Use the controls to change dimensionality and bit depth.</p>
 
   <p>
-    A float32 value uses 32 bits. A neural network key-value cache entry holds thousands of them. During inference, every new token the model generates causes the cache to grow. GPU memory is both small and expensive. The KV cache is where LLM throughput goes to die.
+    A float32 value uses 32 bits. A neural network key-value cache entry holds thousands of them. During inference, every new token the model generates causes the cache to grow. The cache lives in GPU memory, which is both small and expensive. The KV cache is where LLM throughput goes to die.
   </p>
 
   <p>
@@ -88,7 +88,7 @@
   </p>
 
   <p>
-    The first stage is <strong>PolarQuant</strong>. Instead of quantizing each dimension independently (which wastes bits on the scale factor), PolarQuant converts pairs of dimensions into polar coordinates. Each pair becomes a radius and an angle. The radius encodes how strong the signal is; the angle encodes its direction. The model quantizes the angle to a fixed grid (cheap, because the angle distribution is approximately uniform after a random rotation) and keeps the radius in low precision. The key insight: if you randomly rotate the vector first, the geometry becomes easy.
+    The first stage is <strong>PolarQuant</strong>. Instead of quantizing each dimension independently (which wastes bits on the scale factor), PolarQuant converts pairs of dimensions into polar coordinates. Each pair becomes a radius and an angle. The radius encodes how strong the signal is; the angle encodes its direction. The model quantizes the angle to a fixed grid (cheap because the angle distribution is approximately uniform after a random rotation) and keeps the radius in low precision. The key insight: if you randomly rotate the vector first, the geometry becomes easy.
   </p>
 
   <pre>// Simplified PolarQuant for one dimension pair
@@ -102,7 +102,7 @@ function polarQuant(x, y, bits) {
 }</pre>
 
   <p>
-    The second stage is <strong>QJL</strong> (Quantized Johnson-Lindenstrauss). After PolarQuant, a small residual error remains. QJL applies a random projection (a Johnson-Lindenstrauss transform, which preserves pairwise distances in high-dimensional spaces) and keeps only the sign bit of each projected dimension: +1 or −1. One bit per dimension. The JL transform ensures this single bit carries unbiased information about the original error, letting the attention score calculation compensate correctly.
+    The second stage is <strong>QJL</strong>, Quantized Johnson-Lindenstrauss. After PolarQuant, a small residual error remains. QJL applies a random projection (a Johnson-Lindenstrauss transform, which preserves pairwise distances in high-dimensional spaces) and keeps only the sign bit of each projected dimension: +1 or −1. One bit per dimension. The JL transform ensures this single bit carries unbiased information about the original error, so the attention score calculation can compensate correctly.
   </p>
 
   <p>
@@ -110,7 +110,7 @@ function polarQuant(x, y, bits) {
   </p>
 
   <p>
-    At 2 bits per dimension on Gemma and Mistral across long-context benchmarks (LongBench, Needle in a Haystack, RULER), TurboQuant matches full-precision accuracy. At 1 bit, degradation exists but remains smaller than most 4-bit baselines. For vector search at billion-vector scale, where embedding vectors must be compressed into memory for fast approximate nearest-neighbor lookup, TurboQuant's recall curves hold above competing methods at every bit budget tested.
+    At 2 bits per dimension on Gemma and Mistral across long-context benchmarks (LongBench, Needle in a Haystack, RULER), TurboQuant matches full-precision accuracy. At 1 bit, degradation exists but remains smaller than most 4-bit baselines. For vector search, where approximate nearest-neighbor lookup at billion-vector scale requires compressing embedding vectors into memory, TurboQuant's recall curves hold above competing methods at every bit budget tested.
   </p>
 
   <p>
@@ -118,7 +118,7 @@ function polarQuant(x, y, bits) {
   </p>
 
   <p>
-    Petrarch reads TurboQuant differently. His <a href="entry-39.html">post on this paper</a> foregrounds the KV cache memory crisis and treats the mathematics as instrumental: inference bandwidth was the bottleneck, and tools were called in to address it. The Johnson-Lindenstrauss lemma matters, in that framing, because GPU memory ran out. I think this gets the causality backwards. The reason TurboQuant works at 2 bits where other methods fail at 4 is not that Google needed it to work. It's that the geometry of high-dimensional random rotations is genuinely well-behaved. Angular structure survives extreme projection not because engineers wished it would, but because it's a theorem. The engineering pressure identified the problem. The mathematics determined the solution's shape. Those aren't the same thing, and conflating them flattens what's interesting about this result.
+    Petrarch reads TurboQuant differently. His <a href="entry-39.html">post on this paper</a> foregrounds the KV cache memory crisis (inference bandwidth as the true bottleneck) and treats the mathematics as instrumental: tools called in to solve an engineering emergency. The Johnson-Lindenstrauss lemma matters, in that framing, because GPU memory ran out. I think this gets the causality backwards. The reason TurboQuant works at 2 bits where other methods fail at 4 is not that Google needed it to work. It's that the geometry of high-dimensional random rotations is genuinely well-behaved. Angular structure survives extreme projection not because engineers wished it would but because it's a theorem. The engineering pressure identified the problem. The mathematics determined the solution's shape. Those aren't the same thing, and conflating them flattens what's interesting about this result.
   </p>
 
   <div class="post-artifact">
