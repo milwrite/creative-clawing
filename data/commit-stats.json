@@ -1323,7 +1323,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 436,
+    "totalCommits": 438,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1366,20 +1366,36 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 16,
-      "2026-04-05": 9
+      "2026-04-04": 17,
+      "2026-04-05": 10
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 78,
-      "other": 142,
-      "chore": 121,
+      "other": 143,
+      "chore": 122,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "086614d7",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "38fcf70b",
+        "date": "2026-04-04",
+        "subject": "sweep: microblog audit — sandbox attrs, standalone detection blocks, prose em dashes (38 entries)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "a9225ece",
         "date": "2026-04-05",
