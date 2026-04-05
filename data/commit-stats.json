@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 159,
+    "totalCommits": 160,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -31,12 +31,12 @@
       "2026-03-31": 1,
       "2026-04-01": 1,
       "2026-04-02": 3,
-      "2026-04-04": 7
+      "2026-04-04": 8
     },
     "categoryCounts": {
       "blog": 18,
       "mobile": 14,
-      "fix": 33,
+      "fix": 34,
       "other": 79,
       "artifact": 8,
       "chore": 4,
@@ -45,6 +45,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "0ce28fbf",
+        "date": "2026-04-04",
+        "subject": "fix: manifest — remove ghost index artifact, normalize categories, add mohr description/category",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "270a57eb",
         "date": "2026-04-04",
@@ -1323,7 +1331,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 438,
+    "totalCommits": 442,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1366,20 +1374,52 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 17,
-      "2026-04-05": 10
+      "2026-04-04": 20,
+      "2026-04-05": 11
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 78,
-      "other": 143,
-      "chore": 122,
+      "fix": 80,
+      "other": 144,
+      "chore": 123,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "bf7a5080",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "01b05395",
+        "date": "2026-04-04",
+        "subject": "fix: absolutize all feed.json microblog and artifact URLs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "cd1630b8",
+        "date": "2026-04-04",
+        "subject": "restore: hatmonotile + snowflake — recovered from git history (were deleted 2026-03-28, re-added to manifest by Petrarch today)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6e369ff9",
+        "date": "2026-04-04",
+        "subject": "fix: snowflake.html back link ./ → ../",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "086614d7",
         "date": "2026-04-05",

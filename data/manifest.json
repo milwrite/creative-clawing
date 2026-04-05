@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-04-05T03:33:35.277610+00:00",
+  "generated": "2026-04-05T03:46:01.552466+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -877,7 +877,7 @@
         }
       ],
       "description": "Density-accumulation rendering of Peter de Jong's iterated map. Four parameters — a, b, c, d — shape biomorphic forms from millions of orbit points.",
-      "category": "attractors",
+      "category": "attractor",
       "tags": [
         "strange-attractor",
         "chaos",
@@ -2143,6 +2143,8 @@
           "confidence": "confirmed"
         }
       ],
+      "description": "A 4D tesseract rotating through simultaneous planes, double-projected to canvas. 16 vertices, 32 edges. Four rotation modes. After Manfred Mohr's P-197 series (1977).",
+      "category": "geometry",
       "interactive": false,
       "animated": false,
       "mobile_optimized": false
@@ -3502,7 +3504,7 @@
       ],
       "optimizations": [],
       "description": "Vector quantization visualizer: random rotation, PolarQuant angle binning, and QJL 1-bit sign coding across adjustable dimensions and bit depths.",
-      "category": "algorithms",
+      "category": "algorithm",
       "tags": [
         "quantization",
         "compression",
