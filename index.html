@@ -705,8 +705,16 @@
     iframe.src = f.dataset.src;
     // sandbox removed — same-origin trusted artifacts
     iframe.addEventListener('load', () => {
-      try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-      iframe.classList.add('if-ready');
+      // Delay resize dispatch so the iframe canvas has painted dimensions.
+      // On mobile, firing resize immediately hits a 0×0 canvas.
+      // Two-shot: 80ms catches fast devices, 400ms catches slow mobile renderers.
+      setTimeout(() => {
+        try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+        iframe.classList.add('if-ready');
+      }, 80);
+      setTimeout(() => {
+        try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+      }, 400);
       drainPending();
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
