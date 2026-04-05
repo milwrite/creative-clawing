@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 153,
+    "totalCommits": 154,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -31,7 +31,7 @@
       "2026-03-31": 1,
       "2026-04-01": 1,
       "2026-04-02": 3,
-      "2026-04-04": 1
+      "2026-04-04": 2
     },
     "categoryCounts": {
       "blog": 18,
@@ -41,10 +41,18 @@
       "artifact": 8,
       "chore": 4,
       "docs": 1,
-      "style": 1,
+      "style": 2,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "47cc2ca4",
+        "date": "2026-04-04",
+        "subject": "style: copyedit entries 38+39; add glossary page; add glossary to nav",
+        "categories": [
+          "style"
+        ]
+      },
       {
         "sha": "14b61db8",
         "date": "2026-04-04",
@@ -1275,7 +1283,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 428,
+    "totalCommits": 430,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1318,20 +1326,36 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 13,
-      "2026-04-05": 4
+      "2026-04-04": 14,
+      "2026-04-05": 5
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
       "fix": 77,
-      "other": 140,
-      "chore": 116,
+      "other": 141,
+      "chore": 117,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "35d4ca0f",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9f37e531",
+        "date": "2026-04-04",
+        "subject": "add: glossary.html (TurboQuant, PolarQuant, QJL, JL lemma, KV cache + 9 more terms); add Glossary to site nav",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "3c5b0c9e",
         "date": "2026-04-05",
