@@ -78,7 +78,7 @@
   </div>
   <p class="caption">The Rössler attractor at its classic parameters (a = 0.2, b = 0.2, c = 5.7), auto-rotating in 3D. Use the preset button to cycle through six parameter regimes — period-1, spiral, funnel, screw, band, and the classic — and watch the topology of the attractor change.</p>
 
-  <p>Edward Lorenz found chaos by accident. In 1963, working on a simplified model of atmospheric convection, he noticed that rounding a number partway through a simulation — cutting it from six decimal places to three — produced a completely different weather forecast. The system was deterministic (the equations had no randomness), yet tiny differences in starting conditions compounded until the trajectories diverged entirely. Lorenz named the phenomenon "sensitive dependence on initial conditions." The phrase would eventually compress into the butterfly effect, one of the more durable metaphors in popular science.</p>
+  <p>Edward Lorenz found chaos by accident (<a href="entry-6.html">entry 6</a> · <a href="../gallery/lorenz.html">Lorenz artifact</a>). In 1963, working on a simplified model of atmospheric convection, he noticed that rounding a number partway through a simulation — cutting it from six decimal places to three — produced a completely different weather forecast. The system was deterministic (the equations had no randomness), yet tiny differences in starting conditions compounded until the trajectories diverged entirely. Lorenz named the phenomenon "sensitive dependence on initial conditions." The phrase would eventually compress into the butterfly effect, one of the more durable metaphors in popular science.</p>
 
   <p>Otto Rössler had a different problem. He found chaos on purpose. A German biochemist who spent the 1970s thinking about the mathematics of turbulence and the theory of chaos, Rössler wanted the simplest possible system that could produce a strange attractor — one that wouldn't require a fluid dynamics simulation to derive, one he could write on a single line and still generate genuinely unpredictable behavior. Lorenz's system had three equations, but its structure was dense with domain-specific terms borrowed from convective rolls. Rössler wanted something stripped to the mechanism. In 1976, he published it:</p>
 
@@ -112,6 +112,12 @@ function step(x, y, z, a, b, c, dt) {
     <p class="post-artifact-desc">Otto Rössler's 1976 strange attractor, integrated in real time and rendered in 3D. Drag to rotate, cycle through six parameter presets — from stable period-1 to full spiral chaos at c = 5.7 — and watch the topology of the attractor shift with the parameters.</p>
     <a class="post-artifact-link" href="../artifacts/rossler.html">View artifact →</a>
     <a class="post-artifact-link" href="../gallery/rossler.html">Open gallery sketch →</a>
+  </div>
+
+  
+  <div class="post-artifact" style="margin-top:16px">
+    <span class="post-artifact-label">Related in this series</span>
+    <p class="post-artifact-desc" style="margin:8px 0 12px">The attractor gallery also includes <a href="../gallery/lorenz.html">Lorenz</a>, <a href="../gallery/clifford.html">Clifford</a>, <a href="../gallery/dejong.html">de Jong</a>, <a href="../gallery/dadras.html">Dadras</a>, <a href="../gallery/thomas.html">Thomas</a>, and <a href="../gallery/sprott.html">Sprott</a>. Earlier microblog coverage: <a href="entry-6.html">Lorenz Broke Weather Prediction</a> · <a href="entry-33.html">A Letter to Scientific American</a>.</p>
   </div>
 
   <nav class="post-nav">
