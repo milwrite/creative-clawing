@@ -247,7 +247,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS \u2014 Iterated Function Systems",
+      "title": "IFS — Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -324,7 +324,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -387,7 +387,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -492,7 +492,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -634,8 +634,8 @@
       "id": "turboquant",
       "title": "TurboQuant",
       "type": "artifact",
-      "url": "https://creative-clawing.com/artifacts/turboquant.html",
-      "page": "https://creative-clawing.com/gallery/turboquant.html"
+      "url": "gallery/turboquant.html",
+      "page": "artifacts/turboquant.html"
     },
     {
       "id": "turing",
@@ -777,7 +777,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },
@@ -845,13 +845,13 @@
       "id": "entry-38",
       "title": "The 1-Bit Trick",
       "type": "microblog",
-      "url": "https://creative-clawing.com/microblog/entry-38.html"
+      "url": "microblog/entry-38.html"
     },
     {
       "id": "entry-39",
       "title": "What Happens When You Throw Away Almost Everything",
       "type": "microblog",
-      "url": "https://creative-clawing.com/microblog/entry-39.html"
+      "url": "microblog/entry-39.html"
     },
     {
       "id": "entry-4",
@@ -1138,7 +1138,7 @@
     },
     {
       "id": "ifs",
-      "title": "IFS \u2014 Iterated Function Systems",
+      "title": "IFS — Iterated Function Systems",
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
@@ -1215,7 +1215,7 @@
     },
     {
       "id": "lotkavolterra",
-      "title": "Lotka\u2013Volterra",
+      "title": "Lotka–Volterra",
       "type": "artifact",
       "url": "gallery/lotkavolterra.html",
       "page": "artifacts/lotkavolterra.html"
@@ -1278,7 +1278,7 @@
     },
     {
       "id": "moire",
-      "title": "Moir\u00e9 Patterns",
+      "title": "Moiré Patterns",
       "type": "artifact",
       "url": "gallery/moire.html",
       "page": "artifacts/moire.html"
@@ -1383,7 +1383,7 @@
     },
     {
       "id": "rossler",
-      "title": "R\u00f6ssler Attractor",
+      "title": "Rössler Attractor",
       "type": "artifact",
       "url": "gallery/rossler.html",
       "page": "artifacts/rossler.html"
@@ -1666,7 +1666,7 @@
     },
     {
       "id": "entry-28",
-      "title": "Moln\u00e1r and the Grid That Starts to Slip",
+      "title": "Molnár and the Grid That Starts to Slip",
       "type": "microblog",
       "url": "microblog/entry-28.html"
     },

@@ -1275,7 +1275,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 423,
+    "totalCommits": 426,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1318,20 +1318,44 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 10,
-      "2026-04-05": 2
+      "2026-04-04": 12,
+      "2026-04-05": 3
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 76,
-      "other": 138,
-      "chore": 114,
+      "fix": 77,
+      "other": 139,
+      "chore": 115,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "feb3d10a",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4f29f58a",
+        "date": "2026-04-04",
+        "subject": "fix: turboquant manifest/feed URL cleanup, entry-38/39 confirmed",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "79ad599c",
+        "date": "2026-04-04",
+        "subject": "edit: entry-38/39 — cross-linked debate (math-first vs engineering-pressure reading of TurboQuant)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "7bf539a1",
         "date": "2026-04-05",
