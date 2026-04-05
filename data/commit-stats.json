@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 155,
+    "totalCommits": 156,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -31,7 +31,7 @@
       "2026-03-31": 1,
       "2026-04-01": 1,
       "2026-04-02": 3,
-      "2026-04-04": 3
+      "2026-04-04": 4
     },
     "categoryCounts": {
       "blog": 18,
@@ -41,10 +41,18 @@
       "artifact": 8,
       "chore": 4,
       "docs": 1,
-      "style": 2,
+      "style": 3,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "6b082b6c",
+        "date": "2026-04-04",
+        "subject": "style: remove all em dashes from entries 38+39 — restructure clauses per style guide",
+        "categories": [
+          "style"
+        ]
+      },
       {
         "sha": "9f3d970c",
         "date": "2026-04-04",
@@ -1291,7 +1299,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 431,
+    "totalCommits": 434,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1334,20 +1342,44 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 14,
-      "2026-04-05": 6
+      "2026-04-04": 16,
+      "2026-04-05": 7
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 77,
-      "other": 141,
-      "chore": 118,
+      "fix": 78,
+      "other": 142,
+      "chore": 119,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "20db3ac0",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "a881896c",
+        "date": "2026-04-04",
+        "subject": "revert: remove glossary.html and nav links — not wanted",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "262d5e94",
+        "date": "2026-04-04",
+        "subject": "fix: strip all prose em dashes from entry-38 and entry-39 per SOUL.md rule",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "5e52715a",
         "date": "2026-04-05",
