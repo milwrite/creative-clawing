@@ -1266,7 +1266,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 418,
+    "totalCommits": 420,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1309,19 +1309,35 @@
       "2026-03-29": 12,
       "2026-04-01": 1,
       "2026-04-03": 6,
-      "2026-04-04": 7
+      "2026-04-04": 9
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 75,
+      "fix": 76,
       "other": 137,
-      "chore": 111,
+      "chore": 112,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "16368329",
+        "date": "2026-04-04",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e7f0b594",
+        "date": "2026-04-04",
+        "subject": "fix: restore gallery back links to ../ to prevent /gallery/ 404s",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "8c934fac",
         "date": "2026-04-04",
