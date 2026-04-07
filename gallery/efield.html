@@ -58,7 +58,7 @@ const LINE_COLOR = 'rgba(170, 210, 255, 0.55)';
 const EQUIP_ALPHA = 0.18;
 
 function resize() {
-  const pr = window.devicePixelRatio || 1;
+  const pr = Math.min(window.devicePixelRatio || 1, 2);
   const rect = canvas.getBoundingClientRect();
   W = rect.width;
   H = rect.height;
@@ -270,6 +270,8 @@ clearBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('resize', resize);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 resize();
 </script>
 </body>

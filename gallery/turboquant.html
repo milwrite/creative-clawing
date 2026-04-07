@@ -61,7 +61,6 @@ const sDims=document.getElementById('sDims'),vDims=document.getElementById('vDim
 const sBits=document.getElementById('sBits'),vBits=document.getElementById('vBits');
 const sSpd=document.getElementById('sSpd'),vSpd=document.getElementById('vSpd');
 const sMode=document.getElementById('sMode');
-const DPR=Math.min(devicePixelRatio||1,2);
 let W=0,H=0;
 
 // State
@@ -142,12 +141,13 @@ function initVec(){
 }
 
 function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
   const rect=canvas.getBoundingClientRect();
   W=rect.width;H=rect.height;
   if(!W||!H) return;
-  canvas.width=Math.round(W*DPR);
-  canvas.height=Math.round(H*DPR);
-  ctx.setTransform(DPR,0,0,DPR,0,0);
+  canvas.width=Math.round(W*dpr);
+  canvas.height=Math.round(H*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
 
 // --- Visualization ---
@@ -358,6 +358,8 @@ sSpd.addEventListener('input',()=>{speed=parseInt(sSpd.value);vSpd.textContent=s
 sMode.addEventListener('change',()=>{mode=sMode.value;animT=0;});
 document.getElementById('btnShuffle').addEventListener('click',initVec);
 window.addEventListener('resize',()=>{resize();});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 resize();
 initVec();
