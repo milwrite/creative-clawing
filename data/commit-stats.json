@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 161,
+    "totalCommits": 162,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -32,10 +32,11 @@
       "2026-04-01": 1,
       "2026-04-02": 3,
       "2026-04-04": 8,
-      "2026-04-05": 1
+      "2026-04-05": 1,
+      "2026-04-06": 1
     },
     "categoryCounts": {
-      "blog": 18,
+      "blog": 19,
       "mobile": 15,
       "fix": 34,
       "other": 79,
@@ -46,6 +47,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "2c5f7f7b",
+        "date": "2026-04-06",
+        "subject": "microblog: add hat monotile entry",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "8aac19f4",
         "date": "2026-04-05",
@@ -1340,7 +1349,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 444,
+    "totalCommits": 446,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1384,19 +1393,35 @@
       "2026-04-01": 1,
       "2026-04-03": 6,
       "2026-04-04": 20,
-      "2026-04-05": 13
+      "2026-04-05": 15
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
       "mobile": 18,
-      "fix": 81,
+      "fix": 82,
       "other": 144,
-      "chore": 124,
+      "chore": 125,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "c1a285a9",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "911a50b4",
+        "date": "2026-04-05",
+        "subject": "fix: SW never-cache data files (manifest-v2, feed) — was serving stale content on mobile; bump to cc-v4; cache-bust fetches in index+microblogs",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "fb2573bd",
         "date": "2026-04-05",
