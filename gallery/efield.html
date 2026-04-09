@@ -9,8 +9,9 @@
 <title>Electric Field Lines</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;height:100dvh;background:#04080f;overflow:hidden;display:flex;flex-direction:column}
-canvas{display:block;flex:1;width:100%;touch-action:none;cursor:crosshair}
+html,body{height:100%;height:100dvh;background:#04080f;overflow:hidden;display:flex;flex-direction:column;touch-action:none;overscroll-behavior:none}
+body{-webkit-text-size-adjust:100%}
+canvas{display:block;flex:1;min-height:0;width:100%;touch-action:none;cursor:crosshair}
 .back{position:fixed;top:max(1rem,env(safe-area-inset-top));left:max(1rem,env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(4,8,15,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
 .back:hover{border-color:#666;color:#fff}
 .panel{background:#060c18;border-top:1px solid #0f1e38;padding:0.65rem max(0.9rem,env(safe-area-inset-right)) 0.65rem max(0.9rem,env(safe-area-inset-left));display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font:0.75rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;flex-wrap:wrap;flex-shrink:0}
@@ -60,8 +61,8 @@ const EQUIP_ALPHA = 0.18;
 function resize() {
   const pr = Math.min(window.devicePixelRatio || 1, 2);
   const rect = canvas.getBoundingClientRect();
-  W = rect.width;
-  H = rect.height;
+  W = rect.width || window.visualViewport?.width || window.innerWidth;
+  H = rect.height || window.visualViewport?.height || window.innerHeight;
   canvas.width  = Math.round(W * pr);
   canvas.height = Math.round(H * pr);
   ctx.setTransform(pr, 0, 0, pr, 0, 0);
