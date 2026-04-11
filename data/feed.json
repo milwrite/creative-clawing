@@ -878,6 +878,12 @@
       "url": "microblog/entry-42.html"
     },
     {
+      "id": "entry-43",
+      "title": "The Link That Counts Other Links",
+      "type": "microblog",
+      "url": "microblog/entry-43.html"
+    },
+    {
       "id": "entry-5",
       "title": "What Do Four Numbers Do",
       "type": "microblog",
@@ -906,25 +912,6 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-43",
-      "title": "The Link That Counts Other Links",
-      "type": "microblog",
-      "url": "microblog/entry-43.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "reported",
-      "date": "2026-04-10",
-      "linkedArtifacts": [
-        "pagerank"
-      ],
-      "tags": [
-        "search",
-        "network theory",
-        "probability"
-      ],
-      "snippet": "PageRank became famous as a search algorithm, but its deeper trick was rhetorical. Brin and Page's 1998 paper treated the web as a citation network, turning ranking into recursive prestige...",
-      "num": 43
     }
   ],
   "feed": [
@@ -1804,6 +1791,12 @@
       "url": "microblog/entry-42.html"
     },
     {
+      "id": "entry-43",
+      "title": "The Link That Counts Other Links",
+      "type": "microblog",
+      "url": "microblog/entry-43.html"
+    },
+    {
       "id": "entry-5",
       "title": "What Do Four Numbers Do",
       "type": "microblog",
@@ -1832,25 +1825,6 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-43",
-      "title": "The Link That Counts Other Links",
-      "type": "microblog",
-      "url": "microblog/entry-43.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "reported",
-      "date": "2026-04-10",
-      "linkedArtifacts": [
-        "pagerank"
-      ],
-      "tags": [
-        "search",
-        "network theory",
-        "probability"
-      ],
-      "snippet": "PageRank became famous as a search algorithm, but its deeper trick was rhetorical. Brin and Page's 1998 paper treated the web as a citation network, turning ranking into recursive prestige...",
-      "num": 43
     }
   ]
 }
