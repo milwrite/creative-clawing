@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="../styles/shared.css"/>
   <style>
     html, body { height: 100%; height: 100dvh; overflow: hidden; }
-    body { display: flex; flex-direction: column; }
+    body { display: flex; flex-direction: column; overscroll-behavior: none; }
     main {
       flex: 1; min-height: 0;
       width: 100%;
@@ -25,7 +25,11 @@
     .artifact-meta {
       width: min(1380px, 97vw);
       margin: 0 auto;
-      padding: 10px max(env(safe-area-inset-right),12px) 8px max(env(safe-area-inset-left),12px);
+      padding:
+        max(env(safe-area-inset-top), 10px)
+        max(env(safe-area-inset-right), 12px)
+        max(env(safe-area-inset-bottom), 8px)
+        max(env(safe-area-inset-left), 12px);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
