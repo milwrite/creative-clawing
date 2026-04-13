@@ -79,6 +79,7 @@
     .sketch-frame {
       flex: 1;
       min-height: 0;
+      height: 100%;
       border: 0;
       width: 100%;
       background: #000;
@@ -125,9 +126,16 @@
 <script>
 (function(){
   var sf = document.querySelector('.sketch-frame');
-  if (sf) sf.addEventListener('load', function() {
-    try { sf.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-  }, { once: true });
+  function pingFrame() {
+    if (!sf) return;
+    try {
+      sf.contentWindow.dispatchEvent(new Event('resize'));
+      sf.contentWindow.dispatchEvent(new Event('orientationchange'));
+    } catch(e) {}
+  }
+  if (sf) sf.addEventListener('load', pingFrame, { once: true });
+  window.addEventListener('resize', pingFrame, { passive: true });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', pingFrame, { passive: true });
   const contributorMenu = document.querySelector('.menu-group');
   if (!contributorMenu) return;
   contributorMenu.querySelectorAll('a').forEach(link => {
