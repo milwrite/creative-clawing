@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 167,
+    "totalCommits": 168,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -38,13 +38,14 @@
       "2026-04-08": 1,
       "2026-04-09": 1,
       "2026-04-10": 1,
-      "2026-04-11": 1
+      "2026-04-11": 1,
+      "2026-04-13": 1
     },
     "categoryCounts": {
       "blog": 19,
       "mobile": 15,
       "fix": 34,
-      "other": 84,
+      "other": 85,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -52,6 +53,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "6de5ceea",
+        "date": "2026-04-13",
+        "subject": "tighten mobile artifact frames",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "3d93e55e",
         "date": "2026-04-11",
@@ -1394,7 +1403,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 451,
+    "totalCommits": 452,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1441,7 +1450,7 @@
       "2026-04-05": 15,
       "2026-04-07": 2,
       "2026-04-09": 2,
-      "2026-04-11": 1
+      "2026-04-11": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1449,11 +1458,19 @@
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 130,
+      "chore": 131,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "5c7281f7",
+        "date": "2026-04-11",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "ad8b3553",
         "date": "2026-04-11",
