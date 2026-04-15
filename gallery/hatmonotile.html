@@ -346,7 +346,10 @@ resetBtn.addEventListener('click',()=>{
 });
 
 window.addEventListener('resize',render);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',render);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',render);
+  window.visualViewport.addEventListener('scroll',render);
+}
 window.addEventListener('orientationchange',()=>{setTimeout(render,200);});
 
 // Hide UI in iframe

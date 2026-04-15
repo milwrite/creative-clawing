@@ -271,7 +271,10 @@ clearBtn.addEventListener('click', () => {
 });
 
 window.addEventListener('resize', resize);
-if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', resize);
+  window.visualViewport.addEventListener('scroll', resize);
+}
 window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 resize();
 </script>

@@ -358,7 +358,10 @@ sSpd.addEventListener('input',()=>{speed=parseInt(sSpd.value);vSpd.textContent=s
 sMode.addEventListener('change',()=>{mode=sMode.value;animT=0;});
 document.getElementById('btnShuffle').addEventListener('click',initVec);
 window.addEventListener('resize',()=>{resize();});
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',resize);
+  window.visualViewport.addEventListener('scroll',resize);
+}
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 
 resize();
