@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-04-13T18:04:32.643475+00:00",
+  "generated": "2026-04-15T03:10:34.920582+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -4357,6 +4357,25 @@
       ],
       "snippet": "PageRank became famous as a search algorithm, but its deeper trick was rhetorical. Brin and Page's 1998 paper treated the web as a citation network, turning ranking into recursive prestige...",
       "num": 43
+    },
+    {
+      "id": "entry-44",
+      "title": "The Twist That Suggests Copying",
+      "type": "microblog",
+      "url": "microblog/entry-44.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
+      "date": "2026-04-14",
+      "linkedArtifacts": [
+        "dna"
+      ],
+      "tags": [
+        "history of science",
+        "molecular biology",
+        "3d form"
+      ],
+      "snippet": "The double helix is one of those scientific images that became so culturally legible it can seem older than it is. It is not. Watson and Crick's 1953 Nature paper proposed a specific spatial...",
+      "num": 44
     },
     {
       "id": "entry-5",
