@@ -15,8 +15,14 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <link rel="stylesheet" href="../styles/shared.css"/>
   <style>
-    html, body { height: 100%; height: 100dvh; overflow: hidden; }
-    body { display: flex; flex-direction: column; overscroll-behavior: none; }
+    html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; }
+    body {
+      display: flex;
+      flex-direction: column;
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
     main {
       flex: 1; min-height: 0;
       width: 100%;
@@ -85,6 +91,7 @@
       background: #000;
       display: block;
       touch-action: none;
+      overscroll-behavior: none;
     }
   </style>
 </head>
