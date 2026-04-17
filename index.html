@@ -369,7 +369,7 @@
 
   let phrases = ['curating web artifacts', 'microblogging code snippets', 'drag or swipe lanes to explore'];
   try {
-    const r = await fetch('data/taglines.json?t=' + Date.now());
+    const r = await fetch('data/taglines.json?t=' + Date.now(), { cache: 'no-store' });
     if (r.ok) phrases = await r.json();
   } catch (_) {}
 
@@ -411,13 +411,21 @@
 
 <script>
 (async function(){
-  const ts = Date.now();
-  const [feedRes, manifestRes] = await Promise.all([
-    fetch('data/feed.json?t=' + ts),
-    fetch('data/manifest-v2.json?t=' + ts)
+  async function fetchJSON(url, fallback) {
+    try {
+      const sep = url.includes('?') ? '&' : '?';
+      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error(String(res.status));
+      return await res.json();
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  const [feed, manifest] = await Promise.all([
+    fetchJSON('data/feed.json', { artifacts: [] }),
+    fetchJSON('data/manifest-v2.json', { artifacts: [], microblogs: [] })
   ]);
-  const feed = await feedRes.json();
-  const manifest = await manifestRes.json();
 
   function dedup(arr) {
     const seen = new Set();
@@ -691,8 +699,17 @@
   // Lanes that scroll far out of view get ejected to free GPU resources.
   // pendingFrames: cards that were blocked by the cap when all lanes fired at once on page load.
   const MAX_LIVE_IFRAMES = 72; // enough for the full homepage in one viewport
+  const IMMEDIATE_FRAMES_PER_LANE = 8;
+  const DRAIN_BATCH = 6;
   const liveIframeFrames = new Set();
   const pendingFrames = new Set();
+  let drainScheduled = false;
+
+  function frameDistanceFromViewport(f) {
+    const r = f.getBoundingClientRect();
+    const center = r.left + (r.width / 2);
+    return Math.abs(center - (window.innerWidth / 2));
+  }
 
   function injectOneFrame(f) {
     if (f.querySelector('iframe')) return; // already live
@@ -716,23 +733,49 @@
       setTimeout(() => {
         try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
       }, 400);
-      drainPending();
+      scheduleDrain();
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
     liveIframeFrames.add(f);
   }
 
-  function drainPending() {
+  function drainPendingBatch() {
+    let loaded = 0;
     for (const f of pendingFrames) {
-      if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) break;
+      if (liveIframeFrames.size >= MAX_LIVE_IFRAMES || loaded >= DRAIN_BATCH) break;
+      pendingFrames.delete(f);
       injectOneFrame(f);
+      loaded++;
+    }
+    drainScheduled = false;
+    if (pendingFrames.size && liveIframeFrames.size < MAX_LIVE_IFRAMES) scheduleDrain();
+  }
+
+  function scheduleDrain() {
+    if (drainScheduled) return;
+    drainScheduled = true;
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => drainPendingBatch(), { timeout: 240 });
+    } else {
+      setTimeout(drainPendingBatch, 90);
     }
   }
 
   function injectFrames(el) {
-    el.querySelectorAll('.card-frame[data-src]').forEach(injectOneFrame);
-    // Drain any cards that queued up while the cap was temporarily hit
-    drainPending();
+    const frames = [...el.querySelectorAll('.card-frame[data-src]')];
+    if (el.id === 'section-recent') {
+      frames.forEach(injectOneFrame);
+      scheduleDrain();
+      return;
+    }
+
+    frames
+      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b))
+      .forEach((f, idx) => {
+        if (idx < IMMEDIATE_FRAMES_PER_LANE) injectOneFrame(f);
+        else pendingFrames.add(f);
+      });
+    scheduleDrain();
   }
 
   function ejectFrames(el) {
@@ -744,7 +787,7 @@
         liveIframeFrames.delete(f);
       }
     });
-    drainPending();
+    scheduleDrain();
   }
 
   const laneObserver = new IntersectionObserver((entries) => {

@@ -918,6 +918,12 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-45",
+      "title": "The Heuristic That Lets Search Hurry",
+      "type": "microblog",
+      "url": "microblog/entry-45.html"
     }
   ],
   "feed": [
@@ -1837,6 +1843,12 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-45",
+      "title": "The Heuristic That Lets Search Hurry",
+      "type": "microblog",
+      "url": "microblog/entry-45.html"
     }
   ]
 }

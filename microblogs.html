@@ -168,13 +168,21 @@
 
 <script>
 (async function(){
-  const ts = Date.now();
-  const [feedRes, manifestRes] = await Promise.all([
-    fetch('data/feed.json?t=' + ts),
-    fetch('data/manifest-v2.json?t=' + ts)
+  async function fetchJSON(url, fallback) {
+    try {
+      const sep = url.includes('?') ? '&' : '?';
+      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error(String(res.status));
+      return await res.json();
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  const [feed, manifest] = await Promise.all([
+    fetchJSON('data/feed.json', { artifacts: [] }),
+    fetchJSON('data/manifest-v2.json', { microblogs: [] })
   ]);
-  const feed = await feedRes.json();
-  const manifest = await manifestRes.json();
 
   const seen = new Set();
   const arts = feed.artifacts.filter(x => { if (seen.has(x.id)) return false; seen.add(x.id); return true; });
@@ -237,7 +245,12 @@
           ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
           // sandbox removed — same-origin trusted artifacts
           ifr.addEventListener('load', () => {
-            try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
+            setTimeout(() => {
+              try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
+            }, 80);
+            setTimeout(() => {
+              try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
+            }, 400);
           }, { once: true });
           e.target.innerHTML = '';
           e.target.appendChild(ifr);
