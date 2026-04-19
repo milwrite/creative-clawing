@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <link rel="stylesheet" href="../styles/shared.css"/>
   <style>
-    html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; }
+    html, body { width: 100%; min-height: 100svh; height: 100%; height: 100dvh; overflow: hidden; }
     body {
       display: flex;
       flex-direction: column;
@@ -142,7 +142,10 @@
   }
   if (sf) sf.addEventListener('load', pingFrame, { once: true });
   window.addEventListener('resize', pingFrame, { passive: true });
-  if (window.visualViewport) window.visualViewport.addEventListener('resize', pingFrame, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', pingFrame, { passive: true });
+    window.visualViewport.addEventListener('scroll', pingFrame, { passive: true });
+  }
   const contributorMenu = document.querySelector('.menu-group');
   if (!contributorMenu) return;
   contributorMenu.querySelectorAll('a').forEach(link => {

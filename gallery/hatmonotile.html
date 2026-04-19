@@ -9,7 +9,7 @@
 <title>Hat Monotile</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#1a1a2e;touch-action:none;overscroll-behavior:none}
+html,body{width:100%;min-height:100svh;height:100%;height:100dvh;overflow:hidden;background:#1a1a2e;touch-action:none;overscroll-behavior:none}
 body{display:flex;flex-direction:column;-webkit-text-size-adjust:100%}
 canvas{display:block;flex:1;min-height:0;width:100%;height:100%;touch-action:none}
 #ui{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:10;
@@ -248,6 +248,8 @@ function render(){
   const viewport=window.visualViewport;
   const w=Math.round(rect.width||viewport?.width||innerWidth);
   const h=Math.round(rect.height||viewport?.height||innerHeight);
+  canvas.style.width=`${w}px`;
+  canvas.style.height=`${h}px`;
   canvas.width=w*dpr;canvas.height=h*dpr;
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.fillStyle=pal.bg;ctx.fillRect(0,0,w,h);
@@ -255,6 +257,15 @@ function render(){
   const S=[viewScale,0,viewX+w/2,0,-viewScale,viewY+h/2];
   // Draw H metatile (index 0) which contains the full patch
   drawGeom(tiles[0],S,level,w,h);
+}
+
+let renderRaf=0;
+function scheduleRender(){
+  if(renderRaf)return;
+  renderRaf=requestAnimationFrame(()=>{
+    renderRaf=0;
+    render();
+  });
 }
 
 // --- Interaction ---
@@ -345,12 +356,12 @@ resetBtn.addEventListener('click',()=>{
   rebuild();
 });
 
-window.addEventListener('resize',render);
+window.addEventListener('resize',scheduleRender);
 if(window.visualViewport){
-  window.visualViewport.addEventListener('resize',render);
-  window.visualViewport.addEventListener('scroll',render);
+  window.visualViewport.addEventListener('resize',scheduleRender);
+  window.visualViewport.addEventListener('scroll',scheduleRender);
 }
-window.addEventListener('orientationchange',()=>{setTimeout(render,200);});
+window.addEventListener('orientationchange',()=>{setTimeout(scheduleRender,200);});
 
 // Hide UI in iframe
 if(window.self!==window.top){

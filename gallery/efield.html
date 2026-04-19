@@ -61,12 +61,24 @@ const EQUIP_ALPHA = 0.18;
 function resize() {
   const pr = Math.min(window.devicePixelRatio || 1, 2);
   const rect = canvas.getBoundingClientRect();
-  W = rect.width || window.visualViewport?.width || window.innerWidth;
-  H = rect.height || window.visualViewport?.height || window.innerHeight;
+  const viewport = window.visualViewport;
+  W = rect.width || viewport?.width || window.innerWidth;
+  H = rect.height || viewport?.height || window.innerHeight;
+  canvas.style.width = `${W}px`;
+  canvas.style.height = `${H}px`;
   canvas.width  = Math.round(W * pr);
   canvas.height = Math.round(H * pr);
   ctx.setTransform(pr, 0, 0, pr, 0, 0);
   draw();
+}
+
+let resizeRaf = 0;
+function scheduleResize() {
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    resizeRaf = 0;
+    resize();
+  });
 }
 
 function eField(x, y) {
@@ -260,6 +272,11 @@ canvas.addEventListener('touchmove', e => {
   clearTimeout(longPressTimer);
 }, {passive: false});
 
+canvas.addEventListener('touchcancel', () => {
+  clearTimeout(longPressTimer);
+  didLong = false;
+}, {passive: true});
+
 toggleBtn.addEventListener('click', () => {
   placeSign = -placeSign;
   toggleBtn.textContent = `mode: ${placeSign > 0 ? '+' : '−'}`;
@@ -270,12 +287,12 @@ clearBtn.addEventListener('click', () => {
   draw();
 });
 
-window.addEventListener('resize', resize);
+window.addEventListener('resize', scheduleResize);
 if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', resize);
-  window.visualViewport.addEventListener('scroll', resize);
+  window.visualViewport.addEventListener('resize', scheduleResize);
+  window.visualViewport.addEventListener('scroll', scheduleResize);
 }
-window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); });
 resize();
 </script>
 </body>
