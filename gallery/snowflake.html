@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
+<title>Snowflake</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;height:100dvh;background:#040810;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+body{display:flex;flex-direction:column}
+canvas{display:block;width:100%;flex:1;min-height:0;touch-action:none}
+#back{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));background:rgba(8,12,20,0.85);border:1px solid #1a3050;color:#8ab4d4;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;z-index:100;transition:border-color 0.2s}
+#back:hover{border-color:#4a80a0;color:#c0ddf0}
+#ui{
+  flex-shrink:0;
+  position:relative;bottom:auto;left:auto;transform:none;
+  background:rgba(8,12,20,0.97);
+  border-top:1px solid #1a3050;
+  padding:8px max(env(safe-area-inset-right),12px) max(env(safe-area-inset-bottom),10px) max(env(safe-area-inset-left),12px);
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
+  z-index:100;font-size:12px;color:#8ab4d4
+}
+#ui label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+#ui input[type=range]{width:70px;accent-color:#5aafdd}
+#ui button{background:rgba(90,175,221,0.15);border:1px solid #1a3050;color:#8ab4d4;padding:6px 14px;border-radius:4px;cursor:pointer;font:12px ui-monospace,monospace;transition:all 0.2s;min-height:36px;min-width:44px}
+#ui button:hover{background:rgba(90,175,221,0.3);border-color:#4a80a0}
+.val{min-width:32px;text-align:right;font-variant-numeric:tabular-nums;color:#5aafdd}
+#info{position:fixed;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);color:rgba(138,180,212,0.7);background:rgba(8,12,20,0.6);padding:6px 12px;border-radius:6px;font:11px/1.4 ui-monospace,monospace;pointer-events:none;text-align:center;white-space:nowrap;z-index:90}
+#preset{background:rgba(90,175,221,0.15);border:1px solid #1a3050;color:#8ab4d4;border-radius:4px;padding:2px 6px;font:12px ui-monospace,monospace;cursor:pointer;min-height:36px}
+@media(max-width:600px){
+  #ui{gap:6px;padding-top:6px;padding-bottom:max(env(safe-area-inset-bottom),8px)}
+  #ui input[type=range]{width:100px}
+  #ui label{font-size:11px}
+  .val{font-size:11px}
+  #back{font-size:11px;padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<a id="back" href="./">← gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Reiter's CA · hexagonal ice crystal growth</div>
+<div id="ui">
+  <label>β <input type="range" id="sliderB" min="0" max="0.95" step="0.01" value="0.35"><span class="val" id="valB">0.35</span></label>
+  <label>γ <input type="range" id="sliderC" min="0.001" max="0.15" step="0.001" value="0.001"><span class="val" id="valC">0.001</span></label>
+  <label>speed <input type="range" id="sliderSpd" min="1" max="50" step="1" value="10"><span class="val" id="valSpd">10</span></label>
+  <select id="preset">
+    <option value="dendrite">dendrite</option>
+    <option value="stellar">stellar</option>
+    <option value="plate">plate</option>
+    <option value="sector">sector</option>
+    <option value="fern">fern</option>
+  </select>
+  <button id="btnReset">reset</button>
+  <span id="stepCount" style="color:#3a7aa0;font-size:11px">step 0</span>
+</div>
+<script type="module">
+import { mountSnowflake } from './_factories/snowflake.js';
+
+mountSnowflake({
+  canvas: document.getElementById('c'),
+  sliderB: document.getElementById('sliderB'),
+  sliderC: document.getElementById('sliderC'),
+  sliderSpeed: document.getElementById('sliderSpd'),
+  valueB: document.getElementById('valB'),
+  valueC: document.getElementById('valC'),
+  valueSpeed: document.getElementById('valSpd'),
+  stepCount: document.getElementById('stepCount'),
+  preset: document.getElementById('preset'),
+  resetButton: document.getElementById('btnReset'),
+});
+</script>
+</body>
+</html>
