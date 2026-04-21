@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-04-19T18:04:24.755413+00:00",
+  "generated": "2026-04-21T03:05:29.548568+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -4414,6 +4414,25 @@
       ],
       "snippet": "The N-Body Gravity sketch turns a famous mechanics problem into a live argument about numerical approximation, orbital instability, and the brief elegance of the figure-eight solution.",
       "num": 46
+    },
+    {
+      "id": "entry-47",
+      "title": "Preference, Panic, and the Grid",
+      "type": "microblog",
+      "url": "microblog/entry-47.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "confirmed",
+      "date": "2026-04-20",
+      "linkedArtifacts": [
+        "schelling"
+      ],
+      "tags": [
+        "simulation",
+        "social systems",
+        "agent-based"
+      ],
+      "snippet": "The Schelling Segregation sketch turns a famous social simulation into a live argument about thresholds, local satisfaction, and the speed with which mild preference can harden into patterned separation.",
+      "num": 47
     },
     {
       "id": "entry-5",
