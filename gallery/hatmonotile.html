@@ -12,6 +12,7 @@
 html,body{width:100%;min-height:100svh;height:100%;height:100dvh;overflow:hidden;background:#1a1a2e;touch-action:none;overscroll-behavior:none}
 body{display:flex;flex-direction:column;-webkit-text-size-adjust:100%}
 canvas{display:block;flex:1;min-height:0;width:100%;height:100%;touch-action:none}
+#ui,#ui *{touch-action:manipulation}
 #ui{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:10;
   background:rgba(20,20,40,0.85);padding:10px max(env(safe-area-inset-right),18px) max(10px,env(safe-area-inset-bottom)) max(env(safe-area-inset-left),18px);border-radius:12px;backdrop-filter:blur(8px);
   font-family:'Courier New',monospace;color:#ccc;font-size:13px}
