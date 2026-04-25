@@ -10,7 +10,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;min-height:100svh;height:100%;height:100dvh;background:#04080f;overflow:hidden;display:flex;flex-direction:column;touch-action:none;overscroll-behavior:none}
-body{-webkit-text-size-adjust:100%}
+body{-webkit-text-size-adjust:100%;padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 canvas{display:block;flex:1;min-height:0;width:100%;touch-action:none;cursor:crosshair}
 .panel,.panel *{touch-action:manipulation}
 .back{position:fixed;top:max(1rem,env(safe-area-inset-top));left:max(1rem,env(safe-area-inset-left));font:0.8rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#aaa;background:rgba(4,8,15,0.88);padding:0.5rem 0.8rem;border-radius:4px;text-decoration:none;border:1px solid #333;z-index:10;transition:border-color 0.2s}
@@ -293,6 +293,7 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', scheduleResize);
   window.visualViewport.addEventListener('scroll', scheduleResize);
 }
+matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change', scheduleResize, { once: true });
 window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); });
 resize();
 </script>
