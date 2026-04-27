@@ -375,7 +375,14 @@ if(window.visualViewport){
   window.visualViewport.addEventListener('resize',scheduleResize);
   window.visualViewport.addEventListener('scroll',scheduleResize);
 }
-matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change',scheduleResize,{once:true});
+let dprQuery;
+function watchDpr(){
+  if(dprQuery) dprQuery.removeEventListener('change',watchDpr);
+  dprQuery=matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  dprQuery.addEventListener('change',watchDpr,{once:true});
+  scheduleResize();
+}
+watchDpr();
 window.addEventListener('orientationchange',()=>{setTimeout(scheduleResize,200);});
 
 resize();

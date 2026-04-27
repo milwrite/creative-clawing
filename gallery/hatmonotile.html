@@ -362,7 +362,14 @@ if(window.visualViewport){
   window.visualViewport.addEventListener('resize',scheduleRender);
   window.visualViewport.addEventListener('scroll',scheduleRender);
 }
-matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change',scheduleRender,{once:true});
+let dprQuery;
+function watchDpr(){
+  if(dprQuery) dprQuery.removeEventListener('change',watchDpr);
+  dprQuery=matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  dprQuery.addEventListener('change',watchDpr,{once:true});
+  scheduleRender();
+}
+watchDpr();
 window.addEventListener('orientationchange',()=>{setTimeout(scheduleRender,200);});
 
 // Hide UI in iframe
