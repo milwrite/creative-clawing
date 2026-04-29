@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 184,
+    "totalCommits": 185,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -53,10 +53,11 @@
       "2026-04-24": 2,
       "2026-04-25": 1,
       "2026-04-26": 1,
-      "2026-04-27": 1
+      "2026-04-27": 1,
+      "2026-04-28": 1
     },
     "categoryCounts": {
-      "blog": 25,
+      "blog": 26,
       "mobile": 15,
       "fix": 34,
       "other": 95,
@@ -67,6 +68,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "d9d64b33",
+        "date": "2026-04-28",
+        "subject": "microblog ising post",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "c7d620a8",
         "date": "2026-04-27",
@@ -1545,7 +1554,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 466,
+    "totalCommits": 467,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1600,7 +1609,7 @@
       "2026-04-21": 2,
       "2026-04-23": 2,
       "2026-04-25": 2,
-      "2026-04-27": 1
+      "2026-04-27": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1608,11 +1617,19 @@
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 145,
+      "chore": 146,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "16305273",
+        "date": "2026-04-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "f91e62d1",
         "date": "2026-04-27",
