@@ -22,7 +22,11 @@
       overscroll-behavior: none;
       -webkit-text-size-adjust: 100%;
       touch-action: manipulation;
-      padding-bottom: env(safe-area-inset-bottom);
+      padding:
+        env(safe-area-inset-top)
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
     }
     main {
       flex: 1; min-height: 0;
@@ -144,10 +148,22 @@
   }
   if (sf) sf.addEventListener('load', pingFrame, { once: true });
   window.addEventListener('resize', pingFrame, { passive: true });
+  window.addEventListener('pageshow', pingFrame, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) pingFrame();
+  }, { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', pingFrame, { passive: true });
     window.visualViewport.addEventListener('scroll', pingFrame, { passive: true });
   }
+  let dprQuery;
+  function watchDpr() {
+    if (dprQuery) dprQuery.removeEventListener('change', watchDpr);
+    dprQuery = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+    dprQuery.addEventListener('change', watchDpr, { once: true });
+    pingFrame();
+  }
+  watchDpr();
   const contributorMenu = document.querySelector('.menu-group');
   if (!contributorMenu) return;
   contributorMenu.querySelectorAll('a').forEach(link => {

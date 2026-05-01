@@ -372,6 +372,10 @@ sSpd.addEventListener('input',()=>{speed=parseInt(sSpd.value);vSpd.textContent=s
 sMode.addEventListener('change',()=>{mode=sMode.value;animT=0;});
 document.getElementById('btnShuffle').addEventListener('click',initVec);
 window.addEventListener('resize',scheduleResize);
+window.addEventListener('pageshow',scheduleResize,{passive:true});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden) scheduleResize();
+},{passive:true});
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize',scheduleResize);
   window.visualViewport.addEventListener('scroll',scheduleResize);

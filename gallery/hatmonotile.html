@@ -359,6 +359,10 @@ resetBtn.addEventListener('click',()=>{
 });
 
 window.addEventListener('resize',scheduleRender);
+window.addEventListener('pageshow',scheduleRender,{passive:true});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden) scheduleRender();
+},{passive:true});
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize',scheduleRender);
   window.visualViewport.addEventListener('scroll',scheduleRender);
