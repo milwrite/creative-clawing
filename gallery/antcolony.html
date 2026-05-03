@@ -10,10 +10,11 @@
 <title>Ant Colony</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;height:100dvh;background:#04060a;overflow:hidden}
+html,body{width:100%;min-height:100svh;min-height:-webkit-fill-available;height:100%;height:100dvh;background:#04060a;overflow:hidden;touch-action:none;overscroll-behavior:none}
+body{position:relative;-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 canvas{display:block;width:100%;height:100%;touch-action:none}
-#info{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.6);padding:6px 14px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center}
-.back-btn{position:fixed;top:max(16px, env(safe-area-inset-top));right:max(16px, env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s}
+#info{position:fixed;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:min(calc(100vw - max(32px,env(safe-area-inset-left) + env(safe-area-inset-right) + 32px)),42rem);color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.6);padding:6px 14px;border-radius:6px;font:12px/1.5 ui-monospace,monospace;pointer-events:none;text-align:center}
+.back-btn{position:fixed;top:max(16px, env(safe-area-inset-top));right:max(16px, env(safe-area-inset-right));background:rgba(20,20,20,0.8);border:1px solid #444;color:#e0e0e0;padding:8px 14px;border-radius:6px;font:12px ui-monospace,monospace;cursor:pointer;text-decoration:none;backdrop-filter:blur(8px);z-index:1000;transition:border-color 0.2s;touch-action:manipulation}
 .back-btn:hover{border-color:#888}
 </style>
 </head>
@@ -23,7 +24,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <div id="info">Ant Colony · click to place food · right-click to move nest</div>
 <script>
 const c=document.getElementById('c'),ctx=c.getContext('2d');
-let W,H;
+let W,H,dpr=1;
 
 // ── grid resolution ──────────────────────────────────────────────────────────
 // We maintain two pheromone layers on a reduced-resolution grid:
@@ -229,7 +230,18 @@ function spawnFood(ex,ey){
 }
 
 function init(){
-  W=c.width=innerWidth;H=c.height=innerHeight;
+  const viewport=window.visualViewport;
+  const width=Math.round(viewport?.width||window.innerWidth||document.documentElement.clientWidth||0);
+  const height=Math.round(viewport?.height||window.innerHeight||document.documentElement.clientHeight||0);
+  dpr=Math.min(window.devicePixelRatio||1,2);
+  W=Math.max(width,1);
+  H=Math.max(height,1);
+  c.width=Math.max(1,Math.round(W*dpr));
+  c.height=Math.max(1,Math.round(H*dpr));
+  c.style.width=`${W}px`;
+  c.style.height=`${H}px`;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
   GW=Math.ceil(W/CELL);GH=Math.ceil(H/CELL);
   phHome=new Float32Array(GW*GH);
   phFood=new Float32Array(GW*GH);
@@ -261,9 +273,34 @@ function loop(){
   render();
 }
 
-addEventListener('resize',init);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+let resizeQueued=false;
+function scheduleResize(){
+  if(resizeQueued)return;
+  resizeQueued=true;
+  requestAnimationFrame(()=>{
+    resizeQueued=false;
+    init();
+  });
+}
+
+addEventListener('resize',scheduleResize,{passive:true});
+window.addEventListener('pageshow',scheduleResize,{passive:true});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden)scheduleResize();
+},{passive:true});
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',scheduleResize,{passive:true});
+  window.visualViewport.addEventListener('scroll',scheduleResize,{passive:true});
+}
+window.addEventListener('orientationchange',()=>requestAnimationFrame(scheduleResize),{passive:true});
+let dprQuery;
+function watchDpr(){
+  if(dprQuery)dprQuery.removeEventListener('change',watchDpr);
+  dprQuery=matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  dprQuery.addEventListener('change',watchDpr,{once:true});
+  scheduleResize();
+}
+watchDpr();
 requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 
 // Click to add food
