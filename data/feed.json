@@ -950,6 +950,12 @@
       "url": "microblog/entry-53.html"
     },
     {
+      "id": "entry-55",
+      "title": "When Every Source Starts Talking at Once",
+      "type": "microblog",
+      "url": "microblog/entry-55.html"
+    },
+    {
       "id": "entry-6",
       "title": "Lorenz Broke Weather Prediction",
       "type": "microblog",
@@ -972,12 +978,6 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
-    },
-    {
-      "id": "entry-55",
-      "title": "When Every Source Starts Talking at Once",
-      "type": "microblog",
-      "url": "microblog/entry-55.html"
     }
   ],
   "feed": [
@@ -1927,6 +1927,12 @@
       "title": "The Road Is the Message",
       "type": "microblog",
       "url": "microblog/entry-53.html"
+    },
+    {
+      "id": "entry-55",
+      "title": "When Every Source Starts Talking at Once",
+      "type": "microblog",
+      "url": "microblog/entry-55.html"
     },
     {
       "id": "entry-6",
