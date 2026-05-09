@@ -79,20 +79,22 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   content:"";
   position:absolute;
   inset:0;
+  z-index:1;
+  pointer-events:none;
   background:
     linear-gradient(135deg,rgba(255,255,255,.035),transparent 46%),
     #0a0a0a;
+  opacity:.18;
 }
-.card-preview.has-poster::before{opacity:0}
-.card-preview.has-fallback-poster::before{opacity:.22}
-.card-overlay{position:absolute;inset:0;z-index:1;touch-action:auto}
-.card-preview iframe{
-  width:100%;height:100%;border:0;display:block;
-  background:#000;pointer-events:none;
-  opacity:0;transition:opacity .25s ease;
+.card-preview-image{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  object-fit:cover;
+  background:#050505;
 }
-.card-preview iframe.if-ready{opacity:1}
-.card-preview iframe.poster-loader{opacity:0}
+.card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
 .card-meta{
   border-top:1px solid var(--soft);
   padding:7px 8px;display:grid;gap:2px;
@@ -303,337 +305,167 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview" data-src="gallery/${a.file}.html" data-title="${a.name}">
+        <div class="card-preview" data-src="gallery/${escapeAttr(a.file)}.html" data-title="${escapeAttr(a.name)}">
+          <img class="card-preview-image" alt="" loading="lazy" decoding="async" src="${previewURL(a)}"/>
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
-          <div class="card-name">${a.name}</div>
-          <div class="card-tag">${a.tag}${a.author ? ' · ' + a.author : ''}</div>
-          ${a.description ? `<div class="card-desc">${a.description}</div>` : ''}
+          <div class="card-name">${escapeHTML(a.name)}</div>
+          <div class="card-tag">${escapeHTML(a.tag)}${a.author ? ' · ' + escapeHTML(a.author) : ''}</div>
+          ${a.description ? `<div class="card-desc">${escapeHTML(a.description)}</div>` : ''}
         </div>
       </a>`).join('');
-    attachObserver();
   }
 
-  // IntersectionObserver-based poster capture.
-  // Keep only a few live iframes active long enough to synthesize input and
-  // capture a poster; the gallery should display static previews, not 24 loops.
-  const mobilePreviewQuery = window.matchMedia('(max-width: 760px)');
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const liveSet = new Set();
-  const pendingSet = new Set();
-  const activeSet = new Set();
-  const posterCache = new Map();
-  let observer = null;
-  let drainScheduled = false;
-  let refreshRaf = 0;
-  let lastRefresh = 0;
-
-  function liveLimit() {
-    if (reducedMotionQuery.matches) return 1;
-    return mobilePreviewQuery.matches ? 2 : 4;
+  function escapeHTML(value) {
+    return String(value || '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
   }
 
-  function frameDistanceFromViewport(f) {
-    const r = f.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = cx - window.innerWidth / 2;
-    const dy = cy - window.innerHeight / 2;
-    const outsideX = Math.max(0, -r.right, r.left - window.innerWidth);
-    const outsideY = Math.max(0, -r.bottom, r.top - window.innerHeight);
-    return Math.hypot(dx, dy * 1.35) + (outsideX + outsideY) * 4;
+  function escapeAttr(value) {
+    return escapeHTML(value).replace(/`/g, '&#96;');
   }
 
-  function applyPoster(f, url) {
-    f.style.backgroundImage = `url(${url})`;
-    f.classList.add('has-poster');
-    f.dataset.posterReady = '1';
+  function hashString(value) {
+    let h = 2166136261;
+    for (let i = 0; i < value.length; i++) h = Math.imul(h ^ value.charCodeAt(i), 16777619);
+    return h >>> 0;
   }
 
-  function applyCachedPoster(f) {
-    const url = posterCache.get(f.dataset.src);
-    if (!url) return false;
-    applyPoster(f, url);
-    return true;
+  function seededRandom(seed) {
+    return function next() {
+      seed = (seed + 0x6D2B79F5) >>> 0;
+      let t = seed;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
   }
 
-  function canvasMetrics(canvas) {
-    const sample = document.createElement('canvas');
-    sample.width = 96;
-    sample.height = 96;
-    const sampleCtx = sample.getContext('2d', { willReadFrequently: true });
-    sampleCtx.drawImage(canvas, 0, 0, sample.width, sample.height);
-    const data = sampleCtx.getImageData(0, 0, sample.width, sample.height).data;
-    let sum = 0;
-    let sumSq = 0;
-    let nonDark = 0;
-    for (let i = 0; i < data.length; i += 4) {
-      const v = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      sum += v;
-      sumSq += v * v;
-      if (v > 24) nonDark++;
+  function pickPalette(tag, seed) {
+    const palettes = {
+      algorithm: ['#7dd3fc', '#f472b6', '#f8fafc', '#312e81'],
+      attractor: ['#a78bfa', '#22d3ee', '#f0abfc', '#120817'],
+      audio: ['#67e8f9', '#bef264', '#f9a8d4', '#071314'],
+      'cellular-automaton': ['#facc15', '#38bdf8', '#fb7185', '#080b10'],
+      fractal: ['#93c5fd', '#c4b5fd', '#34d399', '#09070f'],
+      geometry: ['#e5e7eb', '#fbbf24', '#60a5fa', '#080808'],
+      'historical-homage': ['#f5e6c8', '#ef4444', '#2563eb', '#11100d'],
+      infrastructure: ['#94a3b8', '#22c55e', '#38bdf8', '#07090c'],
+      mathematics: ['#86efac', '#c084fc', '#f9fafb', '#080b08'],
+      noise: ['#fca5a5', '#fde68a', '#93c5fd', '#0c0808'],
+      optimization: ['#f97316', '#facc15', '#38bdf8', '#100b06'],
+      pattern: ['#f0abfc', '#2dd4bf', '#fde68a', '#0d0711'],
+      physics: ['#60a5fa', '#fbbf24', '#f8fafc', '#050812'],
+      simulation: ['#34d399', '#fb7185', '#93c5fd', '#07100c'],
+    };
+    const keys = Object.keys(palettes);
+    return palettes[tag] || palettes[keys[seed % keys.length]];
+  }
+
+  function fmt(n) {
+    return Number(n).toFixed(1);
+  }
+
+  function pathFromSeed(rng, w, h, turns) {
+    const startY = h * (0.2 + rng() * 0.6);
+    let d = `M ${fmt(-12)} ${fmt(startY)}`;
+    for (let i = 0; i < turns; i++) {
+      const x1 = w * ((i + 0.25) / turns);
+      const x2 = w * ((i + 0.55) / turns);
+      const x = w * ((i + 1) / turns) + 12;
+      const y1 = h * (0.12 + rng() * 0.76);
+      const y2 = h * (0.12 + rng() * 0.76);
+      const y = h * (0.12 + rng() * 0.76);
+      d += ` C ${fmt(x1)} ${fmt(y1)}, ${fmt(x2)} ${fmt(y2)}, ${fmt(x)} ${fmt(y)}`;
     }
-    const n = data.length / 4;
-    const mean = sum / n;
-    const variance = sumSq / n - mean * mean;
-    return { mean, variance, nonDarkRatio: nonDark / n };
+    return d;
   }
 
-  function hasVisibleCanvasContent(metrics) {
-    if (!metrics) return false;
-    if (metrics.nonDarkRatio > 0.035) return true;
-    if (metrics.nonDarkRatio > 0.006 && metrics.variance > 58) return true;
-    return metrics.mean > 36 && metrics.variance > 8;
+  function categoryMarks(tag, rng, palette, seed) {
+    const w = 320, h = 220;
+    const [a, b, c] = palette;
+    if (tag === 'cellular-automaton') {
+      let rows = '';
+      let cells = Array.from({ length: 34 }, (_, i) => i === 17 ? 1 : (rng() > 0.82 ? 1 : 0));
+      const rule = [30, 45, 54, 90, 110, 150][seed % 6];
+      for (let y = 0; y < 20; y++) {
+        rows += cells.map((v, x) => v ? `<rect x="${x * 10 - 9}" y="${y * 10 + 10}" width="8" height="8" fill="${x % 2 ? a : b}" opacity="${0.35 + y * 0.025}"/>` : '').join('');
+        cells = cells.map((_, i) => {
+          const l = cells[(i - 1 + cells.length) % cells.length], m = cells[i], r = cells[(i + 1) % cells.length];
+          return (rule >> ((l << 2) | (m << 1) | r)) & 1;
+        });
+      }
+      return rows;
+    }
+    if (tag === 'geometry' || tag === 'mathematics') {
+      const sides = 3 + seed % 5;
+      let pts = '';
+      for (let i = 0; i < sides; i++) {
+        const angle = -Math.PI / 2 + Math.PI * 2 * i / sides;
+        pts += `${fmt(160 + Math.cos(angle) * (58 + rng() * 42))},${fmt(106 + Math.sin(angle) * (42 + rng() * 30))} `;
+      }
+      return `<polygon points="${pts}" fill="none" stroke="${a}" stroke-width="2.5" opacity=".72"/><polygon points="${pts}" fill="${b}" opacity=".10"/>`;
+    }
+    if (tag === 'attractor' || tag === 'fractal') {
+      let paths = '';
+      for (let i = 0; i < 5; i++) {
+        const hue = [a, b, c][i % 3];
+        paths += `<path d="${pathFromSeed(rng, w, h, 4)}" fill="none" stroke="${hue}" stroke-width="${fmt(0.8 + rng() * 1.4)}" opacity="${fmt(0.35 + rng() * 0.38)}"/>`;
+      }
+      return paths;
+    }
+    if (tag === 'physics' || tag === 'simulation') {
+      let nodes = '';
+      for (let i = 0; i < 18; i++) {
+        const x = 32 + rng() * 256, y = 34 + rng() * 150, r = 2 + rng() * 9;
+        nodes += `<circle cx="${fmt(x)}" cy="${fmt(y)}" r="${fmt(r)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.32 + rng() * 0.48)}"/>`;
+      }
+      return `<path d="${pathFromSeed(rng, w, h, 3)}" fill="none" stroke="${a}" stroke-width="1.4" opacity=".44"/>${nodes}`;
+    }
+    if (tag === 'algorithm' || tag === 'optimization' || tag === 'infrastructure') {
+      let bars = '';
+      for (let i = 0; i < 18; i++) {
+        const bh = 12 + rng() * 94;
+        bars += `<rect x="${18 + i * 16}" y="${fmt(176 - bh)}" width="10" height="${fmt(bh)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.36 + rng() * 0.42)}"/>`;
+      }
+      return bars + `<path d="${pathFromSeed(rng, w, h, 3)}" fill="none" stroke="${c}" stroke-width="1.2" opacity=".5"/>`;
+    }
+    let dots = '';
+    for (let i = 0; i < 52; i++) {
+      dots += `<circle cx="${fmt(18 + rng() * 284)}" cy="${fmt(18 + rng() * 172)}" r="${fmt(1 + rng() * 3.8)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.22 + rng() * 0.5)}"/>`;
+    }
+    return dots + `<path d="${pathFromSeed(rng, w, h, 4)}" fill="none" stroke="${a}" stroke-width="1.8" opacity=".48"/>`;
   }
 
-  function fallbackPoster(f) {
+  function previewURL(a) {
+    const seed = hashString(`${a.file}|${a.name}|${a.tag}|${a.author}`);
+    const rng = seededRandom(seed);
+    const palette = pickPalette(a.tag, seed);
+    const bg = palette[3] || '#080808';
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">
-      <rect width="320" height="220" fill="#080808"/>
-      <path d="M0 180 C70 118 126 236 214 102 S292 78 320 46" fill="none" stroke="#d7f29b" stroke-opacity=".45" stroke-width="2"/>
-      <path d="M0 72 C82 114 122 10 204 78 S284 154 320 128" fill="none" stroke="#8eb8e8" stroke-opacity=".35" stroke-width="2"/>
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="${palette[0]}" stop-opacity=".16"/>
+          <stop offset=".55" stop-color="${palette[1]}" stop-opacity=".08"/>
+          <stop offset="1" stop-color="${palette[2]}" stop-opacity=".12"/>
+        </linearGradient>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity=".055" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="320" height="220" fill="${bg}"/>
+      <rect width="320" height="220" fill="url(#g)"/>
+      <rect width="320" height="220" fill="url(#grid)"/>
+      ${categoryMarks(a.tag, rng, palette, seed)}
     </svg>`;
-    const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    posterCache.set(f.dataset.src, url);
-    applyPoster(f, url);
-    f.classList.add('has-fallback-poster');
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
-
-  function dispatchPreviewInput(iframe) {
-    const win = iframe.contentWindow;
-    const doc = iframe.contentDocument;
-    const canvas = doc && doc.querySelector('canvas');
-    if (!win || !doc || !canvas) return;
-
-    try { win.dispatchEvent(new win.Event('resize')); } catch (_) {}
-    const rect = canvas.getBoundingClientRect();
-    const points = [
-      [rect.left + rect.width * 0.50, rect.top + rect.height * 0.50],
-      [rect.left + rect.width * 0.28, rect.top + rect.height * 0.35],
-      [rect.left + rect.width * 0.72, rect.top + rect.height * 0.62],
-    ];
-    const originalSetPointerCapture = canvas.setPointerCapture;
-    const originalReleasePointerCapture = canvas.releasePointerCapture;
-    try { canvas.setPointerCapture = () => {}; } catch (_) {}
-    try { canvas.releasePointerCapture = () => {}; } catch (_) {}
-    try {
-      points.forEach(([clientX, clientY], index) => {
-        const opts = { bubbles: true, cancelable: true, clientX, clientY, pointerId: index + 1, button: 0, buttons: 1 };
-        try { canvas.dispatchEvent(new win.PointerEvent('pointerdown', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('mousedown', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.PointerEvent('pointermove', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('mousemove', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('click', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.PointerEvent('pointerup', { ...opts, buttons: 0 })); } catch (_) {}
-      });
-    } finally {
-      try { canvas.setPointerCapture = originalSetPointerCapture; } catch (_) {}
-      try { canvas.releasePointerCapture = originalReleasePointerCapture; } catch (_) {}
-    }
-    try { doc.dispatchEvent(new win.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ', code: 'Space' })); } catch (_) {}
-
-    try { if (typeof win.resetSim === 'function') win.resetSim(); } catch (_) {}
-    try { if (typeof win.cyclePreset === 'function') win.cyclePreset(); } catch (_) {}
-    try { if (typeof win.cycleMode === 'function') win.cycleMode(); } catch (_) {}
-    try { if (typeof win.seedMode === 'function') win.seedMode('target'); } catch (_) {}
-    try { if (typeof win.excite === 'function') win.excite(100, 75, 24); } catch (_) {}
-    try { if (typeof win.__creativeClawingPreview === 'function') win.__creativeClawingPreview(); } catch (_) {}
-    try {
-      if (typeof win.step === 'function') {
-        for (let i = 0; i < 120; i++) win.step();
-      }
-    } catch (_) {}
-    try {
-      if (typeof win.integrate === 'function') {
-        for (let i = 0; i < 240; i++) win.integrate();
-      }
-    } catch (_) {}
-    try { if (typeof win.drawSim === 'function') win.drawSim(); } catch (_) {}
-    try { if (typeof win.draw === 'function') win.draw(); } catch (_) {}
-  }
-
-  function capturePoster(f, iframe, finalize) {
-    if (!iframe.isConnected) return true;
-    if (f.dataset.posterReady === '1') {
-      ejectIframe(f);
-      scheduleDrain();
-      return true;
-    }
-    let url = '';
-    let bestMetrics = null;
-    try {
-      const doc = iframe.contentDocument;
-      const canvases = doc ? [...doc.querySelectorAll('canvas')].filter(el => el.width > 0 && el.height > 0) : [];
-      let bestCanvas = null;
-      let bestScore = -Infinity;
-      for (const canvas of canvases) {
-        const metrics = canvasMetrics(canvas);
-        const score = metrics.variance + metrics.nonDarkRatio * 500;
-        if (score > bestScore) {
-          bestScore = score;
-          bestCanvas = canvas;
-          bestMetrics = metrics;
-        }
-      }
-      if (bestCanvas && hasVisibleCanvasContent(bestMetrics)) url = bestCanvas.toDataURL('image/jpeg', 0.72);
-    } catch (_) {}
-    if (url && url.length > 128) {
-      posterCache.set(f.dataset.src, url);
-      document.querySelectorAll('.card-preview[data-src]').forEach(el => {
-        if (el.dataset.src === f.dataset.src) applyPoster(el, url);
-      });
-      ejectIframe(f);
-      scheduleDrain();
-      return true;
-    }
-    if (!finalize) {
-      dispatchPreviewInput(iframe);
-      return false;
-    }
-    fallbackPoster(f);
-    ejectIframe(f);
-    scheduleDrain();
-    return false;
-  }
-
-  function injectIframe(f) {
-    if (f.dataset.posterReady || applyCachedPoster(f)) return;
-    if (f.querySelector('iframe')) return;
-    if (liveSet.size >= liveLimit()) {
-      pendingSet.add(f);
-      return;
-    }
-    pendingSet.delete(f);
-    const iframe = document.createElement('iframe');
-    iframe.className = 'poster-loader';
-    iframe.src = f.dataset.src;
-    iframe.loading = 'lazy';
-    iframe.title = f.dataset.title || '';
-    iframe.addEventListener('load', () => {
-      setTimeout(() => {
-        try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-        iframe.classList.add('if-ready');
-      }, 80);
-      setTimeout(() => {
-        try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-      }, 400);
-      setTimeout(() => dispatchPreviewInput(iframe), 180);
-      setTimeout(() => capturePoster(f, iframe, false), 720);
-      setTimeout(() => capturePoster(f, iframe, true), 1280);
-      scheduleDrain();
-    }, { once: true });
-    f.insertBefore(iframe, f.firstChild);
-    liveSet.add(f);
-  }
-
-  function ejectIframe(f) {
-    const iframe = f.querySelector('iframe');
-    if (iframe) {
-      iframe.src = 'about:blank';
-      iframe.remove();
-    }
-    liveSet.delete(f);
-    pendingSet.delete(f);
-  }
-
-  function drainPending() {
-    drainScheduled = false;
-    for (const pf of pendingSet) {
-      if (liveSet.size >= liveLimit()) break;
-      injectIframe(pf);
-      break;
-    }
-    if (pendingSet.size && liveSet.size < liveLimit()) scheduleDrain();
-  }
-
-  function scheduleDrain() {
-    if (drainScheduled) return;
-    drainScheduled = true;
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(drainPending, { timeout: 240 });
-    } else {
-      setTimeout(drainPending, 90);
-    }
-  }
-
-  function refreshPreviews(ts) {
-    refreshRaf = 0;
-    lastRefresh = ts || performance.now();
-    const candidates = [...activeSet]
-      .filter(f => f.isConnected)
-      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b));
-    const keep = new Set();
-    let loadingSlots = 0;
-    for (const f of candidates) {
-      if (f.dataset.posterReady || applyCachedPoster(f)) {
-        keep.add(f);
-      } else if (loadingSlots < liveLimit()) {
-        keep.add(f);
-        loadingSlots++;
-      }
-    }
-
-    for (const f of liveSet) {
-      if (!keep.has(f)) ejectIframe(f);
-    }
-    for (const f of pendingSet) {
-      if (!keep.has(f) || f.dataset.posterReady || applyCachedPoster(f)) pendingSet.delete(f);
-    }
-    for (const f of keep) {
-      if (f.dataset.posterReady || applyCachedPoster(f)) continue;
-      if (!f.querySelector('iframe')) pendingSet.add(f);
-    }
-    scheduleDrain();
-  }
-
-  function scheduleRefresh() {
-    if (refreshRaf) return;
-    refreshRaf = requestAnimationFrame(refreshPreviews);
-  }
-
-  function resetPreviews() {
-    if (observer) observer.disconnect();
-    observer = null;
-    for (const f of [...liveSet]) ejectIframe(f);
-    liveSet.clear();
-    pendingSet.clear();
-    activeSet.clear();
-    if (refreshRaf) cancelAnimationFrame(refreshRaf);
-    refreshRaf = 0;
-  }
-
-  function attachObserver() {
-    resetPreviews();
-    observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        const f = e.target;
-        if (e.isIntersecting) {
-          activeSet.add(f);
-        } else {
-          activeSet.delete(f);
-          pendingSet.delete(f);
-          ejectIframe(f);
-        }
-      });
-      scheduleRefresh();
-    }, { rootMargin: '400px' });
-    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
-      if (!applyCachedPoster(el)) observer.observe(el);
-    });
-    scheduleRefresh();
-  }
-
-  function watchMediaQuery(query, callback) {
-    if (query.addEventListener) query.addEventListener('change', callback);
-    else if (query.addListener) query.addListener(callback);
-  }
-
-  setInterval(scheduleRefresh, 1200);
-  window.addEventListener('scroll', () => {
-    if (performance.now() - lastRefresh > 1200) scheduleRefresh();
-  }, { passive: true });
-  watchMediaQuery(mobilePreviewQuery, scheduleRefresh);
-  watchMediaQuery(reducedMotionQuery, scheduleRefresh);
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();

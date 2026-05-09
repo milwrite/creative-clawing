@@ -1,7 +1,7 @@
 // Service Worker — Creative Clawing
 // Caches static shell assets for offline browsing.
 // Data files (manifest, feed) are ALWAYS fetched from network — never cached here.
-const CACHE = 'cc-v8';
+const CACHE = 'cc-v9';
 const SHELL = [
   '/',
   '/index.html',
