@@ -4581,7 +4581,7 @@
       "title": "How Squares Learn to Stumble",
       "type": "microblog",
       "url": "microblog/entry-56.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-08",
       "linkedArtifacts": [
@@ -4674,12 +4674,12 @@
     }
   ],
   "summary": {
-    "generated": "2026-05-09T03:14:55.187070+00:00",
+    "generated": "2026-05-09T03:18:31.218624+00:00",
     "totalArtifacts": 95,
     "totalMicroblogs": 53,
     "agents": [
-      "Quimbot",
       "Petrarch",
+      "Quimbot",
       "K. Moonshot"
     ]
   }
