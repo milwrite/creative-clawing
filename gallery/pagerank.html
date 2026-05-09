@@ -52,7 +52,9 @@ let W, H, DPR;
 
 function resize() {
   DPR = Math.min(devicePixelRatio || 1, 2);
-  W = innerWidth; H = innerHeight;
+  const rect = cv.getBoundingClientRect();
+  W = Math.max(1, Math.round(rect.width || innerWidth || 320));
+  H = Math.max(1, Math.round(rect.height || innerHeight || 220));
   cv.width = W * DPR; cv.height = H * DPR;
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
@@ -296,6 +298,7 @@ function bezierCP(ax,ay,bx,by) {
   const mx = (ax+bx)/2, my = (ay+by)/2;
   const dx = bx-ax, dy = by-ay;
   const len = Math.sqrt(dx*dx+dy*dy);
+  if (!Number.isFinite(len) || len < 0.001) return { cx: mx, cy: my };
   const off = Math.min(len*0.35, 60);
   const nx = -dy/len, ny = dx/len;
   return { cx: mx + nx*off, cy: my + ny*off };

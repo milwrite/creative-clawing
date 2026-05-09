@@ -1,7 +1,7 @@
 // Service Worker — Creative Clawing
 // Caches static shell assets for offline browsing.
 // Data files (manifest, feed) are ALWAYS fetched from network — never cached here.
-const CACHE = 'cc-v4';
+const CACHE = 'cc-v8';
 const SHELL = [
   '/',
   '/index.html',
@@ -47,17 +47,20 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Shell assets: cache-first with network fallback
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(res => {
-        if (res.ok && SHELL.includes(url.pathname)) {
+  const isShell = SHELL.includes(url.pathname);
+
+  if (isShell) {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if (res.ok) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => cached);
-    })
-  );
+      }).catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });

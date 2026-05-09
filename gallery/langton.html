@@ -35,7 +35,7 @@ const CELL=3;
 // Directions: 0=N 1=E 2=S 3=W
 const DX=[0,1,0,-1],DY=[-1,0,1,0];
 
-let cols,rows,grid,ants=[],step=0,running=true,spf=50;
+let cols,rows,grid,imageData,ants=[],step=0,running=true,spf=50;
 
 const PALETTE=[
   [10,10,20],    // state 0: dark bg
@@ -54,6 +54,7 @@ function init(){
   c.width=pw; c.height=ph;
   cols=pw; rows=ph;
   grid=new Uint8Array(cols*rows);
+  imageData=ctx.createImageData(cols,rows);
   ants=[makeAnt(Math.floor(cols/2),Math.floor(rows/2),120)];
   step=0;
 }
@@ -72,8 +73,7 @@ function tick(){
 }
 
 function draw(){
-  const img=ctx.getImageData(0,0,cols,rows);
-  const d=img.data;
+  const d=imageData.data;
   for(let i=0;i<cols*rows;i++){
     const s=grid[i];
     const b=i*4;
@@ -89,7 +89,7 @@ function draw(){
     const [r,g,bl]=[[255,t,0],[q,255,0],[0,255,t],[0,q,255],[t,0,255],[255,0,q]][hi%6];
     d[b]=r;d[b+1]=g;d[b+2]=bl;d[b+3]=255;
   }
-  ctx.putImageData(img,0,0);
+  ctx.putImageData(imageData,0,0);
   document.getElementById('steps').textContent=`step ${step.toLocaleString()}  ants ${ants.length}`;
 }
 

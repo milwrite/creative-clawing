@@ -223,6 +223,14 @@ function loop() {
 
 function togglePause() { paused = !paused; }
 
+window.__creativeClawingPreview = function () {
+  reset();
+  const oldSpeed = speed;
+  speed = oldSpeed * 1.45;
+  for (let i = 0; i < 520; i++) step();
+  speed = oldSpeed;
+};
+
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);reset();loop();});
 </script>
 </body>

@@ -82,6 +82,15 @@ function draw(){
   t++;
   requestAnimationFrame(draw);
 }
+window.__creativeClawingPreview = function warmupPreview() {
+  mx = 0.72;
+  my = 0.34;
+  trail = true;
+  resize();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
 </script>
 

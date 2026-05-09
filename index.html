@@ -125,7 +125,23 @@
       gap: 10px;
       width: max-content;
       padding: 8px 0;
+      --lane-cycle-x: -1px;
+      --lane-duration: 60s;
+      animation: lane-scroll-forward var(--lane-duration) linear infinite;
+      animation-play-state: paused;
       will-change: transform;
+      transform: translate3d(0,0,0);
+      backface-visibility: hidden;
+    }
+    .lane-track[data-dir="-1"] { animation-name: lane-scroll-backward; }
+    .lane.is-dragging .lane-track { animation: none; }
+    @keyframes lane-scroll-forward {
+      from { transform: translate3d(0,0,0); }
+      to { transform: translate3d(var(--lane-cycle-x),0,0); }
+    }
+    @keyframes lane-scroll-backward {
+      from { transform: translate3d(var(--lane-cycle-x),0,0); }
+      to { transform: translate3d(0,0,0); }
     }
 
     .card {
@@ -159,8 +175,23 @@
     .card iframe.if-ready { opacity: 1; }
     .card-frame {
       background: #0a0a0a;
+      background-position: center;
+      background-size: cover;
       contain: layout paint;
     }
+    .card-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.035), transparent 46%),
+        #0a0a0a;
+    }
+    .card-frame:has(iframe)::before { opacity: 0; }
+    .card-frame:has(iframe.poster-loader)::before { opacity: 1; }
+    .card-frame.has-poster::before { opacity: 0; }
+    .card-frame.has-fallback-poster::before { opacity: .22; }
+    .card-frame iframe.poster-loader { opacity: 0; }
     .card-meta {
       border-top: 1px solid var(--soft);
       padding: 7px 8px;
@@ -484,24 +515,79 @@
     </div>`;
   }
 
-  // Single shared rAF loop drives all lane scrolls — avoids N separate rAF callbacks.
+  // CSS animations drive lane scrolls, keeping the horizontal motion off the JS
+  // frame loop even while preview iframes are warming up.
   const allLanes = [];
-  let sharedLastTs = null;
-  function sharedStep(ts) {
-    const dt = sharedLastTs ? Math.min(ts - sharedLastTs, 50) : 16.67;
-    sharedLastTs = ts;
-    for (const lane of allLanes) {
-      if (!lane.paused) {
-        lane.pos += lane.pxPerSec * (dt / 1000);
-        const half = lane.track.scrollWidth / 2;
-        if (lane.pos > half) lane.pos -= half;
-        if (lane.pos < 0) lane.pos += half;
-        lane.track.style.transform = `translate3d(${-lane.pos}px,0,0)`;
-      }
-    }
-    requestAnimationFrame(sharedStep);
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let metricRefreshRaf = 0;
+
+  function wrapPosition(pos, halfWidth) {
+    if (!halfWidth) return 0;
+    return ((pos % halfWidth) + halfWidth) % halfWidth;
   }
-  requestAnimationFrame(sharedStep);
+
+  function setLaneTransform(lane, pos) {
+    lane.pos = wrapPosition(pos, lane.halfWidth);
+    lane.track.style.transform = `translate3d(${-lane.pos}px,0,0)`;
+  }
+
+  function laneTransformX(track) {
+    const transform = getComputedStyle(track).transform;
+    if (!transform || transform === 'none') return 0;
+    const values = transform.match(/matrix(3d)?\(([^)]+)\)/);
+    if (!values) return 0;
+    const parts = values[2].split(',').map(v => parseFloat(v.trim()));
+    return values[1] ? (parts[12] || 0) : (parts[4] || 0);
+  }
+
+  function measureLaneCycle(lane) {
+    const first = lane.track.children[0];
+    const repeat = lane.track.children[lane.cycleStartIndex];
+    if (first && repeat) {
+      const cycleWidth = repeat.offsetLeft - first.offsetLeft;
+      if (cycleWidth > 0) return cycleWidth;
+    }
+    return lane.track.scrollWidth / 2;
+  }
+
+  function refreshLaneMetrics() {
+    metricRefreshRaf = 0;
+    for (const lane of allLanes) {
+      lane.halfWidth = measureLaneCycle(lane);
+      lane.pos = wrapPosition(lane.pos, lane.halfWidth);
+      configureLaneAnimation(lane, lane.pos);
+    }
+  }
+
+  function scheduleLaneMetricRefresh() {
+    if (metricRefreshRaf) return;
+    metricRefreshRaf = requestAnimationFrame(refreshLaneMetrics);
+  }
+
+  function shouldRunLane(lane) {
+    return !reducedMotionQuery.matches && lane.active && !lane.paused && lane.halfWidth > 0;
+  }
+
+  function updateLanePlayback(lane) {
+    lane.track.style.animationPlayState = shouldRunLane(lane) ? 'running' : 'paused';
+  }
+
+  function configureLaneAnimation(lane, pos) {
+    if (!lane.halfWidth) {
+      updateLanePlayback(lane);
+      return;
+    }
+    const speed = Math.max(1, Math.abs(lane.pxPerSec));
+    const duration = lane.halfWidth / speed;
+    const normalized = wrapPosition(pos, lane.halfWidth);
+    const progress = lane.dir < 0 ? 1 - (normalized / lane.halfWidth) : normalized / lane.halfWidth;
+    lane.pos = normalized;
+    lane.track.style.setProperty('--lane-cycle-x', `${-lane.halfWidth}px`);
+    lane.track.style.setProperty('--lane-duration', `${duration}s`);
+    lane.track.style.animationDelay = `${-(duration * progress)}s`;
+    lane.track.style.transform = '';
+    updateLanePlayback(lane);
+  }
 
   function makeLane(cards, speed, dir) {
     const lane = document.createElement('div');
@@ -509,52 +595,77 @@
 
     const track = document.createElement('div');
     track.className = 'lane-track';
+    track.dataset.dir = dir < 0 ? '-1' : '1';
     // Duplicate cards for seamless infinite scroll
     track.innerHTML = cards.join('') + cards.join('');
     lane.appendChild(track);
 
-    // Register with shared loop
+    // Register with the compositor animation controller
     const laneState = {
+      lane,
       track,
       pos: 0,
+      halfWidth: 0,
+      cycleStartIndex: cards.length,
       paused: false,
+      active: true,
+      dir,
       // px per second — consistent across 60Hz and 120Hz displays
       pxPerSec: speed * 60 * (dir < 0 ? -1 : 1),
     };
+    lane.__laneState = laneState;
     allLanes.push(laneState);
 
-    let dragStart = 0, scrollStart = 0, isDragging = false, dragMoved = false;
+    let dragStart = 0, scrollStart = 0, activePointerId = null, isDragging = false, dragMoved = false;
     const dragThreshold = 6;
 
     function onDown(e) {
-      laneState.paused = true; isDragging = true; dragMoved = false;
-      dragStart = e.touches ? e.touches[0].clientX : e.clientX;
+      if (e.button !== undefined && e.button !== 0) return;
+      laneState.pos = wrapPosition(-laneTransformX(track), laneState.halfWidth);
+      laneState.paused = true;
+      updateLanePlayback(laneState);
+      setLaneTransform(laneState, laneState.pos);
+      isDragging = true;
+      dragMoved = false;
+      activePointerId = e.pointerId;
+      dragStart = e.clientX;
       scrollStart = laneState.pos;
       lane.classList.add('is-dragging');
-      if (!e.touches) e.preventDefault();
+      if (lane.setPointerCapture) lane.setPointerCapture(e.pointerId);
     }
+
     function onMove(e) {
-      if (!isDragging) return;
-      const x = e.touches ? e.touches[0].clientX : e.clientX;
-      const dx = dragStart - x;
-      if (Math.abs(dx) > dragThreshold) { dragMoved = true; if (e.touches) e.preventDefault(); }
-      const half = track.scrollWidth / 2;
-      laneState.pos = ((scrollStart + dx) % half + half) % half;
-      track.style.transform = `translateX(${-laneState.pos}px)`;
+      if (!isDragging || e.pointerId !== activePointerId) return;
+      const dx = dragStart - e.clientX;
+      if (Math.abs(dx) > dragThreshold) {
+        dragMoved = true;
+        e.preventDefault();
+      }
+      setLaneTransform(laneState, scrollStart + dx);
     }
-    function onUp() {
+
+    function onUp(e) {
+      if (!isDragging || (e && e.pointerId !== activePointerId)) return;
       isDragging = false;
+      activePointerId = null;
       lane.classList.remove('is-dragging');
-      setTimeout(() => { laneState.paused = false; }, 400);
+      try {
+        if (e && lane.releasePointerCapture) lane.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+      configureLaneAnimation(laneState, laneState.pos);
+      setTimeout(() => {
+        if (!isDragging) {
+          laneState.paused = false;
+          configureLaneAnimation(laneState, laneState.pos);
+        }
+      }, 240);
     }
 
     lane.addEventListener('click', e => { if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; } }, true);
-    lane.addEventListener('mousedown', onDown, { passive: false });
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    lane.addEventListener('touchstart', onDown, { passive: false });
-    lane.addEventListener('touchmove', onMove, { passive: false });
-    lane.addEventListener('touchend', onUp);
+    lane.addEventListener('pointerdown', onDown, { passive: false });
+    lane.addEventListener('pointermove', onMove, { passive: false });
+    lane.addEventListener('pointerup', onUp);
+    lane.addEventListener('pointercancel', onUp);
 
     return lane;
   }
@@ -566,8 +677,7 @@
     return contributorMap[name];
   }
   function slugify(name) { return String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
-  // Known profile pages — new agents appear in contributors section but without a profile link until their page is created
-  const contributorProfiles = { Quimbot: 'quimbot.html', Petrarch: 'petrarch.html' };
+  const contributorProfiles = manifest.summary?.agentProfiles || {};
 
   [...arts, ...blogs].forEach(item => {
     const type = item.type === 'artifact' || item.page?.startsWith('artifacts/') ? 'artifact' : 'microblog';
@@ -682,6 +792,14 @@
   contribTemp.innerHTML = contributorHTML();
   container.appendChild(contribTemp.firstElementChild);
 
+  scheduleLaneMetricRefresh();
+  window.addEventListener('resize', scheduleLaneMetricRefresh, { passive: true });
+  window.addEventListener('orientationchange', scheduleLaneMetricRefresh, { passive: true });
+  if ('ResizeObserver' in window) {
+    const laneResizeObserver = new ResizeObserver(scheduleLaneMetricRefresh);
+    allLanes.forEach(lane => laneResizeObserver.observe(lane.track));
+  }
+
 
 
   // Close contributor menu on outside click
@@ -694,26 +812,197 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  // Lazy-load lane iframes via IntersectionObserver.
-  // Cap is set high enough that all initially-visible lanes load immediately.
-  // Lanes that scroll far out of view get ejected to free GPU resources.
-  // pendingFrames: cards that were blocked by the cap when all lanes fired at once on page load.
-  const MAX_LIVE_IFRAMES = 72; // enough for the full homepage in one viewport
-  const IMMEDIATE_FRAMES_PER_LANE = 8;
-  const DRAIN_BATCH = 6;
+  // Lazy-load and evict previews so only the nearest canvas iframes are live.
+  const mobilePreviewQuery = window.matchMedia('(max-width: 760px)');
+  const DRAIN_BATCH = 1;
+  const PREVIEW_REFRESH_MS = 1600;
   const liveIframeFrames = new Set();
   const pendingFrames = new Set();
+  const activePreviewRoots = new Set();
+  const posterCache = new Map();
   let drainScheduled = false;
+  let previewRefreshRaf = 0;
+  let lastPreviewRefresh = 0;
+
+  function liveIframeLimit() {
+    if (reducedMotionQuery.matches) return 1;
+    return mobilePreviewQuery.matches ? 2 : 4;
+  }
 
   function frameDistanceFromViewport(f) {
     const r = f.getBoundingClientRect();
-    const center = r.left + (r.width / 2);
-    return Math.abs(center - (window.innerWidth / 2));
+    const cx = r.left + (r.width / 2);
+    const cy = r.top + (r.height / 2);
+    const dx = cx - (window.innerWidth / 2);
+    const dy = cy - (window.innerHeight / 2);
+    const outsideX = Math.max(0, -r.right, r.left - window.innerWidth);
+    const outsideY = Math.max(0, -r.bottom, r.top - window.innerHeight);
+    return Math.hypot(dx, dy * 1.4) + (outsideX + outsideY) * 4;
+  }
+
+  function usesPosterPreview(f) {
+    return f.classList.contains('card-frame');
+  }
+
+  function applyPoster(f, url) {
+    f.style.backgroundImage = `url(${url})`;
+    f.classList.add('has-poster');
+    f.dataset.posterReady = '1';
+  }
+
+  function applyCachedPoster(f) {
+    const url = posterCache.get(f.dataset.src);
+    if (!url) return false;
+    applyPoster(f, url);
+    return true;
+  }
+
+  function canvasMetrics(canvas) {
+    const sample = document.createElement('canvas');
+    sample.width = 96;
+    sample.height = 96;
+    const sampleCtx = sample.getContext('2d', { willReadFrequently: true });
+    sampleCtx.drawImage(canvas, 0, 0, sample.width, sample.height);
+    const data = sampleCtx.getImageData(0, 0, sample.width, sample.height).data;
+    let sum = 0;
+    let sumSq = 0;
+    let nonDark = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      sum += v;
+      sumSq += v * v;
+      if (v > 24) nonDark++;
+    }
+    const n = data.length / 4;
+    const mean = sum / n;
+    const variance = (sumSq / n) - (mean * mean);
+    return { mean, variance, nonDarkRatio: nonDark / n };
+  }
+
+  function hasVisibleCanvasContent(metrics) {
+    if (!metrics) return false;
+    if (metrics.nonDarkRatio > 0.035) return true;
+    if (metrics.nonDarkRatio > 0.006 && metrics.variance > 58) return true;
+    return metrics.mean > 36 && metrics.variance > 8;
+  }
+
+  function fallbackPoster(f) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">
+      <rect width="320" height="220" fill="#080808"/>
+      <path d="M0 180 C70 118 126 236 214 102 S292 78 320 46" fill="none" stroke="#d7f29b" stroke-opacity=".45" stroke-width="2"/>
+      <path d="M0 72 C82 114 122 10 204 78 S284 154 320 128" fill="none" stroke="#8eb8e8" stroke-opacity=".35" stroke-width="2"/>
+    </svg>`;
+    const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    posterCache.set(f.dataset.src, url);
+    applyPoster(f, url);
+    f.classList.add('has-fallback-poster');
+  }
+
+  function dispatchPreviewInput(iframe) {
+    const win = iframe.contentWindow;
+    const doc = iframe.contentDocument;
+    const canvas = doc && doc.querySelector('canvas');
+    if (!win || !doc || !canvas) return;
+
+    try { win.dispatchEvent(new win.Event('resize')); } catch (_) {}
+    const rect = canvas.getBoundingClientRect();
+    const points = [
+      [rect.left + rect.width * 0.50, rect.top + rect.height * 0.50],
+      [rect.left + rect.width * 0.28, rect.top + rect.height * 0.35],
+      [rect.left + rect.width * 0.72, rect.top + rect.height * 0.62],
+    ];
+    const originalSetPointerCapture = canvas.setPointerCapture;
+    const originalReleasePointerCapture = canvas.releasePointerCapture;
+    try { canvas.setPointerCapture = () => {}; } catch (_) {}
+    try { canvas.releasePointerCapture = () => {}; } catch (_) {}
+    try {
+      points.forEach(([clientX, clientY], index) => {
+        const opts = { bubbles: true, cancelable: true, clientX, clientY, pointerId: index + 1, button: 0, buttons: 1 };
+        try { canvas.dispatchEvent(new win.PointerEvent('pointerdown', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('mousedown', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.PointerEvent('pointermove', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('mousemove', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('click', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.PointerEvent('pointerup', { ...opts, buttons: 0 })); } catch (_) {}
+      });
+    } finally {
+      try { canvas.setPointerCapture = originalSetPointerCapture; } catch (_) {}
+      try { canvas.releasePointerCapture = originalReleasePointerCapture; } catch (_) {}
+    }
+    try { doc.dispatchEvent(new win.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ', code: 'Space' })); } catch (_) {}
+
+    // Some artifacts expose their simulation controls as globals. Use them when
+    // available so previews that normally need a tap can be captured after input.
+    try { if (typeof win.resetSim === 'function') win.resetSim(); } catch (_) {}
+    try { if (typeof win.cyclePreset === 'function') win.cyclePreset(); } catch (_) {}
+    try { if (typeof win.cycleMode === 'function') win.cycleMode(); } catch (_) {}
+    try { if (typeof win.seedMode === 'function') win.seedMode('target'); } catch (_) {}
+    try { if (typeof win.excite === 'function') win.excite(100, 75, 24); } catch (_) {}
+    try { if (typeof win.__creativeClawingPreview === 'function') win.__creativeClawingPreview(); } catch (_) {}
+    try {
+      if (typeof win.step === 'function') {
+        for (let i = 0; i < 120; i++) win.step();
+      }
+    } catch (_) {}
+    try {
+      if (typeof win.integrate === 'function') {
+        for (let i = 0; i < 240; i++) win.integrate();
+      }
+    } catch (_) {}
+    try { if (typeof win.drawSim === 'function') win.drawSim(); } catch (_) {}
+    try { if (typeof win.draw === 'function') win.draw(); } catch (_) {}
+  }
+
+  function capturePoster(f, iframe, finalize) {
+    if (!iframe.isConnected) return true;
+    if (f.dataset.posterReady === '1') {
+      ejectFrame(f);
+      scheduleDrain();
+      return true;
+    }
+    let url = '';
+    let bestMetrics = null;
+    try {
+      const doc = iframe.contentDocument;
+      const canvases = doc ? [...doc.querySelectorAll('canvas')].filter(el => el.width > 0 && el.height > 0) : [];
+      let bestCanvas = null;
+      let bestScore = -Infinity;
+      for (const canvas of canvases) {
+        const metrics = canvasMetrics(canvas);
+        const score = metrics.variance + (metrics.nonDarkRatio * 500);
+        if (score > bestScore) {
+          bestScore = score;
+          bestCanvas = canvas;
+          bestMetrics = metrics;
+        }
+      }
+      if (bestCanvas && hasVisibleCanvasContent(bestMetrics)) url = bestCanvas.toDataURL('image/jpeg', 0.72);
+    } catch (_) {}
+    if (url && url.length > 128) {
+      posterCache.set(f.dataset.src, url);
+      document.querySelectorAll('.card-frame[data-src]').forEach(el => {
+        if (usesPosterPreview(el) && el.dataset.src === f.dataset.src) applyPoster(el, url);
+      });
+      ejectFrame(f);
+      scheduleDrain();
+      return true;
+    }
+    if (!finalize) {
+      dispatchPreviewInput(iframe);
+      return false;
+    }
+    if (finalize) {
+      fallbackPoster(f);
+      ejectFrame(f);
+      scheduleDrain();
+    }
+    return false;
   }
 
   function injectOneFrame(f) {
+    if (usesPosterPreview(f) && (f.dataset.posterReady || applyCachedPoster(f))) return;
     if (f.querySelector('iframe')) return; // already live
-    if (liveIframeFrames.size >= MAX_LIVE_IFRAMES) {
+    if (liveIframeFrames.size >= liveIframeLimit()) {
       pendingFrames.add(f);
       return;
     }
@@ -721,6 +1010,7 @@
     const iframe = document.createElement('iframe');
     iframe.title = f.dataset.title || '';
     iframe.src = f.dataset.src;
+    if (usesPosterPreview(f)) iframe.className = 'poster-loader';
     // sandbox removed — same-origin trusted artifacts
     iframe.addEventListener('load', () => {
       // Delay resize dispatch so the iframe canvas has painted dimensions.
@@ -733,6 +1023,11 @@
       setTimeout(() => {
         try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
       }, 400);
+      if (usesPosterPreview(f)) {
+        setTimeout(() => dispatchPreviewInput(iframe), 180);
+        setTimeout(() => capturePoster(f, iframe, false), 720);
+        setTimeout(() => capturePoster(f, iframe, true), 1280);
+      }
       scheduleDrain();
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
@@ -742,13 +1037,13 @@
   function drainPendingBatch() {
     let loaded = 0;
     for (const f of pendingFrames) {
-      if (liveIframeFrames.size >= MAX_LIVE_IFRAMES || loaded >= DRAIN_BATCH) break;
+      if (liveIframeFrames.size >= liveIframeLimit() || loaded >= DRAIN_BATCH) break;
       pendingFrames.delete(f);
       injectOneFrame(f);
       loaded++;
     }
     drainScheduled = false;
-    if (pendingFrames.size && liveIframeFrames.size < MAX_LIVE_IFRAMES) scheduleDrain();
+    if (pendingFrames.size && liveIframeFrames.size < liveIframeLimit()) scheduleDrain();
   }
 
   function scheduleDrain() {
@@ -761,48 +1056,84 @@
     }
   }
 
-  function injectFrames(el) {
-    const frames = [...el.querySelectorAll('.card-frame[data-src]')];
-    if (el.id === 'section-recent') {
-      frames.forEach(injectOneFrame);
-      scheduleDrain();
-      return;
+  function ejectFrame(f) {
+    const iframe = f.querySelector('iframe');
+    if (!iframe) return;
+    iframe.src = 'about:blank';
+    iframe.remove();
+    liveIframeFrames.delete(f);
+  }
+
+  function refreshPreviewFrames(ts) {
+    previewRefreshRaf = 0;
+    lastPreviewRefresh = ts || performance.now();
+    const candidates = [...activePreviewRoots]
+      .flatMap(el => [...el.querySelectorAll('.card-frame[data-src]')])
+      .filter(f => f.isConnected)
+      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b));
+    const keep = new Set();
+    let loadSlots = 0;
+    for (const f of candidates) {
+      if (f.dataset.posterReady || applyCachedPoster(f)) {
+        keep.add(f);
+      } else if (loadSlots < liveIframeLimit()) {
+        keep.add(f);
+        loadSlots++;
+      }
     }
 
-    frames
-      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b))
-      .forEach((f, idx) => {
-        if (idx < IMMEDIATE_FRAMES_PER_LANE) injectOneFrame(f);
-        else pendingFrames.add(f);
-      });
+    for (const f of liveIframeFrames) {
+      if (!keep.has(f)) ejectFrame(f);
+    }
+    for (const f of pendingFrames) {
+      if (!keep.has(f)) pendingFrames.delete(f);
+    }
+    for (const f of keep) {
+      if (usesPosterPreview(f) && (f.dataset.posterReady || applyCachedPoster(f))) continue;
+      if (!f.querySelector('iframe')) pendingFrames.add(f);
+    }
     scheduleDrain();
   }
 
-  function ejectFrames(el) {
-    el.querySelectorAll('.card-frame[data-src]').forEach(f => {
-      const iframe = f.querySelector('iframe');
-      if (iframe) {
-        iframe.src = 'about:blank';
-        iframe.remove();
-        liveIframeFrames.delete(f);
-      }
-    });
-    scheduleDrain();
+  function schedulePreviewRefresh() {
+    if (previewRefreshRaf) return;
+    previewRefreshRaf = requestAnimationFrame(refreshPreviewFrames);
   }
+  setInterval(schedulePreviewRefresh, PREVIEW_REFRESH_MS);
 
   const laneObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
+      const lane = e.target.querySelector('.lane')?.__laneState;
+      if (lane) {
+        lane.active = e.isIntersecting;
+        updateLanePlayback(lane);
+      }
       if (e.isIntersecting) {
-        injectFrames(e.target);
+        activePreviewRoots.add(e.target);
       } else {
-        // Remove from pending if it scrolled out before loading
+        activePreviewRoots.delete(e.target);
         e.target.querySelectorAll('.card-frame[data-src]').forEach(f => pendingFrames.delete(f));
-        // Only eject if well over cap (give room for visible lanes)
-        if (liveIframeFrames.size > MAX_LIVE_IFRAMES * 0.75) ejectFrames(e.target);
+        e.target.querySelectorAll('.card-frame[data-src]').forEach(ejectFrame);
       }
     });
-  }, { rootMargin: '400px' });
+    schedulePreviewRefresh();
+  }, { rootMargin: '420px 0px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
+
+  function scheduleResponsivePreviewRefresh() {
+    scheduleLaneMetricRefresh();
+    allLanes.forEach(updateLanePlayback);
+    schedulePreviewRefresh();
+  }
+  function watchMediaQuery(query, callback) {
+    if (query.addEventListener) query.addEventListener('change', callback);
+    else if (query.addListener) query.addListener(callback);
+  }
+  watchMediaQuery(mobilePreviewQuery, scheduleResponsivePreviewRefresh);
+  watchMediaQuery(reducedMotionQuery, scheduleResponsivePreviewRefresh);
+  window.addEventListener('scroll', () => {
+    if (performance.now() - lastPreviewRefresh > PREVIEW_REFRESH_MS) schedulePreviewRefresh();
+  }, { passive: true });
 
   // Scroll to hash after dynamic content renders
   if (location.hash) {

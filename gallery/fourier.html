@@ -203,6 +203,16 @@ canvas.addEventListener('touchend', e => {
 
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+window.__creativeClawingPreview = function warmupPreview() {
+  resize();
+  shapeIdx = 3;
+  numHarmonics = 14;
+  trail.length = 0;
+  updateInfo();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
 </script>
 </body>

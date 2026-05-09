@@ -188,6 +188,12 @@ c.addEventListener('touchstart', e => { e.preventDefault(); generate(); }, { pas
 window.addEventListener('resize', generate);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',generate);
 window.addEventListener('orientationchange',()=>{setTimeout(generate,200);});
+window.__creativeClawingPreview = function warmupPreview() {
+  generate();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 requestAnimationFrame(()=>{generate();setTimeout(generate,200);});
 </script>
 

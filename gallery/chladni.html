@@ -161,6 +161,15 @@ function handleTap() { advance(); resetAuto(); }
 canvas.addEventListener('click', handleTap);
 canvas.addEventListener('touchstart', e => { e.preventDefault(); handleTap(); }, { passive: false });
 
+window.__creativeClawingPreview = function warmupPreview() {
+  resize();
+  advance();
+  renderFrame(nextM, nextN);
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
+
 // Init — animation starts immediately
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);modeEl.textContent=`m=${nextM} n=${nextN}`;resetAuto();requestAnimationFrame(tick);});
 </script>

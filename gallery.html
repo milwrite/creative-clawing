@@ -68,12 +68,31 @@ a.card{
   transition:border-color .15s;
 }
 a.card:hover{border-color:rgba(255,255,255,.35)}
-.card-preview{overflow:hidden;position:relative}
+.card-preview{
+  overflow:hidden;position:relative;
+  background:#0a0a0a;
+  background-position:center;
+  background-size:cover;
+  contain:layout paint;
+}
+.card-preview::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.035),transparent 46%),
+    #0a0a0a;
+}
+.card-preview.has-poster::before{opacity:0}
+.card-preview.has-fallback-poster::before{opacity:.22}
 .card-overlay{position:absolute;inset:0;z-index:1;touch-action:auto}
 .card-preview iframe{
   width:100%;height:100%;border:0;display:block;
   background:#000;pointer-events:none;
+  opacity:0;transition:opacity .25s ease;
 }
+.card-preview iframe.if-ready{opacity:1}
+.card-preview iframe.poster-loader{opacity:0}
 .card-meta{
   border-top:1px solid var(--soft);
   padding:7px 8px;display:grid;gap:2px;
@@ -296,35 +315,212 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     attachObserver();
   }
 
-  // IntersectionObserver-based iframe injection/eviction
-  // MAX_LIVE: cap concurrent canvas loops to avoid GPU overload.
-  // Gallery uses 60 (vs homepage's 32) — cards are static in a grid, not scrolling lanes.
-  // Pending set: cards that were in-view but blocked by the cap — drained whenever a slot frees.
-  const MAX_LIVE = 60;
+  // IntersectionObserver-based poster capture.
+  // Keep only a few live iframes active long enough to synthesize input and
+  // capture a poster; the gallery should display static previews, not 24 loops.
+  const mobilePreviewQuery = window.matchMedia('(max-width: 760px)');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const liveSet = new Set();
   const pendingSet = new Set();
+  const activeSet = new Set();
+  const posterCache = new Map();
   let observer = null;
+  let drainScheduled = false;
+  let refreshRaf = 0;
+  let lastRefresh = 0;
+
+  function liveLimit() {
+    if (reducedMotionQuery.matches) return 1;
+    return mobilePreviewQuery.matches ? 2 : 4;
+  }
+
+  function frameDistanceFromViewport(f) {
+    const r = f.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = cx - window.innerWidth / 2;
+    const dy = cy - window.innerHeight / 2;
+    const outsideX = Math.max(0, -r.right, r.left - window.innerWidth);
+    const outsideY = Math.max(0, -r.bottom, r.top - window.innerHeight);
+    return Math.hypot(dx, dy * 1.35) + (outsideX + outsideY) * 4;
+  }
+
+  function applyPoster(f, url) {
+    f.style.backgroundImage = `url(${url})`;
+    f.classList.add('has-poster');
+    f.dataset.posterReady = '1';
+  }
+
+  function applyCachedPoster(f) {
+    const url = posterCache.get(f.dataset.src);
+    if (!url) return false;
+    applyPoster(f, url);
+    return true;
+  }
+
+  function canvasMetrics(canvas) {
+    const sample = document.createElement('canvas');
+    sample.width = 96;
+    sample.height = 96;
+    const sampleCtx = sample.getContext('2d', { willReadFrequently: true });
+    sampleCtx.drawImage(canvas, 0, 0, sample.width, sample.height);
+    const data = sampleCtx.getImageData(0, 0, sample.width, sample.height).data;
+    let sum = 0;
+    let sumSq = 0;
+    let nonDark = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      const v = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      sum += v;
+      sumSq += v * v;
+      if (v > 24) nonDark++;
+    }
+    const n = data.length / 4;
+    const mean = sum / n;
+    const variance = sumSq / n - mean * mean;
+    return { mean, variance, nonDarkRatio: nonDark / n };
+  }
+
+  function hasVisibleCanvasContent(metrics) {
+    if (!metrics) return false;
+    if (metrics.nonDarkRatio > 0.035) return true;
+    if (metrics.nonDarkRatio > 0.006 && metrics.variance > 58) return true;
+    return metrics.mean > 36 && metrics.variance > 8;
+  }
+
+  function fallbackPoster(f) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">
+      <rect width="320" height="220" fill="#080808"/>
+      <path d="M0 180 C70 118 126 236 214 102 S292 78 320 46" fill="none" stroke="#d7f29b" stroke-opacity=".45" stroke-width="2"/>
+      <path d="M0 72 C82 114 122 10 204 78 S284 154 320 128" fill="none" stroke="#8eb8e8" stroke-opacity=".35" stroke-width="2"/>
+    </svg>`;
+    const url = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+    posterCache.set(f.dataset.src, url);
+    applyPoster(f, url);
+    f.classList.add('has-fallback-poster');
+  }
+
+  function dispatchPreviewInput(iframe) {
+    const win = iframe.contentWindow;
+    const doc = iframe.contentDocument;
+    const canvas = doc && doc.querySelector('canvas');
+    if (!win || !doc || !canvas) return;
+
+    try { win.dispatchEvent(new win.Event('resize')); } catch (_) {}
+    const rect = canvas.getBoundingClientRect();
+    const points = [
+      [rect.left + rect.width * 0.50, rect.top + rect.height * 0.50],
+      [rect.left + rect.width * 0.28, rect.top + rect.height * 0.35],
+      [rect.left + rect.width * 0.72, rect.top + rect.height * 0.62],
+    ];
+    const originalSetPointerCapture = canvas.setPointerCapture;
+    const originalReleasePointerCapture = canvas.releasePointerCapture;
+    try { canvas.setPointerCapture = () => {}; } catch (_) {}
+    try { canvas.releasePointerCapture = () => {}; } catch (_) {}
+    try {
+      points.forEach(([clientX, clientY], index) => {
+        const opts = { bubbles: true, cancelable: true, clientX, clientY, pointerId: index + 1, button: 0, buttons: 1 };
+        try { canvas.dispatchEvent(new win.PointerEvent('pointerdown', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('mousedown', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.PointerEvent('pointermove', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('mousemove', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.MouseEvent('click', opts)); } catch (_) {}
+        try { canvas.dispatchEvent(new win.PointerEvent('pointerup', { ...opts, buttons: 0 })); } catch (_) {}
+      });
+    } finally {
+      try { canvas.setPointerCapture = originalSetPointerCapture; } catch (_) {}
+      try { canvas.releasePointerCapture = originalReleasePointerCapture; } catch (_) {}
+    }
+    try { doc.dispatchEvent(new win.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ', code: 'Space' })); } catch (_) {}
+
+    try { if (typeof win.resetSim === 'function') win.resetSim(); } catch (_) {}
+    try { if (typeof win.cyclePreset === 'function') win.cyclePreset(); } catch (_) {}
+    try { if (typeof win.cycleMode === 'function') win.cycleMode(); } catch (_) {}
+    try { if (typeof win.seedMode === 'function') win.seedMode('target'); } catch (_) {}
+    try { if (typeof win.excite === 'function') win.excite(100, 75, 24); } catch (_) {}
+    try { if (typeof win.__creativeClawingPreview === 'function') win.__creativeClawingPreview(); } catch (_) {}
+    try {
+      if (typeof win.step === 'function') {
+        for (let i = 0; i < 120; i++) win.step();
+      }
+    } catch (_) {}
+    try {
+      if (typeof win.integrate === 'function') {
+        for (let i = 0; i < 240; i++) win.integrate();
+      }
+    } catch (_) {}
+    try { if (typeof win.drawSim === 'function') win.drawSim(); } catch (_) {}
+    try { if (typeof win.draw === 'function') win.draw(); } catch (_) {}
+  }
+
+  function capturePoster(f, iframe, finalize) {
+    if (!iframe.isConnected) return true;
+    if (f.dataset.posterReady === '1') {
+      ejectIframe(f);
+      scheduleDrain();
+      return true;
+    }
+    let url = '';
+    let bestMetrics = null;
+    try {
+      const doc = iframe.contentDocument;
+      const canvases = doc ? [...doc.querySelectorAll('canvas')].filter(el => el.width > 0 && el.height > 0) : [];
+      let bestCanvas = null;
+      let bestScore = -Infinity;
+      for (const canvas of canvases) {
+        const metrics = canvasMetrics(canvas);
+        const score = metrics.variance + metrics.nonDarkRatio * 500;
+        if (score > bestScore) {
+          bestScore = score;
+          bestCanvas = canvas;
+          bestMetrics = metrics;
+        }
+      }
+      if (bestCanvas && hasVisibleCanvasContent(bestMetrics)) url = bestCanvas.toDataURL('image/jpeg', 0.72);
+    } catch (_) {}
+    if (url && url.length > 128) {
+      posterCache.set(f.dataset.src, url);
+      document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+        if (el.dataset.src === f.dataset.src) applyPoster(el, url);
+      });
+      ejectIframe(f);
+      scheduleDrain();
+      return true;
+    }
+    if (!finalize) {
+      dispatchPreviewInput(iframe);
+      return false;
+    }
+    fallbackPoster(f);
+    ejectIframe(f);
+    scheduleDrain();
+    return false;
+  }
 
   function injectIframe(f) {
-    if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
-      if (!f.querySelector('iframe')) pendingSet.add(f);
+    if (f.dataset.posterReady || applyCachedPoster(f)) return;
+    if (f.querySelector('iframe')) return;
+    if (liveSet.size >= liveLimit()) {
+      pendingSet.add(f);
       return;
     }
     pendingSet.delete(f);
     const iframe = document.createElement('iframe');
+    iframe.className = 'poster-loader';
     iframe.src = f.dataset.src;
     iframe.loading = 'lazy';
-    // sandbox removed — same-origin trusted artifacts
     iframe.title = f.dataset.title || '';
-    iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
     iframe.addEventListener('load', () => {
       setTimeout(() => {
         try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-        iframe.style.opacity = '1';
+        iframe.classList.add('if-ready');
       }, 80);
       setTimeout(() => {
         try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
       }, 400);
+      setTimeout(() => dispatchPreviewInput(iframe), 180);
+      setTimeout(() => capturePoster(f, iframe, false), 720);
+      setTimeout(() => capturePoster(f, iframe, true), 1280);
+      scheduleDrain();
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
     liveSet.add(f);
@@ -332,32 +528,112 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 
   function ejectIframe(f) {
     const iframe = f.querySelector('iframe');
-    if (!iframe) return;
-    iframe.src = 'about:blank';
-    iframe.remove();
+    if (iframe) {
+      iframe.src = 'about:blank';
+      iframe.remove();
+    }
     liveSet.delete(f);
-    // Drain pending queue now that a slot freed
+    pendingSet.delete(f);
+  }
+
+  function drainPending() {
+    drainScheduled = false;
     for (const pf of pendingSet) {
-      if (liveSet.size >= MAX_LIVE) break;
+      if (liveSet.size >= liveLimit()) break;
       injectIframe(pf);
+      break;
+    }
+    if (pendingSet.size && liveSet.size < liveLimit()) scheduleDrain();
+  }
+
+  function scheduleDrain() {
+    if (drainScheduled) return;
+    drainScheduled = true;
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(drainPending, { timeout: 240 });
+    } else {
+      setTimeout(drainPending, 90);
     }
   }
 
-  function attachObserver() {
+  function refreshPreviews(ts) {
+    refreshRaf = 0;
+    lastRefresh = ts || performance.now();
+    const candidates = [...activeSet]
+      .filter(f => f.isConnected)
+      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b));
+    const keep = new Set();
+    let loadingSlots = 0;
+    for (const f of candidates) {
+      if (f.dataset.posterReady || applyCachedPoster(f)) {
+        keep.add(f);
+      } else if (loadingSlots < liveLimit()) {
+        keep.add(f);
+        loadingSlots++;
+      }
+    }
+
+    for (const f of liveSet) {
+      if (!keep.has(f)) ejectIframe(f);
+    }
+    for (const f of pendingSet) {
+      if (!keep.has(f) || f.dataset.posterReady || applyCachedPoster(f)) pendingSet.delete(f);
+    }
+    for (const f of keep) {
+      if (f.dataset.posterReady || applyCachedPoster(f)) continue;
+      if (!f.querySelector('iframe')) pendingSet.add(f);
+    }
+    scheduleDrain();
+  }
+
+  function scheduleRefresh() {
+    if (refreshRaf) return;
+    refreshRaf = requestAnimationFrame(refreshPreviews);
+  }
+
+  function resetPreviews() {
     if (observer) observer.disconnect();
+    observer = null;
+    for (const f of [...liveSet]) ejectIframe(f);
+    liveSet.clear();
+    pendingSet.clear();
+    activeSet.clear();
+    if (refreshRaf) cancelAnimationFrame(refreshRaf);
+    refreshRaf = 0;
+  }
+
+  function attachObserver() {
+    resetPreviews();
     observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         const f = e.target;
         if (e.isIntersecting) {
-          injectIframe(f);
+          activeSet.add(f);
         } else {
+          activeSet.delete(f);
           pendingSet.delete(f);
           ejectIframe(f);
         }
       });
+      scheduleRefresh();
     }, { rootMargin: '400px' });
-    document.querySelectorAll('.card-preview[data-src]').forEach(el => observer.observe(el));
+    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+      if (!applyCachedPoster(el)) observer.observe(el);
+    });
+    scheduleRefresh();
   }
+
+  function watchMediaQuery(query, callback) {
+    if (query.addEventListener) query.addEventListener('change', callback);
+    else if (query.addListener) query.addListener(callback);
+  }
+
+  setInterval(scheduleRefresh, 1200);
+  window.addEventListener('scroll', () => {
+    if (performance.now() - lastRefresh > 1200) scheduleRefresh();
+  }, { passive: true });
+  watchMediaQuery(mobilePreviewQuery, scheduleRefresh);
+  watchMediaQuery(reducedMotionQuery, scheduleRefresh);
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();

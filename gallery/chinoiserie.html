@@ -308,6 +308,48 @@ c.addEventListener('touchstart', e => {
   plantBranch(t.clientX - rect.left, t.clientY - rect.top);
 }, { passive: false });
 
+window.__creativeClawingPreview = function () {
+  ctx.fillStyle = palette.bg;
+  ctx.fillRect(0, 0, W, H);
+  const stems = [
+    [W * 0.18, H * 0.92, -1.18, H * 0.44],
+    [W * 0.38, H * 0.95, -1.42, H * 0.52],
+    [W * 0.62, H * 0.94, -1.74, H * 0.48],
+    [W * 0.82, H * 0.91, -1.95, H * 0.40],
+  ];
+  stems.forEach(([x, y, angle, len], index) => {
+    let px = x, py = y;
+    ctx.strokeStyle = '#6a4824';
+    ctx.lineWidth = 2.2;
+    ctx.lineCap = 'round';
+    for (let i = 0; i < 24; i++) {
+      const nx = px + Math.cos(angle + Math.sin(i * 0.7 + index) * 0.18) * (len / 24);
+      const ny = py + Math.sin(angle + Math.cos(i * 0.5 + index) * 0.12) * (len / 24);
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+      if (i % 4 === 1) {
+        const leafAngle = angle + (i % 8 < 4 ? -0.9 : 0.9);
+        ctx.fillStyle = palette.leaf[(i + index) % palette.leaf.length];
+        ctx.beginPath();
+        ctx.ellipse(nx + Math.cos(leafAngle) * 9, ny + Math.sin(leafAngle) * 9, 5, 12, leafAngle, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (i > 12 && i % 3 === 0) {
+        ctx.fillStyle = palette.blossom[(i + index) % palette.blossom.length];
+        for (let p = 0; p < 5; p++) {
+          const a = (Math.PI * 2 * p) / 5;
+          ctx.beginPath();
+          ctx.ellipse(nx + Math.cos(a) * 7, ny + Math.sin(a) * 7, 4, 7, a, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      px = nx; py = ny;
+    }
+  });
+};
+
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
 </script>
 

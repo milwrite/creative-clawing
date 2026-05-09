@@ -27,7 +27,9 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H,RADIUS_BASE;
 function resize(){
-  W=c.width=innerWidth;H=c.height=innerHeight;
+  const rect = c.getBoundingClientRect();
+  W = c.width = Math.round(rect.width || innerWidth || 320);
+  H = c.height = Math.round(rect.height || innerHeight || 220);
   RADIUS_BASE=Math.min(W,H)*0.16; // responsive helix radius
 }
 addEventListener('resize',resize);
@@ -212,11 +214,21 @@ function loop(){
   drawFrame();
   requestAnimationFrame(loop);
 }
+window.__creativeClawingPreview = function warmupPreview() {
+  tiltX = 0.28;
+  zoom = 1.16;
+  phase = Math.max(phase, 1.4);
+  resize();
+  drawFrame();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 // defer start until layout is complete so innerWidth/Height are non-zero
 if(document.readyState==='complete'){
-  resize(); loop();
+  requestAnimationFrame(()=>{ resize(); loop(); });
 } else {
-  addEventListener('load',()=>{ setTimeout(() => { resize(); loop(); }, 100); });
+  addEventListener('load',()=>{ requestAnimationFrame(() => { resize(); loop(); }); });
 }
 })();
 </script>

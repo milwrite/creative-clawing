@@ -71,6 +71,15 @@ function draw(){
 
 function changeDepth(d){depth=Math.max(0,Math.min(8,depth+d));draw()}
 function toggleMode(){mode=mode==='fill'?'stroke':'fill';draw()}
+window.__creativeClawingPreview = function warmupPreview() {
+  depth = 7;
+  mode = 'fill';
+  resize();
+  draw();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 </script>
 
 </body>

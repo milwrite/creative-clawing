@@ -24,8 +24,10 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <script>
 const c=document.getElementById('c'),ctx=c.getContext('2d');
 let W,H;
+let drawRaf=0;
 
 function draw(){
+  drawRaf=0;
   W=c.width=innerWidth;H=c.height=innerHeight;
   ctx.fillStyle='#0a0a0a';ctx.fillRect(0,0,W,H);
   const COLS=12,ROWS=22;
@@ -48,11 +50,17 @@ function draw(){
     }
   }
 }
-setInterval(draw,3000);
-addEventListener('resize',draw);
+
+function scheduleDraw(){
+  if(drawRaf)return;
+  drawRaf=requestAnimationFrame(draw);
+}
+
+if(window.self===window.top)setInterval(scheduleDraw,3000);
+addEventListener('resize',scheduleDraw);
 addEventListener('click',draw);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',scheduleDraw);
+window.addEventListener('orientationchange',scheduleDraw);
 requestAnimationFrame(()=>{draw()});
 </script>
 

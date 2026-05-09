@@ -210,6 +210,16 @@ function draw(){
   requestAnimationFrame(draw);
 }
 
+window.__creativeClawingPreview = function warmupPreview() {
+  modeIdx = 2;
+  modeLabel.textContent = MODES[modeIdx].name;
+  t = Math.max(t, 180);
+  resize();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
+
 // Defer first resize so flex layout paints before reading dimensions
 requestAnimationFrame(()=>{
   resize();

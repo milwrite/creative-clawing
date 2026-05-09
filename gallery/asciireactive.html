@@ -101,6 +101,14 @@ async function enableMic(){
 }
 const micBtn=document.getElementById('mic');
 micBtn.addEventListener('click',()=>{if(!micOn) enableMic();});
+window.__creativeClawingPreview = function warmupPreview() {
+  pointerX = 0.72;
+  pointerY = 0.34;
+  resize();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 </script>
 </body>
 </html>

@@ -145,14 +145,7 @@ function colorMap(t) {
 // Avoids a blocking sync warmup while still showing developed patterns within ~20 frames (~0.35s).
 const IFRAME_WARMUP = window.self !== window.top ? 2000 : 0;
 let frame = 0;
-function draw() {
-  if (frame < IFRAME_WARMUP) {
-    for (let i = 0; i < 100; i++) step();
-    frame += 100;
-  } else {
-    for (let i = 0; i < 8; i++) step();
-    frame++;
-  }
+function paint() {
   for (let i = 0; i < S * S; i++) {
     const [r, g, b] = colorMap(v[i]);
     const j = i * 4;
@@ -161,6 +154,17 @@ function draw() {
   ctx.putImageData(imgData, 0, 0);
   const infoEl = document.getElementById('info');
   if (infoEl && frame % 10 === 0) infoEl.textContent = `${p.name} · frame ${frame}`;
+}
+
+function draw() {
+  if (frame < IFRAME_WARMUP) {
+    for (let i = 0; i < 100; i++) step();
+    frame += 100;
+  } else {
+    for (let i = 0; i < 8; i++) step();
+    frame++;
+  }
+  paint();
   requestAnimationFrame(draw);
 }
 
@@ -199,6 +203,17 @@ if (window.self !== window.top) {
 } else {
   initSim();
 }
+
+window.__creativeClawingPreview = function () {
+  resetSim();
+  seed(S * 0.5, S * 0.5, 34);
+  for (let i = 0; i < 18; i++) {
+    const a = (Math.PI * 2 * i) / 18;
+    seed(S * (0.5 + Math.cos(a) * 0.28), S * (0.5 + Math.sin(a) * 0.28), 10);
+  }
+  frame = Math.max(frame, 1);
+  paint();
+};
 
 requestAnimationFrame(()=>{handleResize();draw();});
 </script>

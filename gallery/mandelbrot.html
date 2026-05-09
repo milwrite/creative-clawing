@@ -156,6 +156,16 @@ c.addEventListener('touchend', () => { lastPinchDist = null; }, { passive: true 
 addEventListener('resize', resize);
 addEventListener('orientationchange', () => setTimeout(resize, 140));
 window.visualViewport?.addEventListener('resize', resize);
+window.__creativeClawingPreview = function warmupPreview() {
+  cx = -0.7435;
+  cy = 0.1314;
+  zoom = 0.42;
+  resize();
+  scheduleRender();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
 </script>
 

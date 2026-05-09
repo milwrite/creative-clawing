@@ -307,6 +307,18 @@ function watchDpr() {
 }
 watchDpr();
 window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); });
+window.__creativeClawingPreview = function warmupPreview() {
+  resize();
+  charges = [
+    { x: W * 0.28, y: H * 0.42, q: 1 },
+    { x: W * 0.55, y: H * 0.52, q: -1 },
+    { x: W * 0.72, y: H * 0.36, q: 1 },
+  ];
+  draw();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 180));
+}
 resize();
 </script>
 </body>

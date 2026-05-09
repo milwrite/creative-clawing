@@ -215,6 +215,14 @@ function easeInOut(t){
 addEventListener('click',generate);
 addEventListener('keydown',e=>{if(e.key===' ')generate()});
 
+window.__creativeClawingPreview = function warmupPreview() {
+  resize();
+  generate();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
+
 requestAnimationFrame(()=>{resize();setTimeout(()=>{resize();generate()},200);generate();requestAnimationFrame(loop);});
 })();
 </script>

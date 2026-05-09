@@ -313,13 +313,22 @@ window.addEventListener('resize',resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
 
+window.__creativeClawingPreview = function () {
+  if(!grid) init();
+  const originalSpeed = stepsPerFrame;
+  stepsPerFrame = Math.max(stepsPerFrame, 40);
+  for(let i=0;i<2600 && !done;i++) step();
+  stepsPerFrame = originalSpeed;
+  render();
+};
+
 /* ── Init ──────────────────────────────────────────────────── */
 requestAnimationFrame(()=>{
   resize();
   init();
   // In iframe: fast-forward so the crystal is already partially grown on first paint
   if(window.self!==window.top){
-    for(let i=0;i<800;i++) step();
+    window.__creativeClawingPreview();
   }
   frame();
 });

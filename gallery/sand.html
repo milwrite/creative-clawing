@@ -42,7 +42,7 @@ if(window.self!==window.top){
 const EMPTY=0,SAND=1,WATER=2,WALL=3,FIRE=4,SMOKE=5;
 const CELL=3;
 const c=document.getElementById('c'),ctx=c.getContext('2d');
-let cols,rows,grid,updated,curMat=SAND,drawing=false,mx=0,my=0;
+let cols,rows,grid,updated,imageData,curMat=SAND,drawing=false,mx=0,my=0;
 
 // Colors: [r,g,b] per material, with slight variation
 function matColor(m,i){
@@ -77,6 +77,7 @@ function init(){
   cols=pw;rows=ph;
   grid=new Uint8Array(cols*rows);
   updated=new Uint8Array(cols*rows);
+  imageData=ctx.createImageData(cols,rows);
 }
 
 let frame=0;
@@ -178,15 +179,14 @@ function tick(){
 }
 
 function draw(){
-  const img=ctx.getImageData(0,0,cols,rows);
-  const d=img.data;
+  const d=imageData.data;
   for(let i=0;i<cols*rows;i++){
     const m=grid[i];
     const col=matColor(m,i);
     const b=i*4;
     d[b]=col[0];d[b+1]=col[1];d[b+2]=col[2];d[b+3]=255;
   }
-  ctx.putImageData(img,0,0);
+  ctx.putImageData(imageData,0,0);
 }
 
 function loop(){
