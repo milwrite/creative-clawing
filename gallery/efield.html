@@ -64,12 +64,12 @@ function resize() {
   const pr = Math.min(window.devicePixelRatio || 1, 2);
   const rect = canvas.getBoundingClientRect();
   const viewport = window.visualViewport;
-  W = rect.width || viewport?.width || window.innerWidth;
-  H = rect.height || viewport?.height || window.innerHeight;
+  W = rect.width || viewport?.width || window.innerWidth || document.documentElement.clientWidth || 1;
+  H = rect.height || viewport?.height || window.innerHeight || document.documentElement.clientHeight || 1;
   canvas.style.width = `${W}px`;
   canvas.style.height = `${H}px`;
-  canvas.width  = Math.round(W * pr);
-  canvas.height = Math.round(H * pr);
+  canvas.width  = Math.max(1, Math.round(W * pr));
+  canvas.height = Math.max(1, Math.round(H * pr));
   ctx.setTransform(pr, 0, 0, pr, 0, 0);
   draw();
 }
@@ -289,14 +289,14 @@ clearBtn.addEventListener('click', () => {
   draw();
 });
 
-window.addEventListener('resize', scheduleResize);
+window.addEventListener('resize', scheduleResize, { passive: true });
 window.addEventListener('pageshow', scheduleResize, { passive: true });
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) scheduleResize();
 }, { passive: true });
 if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', scheduleResize);
-  window.visualViewport.addEventListener('scroll', scheduleResize);
+  window.visualViewport.addEventListener('resize', scheduleResize, { passive: true });
+  window.visualViewport.addEventListener('scroll', scheduleResize, { passive: true });
 }
 let dprQuery;
 function watchDpr() {
@@ -306,7 +306,7 @@ function watchDpr() {
   scheduleResize();
 }
 watchDpr();
-window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); });
+window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); }, { passive: true });
 window.__creativeClawingPreview = function warmupPreview() {
   resize();
   charges = [

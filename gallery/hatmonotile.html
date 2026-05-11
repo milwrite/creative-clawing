@@ -248,11 +248,11 @@ function render(){
   const dpr=Math.min(window.devicePixelRatio||1,2);
   const rect=canvas.getBoundingClientRect();
   const viewport=window.visualViewport;
-  const w=Math.round(rect.width||viewport?.width||window.innerWidth);
-  const h=Math.round(rect.height||viewport?.height||window.innerHeight);
+  const w=Math.max(1,Math.round(rect.width||viewport?.width||window.innerWidth||document.documentElement.clientWidth||1));
+  const h=Math.max(1,Math.round(rect.height||viewport?.height||window.innerHeight||document.documentElement.clientHeight||1));
   canvas.style.width=`${w}px`;
   canvas.style.height=`${h}px`;
-  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+  canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.fillStyle=pal.bg;ctx.fillRect(0,0,w,h);
 
@@ -358,14 +358,14 @@ resetBtn.addEventListener('click',()=>{
   rebuild();
 });
 
-window.addEventListener('resize',scheduleRender);
+window.addEventListener('resize',scheduleRender,{passive:true});
 window.addEventListener('pageshow',scheduleRender,{passive:true});
 document.addEventListener('visibilitychange',()=>{
   if(!document.hidden) scheduleRender();
 },{passive:true});
 if(window.visualViewport){
-  window.visualViewport.addEventListener('resize',scheduleRender);
-  window.visualViewport.addEventListener('scroll',scheduleRender);
+  window.visualViewport.addEventListener('resize',scheduleRender,{passive:true});
+  window.visualViewport.addEventListener('scroll',scheduleRender,{passive:true});
 }
 let dprQuery;
 function watchDpr(){
@@ -375,7 +375,7 @@ function watchDpr(){
   scheduleRender();
 }
 watchDpr();
-window.addEventListener('orientationchange',()=>{setTimeout(scheduleRender,200);});
+window.addEventListener('orientationchange',()=>{setTimeout(scheduleRender,200);},{passive:true});
 
 // Hide UI in iframe
 if(window.self!==window.top){

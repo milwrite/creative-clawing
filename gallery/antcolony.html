@@ -230,9 +230,10 @@ function spawnFood(ex,ey){
 }
 
 function init(){
+  const rect=c.getBoundingClientRect();
   const viewport=window.visualViewport;
-  const width=Math.round(viewport?.width||window.innerWidth||document.documentElement.clientWidth||0);
-  const height=Math.round(viewport?.height||window.innerHeight||document.documentElement.clientHeight||0);
+  const width=Math.round(rect.width||viewport?.width||window.innerWidth||document.documentElement.clientWidth||0);
+  const height=Math.round(rect.height||viewport?.height||window.innerHeight||document.documentElement.clientHeight||0);
   dpr=Math.min(window.devicePixelRatio||1,2);
   W=Math.max(width,1);
   H=Math.max(height,1);
