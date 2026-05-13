@@ -21,7 +21,15 @@
 <link rel="stylesheet" href="styles/shared.css"/>
 <style>
 /* ── main ── */
-main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
+main{
+  width:min(1380px,97vw);
+  margin:0 auto;
+  padding:
+    max(20px,env(safe-area-inset-top))
+    max(0px,env(safe-area-inset-right))
+    calc(64px + env(safe-area-inset-bottom))
+    max(0px,env(safe-area-inset-left));
+}
 
 /* ── toolbar ── */
 .toolbar{
@@ -35,8 +43,9 @@ main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
 .search{
   width:100%;background:transparent;border:1px solid var(--line);
   color:var(--ink);padding:7px 10px;
-  font-size:.8rem;outline:none;
+  font-size:max(.8rem,16px);outline:none;
   font-family:inherit;
+  touch-action:manipulation;
 }
 .search::placeholder{color:var(--muted)}
 .search:focus{border-color:rgba(255,255,255,.4)}
@@ -47,6 +56,7 @@ main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
   font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;
   cursor:pointer;font-family:inherit;
   transition:color .15s,border-color .15s;
+  touch-action:manipulation;
 }
 .chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
@@ -127,6 +137,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
   cursor:pointer;font-family:inherit;
   transition:color .15s,border-color .15s;
+  touch-action:manipulation;
 }
 .sort-chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .sort-chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
@@ -140,13 +151,16 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
   cursor:pointer;font-family:inherit;
   transition:color .15s,border-color .15s,background .15s;
+  touch-action:manipulation;
 }
 .pager-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .pager-btn.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
 .pager-btn:disabled{opacity:.45;cursor:default}
 
 @media(max-width:600px){
+  main{width:min(1380px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 12px))}
   .toolbar{gap:8px}
+  .search-wrap{min-width:100%}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
   a.card{height:210px}
 }
@@ -306,7 +320,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
         <div class="card-preview" data-src="gallery/${escapeAttr(a.file)}.html" data-title="${escapeAttr(a.name)}">
-          <img class="card-preview-image" alt="" loading="lazy" decoding="async" src="${previewURL(a)}"/>
+          <img class="card-preview-image" alt="" loading="lazy" decoding="async" src="${previewPath(a)}" data-fallback="${escapeAttr(previewURL(a))}"/>
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
@@ -330,6 +344,19 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   function escapeAttr(value) {
     return escapeHTML(value).replace(/`/g, '&#96;');
   }
+
+  function previewPath(a) {
+    return `assets/images/gallery-previews/${encodeURIComponent(a.file)}.jpg`;
+  }
+
+  grid.addEventListener('error', event => {
+    const img = event.target;
+    if (!(img instanceof HTMLImageElement) || !img.classList.contains('card-preview-image')) return;
+    const fallback = img.dataset.fallback;
+    if (!fallback || img.src === fallback) return;
+    img.removeAttribute('data-fallback');
+    img.src = fallback;
+  }, true);
 
   function hashString(value) {
     let h = 2166136261;
