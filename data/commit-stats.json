@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 202,
+    "totalCommits": 204,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -69,13 +69,14 @@
       "2026-05-14": 1,
       "2026-05-13": 1,
       "2026-05-15": 1,
-      "2026-05-16": 1
+      "2026-05-16": 1,
+      "2026-05-17": 2
     },
     "categoryCounts": {
       "blog": 28,
       "mobile": 15,
       "fix": 34,
-      "other": 110,
+      "other": 112,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -83,6 +84,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "1d59da31",
+        "date": "2026-05-17",
+        "subject": "redesign homepage artifact cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d2f86142",
+        "date": "2026-05-17",
+        "subject": "harden mobile dpr watchers",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "9dac5f5f",
         "date": "2026-05-16",
@@ -1705,7 +1722,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 481,
+    "totalCommits": 482,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1768,7 +1785,8 @@
       "2026-05-09": 2,
       "2026-05-11": 2,
       "2026-05-13": 1,
-      "2026-05-15": 2
+      "2026-05-15": 2,
+      "2026-05-17": 1
     },
     "categoryCounts": {
       "blog": 33,
@@ -1776,11 +1794,19 @@
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 160,
+      "chore": 161,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "32e52f79",
+        "date": "2026-05-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "38553917",
         "date": "2026-05-15",
