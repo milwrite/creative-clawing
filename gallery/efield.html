@@ -299,10 +299,16 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('scroll', scheduleResize, { passive: true });
 }
 let dprQuery;
+function unwatchDpr() {
+  if (!dprQuery) return;
+  if (typeof dprQuery.removeEventListener === 'function') dprQuery.removeEventListener('change', watchDpr);
+  else if (typeof dprQuery.removeListener === 'function') dprQuery.removeListener(watchDpr);
+}
 function watchDpr() {
-  if (dprQuery) dprQuery.removeEventListener('change', watchDpr);
+  unwatchDpr();
   dprQuery = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
-  dprQuery.addEventListener('change', watchDpr, { once: true });
+  if (typeof dprQuery.addEventListener === 'function') dprQuery.addEventListener('change', watchDpr, { once: true });
+  else if (typeof dprQuery.addListener === 'function') dprQuery.addListener(watchDpr);
   scheduleResize();
 }
 watchDpr();
