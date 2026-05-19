@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 204,
+    "totalCommits": 205,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -70,10 +70,11 @@
       "2026-05-13": 1,
       "2026-05-15": 1,
       "2026-05-16": 1,
-      "2026-05-17": 2
+      "2026-05-17": 2,
+      "2026-05-18": 1
     },
     "categoryCounts": {
-      "blog": 28,
+      "blog": 29,
       "mobile": 15,
       "fix": 34,
       "other": 112,
@@ -84,6 +85,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "d83781aa",
+        "date": "2026-05-18",
+        "subject": "microblog: add gradient descent post",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "1d59da31",
         "date": "2026-05-17",
@@ -1722,7 +1731,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 482,
+    "totalCommits": 483,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1786,7 +1795,7 @@
       "2026-05-11": 2,
       "2026-05-13": 1,
       "2026-05-15": 2,
-      "2026-05-17": 1
+      "2026-05-17": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1794,11 +1803,19 @@
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 161,
+      "chore": 162,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "fc504fd0",
+        "date": "2026-05-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "32e52f79",
         "date": "2026-05-17",
