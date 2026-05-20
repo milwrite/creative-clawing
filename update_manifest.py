@@ -270,6 +270,33 @@ def main():
     overrides        = load_json(OVERRIDES)
     commit_stats     = load_json(COMMIT_STATS)
 
+    # Migrate any legacy non-canonical agent keys (e.g. "quimbot", "milwrite")
+    # into their canonical counterparts so we don't keep fragmenting buckets.
+    if commit_stats:
+        merged = {}
+        for old_key, bucket in commit_stats.items():
+            canonical = normalize_agent(old_key) or old_key
+            if canonical in merged:
+                tgt = merged[canonical]
+                tgt["totalCommits"] = tgt.get("totalCommits", 0) + bucket.get("totalCommits", 0)
+                for date, n in bucket.get("dailyCounts", {}).items():
+                    tgt["dailyCounts"][date] = tgt["dailyCounts"].get(date, 0) + n
+                for cat, n in bucket.get("categoryCounts", {}).items():
+                    tgt["categoryCounts"][cat] = tgt["categoryCounts"].get(cat, 0) + n
+                seen = {c["sha"] for c in tgt.get("commits", [])}
+                for c in bucket.get("commits", []):
+                    if c["sha"] not in seen:
+                        tgt["commits"].append(c)
+                        seen.add(c["sha"])
+            else:
+                merged[canonical] = {
+                    "totalCommits": bucket.get("totalCommits", 0),
+                    "dailyCounts": dict(bucket.get("dailyCounts", {})),
+                    "categoryCounts": dict(bucket.get("categoryCounts", {})),
+                    "commits": list(bucket.get("commits", [])),
+                }
+        commit_stats = merged
+
     # Index existing entries by id
     artifact_idx  = {e["id"]: e for e in artifacts_list}
     microblog_idx = {e["id"]: e for e in microblogs_list}
@@ -290,7 +317,9 @@ def main():
         commit_agent_map[commit["sha"]] = agent
 
         # ── Update commit-stats ───────────────────────────────────────────────
-        agent_key = agent.lower()
+        # Use the canonical agent name (already normalized by detect_agent) so
+        # commit-stats buckets don't fragment across milwrite/quimbot/Quimbot/etc.
+        agent_key = agent
         if agent_key not in commit_stats:
             commit_stats[agent_key] = {
                 "totalCommits": 0,
@@ -483,6 +512,13 @@ def main():
         processed_blogs += 1
 
     print(f"  Processed {processed_blogs} microblog entries")
+
+    # Drop any artifact/microblog entries whose underlying file is gone — keeps
+    # the manifest from accruing stale references to deleted sketches.
+    artifact_idx = {k: v for k, v in artifact_idx.items()
+                    if (GALLERY / f"{k}.html").exists()}
+    microblog_idx = {k: v for k, v in microblog_idx.items()
+                     if (MICROBLOG / f"{k}.html").exists()}
 
     # ── 5. Rebuild sorted lists ───────────────────────────────────────────────
     artifacts_out  = sorted(artifact_idx.values(),  key=lambda e: e["id"])
