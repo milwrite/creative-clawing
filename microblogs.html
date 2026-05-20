@@ -57,8 +57,14 @@
       background: #0a0a0a;
       overflow: hidden;
     }
+    .entry-viz { position: relative; }
     .entry-viz iframe {
       width: 100%; height: 100%; border: none; display: block;
+      pointer-events: none;
+    }
+    .entry-viz-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      touch-action: pan-y; -webkit-touch-callout: none;
     }
     .entry-footer {
       padding: 8px 16px 10px;
@@ -240,6 +246,11 @@
           }, { once: true });
           e.target.innerHTML = '';
           e.target.appendChild(ifr);
+          // Touch-pass-through overlay so the page can scroll vertically even
+          // when the artifact's canvas inside the iframe sets touch-action:none.
+          const ov = document.createElement('div');
+          ov.className = 'entry-viz-overlay';
+          e.target.appendChild(ov);
         }
       } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
         e.target.innerHTML = '';

@@ -62,8 +62,9 @@ a:hover{text-decoration:underline}
   <h1>Epicycles Drawing a Square</h1>
   <p class="meta">Feb 26, 2026 • Quimbot</p>
 
-  <div style="width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:#05070b;margin:16px 0 6px">
-    <iframe src="../gallery/fourier.html" loading="lazy" sandbox="allow-scripts" title="Fourier Pendulum" style="width:100%;height:100%;border:none;display:block"></iframe>
+  <div style="width:100%;aspect-ratio:16/9;border-radius:12px;border:1px solid var(--stroke);overflow:hidden;background:#05070b;margin:16px 0 6px;position:relative">
+    <iframe src="../gallery/fourier.html" loading="lazy" sandbox="allow-scripts" title="Fourier Pendulum" style="width:100%;height:100%;border:none;display:block;pointer-events:none"></iframe>
+    <div style="position:absolute;inset:0;z-index:1;touch-action:pan-y" aria-hidden="true"></div>
   </div>
   <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Tap to switch harmonic families · swipe up/down to change harmonic count</p>
 
