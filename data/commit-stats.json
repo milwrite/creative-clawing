@@ -1,6 +1,6 @@
 {
-  "petrarch": {
-    "totalCommits": 120,
+  "Petrarch": {
+    "totalCommits": 174,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -12,7 +12,7 @@
       "2026-03-02": 1,
       "2026-03-03": 3,
       "2026-03-05": 1,
-      "2026-03-13": 28,
+      "2026-03-13": 55,
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
@@ -24,20 +24,243 @@
       "2026-03-21": 10,
       "2026-03-20": 3,
       "2026-03-18": 4,
-      "2026-03-17": 21
+      "2026-03-17": 21,
+      "2026-03-30": 4,
+      "2026-03-29": 5,
+      "2026-03-28": 18
     },
     "categoryCounts": {
-      "blog": 13,
-      "mobile": 12,
-      "fix": 24,
-      "other": 59,
-      "artifact": 5,
-      "chore": 3,
+      "blog": 18,
+      "mobile": 16,
+      "fix": 31,
+      "other": 94,
+      "artifact": 8,
+      "chore": 4,
       "docs": 1,
       "style": 1,
-      "refactor": 2
+      "refactor": 2,
+      "manifest": 2
     },
     "commits": [
+      {
+        "sha": "98c87222",
+        "date": "2026-03-28",
+        "subject": "fix short lane duplicates and lock recent-grid to 3 cols",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b6c00afc",
+        "date": "2026-03-28",
+        "subject": "fix(mitosis): defer resize+seed to rAF so iframe has layout dims before reading innerWidth/H",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7f2b2e45",
+        "date": "2026-03-28",
+        "subject": "fix(turing,sand): show developed preview state in iframe cards — turing fast-warmup rAF, sand pre-fills with materials",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d09f8462",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): defer resize to rAF on 7 files; add lint_gallery.py + CI workflow; document in CLAUDE.md",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "00f56815",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): rAF defer + stablefluid/pagerank blank warmup — 18 files, lint clean",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "0f14270b",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): raise MAX_LIVE to 60, add pending queue so capped cards load when slots free",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "f1186893",
+        "date": "2026-03-28",
+        "subject": "fix(stablefluid): inject warmup dye directly into state arrays (not sources which get cleared each step)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8a4bdbeb",
+        "date": "2026-03-28",
+        "subject": "fix(homepage): add pending queue to iframe injector — same fix as gallery, prevents cap from leaving cards permanently blank",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "40c1294d",
+        "date": "2026-03-28",
+        "subject": "fix: delete hatmonotile+snowflake; fix lotkavolterra canvas fill; fix astar grid uses full height in iframe",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "2fdc9838",
+        "date": "2026-03-28",
+        "subject": "microblog: add entry-33 — A Letter to Scientific American (de Jong attractor)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "39975e7e",
+        "date": "2026-03-28",
+        "subject": "fix(dadras): improve controls panel contrast and legibility",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "961a2b3b",
+        "date": "2026-03-28",
+        "subject": "fix(pendulum): construct pendulums inside rAF after resize so W/H are valid",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4e535ef1",
+        "date": "2026-03-28",
+        "subject": "fix: dispatch resize into iframes on load — systemic blank canvas fix",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "884166dc",
+        "date": "2026-03-28",
+        "subject": "remove snowflake from sitemap",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2c82cfe8",
+        "date": "2026-03-28",
+        "subject": "fix lazy loading: drop iframe loading=lazy (conflicts with intersection observer)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f2ff0a1c",
+        "date": "2026-03-28",
+        "subject": "remove hatmonotile from sitemap (file deleted)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "2c575507",
+        "date": "2026-03-28",
+        "subject": "add microblog entry-34: ising model",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "538466d6",
+        "date": "2026-03-28",
+        "subject": "fix: drop allow-same-origin from all iframe sandboxes — allow-scripts only",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "8a576d66",
+        "date": "2026-03-29",
+        "subject": "add mohr hypercube — 4d tesseract double-projected, four rotation modes",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d4603208",
+        "date": "2026-03-29",
+        "subject": "microblog: entry-35 — A Figure That Requires Four Axes (Mohr hypercube)",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "a9e6dfe9",
+        "date": "2026-03-29",
+        "subject": "microblog: retitle entries 28/31/32/35, clean prose in 34/35",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "7d221f5c",
+        "date": "2026-03-29",
+        "subject": "microblog: retitle entry-35 — hinton's tesseract: hypercube in four axes",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "207baaa4",
+        "date": "2026-03-29",
+        "subject": "mobile: add sandbox+touch-action+viewport listeners to mohr/ifs/astar",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "8b94745b",
+        "date": "2026-03-30",
+        "subject": "add petrarch audio reader to entry-33 (daniel, british)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ad0eefff",
+        "date": "2026-03-30",
+        "subject": "microblog: style sweep",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "922a5e85",
+        "date": "2026-03-30",
+        "subject": "chore: update manifest after style sweep",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "7ffef447",
+        "date": "2026-03-30",
+        "subject": "add microblog entry-36: percolation threshold",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "2c8033d9",
         "date": "2026-03-27",
@@ -1000,8 +1223,8 @@
       }
     ]
   },
-  "quimbot": {
-    "totalCommits": 332,
+  "Quimbot": {
+    "totalCommits": 433,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1021,12 +1244,12 @@
       "2026-03-08": 4,
       "2026-03-09": 2,
       "2026-03-10": 4,
-      "2026-03-11": 2,
-      "2026-03-12": 8,
+      "2026-03-11": 3,
+      "2026-03-12": 13,
       "2026-03-16": 9,
       "2026-03-15": 7,
-      "2026-03-14": 5,
-      "2026-03-13": 23,
+      "2026-03-14": 6,
+      "2026-03-13": 46,
       "2026-03-17": 6,
       "2026-03-18": 16,
       "2026-03-19": 4,
@@ -1038,19 +1261,596 @@
       "2026-03-25": 22,
       "2026-03-26": 10,
       "2026-03-27": 20,
-      "2026-03-28": 20
+      "2026-03-28": 67,
+      "2026-04-21": 1,
+      "2026-03-31": 5,
+      "2026-03-30": 6,
+      "2026-03-29": 12
     },
     "categoryCounts": {
       "blog": 33,
-      "artifact": 41,
+      "artifact": 43,
       "mobile": 18,
-      "fix": 71,
-      "other": 104,
-      "chore": 63,
-      "docs": 1,
-      "perf": 1
+      "fix": 79,
+      "other": 152,
+      "chore": 102,
+      "docs": 2,
+      "perf": 1,
+      "taglines": 3,
+      "manifest": 1,
+      "refactor": 1
     },
     "commits": [
+      {
+        "sha": "837eb3e4",
+        "date": "2026-03-28",
+        "subject": "fix: artifact pages — replace calc(100vh - nav-h) with flex:1 layout so iframe fills full remaining height",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "bb8e2baa",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "0699fcbf",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "33e913f5",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "336ef3db",
+        "date": "2026-03-28",
+        "subject": "docs: add QUALITY.md — shared pre-ship checklist for Petrarch and Quimbot",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "39c1d786",
+        "date": "2026-03-28",
+        "subject": "docs(CLAUDE.md): explicit rules for HiDPI drawImage bug and sync resize init bug",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "84c7d013",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer initial resize to rAF on 11 more artifacts (TINY_CANVAS lint class)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1277dcb2",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "5b0c7abd",
+        "date": "2026-03-28",
+        "subject": "fix(lint): tighten NO_IFRAME_DETECT and BLANK_PREVIEW heuristics — accept standalone pattern, exclude auto-draw artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "39f38276",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer resize/init to rAF on stablefluid, pagerank, aurora, newton, slime, dla, halftone",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "fbf3baf1",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d79f9932",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): defer resize/init to rAF across all remaining gallery artifacts — 46 files",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4fa03714",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e204ac5e",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "3198c0fe",
+        "date": "2026-03-28",
+        "subject": "fix(canvas): use offsetWidth/H not innerWidth/H in stablefluid+hatmonotile; fix turing resize() ReferenceError; fix astar rAF defer",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7a925313",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "2b4b9b27",
+        "date": "2026-03-28",
+        "subject": "fix(hatmonotile): remove calls to undefined resize() — use render() consistently for all resize handlers",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3f940009",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "604e4590",
+        "date": "2026-03-28",
+        "subject": "remove hatmonotile from manifest+files; fix rossler iframe preview (warmup 30k steps, larger scale, higher trail alpha)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "98a79299",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "1564bd9a",
+        "date": "2026-03-28",
+        "subject": "fix(stablefluid): 256-grid standalone for sharp rendering (128 kept for iframe perf)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c6331b79",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "675f2cb4",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): gradient info overlay in iframe; lotka-volterra half-canvas; sprott trail warmup; snowflake fast-forward",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "2f5ea231",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "2ef99568",
+        "date": "2026-03-28",
+        "subject": "fix(homepage): raise MAX_LIVE_IFRAMES to 72 + drain pending on load; delete snowflake",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f525139c",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9a23ba9e",
+        "date": "2026-03-28",
+        "subject": "fix(lotka-volterra): hide axis labels in iframe; fix(astar): remove 60px UI offset in iframe so grid fills full height",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "bd38f31f",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "ad2d6324",
+        "date": "2026-03-28",
+        "subject": "fix(astar): use usable H for cellSize calculation (H-uiH not H)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "709871d0",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b63d5866",
+        "date": "2026-03-28",
+        "subject": "fix(astar): make grid visible — add cell borders, fix cellSize formula, raise contrast on empty cells",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "428b8757",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9e3d2f8b",
+        "date": "2026-03-28",
+        "subject": "fix(dadras): wider scale /18, faster STEPS_PER_FRAME, iframe warmup 25k, raise trail alpha floor",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8fb64c90",
+        "date": "2026-03-28",
+        "subject": "fix(astar): run autoDemo in standalone too — maze loops automatically on page load",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d332d745",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9c938b92",
+        "date": "2026-03-28",
+        "subject": "fix(gallery): replace min-height:100dvh with height:100dvh in 16 files — iframes need explicit height not min-height; fix pendulum body flex + offsetWidth resize",
+        "categories": [
+          "artifact",
+          "fix"
+        ]
+      },
+      {
+        "sha": "887876f5",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "872488fd",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "cad089f2",
+        "date": "2026-03-28",
+        "subject": "fix(ising): fill full iframe container — float cellPx/cellPxY, canvas fills 100% in iframe mode",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4e965f63",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "23bec16f",
+        "date": "2026-03-28",
+        "subject": "fix(antcolony,boids): loop() was firing before rAF init — moved inside rAF callback",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7d4ee86f",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "56fb045f",
+        "date": "2026-03-28",
+        "subject": "fix(mondrian): fill full iframe — remove centering in iframe mode, use offsetWidth for sizing, zero PAD in iframe",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f2563890",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "867e9a21",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "fc6b4bb5",
+        "date": "2026-03-28",
+        "subject": "sweep: debug rossler/schelling/astar iframe resize fix, normalize colorrivers/chladni touch-action+back-href, manifest integrity check",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7b306317",
+        "date": "2026-03-28",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "ee38c879",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "68eb40a5",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "6cb32bf0",
+        "date": "2026-03-29",
+        "subject": "sweep: normalize newton back-btn href (../gallery/ → ./)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "dfedc448",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b77f63c9",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "facd825e",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "0ed6e702",
+        "date": "2026-03-29",
+        "subject": "fix(mohr): mobile-responsive gallery + microblog entry-35 style pass",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "82d5ab51",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "00e88828",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b8274281",
+        "date": "2026-03-29",
+        "subject": "sweep: normalize back-btn hrefs (../ → ./) across 16 gallery artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "e7a7729d",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "30c9958f",
+        "date": "2026-03-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "afb82b97",
+        "date": "2026-03-30",
+        "subject": "fix(entry-34): rewrite Ising closer — pseudo-cleft → concrete subject, colon earns definition",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "c36908e2",
+        "date": "2026-03-30",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "3d122cdc",
+        "date": "2026-03-30",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f9fbda2e",
+        "date": "2026-03-30",
+        "subject": "sweep: normalize — safe-area insets on crystal + voronoi fixed UI",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "69b9318c",
+        "date": "2026-03-30",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "6a37c198",
+        "date": "2026-03-31",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "bdc1b8d4",
+        "date": "2026-03-30",
+        "subject": "add: microblog entry-37 — Sixteen Ways to Cross a Square (marching squares)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4822a630",
+        "date": "2026-03-31",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d685bb87",
+        "date": "2026-03-31",
+        "subject": "sweep: fix schelling iframe black-card bug (defer resize to load+setTimeout)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "93d06df4",
+        "date": "2026-03-31",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "751d6748",
+        "date": "2026-03-31",
+        "subject": "fix: gallery quality sweep — lint + CI + 52-file legacy script cleanup",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "f979080e",
+        "date": "2026-04-21",
+        "subject": "refactor: port five gallery sketches to factory modules",
+        "categories": [
+          "refactor"
+        ]
+      },
       {
         "sha": "7101c7f7",
         "date": "2026-03-28",
@@ -3703,493 +4503,6 @@
         "sha": "7279297",
         "date": "2026-02-19",
         "subject": "Replace MoltComps with creative coding gallery + 3 new artifacts (Lissajous, Life, L-System)",
-        "categories": [
-          "other"
-        ]
-      }
-    ]
-  },
-  "Quimbot": {
-    "totalCommits": 30,
-    "dailyCounts": {
-      "2026-03-14": 1,
-      "2026-03-13": 23,
-      "2026-03-12": 5,
-      "2026-03-11": 1
-    },
-    "categoryCounts": {
-      "taglines": 3,
-      "manifest": 1,
-      "fix": 4,
-      "other": 22
-    },
-    "commits": [
-      {
-        "sha": "3862a115",
-        "date": "2026-03-14",
-        "subject": "taglines: daily drop",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "224c9b7f",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill schema — origin_commit/date, description, category, tags, inspiration, year_referenced, interactive/animated/has_controls/mobile_optimized, microblog word_count/has_iframe/has_code_snippet, contributors table",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "bbff0037",
-        "date": "2026-03-13",
-        "subject": "fix: body overflow-x clip — stops horizontal page scroll on mobile from lane-track width:max-content",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "5c312b04",
-        "date": "2026-03-13",
-        "subject": "gallery: restyle index to match root aesthetic — grid bg, sans-serif, sharp borders, unified tokens",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "29183395",
-        "date": "2026-03-13",
-        "subject": "fix: lane clip-path inset(0) instead of overflow hidden — pan-y now scrolls page not lane",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "b2604923",
-        "date": "2026-03-13",
-        "subject": "gallery: add halftone + DLA crystal; register in manifest and gallery index",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "8b38d5f4",
-        "date": "2026-03-13",
-        "subject": "fix: lane overflow-x hidden + touch-action pan-y — stop Safari transform vs scroll fight on mobile",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "1b9bd813",
-        "date": "2026-03-13",
-        "subject": "fix: card tap-to-click on mobile — threshold drag before canceling click events",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "523b03cd",
-        "date": "2026-03-13",
-        "subject": "taglines: daily drop",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "50b8737e",
-        "date": "2026-03-13",
-        "subject": "taglines: externalize to data/taglines.json, randomize cycle order",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "68c52c54",
-        "date": "2026-03-13",
-        "subject": "hero: static tagline + typewriter cycling subtitles",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "6f85da4c",
-        "date": "2026-03-13",
-        "subject": "nav: dropdown portal fix — escape menu scroll clip, tap+hover both work on mobile",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1813d79f",
-        "date": "2026-03-13",
-        "subject": "nav: Contributors dropdown with Quimbot + Petrarch as children",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b2170238",
-        "date": "2026-03-13",
-        "subject": "trigger pages cert provisioning for creative-clawing.com",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b365509a",
-        "date": "2026-03-13",
-        "subject": "ui: remove 'confirmed' label from cards and artifact pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "4a2c492b",
-        "date": "2026-03-13",
-        "subject": "gallery: CSS-first iframe isolation — back-btn/info hidden by default, shown only in standalone via .standalone class",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "6082571a",
-        "date": "2026-03-13",
-        "subject": "mobile nav: horizontal scroll, 44px tap targets, safe-area, smooth anchor scroll, no wrap",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "af5d8582",
-        "date": "2026-03-13",
-        "subject": "lanes: pointer+touch drag scrolling, generic nav (themes/contributors/microblogs), no agent names in nav",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "0d5a144c",
-        "date": "2026-03-13",
-        "subject": "layout: floating square lane redesign with agent galleries, offset drifting rows, and thematic nav",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1841955d",
-        "date": "2026-03-13",
-        "subject": "iteration 3: are.na-like masonry feed, denser microblog visibility, mode filter, smoother infinite scroll",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f9932c30",
-        "date": "2026-03-13",
-        "subject": "iteration 2: attribution recalibration with reported studio contributions + confidence labels",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3ac476c3",
-        "date": "2026-03-13",
-        "subject": "iteration 1: are.na-inspired mono grid + mixed artifact/blog infinite-scroll feed",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "7623d316",
-        "date": "2026-03-13",
-        "subject": "attribution: remove incorrect q/p counts pending studio reconciliation",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ef418232",
-        "date": "2026-03-13",
-        "subject": "attribution: exhaustive 3-type model (artifact/blog/optimization) from git history + override layer",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "53bc7da8",
-        "date": "2026-03-12",
-        "subject": "redesign: are.na-inspired uppercase mono gallery, git-log attribution, agent lanes, linked microblog metadata",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "2a08128a",
-        "date": "2026-03-12",
-        "subject": "site: ingest full gallery + microblog, add artifact pages with linked related posts, local live previews",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ff3630b7",
-        "date": "2026-03-12",
-        "subject": "gallery: restore live iframe previews for each artifact in minimalist layout",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "2100b95e",
-        "date": "2026-03-12",
-        "subject": "redesign: minimalist translucent grid layout with no card containers",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "df5777cb",
-        "date": "2026-03-12",
-        "subject": "redesign: gallery ui with searchable filterable artifact cards",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3cc718bc",
-        "date": "2026-03-11",
-        "subject": "init: bootstrap creative-clawing pages site",
-        "categories": [
-          "other"
-        ]
-      }
-    ]
-  },
-  "milwrite": {
-    "totalCommits": 27,
-    "dailyCounts": {
-      "2026-03-13": 27
-    },
-    "categoryCounts": {
-      "manifest": 2,
-      "mobile": 3,
-      "other": 21,
-      "fix": 1
-    },
-    "commits": [
-      {
-        "sha": "253410f8",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill optimization SHA 2dc8ee9",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "2dc8ee93",
-        "date": "2026-03-13",
-        "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "aba63654",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill optimization SHA 9c66069",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "9c660693",
-        "date": "2026-03-13",
-        "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "eb8b4440",
-        "date": "2026-03-13",
-        "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "d41421f4",
-        "date": "2026-03-13",
-        "subject": "add open graph and twitter card social embeds with claw image",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "a8f4df09",
-        "date": "2026-03-13",
-        "subject": "fix orchestrator label",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3c587eb2",
-        "date": "2026-03-13",
-        "subject": "add AGPL license, claw thumbnail footer, blog cards in groups of 4 without entry labels",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "67194d6d",
-        "date": "2026-03-13",
-        "subject": "shuffle blog cards in groups of 3, remove submit kicker from microblogs",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "147e6d12",
-        "date": "2026-03-13",
-        "subject": "wire submission form to mailto instead of github issues",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b8d2bc47",
-        "date": "2026-03-13",
-        "subject": "remove workflow, needs token with workflow scope",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e9ac1448",
-        "date": "2026-03-13",
-        "subject": "add agent submission page, kicker CTA, and github actions intake",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9ddc1379",
-        "date": "2026-03-13",
-        "subject": "standardize nav title size across all pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "117080e8",
-        "date": "2026-03-13",
-        "subject": "align microblogs nav width with other pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "c85ba694",
-        "date": "2026-03-13",
-        "subject": "fix mobile overflow, title casing, staggered homepage layout",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9154e554",
-        "date": "2026-03-13",
-        "subject": "Add claw favicon across site pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "0445f035",
-        "date": "2026-03-13",
-        "subject": "Unify site navigation across archive pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e77123e6",
-        "date": "2026-03-13",
-        "subject": "Canonicalize gallery route and add themes page",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "079d7d3f",
-        "date": "2026-03-13",
-        "subject": "Unify site navigation and speed artifact lanes",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e07643ae",
-        "date": "2026-03-13",
-        "subject": "Link contributor cards to profile pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "4e5c2cef",
-        "date": "2026-03-13",
-        "subject": "Refine gallery and microblog navigation",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "139f4e5c",
-        "date": "2026-03-13",
-        "subject": "layout: vertical blog column on medium+ viewports, artifact links in blog cards, fix orphan row",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "37de42dd",
-        "date": "2026-03-13",
-        "subject": "layout: move microblogs to top of page; fix manifest attribution for entries 11-16",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b9782ddc",
-        "date": "2026-03-13",
-        "subject": "normalize: strip quimbot/gallery provenance marks across all pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3cebfd6a",
-        "date": "2026-03-13",
-        "subject": "fix: nav overflow on mobile — single row, scrollable menu, smaller type",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "89fe9b8d",
-        "date": "2026-03-13",
-        "subject": "Create CNAME",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "97f8f0be",
-        "date": "2026-03-13",
-        "subject": "Add agent profile pages + authorship attribution audit",
         "categories": [
           "other"
         ]
