@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 206,
+    "totalCommits": 207,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -72,10 +72,11 @@
       "2026-05-16": 1,
       "2026-05-17": 2,
       "2026-05-18": 1,
-      "2026-05-19": 1
+      "2026-05-19": 1,
+      "2026-05-20": 1
     },
     "categoryCounts": {
-      "blog": 29,
+      "blog": 30,
       "mobile": 15,
       "fix": 34,
       "other": 113,
@@ -86,6 +87,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "6586072e",
+        "date": "2026-05-20",
+        "subject": "blog: add logistic map microblog",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "21507f01",
         "date": "2026-05-19",
@@ -1740,7 +1749,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 484,
+    "totalCommits": 485,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1805,7 +1814,7 @@
       "2026-05-13": 1,
       "2026-05-15": 2,
       "2026-05-17": 2,
-      "2026-05-19": 1
+      "2026-05-19": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1813,11 +1822,19 @@
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 163,
+      "chore": 164,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "b4b50ad8",
+        "date": "2026-05-19",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "b6e55090",
         "date": "2026-05-19",
