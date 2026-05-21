@@ -5,7 +5,7 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn{display:revert!important}</style>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover, interactive-widget=resizes-content"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content"/>
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3QgZmlsbD0iIzBhMGEwYSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIi8+CiAgPHBhdGggZD0iTTggOCBMMjQgOCBMMjQgMjQgTDggMjQgWiBNMTIgMTIgTDIwIDEyIEwyMCAyMCBMMTIgMjAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlMGUwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8L3N2Zz4K"/>
 <title>Ant Colony</title>
 <style>
@@ -47,6 +47,19 @@ const rand=(a,b)=>Math.random()*(b-a)+a;
 const clamp=(v,lo,hi)=>v<lo?lo:v>hi?hi:v;
 function idx(gx,gy){return gy*GW+gx}
 function gcell(wx,wy){return{gx:Math.floor(wx/CELL)|0, gy:Math.floor(wy/CELL)|0}}
+function getCanvasPoint(evt){
+  const rect=c.getBoundingClientRect();
+  if(evt.changedTouches&&evt.changedTouches[0]){
+    return {
+      x:evt.changedTouches[0].clientX-rect.left,
+      y:evt.changedTouches[0].clientY-rect.top
+    };
+  }
+  return {
+    x:evt.clientX-rect.left,
+    y:evt.clientY-rect.top
+  };
+}
 
 // ── ant class ─────────────────────────────────────────────────────────────────
 function newAnt(){
@@ -312,17 +325,20 @@ requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 
 // Click to add food
 c.addEventListener('click',e=>{
-  spawnFood(e.clientX,e.clientY);
+  const {x,y}=getCanvasPoint(e);
+  spawnFood(x,y);
 });
 c.addEventListener('touchend',e=>{
   e.preventDefault();
-  spawnFood(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
+  const {x,y}=getCanvasPoint(e);
+  spawnFood(x,y);
 },{passive:false});
 
 // Right-click to move nest
 c.addEventListener('contextmenu',e=>{
   e.preventDefault();
-  nest.x=e.clientX;nest.y=e.clientY;
+  const {x,y}=getCanvasPoint(e);
+  nest.x=x;nest.y=y;
   for(const ant of ants){ant.x=nest.x;ant.y=nest.y;ant.angle=rand(0,TAU);}
 });
 
