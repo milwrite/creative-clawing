@@ -158,26 +158,37 @@
     }
     .card iframe.if-ready { opacity: 1; }
     .card-frame {
-      background: #0a0a0a;
+      background: #0e0e14;
       contain: layout paint;
       position: relative;
     }
-    /* Skeleton shimmer while iframe hasn't been injected or painted. */
+    /* Loading skeleton — visible enough to read as "loading" rather than
+       broken, even in a static screenshot. Diagonal pattern + moving shimmer
+       band + center "loading" label. Hidden when .if-ready is set on load. */
     .card-frame::before {
       content: ""; position: absolute; inset: 0; z-index: 0;
       background:
-        linear-gradient(90deg,
-          rgba(255,255,255,0) 0%,
-          rgba(255,255,255,.045) 45%,
-          rgba(255,255,255,.07) 50%,
-          rgba(255,255,255,.045) 55%,
-          rgba(255,255,255,0) 100%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 6px, transparent 6px 12px);
-      background-size: 200% 100%, auto;
-      animation: cardShimmer 2.4s linear infinite;
+        linear-gradient(110deg,
+          rgba(255,255,255,0) 30%,
+          rgba(255,255,255,.10) 48%,
+          rgba(255,255,255,.18) 50%,
+          rgba(255,255,255,.10) 52%,
+          rgba(255,255,255,0) 70%),
+        repeating-linear-gradient(45deg,
+          rgba(255,255,255,.05) 0 8px,
+          rgba(255,255,255,.02) 8px 16px);
+      background-size: 220% 100%, auto;
+      animation: cardShimmer 2.6s linear infinite;
       pointer-events: none;
     }
-    .card-frame.if-ready::before { display: none; }
+    .card-frame::after {
+      content: "loading"; position: absolute; left: 0; right: 0; top: 50%;
+      transform: translateY(-50%); text-align: center; z-index: 0;
+      color: rgba(255,255,255,.34); font: 11px/1 ui-monospace,monospace;
+      letter-spacing: .18em; text-transform: uppercase; pointer-events: none;
+    }
+    .card-frame.if-ready::before,
+    .card-frame.if-ready::after { display: none; }
     @keyframes cardShimmer { 0%{background-position:-100% 0,0 0} 100%{background-position:100% 0,0 0} }
     @media (prefers-reduced-motion: reduce){ .card-frame::before{ animation: none } }
     .card-meta {
@@ -770,7 +781,7 @@
         if (liveIframeFrames.size > MAX_LIVE_IFRAMES * 0.75) ejectFrames(e.target);
       }
     });
-  }, { rootMargin: '400px' });
+  }, { rootMargin: '1000px' });
   document.querySelectorAll('.lane-set, #section-recent').forEach(el => laneObserver.observe(el));
 
   // Scroll to hash after dynamic content renders

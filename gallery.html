@@ -68,31 +68,38 @@ a.card{
   transition:border-color .15s;
 }
 a.card:hover{border-color:rgba(255,255,255,.35)}
-.card-preview{overflow:hidden;position:relative;background:#050505}
-.card-overlay{position:absolute;inset:0;z-index:1;touch-action:auto}
+.card-preview{overflow:hidden;position:relative;background:#0e0e14}
+.card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
 .card-preview iframe{
   width:100%;height:100%;border:0;display:block;
   background:#000;pointer-events:none;
 }
-/* Skeleton shimmer shown until the iframe paints — replaces dead-black cards
-   when the IntersectionObserver hasn't injected the iframe yet, or while the
-   sketch's first frame is still loading. The .if-ready class is set by the
-   iframe load handler and hides the shimmer. */
+/* Skeleton shown until iframe paints — clearly reads as "loading" rather than
+   "broken" even in a static screenshot. Visible diagonal pattern + a moving
+   shimmer band + center label. Hidden when .if-ready is set by load handler. */
 .card-preview::before{
-  content:"";position:absolute;inset:0;
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
-    linear-gradient(90deg,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,.04) 40%,
-      rgba(255,255,255,.07) 50%,
-      rgba(255,255,255,.04) 60%,
-      rgba(255,255,255,0) 100%),
-    repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 6px, transparent 6px 12px);
-  background-size: 200% 100%, auto;
-  animation: cardShimmer 2.4s linear infinite;
-  pointer-events:none; z-index:0;
+    linear-gradient(110deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,.10) 48%,
+      rgba(255,255,255,.18) 50%,
+      rgba(255,255,255,.10) 52%,
+      rgba(255,255,255,0) 70%),
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,.05) 0 8px,
+      rgba(255,255,255,.02) 8px 16px);
+  background-size: 220% 100%, auto;
+  animation: cardShimmer 2.6s linear infinite;
 }
-.card-preview.if-ready::before{ display:none }
+.card-preview::after{
+  content:"loading";position:absolute;left:0;right:0;top:50%;
+  transform:translateY(-50%);text-align:center;z-index:1;pointer-events:none;
+  color:rgba(255,255,255,.34); font:11px/1 ui-monospace,monospace;
+  letter-spacing:.18em; text-transform:uppercase;
+}
+.card-preview.if-ready::before,
+.card-preview.if-ready::after{ display:none }
 @keyframes cardShimmer { 0%{background-position:-100% 0,0 0} 100%{background-position:100% 0,0 0} }
 @media (prefers-reduced-motion: reduce){ .card-preview::before{animation:none} }
 .card-meta{
@@ -255,11 +262,12 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     attachObserver();
   }
 
-  // IntersectionObserver-based iframe injection/eviction
-  // MAX_LIVE: cap concurrent canvas loops to avoid GPU overload.
-  // Gallery uses 60 (vs homepage's 32) — cards are static in a grid, not scrolling lanes.
-  // Pending set: cards that were in-view but blocked by the cap — drained whenever a slot frees.
-  const MAX_LIVE = 60;
+  // IntersectionObserver-based iframe injection/eviction.
+  // MAX_LIVE caps concurrent canvas loops to keep GPU/memory bounded. The
+  // gallery is a static grid (vs the homepage's scrolling lanes), so we allow
+  // more concurrent iframes than the homepage. Cards beyond the cap go to
+  // pendingSet and are drained as slots free up.
+  const MAX_LIVE = 96;
   const liveSet = new Set();
   const pendingSet = new Set();
 
@@ -310,7 +318,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
       entries.forEach(e => {
         if (e.isIntersecting) injectIframe(e.target);
       });
-    }, { rootMargin: '600px' });
+    }, { rootMargin: '1200px' });
     keepObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (!e.isIntersecting) {
@@ -318,7 +326,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ejectIframe(e.target);
         }
       });
-    }, { rootMargin: '1600px' });
+    }, { rootMargin: '2400px' });
     document.querySelectorAll('.card-preview[data-src]').forEach(el => {
       loadObserver.observe(el);
       keepObserver.observe(el);
