@@ -160,7 +160,26 @@
     .card-frame {
       background: #0a0a0a;
       contain: layout paint;
+      position: relative;
     }
+    /* Skeleton shimmer while iframe hasn't been injected or painted. */
+    .card-frame::before {
+      content: ""; position: absolute; inset: 0; z-index: 0;
+      background:
+        linear-gradient(90deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,.045) 45%,
+          rgba(255,255,255,.07) 50%,
+          rgba(255,255,255,.045) 55%,
+          rgba(255,255,255,0) 100%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 6px, transparent 6px 12px);
+      background-size: 200% 100%, auto;
+      animation: cardShimmer 2.4s linear infinite;
+      pointer-events: none;
+    }
+    .card-frame.if-ready::before { display: none; }
+    @keyframes cardShimmer { 0%{background-position:-100% 0,0 0} 100%{background-position:100% 0,0 0} }
+    @media (prefers-reduced-motion: reduce){ .card-frame::before{ animation: none } }
     .card-meta {
       border-top: 1px solid var(--soft);
       padding: 7px 8px;
@@ -703,10 +722,11 @@
     const iframe = document.createElement('iframe');
     iframe.title = f.dataset.title || '';
     iframe.src = f.dataset.src;
-    iframe.setAttribute('sandbox', 'allow-scripts');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.addEventListener('load', () => {
       try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
       iframe.classList.add('if-ready');
+      f.classList.add('if-ready');
       drainPending();
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
@@ -733,6 +753,7 @@
         iframe.src = 'about:blank';
         iframe.remove();
         liveIframeFrames.delete(f);
+        f.classList.remove('if-ready');
       }
     });
     drainPending();

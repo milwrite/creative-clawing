@@ -68,12 +68,33 @@ a.card{
   transition:border-color .15s;
 }
 a.card:hover{border-color:rgba(255,255,255,.35)}
-.card-preview{overflow:hidden;position:relative}
+.card-preview{overflow:hidden;position:relative;background:#050505}
 .card-overlay{position:absolute;inset:0;z-index:1;touch-action:auto}
 .card-preview iframe{
   width:100%;height:100%;border:0;display:block;
   background:#000;pointer-events:none;
 }
+/* Skeleton shimmer shown until the iframe paints — replaces dead-black cards
+   when the IntersectionObserver hasn't injected the iframe yet, or while the
+   sketch's first frame is still loading. The .if-ready class is set by the
+   iframe load handler and hides the shimmer. */
+.card-preview::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.04) 40%,
+      rgba(255,255,255,.07) 50%,
+      rgba(255,255,255,.04) 60%,
+      rgba(255,255,255,0) 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.018) 0 6px, transparent 6px 12px);
+  background-size: 200% 100%, auto;
+  animation: cardShimmer 2.4s linear infinite;
+  pointer-events:none; z-index:0;
+}
+.card-preview.if-ready::before{ display:none }
+@keyframes cardShimmer { 0%{background-position:-100% 0,0 0} 100%{background-position:100% 0,0 0} }
+@media (prefers-reduced-motion: reduce){ .card-preview::before{animation:none} }
 .card-meta{
   border-top:1px solid var(--soft);
   padding:7px 8px;display:grid;gap:2px;
@@ -241,7 +262,6 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   const MAX_LIVE = 60;
   const liveSet = new Set();
   const pendingSet = new Set();
-  let observer = null;
 
   function injectIframe(f) {
     if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
@@ -251,12 +271,13 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     pendingSet.delete(f);
     const iframe = document.createElement('iframe');
     iframe.src = f.dataset.src;
-    iframe.sandbox = 'allow-scripts';
+    iframe.sandbox = 'allow-scripts allow-same-origin';
     iframe.title = f.dataset.title || '';
     iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
     iframe.addEventListener('load', () => {
       try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
       iframe.style.opacity = '1';
+      f.classList.add('if-ready');
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
     liveSet.add(f);
@@ -268,6 +289,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     iframe.src = 'about:blank';
     iframe.remove();
     liveSet.delete(f);
+    f.classList.remove('if-ready');
     // Drain pending queue now that a slot freed
     for (const pf of pendingSet) {
       if (liveSet.size >= MAX_LIVE) break;
@@ -275,20 +297,32 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     }
   }
 
+  // Two-tier observer: a narrow "load" margin gets the iframe in early as the
+  // card approaches the viewport; a wider "keep" margin holds the iframe alive
+  // through small scroll-back-and-forth gestures so a moment of off-screen
+  // doesn't churn an iframe out and back. Only ejects when the card is well
+  // outside the keep-alive zone.
+  let loadObserver = null, keepObserver = null;
   function attachObserver() {
-    if (observer) observer.disconnect();
-    observer = new IntersectionObserver((entries) => {
+    if (loadObserver) loadObserver.disconnect();
+    if (keepObserver) keepObserver.disconnect();
+    loadObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        const f = e.target;
-        if (e.isIntersecting) {
-          injectIframe(f);
-        } else {
-          pendingSet.delete(f);
-          ejectIframe(f);
+        if (e.isIntersecting) injectIframe(e.target);
+      });
+    }, { rootMargin: '600px' });
+    keepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) {
+          pendingSet.delete(e.target);
+          ejectIframe(e.target);
         }
       });
-    }, { rootMargin: '400px' });
-    document.querySelectorAll('.card-preview[data-src]').forEach(el => observer.observe(el));
+    }, { rootMargin: '1600px' });
+    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+      loadObserver.observe(el);
+      keepObserver.observe(el);
+    });
   }
 
   search.addEventListener('input', render);
