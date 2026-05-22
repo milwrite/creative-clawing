@@ -570,11 +570,16 @@
     </a>`;
   }
 
+  // Cap homepage to a curated highlight reel. The full collection lives at
+  // /gallery.html — too many cards on the home page overloads the iframe pool
+  // and leaves most previews stuck loading.
+  const HOME_ARTIFACT_LIMIT = 14;
   function artifactsHTML() {
     if (!arts.length) return '<p class="empty">No artifacts found.</p>';
+    const shown = arts.slice(0, HOME_ARTIFACT_LIMIT);
     const pairs = [];
-    for (let i = 0; i < arts.length; i += 2) {
-      pairs.push(`<div class="artifact-pair">${arts.slice(i, i + 2).map(artifactCard).join('')}</div>`);
+    for (let i = 0; i < shown.length; i += 2) {
+      pairs.push(`<div class="artifact-pair">${shown.slice(i, i + 2).map(artifactCard).join('')}</div>`);
     }
     return pairs.join('');
   }
@@ -655,8 +660,8 @@
       <div class="section-head">
         <h2>Artifacts</h2>
         <div class="section-meta">
-          <span>${arts.length} live sketches</span>
-          <a class="section-link" href="gallery.html">Browse Gallery</a>
+          <span>showing ${Math.min(HOME_ARTIFACT_LIMIT, arts.length)} of ${arts.length}</span>
+          <a class="section-link" href="gallery.html">Browse Gallery →</a>
         </div>
       </div>
       <div class="artifact-feed">${artifactsHTML()}</div>
@@ -684,7 +689,7 @@
     });
   }
 
-  const LIVE_IFRAME_LIMIT = 2;
+  const LIVE_IFRAME_LIMIT = HOME_ARTIFACT_LIMIT;
   const liveFrames = new Set();
   const activeFrames = new Set();
   let refreshRaf = 0;
@@ -822,7 +827,7 @@
         }
       });
       schedulePreviewRefresh();
-    }, { rootMargin: '520px 0px', threshold: 0.01 });
+    }, { rootMargin: '2000px 0px', threshold: 0.01 });
     frames.forEach(frame => observer.observe(frame));
   } else {
     frames.slice(0, LIVE_IFRAME_LIMIT).forEach(frame => activeFrames.add(frame));
