@@ -96,14 +96,37 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     #0a0a0a;
   opacity:.18;
 }
-.card-preview-image{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  object-fit:cover;
-  background:#050505;
+.card-preview iframe{
+  width:100%;height:100%;border:0;display:block;
+  background:#000;pointer-events:none;
+  opacity:0;transition:opacity .35s ease;
 }
+.card-preview iframe.if-ready{opacity:1}
+.card-preview::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(110deg,
+      rgba(255,255,255,0) 30%,
+      rgba(255,255,255,.10) 48%,
+      rgba(255,255,255,.18) 50%,
+      rgba(255,255,255,.10) 52%,
+      rgba(255,255,255,0) 70%),
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,.05) 0 8px,
+      rgba(255,255,255,.02) 8px 16px);
+  background-size:220% 100%, auto;
+  animation:cardShimmer 2.6s linear infinite;
+}
+.card-preview::after{
+  content:"loading";position:absolute;left:0;right:0;top:50%;
+  transform:translateY(-50%);text-align:center;z-index:1;pointer-events:none;
+  color:rgba(255,255,255,.34);font:11px/1 ui-monospace,monospace;
+  letter-spacing:.18em;text-transform:uppercase;
+}
+.card-preview.if-ready::before,
+.card-preview.if-ready::after{display:none}
+@keyframes cardShimmer{0%{background-position:-100% 0,0 0}100%{background-position:100% 0,0 0}}
+@media(prefers-reduced-motion:reduce){.card-preview::before{animation:none}}
 .card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
 .card-meta{
   border-top:1px solid var(--soft);
@@ -320,7 +343,6 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
         <div class="card-preview" data-src="gallery/${escapeAttr(a.file)}.html" data-title="${escapeAttr(a.name)}">
-          <img class="card-preview-image" alt="" loading="lazy" decoding="async" src="${previewPath(a)}" data-fallback="${escapeAttr(previewURL(a))}"/>
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
@@ -329,6 +351,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ${a.description ? `<div class="card-desc">${escapeHTML(a.description)}</div>` : ''}
         </div>
       </a>`).join('');
+    if (typeof attachIframeObservers === 'function') attachIframeObservers();
   }
 
   function escapeHTML(value) {
@@ -345,159 +368,71 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     return escapeHTML(value).replace(/`/g, '&#96;');
   }
 
-  function previewPath(a) {
-    return `assets/images/gallery-previews/${encodeURIComponent(a.file)}.jpg`;
-  }
-
-  grid.addEventListener('error', event => {
-    const img = event.target;
-    if (!(img instanceof HTMLImageElement) || !img.classList.contains('card-preview-image')) return;
-    const fallback = img.dataset.fallback;
-    if (!fallback || img.src === fallback) return;
-    img.removeAttribute('data-fallback');
-    img.src = fallback;
-  }, true);
-
-  function hashString(value) {
-    let h = 2166136261;
-    for (let i = 0; i < value.length; i++) h = Math.imul(h ^ value.charCodeAt(i), 16777619);
-    return h >>> 0;
-  }
-
-  function seededRandom(seed) {
-    return function next() {
-      seed = (seed + 0x6D2B79F5) >>> 0;
-      let t = seed;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  function pickPalette(tag, seed) {
-    const palettes = {
-      algorithm: ['#7dd3fc', '#f472b6', '#f8fafc', '#312e81'],
-      attractor: ['#a78bfa', '#22d3ee', '#f0abfc', '#120817'],
-      audio: ['#67e8f9', '#bef264', '#f9a8d4', '#071314'],
-      'cellular-automaton': ['#facc15', '#38bdf8', '#fb7185', '#080b10'],
-      fractal: ['#93c5fd', '#c4b5fd', '#34d399', '#09070f'],
-      geometry: ['#e5e7eb', '#fbbf24', '#60a5fa', '#080808'],
-      'historical-homage': ['#f5e6c8', '#ef4444', '#2563eb', '#11100d'],
-      infrastructure: ['#94a3b8', '#22c55e', '#38bdf8', '#07090c'],
-      mathematics: ['#86efac', '#c084fc', '#f9fafb', '#080b08'],
-      noise: ['#fca5a5', '#fde68a', '#93c5fd', '#0c0808'],
-      optimization: ['#f97316', '#facc15', '#38bdf8', '#100b06'],
-      pattern: ['#f0abfc', '#2dd4bf', '#fde68a', '#0d0711'],
-      physics: ['#60a5fa', '#fbbf24', '#f8fafc', '#050812'],
-      simulation: ['#34d399', '#fb7185', '#93c5fd', '#07100c'],
-    };
-    const keys = Object.keys(palettes);
-    return palettes[tag] || palettes[keys[seed % keys.length]];
-  }
-
-  function fmt(n) {
-    return Number(n).toFixed(1);
-  }
-
-  function pathFromSeed(rng, w, h, turns) {
-    const startY = h * (0.2 + rng() * 0.6);
-    let d = `M ${fmt(-12)} ${fmt(startY)}`;
-    for (let i = 0; i < turns; i++) {
-      const x1 = w * ((i + 0.25) / turns);
-      const x2 = w * ((i + 0.55) / turns);
-      const x = w * ((i + 1) / turns) + 12;
-      const y1 = h * (0.12 + rng() * 0.76);
-      const y2 = h * (0.12 + rng() * 0.76);
-      const y = h * (0.12 + rng() * 0.76);
-      d += ` C ${fmt(x1)} ${fmt(y1)}, ${fmt(x2)} ${fmt(y2)}, ${fmt(x)} ${fmt(y)}`;
+  // Iframe lazy-loader: inject a live preview iframe when a card is near the
+  // viewport, evict when it's well outside. Two-tier observer keeps cards warm
+  // through small scroll-back-and-forth gestures without thrashing.
+  const MAX_LIVE = 96;
+  const liveSet = new Set();
+  const pendingSet = new Set();
+  let loadObserver = null, keepObserver = null;
+  function injectIframe(f) {
+    if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
+      if (!f.querySelector('iframe')) pendingSet.add(f);
+      return;
     }
-    return d;
+    pendingSet.delete(f);
+    const iframe = document.createElement('iframe');
+    iframe.src = f.dataset.src;
+    iframe.sandbox = 'allow-scripts allow-same-origin';
+    iframe.title = f.dataset.title || '';
+    iframe.addEventListener('load', () => {
+      try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
+      iframe.classList.add('if-ready');
+      f.classList.add('if-ready');
+    }, { once: true });
+    f.insertBefore(iframe, f.firstChild);
+    liveSet.add(f);
   }
-
-  function categoryMarks(tag, rng, palette, seed) {
-    const w = 320, h = 220;
-    const [a, b, c] = palette;
-    if (tag === 'cellular-automaton') {
-      let rows = '';
-      let cells = Array.from({ length: 34 }, (_, i) => i === 17 ? 1 : (rng() > 0.82 ? 1 : 0));
-      const rule = [30, 45, 54, 90, 110, 150][seed % 6];
-      for (let y = 0; y < 20; y++) {
-        rows += cells.map((v, x) => v ? `<rect x="${x * 10 - 9}" y="${y * 10 + 10}" width="8" height="8" fill="${x % 2 ? a : b}" opacity="${0.35 + y * 0.025}"/>` : '').join('');
-        cells = cells.map((_, i) => {
-          const l = cells[(i - 1 + cells.length) % cells.length], m = cells[i], r = cells[(i + 1) % cells.length];
-          return (rule >> ((l << 2) | (m << 1) | r)) & 1;
-        });
-      }
-      return rows;
+  function ejectIframe(f) {
+    const iframe = f.querySelector('iframe');
+    if (!iframe) return;
+    iframe.src = 'about:blank';
+    iframe.remove();
+    liveSet.delete(f);
+    f.classList.remove('if-ready');
+    for (const pf of pendingSet) {
+      if (liveSet.size >= MAX_LIVE) break;
+      injectIframe(pf);
     }
-    if (tag === 'geometry' || tag === 'mathematics') {
-      const sides = 3 + seed % 5;
-      let pts = '';
-      for (let i = 0; i < sides; i++) {
-        const angle = -Math.PI / 2 + Math.PI * 2 * i / sides;
-        pts += `${fmt(160 + Math.cos(angle) * (58 + rng() * 42))},${fmt(106 + Math.sin(angle) * (42 + rng() * 30))} `;
-      }
-      return `<polygon points="${pts}" fill="none" stroke="${a}" stroke-width="2.5" opacity=".72"/><polygon points="${pts}" fill="${b}" opacity=".10"/>`;
-    }
-    if (tag === 'attractor' || tag === 'fractal') {
-      let paths = '';
-      for (let i = 0; i < 5; i++) {
-        const hue = [a, b, c][i % 3];
-        paths += `<path d="${pathFromSeed(rng, w, h, 4)}" fill="none" stroke="${hue}" stroke-width="${fmt(0.8 + rng() * 1.4)}" opacity="${fmt(0.35 + rng() * 0.38)}"/>`;
-      }
-      return paths;
-    }
-    if (tag === 'physics' || tag === 'simulation') {
-      let nodes = '';
-      for (let i = 0; i < 18; i++) {
-        const x = 32 + rng() * 256, y = 34 + rng() * 150, r = 2 + rng() * 9;
-        nodes += `<circle cx="${fmt(x)}" cy="${fmt(y)}" r="${fmt(r)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.32 + rng() * 0.48)}"/>`;
-      }
-      return `<path d="${pathFromSeed(rng, w, h, 3)}" fill="none" stroke="${a}" stroke-width="1.4" opacity=".44"/>${nodes}`;
-    }
-    if (tag === 'algorithm' || tag === 'optimization' || tag === 'infrastructure') {
-      let bars = '';
-      for (let i = 0; i < 18; i++) {
-        const bh = 12 + rng() * 94;
-        bars += `<rect x="${18 + i * 16}" y="${fmt(176 - bh)}" width="10" height="${fmt(bh)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.36 + rng() * 0.42)}"/>`;
-      }
-      return bars + `<path d="${pathFromSeed(rng, w, h, 3)}" fill="none" stroke="${c}" stroke-width="1.2" opacity=".5"/>`;
-    }
-    let dots = '';
-    for (let i = 0; i < 52; i++) {
-      dots += `<circle cx="${fmt(18 + rng() * 284)}" cy="${fmt(18 + rng() * 172)}" r="${fmt(1 + rng() * 3.8)}" fill="${[a, b, c][i % 3]}" opacity="${fmt(0.22 + rng() * 0.5)}"/>`;
-    }
-    return dots + `<path d="${pathFromSeed(rng, w, h, 4)}" fill="none" stroke="${a}" stroke-width="1.8" opacity=".48"/>`;
   }
-
-  function previewURL(a) {
-    const seed = hashString(`${a.file}|${a.name}|${a.tag}|${a.author}`);
-    const rng = seededRandom(seed);
-    const palette = pickPalette(a.tag, seed);
-    const bg = palette[3] || '#080808';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="${palette[0]}" stop-opacity=".16"/>
-          <stop offset=".55" stop-color="${palette[1]}" stop-opacity=".08"/>
-          <stop offset="1" stop-color="${palette[2]}" stop-opacity=".12"/>
-        </linearGradient>
-        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity=".055" stroke-width="1"/>
-        </pattern>
-      </defs>
-      <rect width="320" height="220" fill="${bg}"/>
-      <rect width="320" height="220" fill="url(#g)"/>
-      <rect width="320" height="220" fill="url(#grid)"/>
-      ${categoryMarks(a.tag, rng, palette, seed)}
-    </svg>`;
-    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  function attachIframeObservers() {
+    if (loadObserver) loadObserver.disconnect();
+    if (keepObserver) keepObserver.disconnect();
+    liveSet.forEach(f => { f.querySelector('iframe')?.remove(); f.classList.remove('if-ready'); });
+    liveSet.clear();
+    pendingSet.clear();
+    loadObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) injectIframe(e.target); });
+    }, { rootMargin: '1200px' });
+    keepObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) {
+          pendingSet.delete(e.target);
+          ejectIframe(e.target);
+        }
+      });
+    }, { rootMargin: '2400px' });
+    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+      loadObserver.observe(el);
+      keepObserver.observe(el);
+    });
   }
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();
   renderSort();
   render();
+  attachIframeObservers();
 
   const contributorMenu = document.querySelector('.menu-group');
   if (contributorMenu){
