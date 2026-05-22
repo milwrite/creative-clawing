@@ -51,8 +51,8 @@ function draw(){
 setInterval(draw,3000);
 addEventListener('resize',draw);
 addEventListener('click',draw);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',draw);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(draw));
 requestAnimationFrame(()=>{draw()});
 </script>
 

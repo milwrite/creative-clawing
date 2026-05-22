@@ -262,8 +262,8 @@ function loop(){
 }
 
 addEventListener('resize',init);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
-window.addEventListener('orientationchange',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',init);
+window.addEventListener('orientationchange',()=>requestAnimationFrame(init));
 requestAnimationFrame(()=>{init();setTimeout(init,200);loop();});
 
 // Click to add food
