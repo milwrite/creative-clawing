@@ -96,12 +96,13 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     #0a0a0a;
   opacity:.18;
 }
-.card-preview iframe{
-  width:100%;height:100%;border:0;display:block;
-  background:#000;pointer-events:none;
+.card-preview img.card-thumb{
+  width:100%;height:100%;display:block;
+  object-fit:cover;background:#0a0a0a;
   opacity:0;transition:opacity .35s ease;
 }
-.card-preview iframe.if-ready{opacity:1}
+.card-preview img.card-thumb.loaded,
+.card-preview img.card-thumb[src]:not([src=""]){opacity:1}
 .card-preview::before{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
@@ -342,8 +343,8 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview" data-src="gallery/${escapeAttr(a.file)}.html" data-title="${escapeAttr(a.name)}">
-          <div class="card-overlay"></div>
+        <div class="card-preview">
+          <img class="card-thumb" src="thumbnails/${escapeAttr(a.file)}.webp" alt="${escapeAttr(a.name)}" loading="lazy" decoding="async">
         </div>
         <div class="card-meta">
           <div class="card-name">${escapeHTML(a.name)}</div>
@@ -351,7 +352,6 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ${a.description ? `<div class="card-desc">${escapeHTML(a.description)}</div>` : ''}
         </div>
       </a>`).join('');
-    if (typeof attachIframeObservers === 'function') attachIframeObservers();
   }
 
   function escapeHTML(value) {
@@ -368,91 +368,14 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     return escapeHTML(value).replace(/`/g, '&#96;');
   }
 
-  // Iframe lazy-loader: serialize injections so we never stall the tab.
-  //
-  // Why this is tricky: 24 cards per page × each running its own canvas rAF
-  // loop = main-thread saturation if we inject them all at once. We serialize
-  // injection through a queue processed one-per-rAF, so the browser gets a
-  // paint frame between iframe loads. Above-the-fold cards (first 6) inject
-  // synchronously so the page is interactive immediately.
-  const MAX_LIVE = 26;
-  const EAGER_PRELOAD = 6;
-  const liveSet = new Set();
-  const injectQueue = [];
-  const queued = new WeakSet();
-  let processing = false;
-  let loadObserver = null, keepObserver = null;
-
-  function createIframe(f) {
-    if (f.querySelector('iframe')) return;
-    const iframe = document.createElement('iframe');
-    iframe.src = f.dataset.src;
-    iframe.sandbox = 'allow-scripts allow-same-origin';
-    iframe.loading = 'lazy';
-    iframe.title = f.dataset.title || '';
-    iframe.addEventListener('load', () => {
-      try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-      iframe.classList.add('if-ready');
-      f.classList.add('if-ready');
-    }, { once: true });
-    f.insertBefore(iframe, f.firstChild);
-    liveSet.add(f);
-  }
-  function enqueue(f) {
-    if (queued.has(f) || f.querySelector('iframe')) return;
-    queued.add(f);
-    injectQueue.push(f);
-    if (!processing) processQueue();
-  }
-  function processQueue() {
-    if (!injectQueue.length) { processing = false; return; }
-    processing = true;
-    requestAnimationFrame(() => {
-      while (liveSet.size < MAX_LIVE && injectQueue.length) {
-        const f = injectQueue.shift();
-        queued.delete(f);
-        createIframe(f);
-        break; // one per frame
-      }
-      processQueue();
-    });
-  }
-  function ejectIframe(f) {
-    const iframe = f.querySelector('iframe');
-    if (!iframe) return;
-    iframe.src = 'about:blank';
-    iframe.remove();
-    liveSet.delete(f);
-    f.classList.remove('if-ready');
-    if (injectQueue.length) processQueue();
-  }
-  function attachIframeObservers() {
-    if (loadObserver) loadObserver.disconnect();
-    if (keepObserver) keepObserver.disconnect();
-    liveSet.forEach(f => { f.querySelector('iframe')?.remove(); f.classList.remove('if-ready'); });
-    liveSet.clear();
-    injectQueue.length = 0;
-    loadObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) enqueue(e.target); });
-    }, { rootMargin: '1200px 0px' });
-    keepObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (!e.isIntersecting) ejectIframe(e.target); });
-    }, { rootMargin: '3000px 0px' });
-    const cards = Array.from(document.querySelectorAll('.card-preview[data-src]'));
-    // Above-the-fold: inject synchronously so the page paints fast.
-    cards.slice(0, EAGER_PRELOAD).forEach(createIframe);
-    // Everything else goes through the queue (one-per-rAF).
-    cards.forEach(el => {
-      loadObserver.observe(el);
-      keepObserver.observe(el);
-    });
-  }
+  // Static thumbnails: each card renders an <img> from thumbnails/X.webp,
+  // generated offline by tools/generate_thumbnails.js. Native `loading="lazy"`
+  // handles deferral; no observers or rAF queues needed.
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();
   renderSort();
   render();
-  attachIframeObservers();
 
   const contributorMenu = document.querySelector('.menu-group');
   if (contributorMenu){

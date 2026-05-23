@@ -157,19 +157,16 @@
     .artifact-frame.is-ready::after {
       opacity: 0;
     }
-    .artifact-frame iframe {
+    .artifact-frame img.artifact-thumb {
       width: 100%;
       height: 100%;
-      border: 0;
+      object-fit: cover;
       display: block;
-      pointer-events: none;
-      background: #000;
+      background: #0a0a0a;
       opacity: 0;
-      transition: opacity .28s ease;
+      transition: opacity .35s ease;
     }
-    .artifact-frame.is-ready iframe {
-      opacity: 1;
-    }
+    .artifact-frame img.artifact-thumb[src]:not([src=""]) { opacity: 1; }
     .artifact-body {
       padding: 11px 12px 12px;
       display: grid;
@@ -559,8 +556,11 @@
     ].filter(Boolean);
     const tags = (art.tags || []).slice(0, 4);
 
+    const thumbSrc = `thumbnails/${escapeAttr(art.id || '')}.webp`;
     return `<a class="artifact-card" href="${escapeAttr(href)}" aria-label="Open ${escapeAttr(title)}">
-      <div class="artifact-frame" data-src="${escapeAttr(src)}" data-title="${escapeAttr(title)}"></div>
+      <div class="artifact-frame">
+        <img class="artifact-thumb" src="${thumbSrc}" alt="${escapeAttr(title)}" loading="lazy" decoding="async">
+      </div>
       <div class="artifact-body">
         <div class="artifact-k">${meta.map(part => `<span>${escapeHTML(part)}</span>`).join('')}</div>
         <h3 class="artifact-title">${escapeHTML(title)}</h3>
@@ -689,155 +689,9 @@
     });
   }
 
-  const LIVE_IFRAME_LIMIT = HOME_ARTIFACT_LIMIT;
-  const liveFrames = new Set();
-  const activeFrames = new Set();
-  let refreshRaf = 0;
-
-  function frameDistanceFromViewport(frame) {
-    const rect = frame.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = cx - window.innerWidth / 2;
-    const dy = cy - window.innerHeight / 2;
-    const outsideX = Math.max(0, -rect.right, rect.left - window.innerWidth);
-    const outsideY = Math.max(0, -rect.bottom, rect.top - window.innerHeight);
-    return Math.hypot(dx, dy * 1.35) + (outsideX + outsideY) * 4;
-  }
-
-  function warmPreview(iframe) {
-    let win, doc, canvas;
-    try {
-      win = iframe.contentWindow;
-      doc = iframe.contentDocument;
-      canvas = doc && doc.querySelector('canvas');
-    } catch (_) {
-      return;
-    }
-    if (!win || !doc) return;
-    try { win.dispatchEvent(new win.Event('resize')); } catch (_) {}
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const points = [
-      [rect.left + rect.width * 0.50, rect.top + rect.height * 0.50],
-      [rect.left + rect.width * 0.30, rect.top + rect.height * 0.38],
-      [rect.left + rect.width * 0.70, rect.top + rect.height * 0.62]
-    ];
-    const originalSetPointerCapture = canvas.setPointerCapture;
-    const originalReleasePointerCapture = canvas.releasePointerCapture;
-    try { canvas.setPointerCapture = () => {}; } catch (_) {}
-    try { canvas.releasePointerCapture = () => {}; } catch (_) {}
-    try {
-      points.forEach(([clientX, clientY], index) => {
-        const opts = { bubbles: true, cancelable: true, clientX, clientY, pointerId: index + 1, button: 0, buttons: 1 };
-        try { canvas.dispatchEvent(new win.PointerEvent('pointerdown', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('mousedown', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.PointerEvent('pointermove', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('mousemove', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.MouseEvent('click', opts)); } catch (_) {}
-        try { canvas.dispatchEvent(new win.PointerEvent('pointerup', { ...opts, buttons: 0 })); } catch (_) {}
-      });
-    } finally {
-      try { canvas.setPointerCapture = originalSetPointerCapture; } catch (_) {}
-      try { canvas.releasePointerCapture = originalReleasePointerCapture; } catch (_) {}
-    }
-
-    try { doc.dispatchEvent(new win.KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ', code: 'Space' })); } catch (_) {}
-    try { if (typeof win.__creativeClawingPreview === 'function') win.__creativeClawingPreview(); } catch (_) {}
-    try { if (typeof win.resetSim === 'function') win.resetSim(); } catch (_) {}
-    try { if (typeof win.cyclePreset === 'function') win.cyclePreset(); } catch (_) {}
-    try { if (typeof win.cycleMode === 'function') win.cycleMode(); } catch (_) {}
-    try { if (typeof win.seedMode === 'function') win.seedMode('target'); } catch (_) {}
-    try { if (typeof win.excite === 'function') win.excite(100, 75, 24); } catch (_) {}
-    try {
-      if (typeof win.step === 'function') {
-        for (let i = 0; i < 90; i++) win.step();
-      }
-    } catch (_) {}
-    try {
-      if (typeof win.integrate === 'function') {
-        for (let i = 0; i < 180; i++) win.integrate();
-      }
-    } catch (_) {}
-    try { if (typeof win.drawSim === 'function') win.drawSim(); } catch (_) {}
-    try { if (typeof win.draw === 'function') win.draw(); } catch (_) {}
-  }
-
-  function injectFrame(frame) {
-    if (frame.querySelector('iframe')) return;
-    const iframe = document.createElement('iframe');
-    iframe.title = frame.dataset.title || '';
-    iframe.src = frame.dataset.src;
-    iframe.loading = 'lazy';
-    iframe.addEventListener('load', () => {
-      setTimeout(() => {
-        if (!iframe.isConnected || iframe.parentElement !== frame) return;
-        warmPreview(iframe);
-        frame.classList.add('is-ready');
-      }, 90);
-      setTimeout(() => {
-        if (!iframe.isConnected || iframe.parentElement !== frame) return;
-        warmPreview(iframe);
-      }, 420);
-    }, { once: true });
-    frame.appendChild(iframe);
-    frame.classList.add('is-live');
-    liveFrames.add(frame);
-  }
-
-  function ejectFrame(frame) {
-    const iframe = frame.querySelector('iframe');
-    if (iframe) {
-      iframe.src = 'about:blank';
-      iframe.remove();
-    }
-    liveFrames.delete(frame);
-    frame.classList.remove('is-live', 'is-ready');
-  }
-
-  function refreshPreviewFrames() {
-    refreshRaf = 0;
-    const candidates = [...activeFrames]
-      .filter(frame => frame.isConnected)
-      .sort((a, b) => frameDistanceFromViewport(a) - frameDistanceFromViewport(b));
-    const keep = new Set(candidates.slice(0, LIVE_IFRAME_LIMIT));
-
-    for (const frame of [...liveFrames]) {
-      if (!keep.has(frame)) ejectFrame(frame);
-    }
-    for (const frame of keep) {
-      injectFrame(frame);
-    }
-  }
-
-  function schedulePreviewRefresh() {
-    if (refreshRaf) return;
-    refreshRaf = requestAnimationFrame(refreshPreviewFrames);
-  }
-
-  const frames = [...document.querySelectorAll('.artifact-frame[data-src]')];
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) activeFrames.add(entry.target);
-        else {
-          activeFrames.delete(entry.target);
-          ejectFrame(entry.target);
-        }
-      });
-      schedulePreviewRefresh();
-    }, { rootMargin: '2000px 0px', threshold: 0.01 });
-    frames.forEach(frame => observer.observe(frame));
-  } else {
-    frames.slice(0, LIVE_IFRAME_LIMIT).forEach(frame => activeFrames.add(frame));
-    schedulePreviewRefresh();
-  }
-
-  window.addEventListener('scroll', schedulePreviewRefresh, { passive: true });
-  window.addEventListener('resize', schedulePreviewRefresh, { passive: true });
-  window.addEventListener('orientationchange', schedulePreviewRefresh, { passive: true });
-  setTimeout(schedulePreviewRefresh, 80);
+  // Static thumbnails from thumbnails/X.webp — generated offline by
+  // tools/generate_thumbnails.js. Native loading="lazy" handles deferral; no
+  // observers, iframe pools, or warmup hacks needed.
 
   if (location.hash) {
     const target = document.querySelector(location.hash);
