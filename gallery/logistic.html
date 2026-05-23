@@ -5,17 +5,21 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls,html.standalone #hint,html.standalone #hud{display:revert!important}</style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Logistic Map</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; }
+html, body { width: 100%; min-height: 100svh; min-height: -webkit-fill-available; height: 100%; height: 100dvh; }
 body {
   background: radial-gradient(circle at top, #131a2a 0%, #080b13 46%, #040509 100%);
   overflow: hidden;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: #dfe7ff;
-height:100dvh}
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
 canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #back {
   position: fixed;
@@ -107,6 +111,7 @@ canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 #reseed:hover {
   background: rgba(223,231,255,0.12);
 }
+#ui, #ui * , #back { touch-action: manipulation; }
 @media (max-width: 620px) {
   #hint {
     top: auto;
@@ -213,14 +218,17 @@ function resetOrbit(randomize = false) {
 
 function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.floor(window.innerWidth * dpr);
-  canvas.height = Math.floor(window.innerHeight * dpr);
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
+  const viewport = window.visualViewport;
+  const width = Math.round(viewport?.width || window.innerWidth || document.documentElement.clientWidth || 0);
+  const height = Math.round(viewport?.height || window.innerHeight || document.documentElement.clientHeight || 0);
+  canvas.width = Math.max(1, Math.floor(width * dpr));
+  canvas.height = Math.max(1, Math.floor(height * dpr));
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  W = window.innerWidth;
-  H = window.innerHeight;
+  W = Math.max(width, 1);
+  H = Math.max(height, 1);
 
   const marginX = Math.min(56, W * 0.08);
   const topPad = inIframe ? 18 : Math.min(86, H * 0.14);
@@ -503,9 +511,40 @@ reseedBtn.addEventListener('click', () => {
   resetOrbit(true);
 });
 
-window.addEventListener('resize', resize);
-if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
-window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+let resizeQueued = false;
+function scheduleResize() {
+  if (resizeQueued) return;
+  resizeQueued = true;
+  requestAnimationFrame(() => {
+    resizeQueued = false;
+    resize();
+  });
+}
+
+window.addEventListener('resize', scheduleResize, { passive: true });
+window.addEventListener('pageshow', scheduleResize, { passive: true });
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) scheduleResize();
+}, { passive: true });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', scheduleResize, { passive: true });
+  window.visualViewport.addEventListener('scroll', scheduleResize, { passive: true });
+}
+let dprQuery;
+function unwatchDpr() {
+  if (!dprQuery) return;
+  if (typeof dprQuery.removeEventListener === 'function') dprQuery.removeEventListener('change', watchDpr);
+  else if (typeof dprQuery.removeListener === 'function') dprQuery.removeListener(watchDpr);
+}
+function watchDpr() {
+  unwatchDpr();
+  dprQuery = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  if (typeof dprQuery.addEventListener === 'function') dprQuery.addEventListener('change', watchDpr, { once: true });
+  else if (typeof dprQuery.addListener === 'function') dprQuery.addListener(watchDpr);
+  scheduleResize();
+}
+watchDpr();
+window.addEventListener('orientationchange', () => { setTimeout(scheduleResize, 200); }, { passive: true });
 
 requestAnimationFrame(() => {
   resize();
