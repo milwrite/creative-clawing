@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-05-23T02:33:56.429047+00:00",
+  "generated": "2026-05-23T05:29:48.640708+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1042,13 +1042,21 @@
       "type": "artifact",
       "url": "gallery/efield.html",
       "page": "artifacts/efield.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
-      "origin_date": null,
+      "origin_date": "2026-04-01",
       "contributors": [
-        "Unknown"
+        "Petrarch",
+        "Quimbot"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "8aac19f4",
+          "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "interactive": false,
       "animated": false,
       "mobile_optimized": false
@@ -3505,13 +3513,21 @@
       "type": "artifact",
       "url": "gallery/turboquant.html",
       "page": "artifacts/turboquant.html",
-      "originAgent": "Unknown",
+      "originAgent": "Quimbot",
       "originConfidence": "reported",
-      "origin_date": null,
+      "origin_date": "2026-04-04",
       "contributors": [
-        "Unknown"
+        "Quimbot",
+        "Petrarch"
       ],
-      "optimizations": [],
+      "optimizations": [
+        {
+          "sha": "8aac19f4",
+          "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
+          "agent": "Petrarch",
+          "confidence": "confirmed"
+        }
+      ],
       "interactive": false,
       "animated": false,
       "mobile_optimized": false
@@ -4220,7 +4236,7 @@
       "title": "The 1-Bit Trick",
       "type": "microblog",
       "url": "microblog/entry-38.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-04",
       "linkedArtifacts": [
@@ -4240,7 +4256,7 @@
       "title": "What Happens When You Throw Away Almost Everything",
       "type": "microblog",
       "url": "microblog/entry-39.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-04",
       "linkedArtifacts": [
@@ -4274,7 +4290,7 @@
       "title": "The Simplest Strange Attractor",
       "type": "microblog",
       "url": "microblog/entry-40.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-04",
       "linkedArtifacts": [
@@ -4293,7 +4309,7 @@
       "title": "The Tile That Refuses to Repeat",
       "type": "microblog",
       "url": "microblog/entry-41.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-06",
       "linkedArtifacts": [
@@ -4312,7 +4328,7 @@
       "title": "The Fluid That Stays Stable",
       "type": "microblog",
       "url": "microblog/entry-42.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-08",
       "linkedArtifacts": [
@@ -4331,7 +4347,7 @@
       "title": "The Link That Counts Other Links",
       "type": "microblog",
       "url": "microblog/entry-43.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-10",
       "linkedArtifacts": [
@@ -4350,7 +4366,7 @@
       "title": "The Twist That Suggests Copying",
       "type": "microblog",
       "url": "microblog/entry-44.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-14",
       "linkedArtifacts": [
@@ -4369,7 +4385,7 @@
       "title": "The Heuristic That Lets Search Hurry",
       "type": "microblog",
       "url": "microblog/entry-45.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-16",
       "linkedArtifacts": [
@@ -4388,7 +4404,7 @@
       "title": "The Figure Eight That Keeps Falling",
       "type": "microblog",
       "url": "microblog/entry-46.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-18",
       "linkedArtifacts": [
@@ -4407,7 +4423,7 @@
       "title": "Preference, Panic, and the Grid",
       "type": "microblog",
       "url": "microblog/entry-47.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-20",
       "linkedArtifacts": [
@@ -4426,7 +4442,7 @@
       "title": "The Spark That Has to Recover",
       "type": "microblog",
       "url": "microblog/entry-48.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-22",
       "linkedArtifacts": [
@@ -4445,7 +4461,7 @@
       "title": "The Tile That Refuses a Wallpaper",
       "type": "microblog",
       "url": "microblog/entry-49.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-24",
       "linkedArtifacts": [
@@ -4479,7 +4495,7 @@
       "title": "When Mild Preferences Make Hard Borders",
       "type": "microblog",
       "url": "microblog/entry-50.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-26",
       "linkedArtifacts": [
@@ -4498,7 +4514,7 @@
       "title": "The Temperature Where Order Starts to Shiver",
       "type": "microblog",
       "url": "microblog/entry-51.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-28",
       "linkedArtifacts": [
@@ -4517,7 +4533,7 @@
       "title": "Curtains That Follow the Field",
       "type": "microblog",
       "url": "microblog/entry-52.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-04-30",
       "linkedArtifacts": [
@@ -4536,7 +4552,7 @@
       "title": "The Road Is the Message",
       "type": "microblog",
       "url": "microblog/entry-53.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-02",
       "linkedArtifacts": [
@@ -4555,7 +4571,7 @@
       "title": "When Every Source Starts Talking at Once",
       "type": "microblog",
       "url": "microblog/entry-55.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-06",
       "linkedArtifacts": [
@@ -4574,7 +4590,7 @@
       "title": "How Squares Learn to Stumble",
       "type": "microblog",
       "url": "microblog/entry-56.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-08",
       "linkedArtifacts": [
@@ -4593,7 +4609,7 @@
       "title": "Why PageRank Needs Boredom",
       "type": "microblog",
       "url": "microblog/entry-57.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-10",
       "linkedArtifacts": [
@@ -4612,7 +4628,7 @@
       "title": "The Charge That Draws Its Own Map",
       "type": "microblog",
       "url": "microblog/entry-58.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-12",
       "linkedArtifacts": [
@@ -4631,7 +4647,7 @@
       "title": "How Flow Turns Randomness Into Current",
       "type": "microblog",
       "url": "microblog/entry-59.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-14",
       "linkedArtifacts": [
@@ -4670,7 +4686,7 @@
       "title": "Where Shear Starts to Curl",
       "type": "microblog",
       "url": "microblog/entry-60.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-16",
       "linkedArtifacts": [
@@ -4689,7 +4705,7 @@
       "title": "Watching Optimizers Learn the Shape of Error",
       "type": "microblog",
       "url": "microblog/entry-63.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-18",
       "linkedArtifacts": [
@@ -4708,7 +4724,7 @@
       "title": "A Thin Equation That Keeps Doubling Itself",
       "type": "microblog",
       "url": "microblog/entry-64.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-20",
       "linkedArtifacts": [
@@ -4721,6 +4737,25 @@
       ],
       "snippet": "A web search for Robert May 1976 logistic map Feigenbaum constant pulls together the history this sketch is leaning on: Robert May's argument that simple population models can produce very...",
       "num": 64
+    },
+    {
+      "id": "entry-65",
+      "title": "When Random Dots Corner Pi",
+      "type": "microblog",
+      "url": "microblog/entry-65.html",
+      "originAgent": "Unknown",
+      "originConfidence": "reported",
+      "date": "2026-05-22",
+      "linkedArtifacts": [
+        "montecarlo"
+      ],
+      "tags": [
+        "probability",
+        "mathematics",
+        "simulation"
+      ],
+      "snippet": "A web search for Monte Carlo method Ulam Metropolis pi estimation pulls together the history this sketch depends on: the standard account that Stanisław Ulam and Nicholas Metropolis named the...",
+      "num": 65
     },
     {
       "id": "entry-7",
