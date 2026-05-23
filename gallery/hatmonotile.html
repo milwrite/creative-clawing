@@ -256,6 +256,7 @@ function render(){
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.fillStyle=pal.bg;ctx.fillRect(0,0,w,h);
 
+  if(!tiles||!tiles[0])return;
   const S=[viewScale,0,viewX+w/2,0,-viewScale,viewY+h/2];
   // Draw H metatile (index 0) which contains the full patch
   drawGeom(tiles[0],S,level,w,h);
