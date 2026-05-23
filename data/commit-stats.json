@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 235,
+    "totalCommits": 237,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -28,7 +28,7 @@
       "2026-03-30": 4,
       "2026-03-29": 5,
       "2026-03-28": 18,
-      "2026-05-22": 1,
+      "2026-05-22": 2,
       "2026-05-21": 1,
       "2026-05-20": 1,
       "2026-05-19": 1,
@@ -75,13 +75,14 @@
       "2026-04-04": 8,
       "2026-04-02": 3,
       "2026-04-01": 1,
-      "2026-03-31": 1
+      "2026-03-31": 1,
+      "2026-05-23": 1
     },
     "categoryCounts": {
-      "blog": 29,
+      "blog": 30,
       "mobile": 19,
       "fix": 35,
-      "other": 135,
+      "other": 136,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -90,6 +91,22 @@
       "manifest": 2
     },
     "commits": [
+      {
+        "sha": "74950739",
+        "date": "2026-05-22",
+        "subject": "microblog: add monte carlo post",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "98c8746f",
+        "date": "2026-05-23",
+        "subject": "Merge pull request #2 from milwrite/quimbot/ts-factory-migration-plan",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "365ff598",
         "date": "2026-03-31",
@@ -1760,7 +1777,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 527,
+    "totalCommits": 529,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1828,15 +1845,16 @@
       "2026-04-05": 15,
       "2026-04-04": 20,
       "2026-04-03": 6,
-      "2026-04-01": 1
+      "2026-04-01": 1,
+      "2026-05-23": 2
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 44,
       "mobile": 19,
       "fix": 89,
-      "other": 168,
-      "chore": 168,
+      "other": 169,
+      "chore": 169,
       "docs": 2,
       "perf": 1,
       "taglines": 3,
@@ -1844,6 +1862,22 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "b6da2719",
+        "date": "2026-05-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4622b4bb",
+        "date": "2026-05-23",
+        "subject": "merge: pull main, regen manifest",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "787a4b11",
         "date": "2026-03-31",

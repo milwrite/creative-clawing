@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-05-23T05:29:48.640708+00:00",
+  "generated": "2026-05-23T05:33:12.648655+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -4743,7 +4743,7 @@
       "title": "When Random Dots Corner Pi",
       "type": "microblog",
       "url": "microblog/entry-65.html",
-      "originAgent": "Unknown",
+      "originAgent": "Petrarch",
       "originConfidence": "reported",
       "date": "2026-05-22",
       "linkedArtifacts": [
