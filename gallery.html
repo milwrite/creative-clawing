@@ -371,7 +371,14 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   // Iframe lazy-loader: inject a live preview iframe when a card is near the
   // viewport, evict when it's well outside. Two-tier observer keeps cards warm
   // through small scroll-back-and-forth gestures without thrashing.
-  const MAX_LIVE = 96;
+  // Bounded concurrent iframe count: enough to fill viewport + a screen above
+  // and below so scroll feels instant, but capped so we don't run 95 rAF loops
+  // at once. Native loading="lazy" inside injectIframe lets the browser also
+  // throttle off-screen frames.
+  // Pagination already caps us to PAGE_SIZE (24) cards per page, so load them
+  // all eagerly — there's nothing further down the scroll to defer to.
+  const MAX_LIVE = 32;
+  const EAGER_PRELOAD = 24;
   const liveSet = new Set();
   const pendingSet = new Set();
   let loadObserver = null, keepObserver = null;
@@ -384,6 +391,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     const iframe = document.createElement('iframe');
     iframe.src = f.dataset.src;
     iframe.sandbox = 'allow-scripts allow-same-origin';
+    iframe.loading = 'lazy';
     iframe.title = f.dataset.title || '';
     iframe.addEventListener('load', () => {
       try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
@@ -413,7 +421,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     pendingSet.clear();
     loadObserver = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) injectIframe(e.target); });
-    }, { rootMargin: '1200px' });
+    }, { rootMargin: '2500px 0px' });
     keepObserver = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) {
@@ -421,8 +429,12 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ejectIframe(e.target);
         }
       });
-    }, { rootMargin: '2400px' });
-    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+    }, { rootMargin: '5000px 0px' });
+    const cards = document.querySelectorAll('.card-preview[data-src]');
+    // Eagerly inject the first batch so above-the-fold cards paint immediately
+    // instead of waiting for IntersectionObserver's first tick.
+    cards.forEach((el, i) => {
+      if (i < EAGER_PRELOAD) injectIframe(el);
       loadObserver.observe(el);
       keepObserver.observe(el);
     });
