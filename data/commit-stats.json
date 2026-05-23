@@ -1224,7 +1224,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 433,
+    "totalCommits": 440,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1265,15 +1265,18 @@
       "2026-04-21": 1,
       "2026-03-31": 5,
       "2026-03-30": 6,
-      "2026-03-29": 12
+      "2026-03-29": 12,
+      "2026-05-22": 1,
+      "2026-05-21": 2,
+      "2026-05-20": 4
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 43,
-      "mobile": 18,
-      "fix": 79,
-      "other": 152,
-      "chore": 102,
+      "mobile": 19,
+      "fix": 82,
+      "other": 153,
+      "chore": 104,
       "docs": 2,
       "perf": 1,
       "taglines": 3,
@@ -1281,6 +1284,62 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "ed1d874e",
+        "date": "2026-05-20",
+        "subject": "chore: canonicalize agent keys in commit-stats; broaden lint auto-seed detection; purge deleted-file manifest entries",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f57f895b",
+        "date": "2026-05-20",
+        "subject": "chore: regen manifest + feed + sitemap — drop hatmonotile, add mohr + microblog entries 33-37",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "7366a22d",
+        "date": "2026-05-20",
+        "subject": "fix: chladni microblog link entry-12 → entry-23; defer dna resize to rAF",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "bc432003",
+        "date": "2026-05-20",
+        "subject": "mobile: touch-scroll passes through iframe previews — overlay + pointer-events:none on viz-frame/.viz/inline iframes across 35 microblog entries",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "10642b07",
+        "date": "2026-05-21",
+        "subject": "fix: iframes need allow-same-origin sandbox so ES module imports don't get CORS-blocked — restores the 5 factory-ported sketches across gallery cards, homepage lanes, and microblog previews",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "f9c6ba21",
+        "date": "2026-05-21",
+        "subject": "fix: 3 runtime errors in gallery sketches — antcolony/schotter referenced undefined 'resize' (now use init/draw); pagerank guards createRadialGradient against non-finite coords",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "94ee1642",
+        "date": "2026-05-22",
+        "subject": "ux: visible loading state on unloaded cards — bigger shimmer, 'loading' label, larger keep-warm margins, MAX_LIVE 60→96. Cards now visibly read as 'loading' instead of dead-black even in static screenshots.",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "837eb3e4",
         "date": "2026-03-28",

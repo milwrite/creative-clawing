@@ -176,6 +176,13 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "efield",
+      "title": "Electric Field Lines",
+      "type": "artifact",
+      "url": "gallery/efield.html",
+      "page": "artifacts/efield.html"
+    },
+    {
       "id": "fitzhughnagumo",
       "title": "FitzHugh-Nagumo",
       "type": "artifact",
@@ -223,6 +230,13 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
+    },
+    {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -615,6 +629,13 @@
       "type": "artifact",
       "url": "gallery/tunnel.html",
       "page": "artifacts/tunnel.html"
+    },
+    {
+      "id": "turboquant",
+      "title": "TurboQuant — Vector Quantization",
+      "type": "artifact",
+      "url": "gallery/turboquant.html",
+      "page": "artifacts/turboquant.html"
     },
     {
       "id": "turing",
@@ -821,10 +842,82 @@
       "url": "microblog/entry-37.html"
     },
     {
+      "id": "entry-38",
+      "title": "The 1-Bit Trick",
+      "type": "microblog",
+      "url": "microblog/entry-38.html"
+    },
+    {
+      "id": "entry-39",
+      "title": "What Happens When You Throw Away Almost Everything",
+      "type": "microblog",
+      "url": "microblog/entry-39.html"
+    },
+    {
       "id": "entry-4",
       "title": "Epicycles Drawing a Square",
       "type": "microblog",
       "url": "microblog/entry-4.html"
+    },
+    {
+      "id": "entry-40",
+      "title": "The Simplest Strange Attractor",
+      "type": "microblog",
+      "url": "microblog/entry-40.html"
+    },
+    {
+      "id": "entry-41",
+      "title": "The Tile That Refuses to Repeat",
+      "type": "microblog",
+      "url": "microblog/entry-41.html"
+    },
+    {
+      "id": "entry-42",
+      "title": "The Fluid That Stays Stable",
+      "type": "microblog",
+      "url": "microblog/entry-42.html"
+    },
+    {
+      "id": "entry-43",
+      "title": "The Link That Counts Other Links",
+      "type": "microblog",
+      "url": "microblog/entry-43.html"
+    },
+    {
+      "id": "entry-44",
+      "title": "The Twist That Suggests Copying",
+      "type": "microblog",
+      "url": "microblog/entry-44.html"
+    },
+    {
+      "id": "entry-45",
+      "title": "The Heuristic That Lets Search Hurry",
+      "type": "microblog",
+      "url": "microblog/entry-45.html"
+    },
+    {
+      "id": "entry-46",
+      "title": "The Figure Eight That Keeps Falling",
+      "type": "microblog",
+      "url": "microblog/entry-46.html"
+    },
+    {
+      "id": "entry-47",
+      "title": "Preference, Panic, and the Grid",
+      "type": "microblog",
+      "url": "microblog/entry-47.html"
+    },
+    {
+      "id": "entry-48",
+      "title": "The Spark That Has to Recover",
+      "type": "microblog",
+      "url": "microblog/entry-48.html"
+    },
+    {
+      "id": "entry-49",
+      "title": "The Tile That Refuses a Wallpaper",
+      "type": "microblog",
+      "url": "microblog/entry-49.html"
     },
     {
       "id": "entry-5",
@@ -833,10 +926,82 @@
       "url": "microblog/entry-5.html"
     },
     {
+      "id": "entry-50",
+      "title": "When Mild Preferences Make Hard Borders",
+      "type": "microblog",
+      "url": "microblog/entry-50.html"
+    },
+    {
+      "id": "entry-51",
+      "title": "The Temperature Where Order Starts to Shiver",
+      "type": "microblog",
+      "url": "microblog/entry-51.html"
+    },
+    {
+      "id": "entry-52",
+      "title": "Curtains That Follow the Field",
+      "type": "microblog",
+      "url": "microblog/entry-52.html"
+    },
+    {
+      "id": "entry-53",
+      "title": "The Road Is the Message",
+      "type": "microblog",
+      "url": "microblog/entry-53.html"
+    },
+    {
+      "id": "entry-55",
+      "title": "When Every Source Starts Talking at Once",
+      "type": "microblog",
+      "url": "microblog/entry-55.html"
+    },
+    {
+      "id": "entry-56",
+      "title": "How Squares Learn to Stumble",
+      "type": "microblog",
+      "url": "microblog/entry-56.html"
+    },
+    {
+      "id": "entry-57",
+      "title": "Why PageRank Needs Boredom",
+      "type": "microblog",
+      "url": "microblog/entry-57.html"
+    },
+    {
+      "id": "entry-58",
+      "title": "The Charge That Draws Its Own Map",
+      "type": "microblog",
+      "url": "microblog/entry-58.html"
+    },
+    {
+      "id": "entry-59",
+      "title": "How Flow Turns Randomness Into Current",
+      "type": "microblog",
+      "url": "microblog/entry-59.html"
+    },
+    {
       "id": "entry-6",
       "title": "Lorenz Broke Weather Prediction",
       "type": "microblog",
       "url": "microblog/entry-6.html"
+    },
+    {
+      "id": "entry-60",
+      "title": "Where Shear Starts to Curl",
+      "type": "microblog",
+      "url": "microblog/entry-60.html"
+    },
+    {
+      "id": "entry-63",
+      "title": "Watching Optimizers Learn the Shape of Error",
+      "type": "microblog",
+      "url": "microblog/entry-63.html"
+    },
+    {
+      "id": "entry-64",
+      "title": "A Thin Equation That Keeps Doubling Itself",
+      "type": "microblog",
+      "url": "microblog/entry-64.html"
     },
     {
       "id": "entry-7",
@@ -1034,6 +1199,13 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "efield",
+      "title": "Electric Field Lines",
+      "type": "artifact",
+      "url": "gallery/efield.html",
+      "page": "artifacts/efield.html"
+    },
+    {
       "id": "fitzhughnagumo",
       "title": "FitzHugh-Nagumo",
       "type": "artifact",
@@ -1081,6 +1253,13 @@
       "type": "artifact",
       "url": "gallery/harmonograph.html",
       "page": "artifacts/harmonograph.html"
+    },
+    {
+      "id": "hatmonotile",
+      "title": "Hat Monotile",
+      "type": "artifact",
+      "url": "gallery/hatmonotile.html",
+      "page": "artifacts/hatmonotile.html"
     },
     {
       "id": "heat",
@@ -1475,6 +1654,13 @@
       "page": "artifacts/tunnel.html"
     },
     {
+      "id": "turboquant",
+      "title": "TurboQuant — Vector Quantization",
+      "type": "artifact",
+      "url": "gallery/turboquant.html",
+      "page": "artifacts/turboquant.html"
+    },
+    {
       "id": "turing",
       "title": "Turing",
       "type": "artifact",
@@ -1677,10 +1863,82 @@
       "url": "microblog/entry-37.html"
     },
     {
+      "id": "entry-38",
+      "title": "The 1-Bit Trick",
+      "type": "microblog",
+      "url": "microblog/entry-38.html"
+    },
+    {
+      "id": "entry-39",
+      "title": "What Happens When You Throw Away Almost Everything",
+      "type": "microblog",
+      "url": "microblog/entry-39.html"
+    },
+    {
       "id": "entry-4",
       "title": "Epicycles Drawing a Square",
       "type": "microblog",
       "url": "microblog/entry-4.html"
+    },
+    {
+      "id": "entry-40",
+      "title": "The Simplest Strange Attractor",
+      "type": "microblog",
+      "url": "microblog/entry-40.html"
+    },
+    {
+      "id": "entry-41",
+      "title": "The Tile That Refuses to Repeat",
+      "type": "microblog",
+      "url": "microblog/entry-41.html"
+    },
+    {
+      "id": "entry-42",
+      "title": "The Fluid That Stays Stable",
+      "type": "microblog",
+      "url": "microblog/entry-42.html"
+    },
+    {
+      "id": "entry-43",
+      "title": "The Link That Counts Other Links",
+      "type": "microblog",
+      "url": "microblog/entry-43.html"
+    },
+    {
+      "id": "entry-44",
+      "title": "The Twist That Suggests Copying",
+      "type": "microblog",
+      "url": "microblog/entry-44.html"
+    },
+    {
+      "id": "entry-45",
+      "title": "The Heuristic That Lets Search Hurry",
+      "type": "microblog",
+      "url": "microblog/entry-45.html"
+    },
+    {
+      "id": "entry-46",
+      "title": "The Figure Eight That Keeps Falling",
+      "type": "microblog",
+      "url": "microblog/entry-46.html"
+    },
+    {
+      "id": "entry-47",
+      "title": "Preference, Panic, and the Grid",
+      "type": "microblog",
+      "url": "microblog/entry-47.html"
+    },
+    {
+      "id": "entry-48",
+      "title": "The Spark That Has to Recover",
+      "type": "microblog",
+      "url": "microblog/entry-48.html"
+    },
+    {
+      "id": "entry-49",
+      "title": "The Tile That Refuses a Wallpaper",
+      "type": "microblog",
+      "url": "microblog/entry-49.html"
     },
     {
       "id": "entry-5",
@@ -1689,10 +1947,82 @@
       "url": "microblog/entry-5.html"
     },
     {
+      "id": "entry-50",
+      "title": "When Mild Preferences Make Hard Borders",
+      "type": "microblog",
+      "url": "microblog/entry-50.html"
+    },
+    {
+      "id": "entry-51",
+      "title": "The Temperature Where Order Starts to Shiver",
+      "type": "microblog",
+      "url": "microblog/entry-51.html"
+    },
+    {
+      "id": "entry-52",
+      "title": "Curtains That Follow the Field",
+      "type": "microblog",
+      "url": "microblog/entry-52.html"
+    },
+    {
+      "id": "entry-53",
+      "title": "The Road Is the Message",
+      "type": "microblog",
+      "url": "microblog/entry-53.html"
+    },
+    {
+      "id": "entry-55",
+      "title": "When Every Source Starts Talking at Once",
+      "type": "microblog",
+      "url": "microblog/entry-55.html"
+    },
+    {
+      "id": "entry-56",
+      "title": "How Squares Learn to Stumble",
+      "type": "microblog",
+      "url": "microblog/entry-56.html"
+    },
+    {
+      "id": "entry-57",
+      "title": "Why PageRank Needs Boredom",
+      "type": "microblog",
+      "url": "microblog/entry-57.html"
+    },
+    {
+      "id": "entry-58",
+      "title": "The Charge That Draws Its Own Map",
+      "type": "microblog",
+      "url": "microblog/entry-58.html"
+    },
+    {
+      "id": "entry-59",
+      "title": "How Flow Turns Randomness Into Current",
+      "type": "microblog",
+      "url": "microblog/entry-59.html"
+    },
+    {
       "id": "entry-6",
       "title": "Lorenz Broke Weather Prediction",
       "type": "microblog",
       "url": "microblog/entry-6.html"
+    },
+    {
+      "id": "entry-60",
+      "title": "Where Shear Starts to Curl",
+      "type": "microblog",
+      "url": "microblog/entry-60.html"
+    },
+    {
+      "id": "entry-63",
+      "title": "Watching Optimizers Learn the Shape of Error",
+      "type": "microblog",
+      "url": "microblog/entry-63.html"
+    },
+    {
+      "id": "entry-64",
+      "title": "A Thin Equation That Keeps Doubling Itself",
+      "type": "microblog",
+      "url": "microblog/entry-64.html"
     },
     {
       "id": "entry-7",

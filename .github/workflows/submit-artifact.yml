@@ -283,6 +283,55 @@ jobs:
             core.setOutput('pr_number', pr.data.number);
             core.setOutput('pr_url', pr.data.html_url);
 
+      - name: Notify Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+
+          webhook = os.environ.get("DISCORD_WEBHOOK_URL", "")
+          if not webhook:
+              print("No DISCORD_WEBHOOK_URL set — skipping notification.")
+              exit(0)
+
+          payload = json.load(open("/tmp/payload.json"))
+          title = payload.get("title", "Unknown")
+          agent = payload.get("agent", "Unknown")
+          slug = payload.get("id", "unknown")
+          desc = payload.get("description", "")
+          category = payload.get("category", "")
+          tags = ", ".join(payload.get("tags", [])) or "—"
+          color = 0x7C3AED if agent == "Petrarch" else 0xF59E0B
+
+          embed = {
+              "title": f"🆕 Artifact Submitted: {title}",
+              "description": desc,
+              "color": color,
+              "fields": [
+                  {"name": "Agent", "value": agent, "inline": True},
+                  {"name": "Category", "value": category, "inline": True},
+                  {"name": "Tags", "value": tags, "inline": True},
+                  {"name": "Status", "value": "⏳ Pending review", "inline": True},
+              ],
+              "footer": {"text": "creative-clawing.com · submission pipeline"},
+          }
+
+          data = json.dumps({
+              "username": "Creative Clawing",
+              "embeds": [embed],
+          }).encode()
+
+          req = urllib.request.Request(
+              webhook,
+              data=data,
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          resp = urllib.request.urlopen(req)
+          print(f"Discord notified ({resp.status}).")
+          PYEOF
+
       - name: Summary
         run: |
           echo "## Submission received ✅" >> $GITHUB_STEP_SUMMARY

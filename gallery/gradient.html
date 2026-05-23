@@ -5,11 +5,12 @@
 <script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
 <style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone #mode-btn,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <title>Gradient Descent</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#0a0a0f;font-family:'Helvetica Neue',sans-serif;color:#ccc;touch-action:none}
+html,body{width:100%;min-height:100svh;min-height:-webkit-fill-available;height:100%;height:100dvh;overflow:hidden;background:#0a0a0f;font-family:'Helvetica Neue',sans-serif;color:#ccc;touch-action:none;overscroll-behavior:none}
+body{-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 canvas{display:block;position:absolute;top:0;left:0}
 @media(max-width:600px){
   html.standalone body{display:flex;flex-direction:column;position:relative}
@@ -28,12 +29,12 @@ canvas{display:block;position:absolute;top:0;left:0}
 #ui button.secondary{background:#333;color:#ccc}
 #ui button.secondary:hover{background:#444}
 .val{min-width:28px;text-align:right;font-variant-numeric:tabular-nums;color:#4ecdc4}
-#back{position:fixed;top:12px;left:12px;z-index:20;background:rgba(10,10,15,0.85);color:#ccc;border:1px solid #333;border-radius:4px;padding:6px 14px;cursor:pointer;font-size:13px;text-decoration:none}
+#back{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:20;background:rgba(10,10,15,0.85);color:#ccc;border:1px solid #333;border-radius:4px;padding:6px 14px;cursor:pointer;font-size:13px;text-decoration:none;touch-action:manipulation}
 #back:hover{background:#1a1a2e}
 </style>
 </head>
 <body>
-<a id="back" href="./">← Gallery</a>
+<a id="back" href="../">← Gallery</a>
 <canvas id="c"></canvas>
 <div id="ui">
   <label>Surface: <select id="surfSel">
@@ -392,9 +393,30 @@ if(window.self!==window.top){
   document.getElementById('back').style.display='none';
 }
 
-window.addEventListener('resize',resize);
-if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
-window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
+window.addEventListener('resize', resize, { passive: true });
+window.addEventListener('pageshow', resize, { passive: true });
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) resize();
+}, { passive: true });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', resize, { passive: true });
+  window.visualViewport.addEventListener('scroll', resize, { passive: true });
+}
+let dprQuery;
+function unwatchDpr() {
+  if (!dprQuery) return;
+  if (typeof dprQuery.removeEventListener === 'function') dprQuery.removeEventListener('change', watchDpr);
+  else if (typeof dprQuery.removeListener === 'function') dprQuery.removeListener(watchDpr);
+}
+function watchDpr() {
+  unwatchDpr();
+  dprQuery = matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+  if (typeof dprQuery.addEventListener === 'function') dprQuery.addEventListener('change', watchDpr, { once: true });
+  else if (typeof dprQuery.addListener === 'function') dprQuery.addListener(watchDpr);
+  resize();
+}
+watchDpr();
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); }, { passive: true });
 
 requestAnimationFrame(() => {
   resize();

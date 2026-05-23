@@ -21,7 +21,15 @@
 <link rel="stylesheet" href="styles/shared.css"/>
 <style>
 /* ── main ── */
-main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
+main{
+  width:min(1380px,97vw);
+  margin:0 auto;
+  padding:
+    max(20px,env(safe-area-inset-top))
+    max(0px,env(safe-area-inset-right))
+    calc(64px + env(safe-area-inset-bottom))
+    max(0px,env(safe-area-inset-left));
+}
 
 /* ── toolbar ── */
 .toolbar{
@@ -35,8 +43,9 @@ main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
 .search{
   width:100%;background:transparent;border:1px solid var(--line);
   color:var(--ink);padding:7px 10px;
-  font-size:.8rem;outline:none;
+  font-size:max(.8rem,16px);outline:none;
   font-family:inherit;
+  touch-action:manipulation;
 }
 .search::placeholder{color:var(--muted)}
 .search:focus{border-color:rgba(255,255,255,.4)}
@@ -47,6 +56,7 @@ main{width:min(1380px,97vw);margin:0 auto;padding:20px 0 64px}
   font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;
   cursor:pointer;font-family:inherit;
   transition:color .15s,border-color .15s;
+  touch-action:manipulation;
 }
 .chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
@@ -68,15 +78,30 @@ a.card{
   transition:border-color .15s;
 }
 a.card:hover{border-color:rgba(255,255,255,.35)}
-.card-preview{overflow:hidden;position:relative;background:#0e0e14}
-.card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
+.card-preview{
+  overflow:hidden;position:relative;
+  background:#0a0a0a;
+  background-position:center;
+  background-size:cover;
+  contain:layout paint;
+}
+.card-preview::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.035),transparent 46%),
+    #0a0a0a;
+  opacity:.18;
+}
 .card-preview iframe{
   width:100%;height:100%;border:0;display:block;
   background:#000;pointer-events:none;
+  opacity:0;transition:opacity .35s ease;
 }
-/* Skeleton shown until iframe paints — clearly reads as "loading" rather than
-   "broken" even in a static screenshot. Visible diagonal pattern + a moving
-   shimmer band + center label. Hidden when .if-ready is set by load handler. */
+.card-preview iframe.if-ready{opacity:1}
 .card-preview::before{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
@@ -89,19 +114,20 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     repeating-linear-gradient(45deg,
       rgba(255,255,255,.05) 0 8px,
       rgba(255,255,255,.02) 8px 16px);
-  background-size: 220% 100%, auto;
-  animation: cardShimmer 2.6s linear infinite;
+  background-size:220% 100%, auto;
+  animation:cardShimmer 2.6s linear infinite;
 }
 .card-preview::after{
   content:"loading";position:absolute;left:0;right:0;top:50%;
   transform:translateY(-50%);text-align:center;z-index:1;pointer-events:none;
-  color:rgba(255,255,255,.34); font:11px/1 ui-monospace,monospace;
-  letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.34);font:11px/1 ui-monospace,monospace;
+  letter-spacing:.18em;text-transform:uppercase;
 }
 .card-preview.if-ready::before,
-.card-preview.if-ready::after{ display:none }
-@keyframes cardShimmer { 0%{background-position:-100% 0,0 0} 100%{background-position:100% 0,0 0} }
-@media (prefers-reduced-motion: reduce){ .card-preview::before{animation:none} }
+.card-preview.if-ready::after{display:none}
+@keyframes cardShimmer{0%{background-position:-100% 0,0 0}100%{background-position:100% 0,0 0}}
+@media(prefers-reduced-motion:reduce){.card-preview::before{animation:none}}
+.card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
 .card-meta{
   border-top:1px solid var(--soft);
   padding:7px 8px;display:grid;gap:2px;
@@ -134,12 +160,30 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
   cursor:pointer;font-family:inherit;
   transition:color .15s,border-color .15s;
+  touch-action:manipulation;
 }
 .sort-chip:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
 .sort-chip.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
 
+.pager{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
+.pager:empty{display:none}
+.pager-status{color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.pager-btn{
+  border:1px solid var(--line);background:transparent;
+  color:var(--muted);padding:4px 9px;
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;
+  cursor:pointer;font-family:inherit;
+  transition:color .15s,border-color .15s,background .15s;
+  touch-action:manipulation;
+}
+.pager-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.4)}
+.pager-btn.active{color:var(--ink);border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
+.pager-btn:disabled{opacity:.45;cursor:default}
+
 @media(max-width:600px){
+  main{width:min(1380px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 12px))}
   .toolbar{gap:8px}
+  .search-wrap{min-width:100%}
   .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
   a.card{height:210px}
 }
@@ -178,13 +222,24 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     <div class="filters" id="filters"></div>
   </div>
   <div class="sort-row" id="sort-row"></div>
+  <div class="pager" id="pager"></div>
   <div class="grid" id="grid"></div>
 </main>
 
 <script>
 (async function(){
-  const res = await fetch('data/manifest-v2.json');
-  const manifest = await res.json();
+  async function fetchJSON(url, fallback) {
+    try {
+      const sep = url.includes('?') ? '&' : '?';
+      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error(String(res.status));
+      return await res.json();
+    } catch (_) {
+      return fallback;
+    }
+  }
+
+  const manifest = await fetchJSON('data/manifest-v2.json', { artifacts: [] });
   const artifacts = manifest.artifacts
     .filter(a => a.id !== 'index')
     .map(a => ({
@@ -205,18 +260,22 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   agentSet.forEach(agent => tags.push('@' + agent));
   let active = 'all';
   let sortMode = 'recent'; // 'recent' | 'alpha'
+  const PAGE_SIZE = 24;
+  const params = new URLSearchParams(location.search);
+  let currentPage = Math.max(1, parseInt(params.get('page') || '1', 10) || 1);
 
   const grid = document.getElementById('grid');
   const search = document.getElementById('search');
   const filtersEl = document.getElementById('filters');
   const countEl = document.getElementById('count');
+  const pagerEl = document.getElementById('pager');
 
   function renderFilters(){
     filtersEl.innerHTML = tags.map(t =>
       `<button class="chip${t===active?' active':''}" data-tag="${t}">${t.startsWith('@') ? t.slice(1) : t}</button>`
     ).join('');
     filtersEl.querySelectorAll('.chip').forEach(b => {
-      b.addEventListener('click', () => { active = b.dataset.tag; renderFilters(); render(); });
+      b.addEventListener('click', () => { active = b.dataset.tag; currentPage = 1; renderFilters(); render(); });
     });
   }
 
@@ -228,7 +287,29 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
         `<button class="sort-chip${sortMode===val?' active':''}" data-sort="${val}">${label}</button>`
       ).join('');
     sortEl.querySelectorAll('.sort-chip').forEach(b => {
-      b.addEventListener('click', () => { sortMode = b.dataset.sort; renderSort(); render(); });
+      b.addEventListener('click', () => { sortMode = b.dataset.sort; currentPage = 1; renderSort(); render(); });
+    });
+  }
+
+  function renderPager(totalPages) {
+    if (!pagerEl) return;
+    if (totalPages <= 1) {
+      pagerEl.innerHTML = '';
+      return;
+    }
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    pagerEl.innerHTML =
+      `<button class="pager-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>prev</button>` +
+      `<span class="pager-status">page ${currentPage} of ${totalPages}</span>` +
+      pages.map(page => `<button class="pager-btn${page === currentPage ? ' active' : ''}" data-page="${page}">${page}</button>`).join('') +
+      `<button class="pager-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>next</button>`;
+    pagerEl.querySelectorAll('.pager-btn[data-page]').forEach(b => {
+      b.addEventListener('click', () => {
+        const nextPage = parseInt(b.dataset.page, 10);
+        if (!Number.isFinite(nextPage)) return;
+        currentPage = Math.min(totalPages, Math.max(1, nextPage));
+        render();
+      });
     });
   }
 
@@ -246,31 +327,54 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     else if (sortMode === 'alpha') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     countEl.textContent = list.length + ' artifact' + (list.length !== 1 ? 's' : '');
     if (!list.length){
-      grid.innerHTML = '<p class="empty">no artifacts match.</p>'; return;
+      renderPager(0);
+      grid.innerHTML = '<p class="empty">no artifacts match.</p>';
+      return;
     }
-    grid.innerHTML = list.map(a => `
+    const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    currentPage = Math.min(totalPages, Math.max(1, currentPage));
+    const url = new URL(location.href);
+    if (currentPage > 1) url.searchParams.set('page', String(currentPage));
+    else url.searchParams.delete('page');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
+    renderPager(totalPages);
+    const pageStart = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
+    grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview" data-src="gallery/${a.file}.html" data-title="${a.name}">
+        <div class="card-preview" data-src="gallery/${escapeAttr(a.file)}.html" data-title="${escapeAttr(a.name)}">
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
-          <div class="card-name">${a.name}</div>
-          <div class="card-tag">${a.tag}${a.author ? ' · ' + a.author : ''}</div>
-          ${a.description ? `<div class="card-desc">${a.description}</div>` : ''}
+          <div class="card-name">${escapeHTML(a.name)}</div>
+          <div class="card-tag">${escapeHTML(a.tag)}${a.author ? ' · ' + escapeHTML(a.author) : ''}</div>
+          ${a.description ? `<div class="card-desc">${escapeHTML(a.description)}</div>` : ''}
         </div>
       </a>`).join('');
-    attachObserver();
+    if (typeof attachIframeObservers === 'function') attachIframeObservers();
   }
 
-  // IntersectionObserver-based iframe injection/eviction.
-  // MAX_LIVE caps concurrent canvas loops to keep GPU/memory bounded. The
-  // gallery is a static grid (vs the homepage's scrolling lanes), so we allow
-  // more concurrent iframes than the homepage. Cards beyond the cap go to
-  // pendingSet and are drained as slots free up.
+  function escapeHTML(value) {
+    return String(value || '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
+  }
+
+  function escapeAttr(value) {
+    return escapeHTML(value).replace(/`/g, '&#96;');
+  }
+
+  // Iframe lazy-loader: inject a live preview iframe when a card is near the
+  // viewport, evict when it's well outside. Two-tier observer keeps cards warm
+  // through small scroll-back-and-forth gestures without thrashing.
   const MAX_LIVE = 96;
   const liveSet = new Set();
   const pendingSet = new Set();
-
+  let loadObserver = null, keepObserver = null;
   function injectIframe(f) {
     if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
       if (!f.querySelector('iframe')) pendingSet.add(f);
@@ -281,16 +385,14 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     iframe.src = f.dataset.src;
     iframe.sandbox = 'allow-scripts allow-same-origin';
     iframe.title = f.dataset.title || '';
-    iframe.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;pointer-events:none;opacity:0;transition:opacity .35s';
     iframe.addEventListener('load', () => {
       try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {}
-      iframe.style.opacity = '1';
+      iframe.classList.add('if-ready');
       f.classList.add('if-ready');
     }, { once: true });
     f.insertBefore(iframe, f.firstChild);
     liveSet.add(f);
   }
-
   function ejectIframe(f) {
     const iframe = f.querySelector('iframe');
     if (!iframe) return;
@@ -298,28 +400,21 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     iframe.remove();
     liveSet.delete(f);
     f.classList.remove('if-ready');
-    // Drain pending queue now that a slot freed
     for (const pf of pendingSet) {
       if (liveSet.size >= MAX_LIVE) break;
       injectIframe(pf);
     }
   }
-
-  // Two-tier observer: a narrow "load" margin gets the iframe in early as the
-  // card approaches the viewport; a wider "keep" margin holds the iframe alive
-  // through small scroll-back-and-forth gestures so a moment of off-screen
-  // doesn't churn an iframe out and back. Only ejects when the card is well
-  // outside the keep-alive zone.
-  let loadObserver = null, keepObserver = null;
-  function attachObserver() {
+  function attachIframeObservers() {
     if (loadObserver) loadObserver.disconnect();
     if (keepObserver) keepObserver.disconnect();
-    loadObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) injectIframe(e.target);
-      });
+    liveSet.forEach(f => { f.querySelector('iframe')?.remove(); f.classList.remove('if-ready'); });
+    liveSet.clear();
+    pendingSet.clear();
+    loadObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) injectIframe(e.target); });
     }, { rootMargin: '1200px' });
-    keepObserver = new IntersectionObserver((entries) => {
+    keepObserver = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) {
           pendingSet.delete(e.target);
@@ -333,10 +428,11 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     });
   }
 
-  search.addEventListener('input', render);
+  search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();
   renderSort();
   render();
+  attachIframeObservers();
 
   const contributorMenu = document.querySelector('.menu-group');
   if (contributorMenu){
@@ -350,6 +446,13 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     });
   }
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>

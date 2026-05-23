@@ -16,7 +16,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 </style>
 </head>
 <body>
-<a href="./" class="back-btn">← Gallery</a>
+<a href="../" class="back-btn">← Gallery</a>
 <div id="info">Scan Drift · move or drag to warp · tap for pulse</div>
 <canvas id="c"></canvas>
 <script>
@@ -69,6 +69,15 @@ function draw(){
 }
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
+window.__creativeClawingPreview = function warmupPreview() {
+  mx = 0.72;
+  my = 0.36;
+  pulse = 1;
+  resize();
+};
+if (window.self !== window.top) {
+  requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 160));
+}
 requestAnimationFrame(()=>{resize();setTimeout(resize,200);requestAnimationFrame(draw);});
 </script>
 </body>
