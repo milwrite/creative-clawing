@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 237,
+    "totalCommits": 238,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -76,13 +76,13 @@
       "2026-04-02": 3,
       "2026-04-01": 1,
       "2026-03-31": 1,
-      "2026-05-23": 1
+      "2026-05-23": 2
     },
     "categoryCounts": {
       "blog": 30,
       "mobile": 19,
       "fix": 35,
-      "other": 136,
+      "other": 137,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -91,6 +91,14 @@
       "manifest": 2
     },
     "commits": [
+      {
+        "sha": "fb40dc06",
+        "date": "2026-05-23",
+        "subject": "Merge pull request #4 from milwrite/fix/hatmonotile-render-guard",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "74950739",
         "date": "2026-05-22",
@@ -1777,7 +1785,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 529,
+    "totalCommits": 531,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1846,15 +1854,15 @@
       "2026-04-04": 20,
       "2026-04-03": 6,
       "2026-04-01": 1,
-      "2026-05-23": 2
+      "2026-05-23": 4
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 44,
       "mobile": 19,
-      "fix": 89,
+      "fix": 90,
       "other": 169,
-      "chore": 169,
+      "chore": 170,
       "docs": 2,
       "perf": 1,
       "taglines": 3,
@@ -1862,6 +1870,22 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "a41cc478",
+        "date": "2026-05-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "061b10d7",
+        "date": "2026-05-23",
+        "subject": "fix: guard hatmonotile render() against pre-init tiles[0] access",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "b6da2719",
         "date": "2026-05-23",
