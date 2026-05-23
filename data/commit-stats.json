@@ -1,6 +1,6 @@
 {
   "petrarch": {
-    "totalCommits": 208,
+    "totalCommits": 210,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -74,13 +74,14 @@
       "2026-05-18": 1,
       "2026-05-19": 1,
       "2026-05-20": 1,
-      "2026-05-21": 1
+      "2026-05-21": 1,
+      "2026-05-22": 2
     },
     "categoryCounts": {
-      "blog": 30,
+      "blog": 31,
       "mobile": 16,
       "fix": 34,
-      "other": 113,
+      "other": 114,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -88,6 +89,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "ad6b7241",
+        "date": "2026-05-22",
+        "subject": "Merge pull request #3 from milwrite/fix/remove-thumbnails-cap-home",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "74950739",
+        "date": "2026-05-22",
+        "subject": "microblog: add monte carlo post",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "bedb139d",
         "date": "2026-05-21",
@@ -1758,7 +1775,7 @@
     ]
   },
   "quimbot": {
-    "totalCommits": 486,
+    "totalCommits": 488,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1824,19 +1841,36 @@
       "2026-05-15": 2,
       "2026-05-17": 2,
       "2026-05-19": 2,
-      "2026-05-21": 1
+      "2026-05-21": 2,
+      "2026-05-22": 1
     },
     "categoryCounts": {
       "blog": 33,
-      "artifact": 43,
+      "artifact": 44,
       "mobile": 18,
       "fix": 82,
       "other": 144,
-      "chore": 165,
+      "chore": 166,
       "docs": 2,
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "023bbfe0",
+        "date": "2026-05-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8a1f8477",
+        "date": "2026-05-22",
+        "subject": "gallery: replace static svg placeholders with live iframe previews; home: cap to 14 cards with browse-gallery link",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "fc4c2421",
         "date": "2026-05-21",
