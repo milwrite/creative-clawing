@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 238,
+    "totalCommits": 240,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -76,13 +76,13 @@
       "2026-04-02": 3,
       "2026-04-01": 1,
       "2026-03-31": 1,
-      "2026-05-23": 2
+      "2026-05-23": 4
     },
     "categoryCounts": {
       "blog": 30,
       "mobile": 19,
       "fix": 35,
-      "other": 137,
+      "other": 139,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -91,6 +91,22 @@
       "manifest": 2
     },
     "commits": [
+      {
+        "sha": "2c470ff3",
+        "date": "2026-05-23",
+        "subject": "Merge pull request #5 from milwrite/perf/gallery-eager-preload",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ea588cb9",
+        "date": "2026-05-23",
+        "subject": "tighten mobile handling for logistic map",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "fb40dc06",
         "date": "2026-05-23",
@@ -1785,7 +1801,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 531,
+    "totalCommits": 535,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1854,22 +1870,54 @@
       "2026-04-04": 20,
       "2026-04-03": 6,
       "2026-04-01": 1,
-      "2026-05-23": 4
+      "2026-05-23": 8
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 44,
       "mobile": 19,
       "fix": 90,
-      "other": 169,
-      "chore": 170,
+      "other": 170,
+      "chore": 171,
       "docs": 2,
-      "perf": 1,
+      "perf": 3,
       "taglines": 3,
       "manifest": 1,
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "3cdd2958",
+        "date": "2026-05-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "5238bfd7",
+        "date": "2026-05-23",
+        "subject": "perf: eagerly load all 24 cards per gallery page; bump rootMargin",
+        "categories": [
+          "perf"
+        ]
+      },
+      {
+        "sha": "6b99eb6d",
+        "date": "2026-05-23",
+        "subject": "perf: serialize iframe injection via rAF queue to stop tab from stalling",
+        "categories": [
+          "perf"
+        ]
+      },
+      {
+        "sha": "cf08d551",
+        "date": "2026-05-23",
+        "subject": "overhaul: static thumbnails for gallery + home (codepen/shadertoy pattern)",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "a41cc478",
         "date": "2026-05-23",
