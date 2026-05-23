@@ -177,7 +177,7 @@
     },
     {
       "id": "efield",
-      "title": "Electric Field",
+      "title": "Electric Field Lines",
       "type": "artifact",
       "url": "gallery/efield.html",
       "page": "artifacts/efield.html"
@@ -632,7 +632,7 @@
     },
     {
       "id": "turboquant",
-      "title": "TurboQuant",
+      "title": "TurboQuant — Vector Quantization",
       "type": "artifact",
       "url": "gallery/turboquant.html",
       "page": "artifacts/turboquant.html"
@@ -1206,7 +1206,7 @@
     },
     {
       "id": "efield",
-      "title": "Electric Field",
+      "title": "Electric Field Lines",
       "type": "artifact",
       "url": "gallery/efield.html",
       "page": "artifacts/efield.html"
@@ -1661,7 +1661,7 @@
     },
     {
       "id": "turboquant",
-      "title": "TurboQuant",
+      "title": "TurboQuant — Vector Quantization",
       "type": "artifact",
       "url": "gallery/turboquant.html",
       "page": "artifacts/turboquant.html"

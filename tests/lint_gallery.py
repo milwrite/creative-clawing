@@ -61,10 +61,15 @@ for p in sorted(GALLERY.glob("*.html")):
         re.search(r'requestAnimationFrame\s*\(function', txt) or
         re.search(r'requestAnimationFrame\s*\(\s*\(\s*(ts|t|time|now)?\s*\)\s*=>', txt)
     )
-    # Auto-seeds: produces initial visible content without user interaction
+    # Auto-seeds: produces initial visible content without user interaction.
+    # Treat any rAF-initiated call that synchronously produces visible state as
+    # an auto-seed (draw/generate/tick/resize all qualify when invoked from the
+    # script's bootstrap rAF).
     has_auto_seed = bool(
-        re.search(r'(initSim\(\)|initCells\(\)|fullReset\(\)|reset\(\)|init\(\)|rebuild\(\)|buildGraph\(\)|startRender\(\)|frame\(\)|loop\(\)|render\(\))', txt) or
-        re.search(r'Math\.random\(\)', txt)
+        re.search(r'(initSim|initCells|fullReset|reset|init|rebuild|buildGraph|startRender|frame|loop|render|draw|generate|tick|step)\s*\(\s*\)', txt) or
+        re.search(r'Math\.random\s*\(\s*\)', txt) or
+        # rAF bootstrap that calls resize/draw/generate/etc. is also an auto-seed
+        re.search(r'requestAnimationFrame\s*\(\s*\(\s*\)\s*=>\s*\{[^}]*(resize|draw|generate|render|tick|loop|frame|step|init)\s*\(', txt)
     )
     # Truly blank: interactive-only with no auto-render AND no auto-seed
     is_truly_blank = has_auto_render_loop and not has_auto_seed

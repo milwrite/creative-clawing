@@ -57,8 +57,14 @@
       background: #0a0a0a;
       overflow: hidden;
     }
+    .entry-viz { position: relative; }
     .entry-viz iframe {
       width: 100%; height: 100%; border: none; display: block;
+      pointer-events: none;
+    }
+    .entry-viz-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      touch-action: pan-y; -webkit-touch-callout: none;
     }
     .entry-footer {
       padding: 8px 16px 10px;
@@ -168,21 +174,12 @@
 
 <script>
 (async function(){
-  async function fetchJSON(url, fallback) {
-    try {
-      const sep = url.includes('?') ? '&' : '?';
-      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error(String(res.status));
-      return await res.json();
-    } catch (_) {
-      return fallback;
-    }
-  }
-
-  const [feed, manifest] = await Promise.all([
-    fetchJSON('data/feed.json', { artifacts: [] }),
-    fetchJSON('data/manifest-v2.json', { microblogs: [] })
+  const [feedRes, manifestRes] = await Promise.all([
+    fetch('data/feed.json'),
+    fetch('data/manifest-v2.json')
   ]);
+  const feed = await feedRes.json();
+  const manifest = await manifestRes.json();
 
   const seen = new Set();
   const arts = feed.artifacts.filter(x => { if (seen.has(x.id)) return false; seen.add(x.id); return true; });
@@ -243,17 +240,17 @@
         if (src) {
           const ifr = document.createElement('iframe');
           ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
-          // sandbox removed — same-origin trusted artifacts
+          ifr.setAttribute('sandbox', 'allow-scripts allow-same-origin');
           ifr.addEventListener('load', () => {
-            setTimeout(() => {
-              try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
-            }, 80);
-            setTimeout(() => {
-              try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
-            }, 400);
+            try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
           }, { once: true });
           e.target.innerHTML = '';
           e.target.appendChild(ifr);
+          // Touch-pass-through overlay so the page can scroll vertically even
+          // when the artifact's canvas inside the iframe sets touch-action:none.
+          const ov = document.createElement('div');
+          ov.className = 'entry-viz-overlay';
+          e.target.appendChild(ov);
         }
       } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
         e.target.innerHTML = '';
@@ -276,13 +273,6 @@
     }
   });
 })();
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  });
-}
 </script>
 </body>
 </html>

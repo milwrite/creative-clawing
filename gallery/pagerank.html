@@ -377,6 +377,7 @@ function draw(dt) {
     const { cx, cy } = bezierCP(p.sx,p.sy,p.tx,p.ty);
     const progress = Math.min(1, p.t / p.dur);
     const pt = pointOnBezier(p.sx,p.sy,cx,cy,p.tx,p.ty,progress);
+    if (!Number.isFinite(pt.x) || !Number.isFinite(pt.y)) return;
     const fade = Math.sin(progress * Math.PI);
     const a = p.alpha * fade;
 
@@ -413,6 +414,9 @@ function draw(dt) {
   // ── Draw nodes ────────────────────────────────────────────────────────
   nodes.forEach((n, i) => {
     const r = nodeRadius(nRanks[i]);
+    // Guard against pre-layout draws where node positions or rank lookups
+    // produced non-finite values (createRadialGradient throws on NaN).
+    if (!Number.isFinite(n.x) || !Number.isFinite(n.y) || !Number.isFinite(r)) return;
     const isSelected = selectedNode === i;
 
     // Glow for high-rank nodes
@@ -464,6 +468,7 @@ function draw(dt) {
   // ── Draw surfer ───────────────────────────────────────────────────────
   if (showSurfer && N > 0) {
     const sx = surferX, sy = surferY;
+    if (Number.isFinite(sx) && Number.isFinite(sy)) {
 
     // Outer glow
     const sg = ctx.createRadialGradient(sx,sy,0,sx,sy,18);
@@ -484,6 +489,7 @@ function draw(dt) {
     ctx.strokeStyle = 'rgba(255,255,255,0.8)';
     ctx.lineWidth = 1;
     ctx.stroke();
+    }
   }
 }
 

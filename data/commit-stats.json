@@ -1,6 +1,6 @@
 {
-  "petrarch": {
-    "totalCommits": 210,
+  "Petrarch": {
+    "totalCommits": 235,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -12,7 +12,7 @@
       "2026-03-02": 1,
       "2026-03-03": 3,
       "2026-03-05": 1,
-      "2026-03-13": 28,
+      "2026-03-13": 55,
       "2026-03-15": 3,
       "2026-03-14": 3,
       "2026-03-22": 2,
@@ -28,527 +28,80 @@
       "2026-03-30": 4,
       "2026-03-29": 5,
       "2026-03-28": 18,
-      "2026-03-31": 1,
-      "2026-04-01": 1,
-      "2026-04-02": 3,
-      "2026-04-04": 8,
-      "2026-04-05": 1,
-      "2026-04-06": 1,
-      "2026-04-07": 1,
-      "2026-04-08": 1,
-      "2026-04-09": 1,
-      "2026-04-10": 1,
-      "2026-04-11": 1,
-      "2026-04-13": 1,
-      "2026-04-14": 1,
-      "2026-04-15": 1,
-      "2026-04-16": 1,
-      "2026-04-17": 1,
-      "2026-04-18": 1,
-      "2026-04-19": 1,
-      "2026-04-20": 1,
-      "2026-04-21": 1,
-      "2026-04-22": 2,
-      "2026-04-23": 1,
-      "2026-04-24": 2,
-      "2026-04-25": 1,
-      "2026-04-26": 1,
-      "2026-04-27": 1,
-      "2026-04-28": 1,
-      "2026-04-29": 1,
-      "2026-04-30": 1,
-      "2026-05-01": 1,
-      "2026-05-02": 1,
-      "2026-05-03": 1,
-      "2026-05-06": 1,
-      "2026-05-08": 1,
-      "2026-05-09": 1,
-      "2026-05-10": 3,
-      "2026-05-11": 1,
-      "2026-05-12": 1,
+      "2026-05-22": 1,
+      "2026-05-21": 1,
+      "2026-05-20": 1,
+      "2026-05-19": 1,
+      "2026-05-18": 1,
+      "2026-05-17": 2,
+      "2026-05-16": 1,
+      "2026-05-15": 1,
       "2026-05-14": 1,
       "2026-05-13": 1,
-      "2026-05-15": 1,
-      "2026-05-16": 1,
-      "2026-05-17": 2,
-      "2026-05-18": 1,
-      "2026-05-19": 1,
-      "2026-05-20": 1,
-      "2026-05-21": 1,
-      "2026-05-22": 2
+      "2026-05-12": 1,
+      "2026-05-11": 1,
+      "2026-05-10": 3,
+      "2026-05-09": 1,
+      "2026-05-08": 1,
+      "2026-05-06": 1,
+      "2026-05-03": 1,
+      "2026-05-02": 1,
+      "2026-05-01": 1,
+      "2026-04-30": 1,
+      "2026-04-29": 1,
+      "2026-04-28": 1,
+      "2026-04-27": 1,
+      "2026-04-26": 1,
+      "2026-04-25": 1,
+      "2026-04-24": 2,
+      "2026-04-23": 1,
+      "2026-04-22": 1,
+      "2026-04-21": 1,
+      "2026-04-20": 1,
+      "2026-04-19": 1,
+      "2026-04-18": 1,
+      "2026-04-17": 1,
+      "2026-04-16": 1,
+      "2026-04-15": 1,
+      "2026-04-14": 1,
+      "2026-04-13": 1,
+      "2026-04-11": 1,
+      "2026-04-10": 1,
+      "2026-04-09": 1,
+      "2026-04-08": 1,
+      "2026-04-07": 1,
+      "2026-04-06": 1,
+      "2026-04-05": 1,
+      "2026-04-04": 8,
+      "2026-04-02": 3,
+      "2026-04-01": 1,
+      "2026-03-31": 1
     },
     "categoryCounts": {
-      "blog": 31,
-      "mobile": 16,
-      "fix": 34,
-      "other": 114,
+      "blog": 29,
+      "mobile": 19,
+      "fix": 35,
+      "other": 135,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
       "style": 3,
-      "refactor": 2
+      "refactor": 2,
+      "manifest": 2
     },
     "commits": [
       {
-        "sha": "ad6b7241",
-        "date": "2026-05-22",
-        "subject": "Merge pull request #3 from milwrite/fix/remove-thumbnails-cap-home",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "74950739",
-        "date": "2026-05-22",
-        "subject": "microblog: add monte carlo post",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "bedb139d",
-        "date": "2026-05-21",
-        "subject": "mobile: tighten recent artifact pages",
+        "sha": "365ff598",
+        "date": "2026-03-31",
+        "subject": "mobile: add touch-action:none to sketch-frame iframes (astar, mohr, ifs)",
         "categories": [
           "mobile"
         ]
       },
       {
-        "sha": "6586072e",
-        "date": "2026-05-20",
-        "subject": "blog: add logistic map microblog",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "21507f01",
-        "date": "2026-05-19",
-        "subject": "tighten mobile viewport handling",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "d83781aa",
-        "date": "2026-05-18",
-        "subject": "microblog: add gradient descent post",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "1d59da31",
-        "date": "2026-05-17",
-        "subject": "redesign homepage artifact cards",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "d2f86142",
-        "date": "2026-05-17",
-        "subject": "harden mobile dpr watchers",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9dac5f5f",
-        "date": "2026-05-16",
-        "subject": "add kh microblog entry",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "de0c5155",
-        "date": "2026-05-15",
-        "subject": "tighten mobile artifact orientation sync",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "73e049eb",
-        "date": "2026-05-13",
-        "subject": "tighten mobile gallery previews",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1f8c5237",
-        "date": "2026-05-14",
-        "subject": "add flow microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "fd96e6b6",
-        "date": "2026-05-12",
-        "subject": "add electric field microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e6a634be",
-        "date": "2026-05-11",
-        "subject": "tighten mobile preview sizing",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "37ee8f22",
-        "date": "2026-05-10",
-        "subject": "Improve gallery preview performance",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ea8b5dca",
-        "date": "2026-05-10",
-        "subject": "Replace gallery iframe previews with static thumbnails",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9bcc5f94",
-        "date": "2026-05-10",
-        "subject": "microblog: add pagerank post",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "66f67655",
-        "date": "2026-05-09",
-        "subject": "tighten mobile safe-area padding",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "10428356",
-        "date": "2026-05-08",
-        "subject": "add schotter microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f55cc93b",
-        "date": "2026-05-06",
-        "subject": "microblog: wave interference",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "a46b4c2d",
-        "date": "2026-05-03",
-        "subject": "tighten antcolony mobile layout",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "cec6b217",
-        "date": "2026-05-02",
-        "subject": "add ant colony microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1ebba411",
-        "date": "2026-05-01",
-        "subject": "tighten mobile viewport handling",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "906c595f",
-        "date": "2026-04-30",
-        "subject": "add aurora microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "17ce2745",
-        "date": "2026-04-29",
-        "subject": "tighten mobile viewport handling",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "d9d64b33",
-        "date": "2026-04-28",
-        "subject": "microblog ising post",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "c7d620a8",
-        "date": "2026-04-27",
-        "subject": "fix dpr resize handling",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "619a831d",
-        "date": "2026-04-26",
-        "subject": "microblog: add schelling entry",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "74f10ade",
-        "date": "2026-04-25",
-        "subject": "tighten mobile preview sizing",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "83003346",
-        "date": "2026-04-24",
-        "subject": "manifest: update microblog feed for entry 49",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "eeede613",
-        "date": "2026-04-24",
-        "subject": "microblog: add entry 49 on hat monotile",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "9c426354",
-        "date": "2026-04-23",
-        "subject": "tighten mobile safe area padding",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "d3c158b9",
-        "date": "2026-04-22",
-        "subject": "microblog: entry-48 on fitzhugh-nagumo",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "dcce4945",
-        "date": "2026-04-22",
-        "subject": "microblog: entry-48 on fitzhugh-nagumo",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "0733be4e",
-        "date": "2026-04-21",
-        "subject": "tighten mobile preview controls",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1721af4e",
-        "date": "2026-04-20",
-        "subject": "add schelling microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "40e74076",
-        "date": "2026-04-19",
-        "subject": "tighten recent artifact mobile sizing",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "97028fcf",
-        "date": "2026-04-18",
-        "subject": "add n-body microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f0cd3a27",
-        "date": "2026-04-17",
-        "subject": "tighten mobile artifact wrappers",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "35804e4c",
-        "date": "2026-04-16",
-        "subject": "microblog: add astar entry",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "6621a126",
-        "date": "2026-04-15",
-        "subject": "tighten mobile viewport handling",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ef36ef4a",
-        "date": "2026-04-14",
-        "subject": "microblog: add dna double helix entry",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "6de5ceea",
-        "date": "2026-04-13",
-        "subject": "tighten mobile artifact frames",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3d93e55e",
-        "date": "2026-04-11",
-        "subject": "tighten mobile recent artifacts",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "dafff833",
-        "date": "2026-04-10",
-        "subject": "add pagerank microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "4ef308e6",
-        "date": "2026-04-09",
-        "subject": "tighten mobile canvas sizing",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "48371f04",
-        "date": "2026-04-08",
-        "subject": "add stable fluids microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "97c3cc72",
-        "date": "2026-04-07",
-        "subject": "tighten mobile canvas sizing",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "2c5f7f7b",
-        "date": "2026-04-06",
-        "subject": "microblog: add hat monotile entry",
-        "categories": [
-          "blog"
-        ]
-      },
-      {
-        "sha": "8aac19f4",
-        "date": "2026-04-05",
-        "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "0ce28fbf",
-        "date": "2026-04-04",
-        "subject": "fix: manifest — remove ghost index artifact, normalize categories, add mohr description/category",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "270a57eb",
-        "date": "2026-04-04",
-        "subject": "fix: entry-40 — add cross-links to Lorenz artifact, entry-6, related attractor gallery and microblogs",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "439be83b",
-        "date": "2026-04-04",
-        "subject": "fix: entry-40 — cut duplicate Lorenz intro, start at Rössler, point to entry-6 for prior coverage",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "c855db5c",
-        "date": "2026-04-04",
-        "subject": "add entry-40: rössler attractor microblog",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "6b082b6c",
-        "date": "2026-04-04",
-        "subject": "style: remove all em dashes from entries 38+39 — restructure clauses per style guide",
-        "categories": [
-          "style"
-        ]
-      },
-      {
-        "sha": "9f3d970c",
-        "date": "2026-04-04",
-        "subject": "fix: remove sandbox from gallery iframes — was causing white screens",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "47cc2ca4",
-        "date": "2026-04-04",
-        "subject": "style: copyedit entries 38+39; add glossary page; add glossary to nav",
-        "categories": [
-          "style"
-        ]
-      },
-      {
-        "sha": "14b61db8",
-        "date": "2026-04-04",
-        "subject": "feat: TurboQuant — vector quantization artifact + microblog entry-39",
+        "sha": "07f6ddb6",
+        "date": "2026-04-01",
+        "subject": "add electric field lines artifact (petrarch, 2026-04-01)",
         "categories": [
           "other"
         ]
@@ -578,19 +131,451 @@
         ]
       },
       {
-        "sha": "07f6ddb6",
-        "date": "2026-04-01",
-        "subject": "add electric field lines artifact (petrarch, 2026-04-01)",
+        "sha": "14b61db8",
+        "date": "2026-04-04",
+        "subject": "feat: TurboQuant — vector quantization artifact + microblog entry-39",
         "categories": [
           "other"
         ]
       },
       {
-        "sha": "365ff598",
-        "date": "2026-03-31",
-        "subject": "mobile: add touch-action:none to sketch-frame iframes (astar, mohr, ifs)",
+        "sha": "47cc2ca4",
+        "date": "2026-04-04",
+        "subject": "style: copyedit entries 38+39; add glossary page; add glossary to nav",
+        "categories": [
+          "style"
+        ]
+      },
+      {
+        "sha": "9f3d970c",
+        "date": "2026-04-04",
+        "subject": "fix: remove sandbox from gallery iframes — was causing white screens",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "6b082b6c",
+        "date": "2026-04-04",
+        "subject": "style: remove all em dashes from entries 38+39 — restructure clauses per style guide",
+        "categories": [
+          "style"
+        ]
+      },
+      {
+        "sha": "c855db5c",
+        "date": "2026-04-04",
+        "subject": "add entry-40: rössler attractor microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "270a57eb",
+        "date": "2026-04-04",
+        "subject": "fix: entry-40 — add cross-links to Lorenz artifact, entry-6, related attractor gallery and microblogs",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "439be83b",
+        "date": "2026-04-04",
+        "subject": "fix: entry-40 — cut duplicate Lorenz intro, start at Rössler, point to entry-6 for prior coverage",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "0ce28fbf",
+        "date": "2026-04-04",
+        "subject": "fix: manifest — remove ghost index artifact, normalize categories, add mohr description/category",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "8aac19f4",
+        "date": "2026-04-05",
+        "subject": "mobile: add touch-action:none to sketch-frame iframes (turboquant, efield)",
         "categories": [
           "mobile"
+        ]
+      },
+      {
+        "sha": "2c5f7f7b",
+        "date": "2026-04-06",
+        "subject": "microblog: add hat monotile entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "97c3cc72",
+        "date": "2026-04-07",
+        "subject": "tighten mobile canvas sizing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "48371f04",
+        "date": "2026-04-08",
+        "subject": "add stable fluids microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "4ef308e6",
+        "date": "2026-04-09",
+        "subject": "tighten mobile canvas sizing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "dafff833",
+        "date": "2026-04-10",
+        "subject": "add pagerank microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3d93e55e",
+        "date": "2026-04-11",
+        "subject": "tighten mobile recent artifacts",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6de5ceea",
+        "date": "2026-04-13",
+        "subject": "tighten mobile artifact frames",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ef36ef4a",
+        "date": "2026-04-14",
+        "subject": "microblog: add dna double helix entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "6621a126",
+        "date": "2026-04-15",
+        "subject": "tighten mobile viewport handling",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "35804e4c",
+        "date": "2026-04-16",
+        "subject": "microblog: add astar entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "f0cd3a27",
+        "date": "2026-04-17",
+        "subject": "tighten mobile artifact wrappers",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "97028fcf",
+        "date": "2026-04-18",
+        "subject": "add n-body microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "40e74076",
+        "date": "2026-04-19",
+        "subject": "tighten recent artifact mobile sizing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1721af4e",
+        "date": "2026-04-20",
+        "subject": "add schelling microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "0733be4e",
+        "date": "2026-04-21",
+        "subject": "tighten mobile preview controls",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d3c158b9",
+        "date": "2026-04-22",
+        "subject": "microblog: entry-48 on fitzhugh-nagumo",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "9c426354",
+        "date": "2026-04-23",
+        "subject": "tighten mobile safe area padding",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "eeede613",
+        "date": "2026-04-24",
+        "subject": "microblog: add entry 49 on hat monotile",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "83003346",
+        "date": "2026-04-24",
+        "subject": "manifest: update microblog feed for entry 49",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "74f10ade",
+        "date": "2026-04-25",
+        "subject": "tighten mobile preview sizing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "619a831d",
+        "date": "2026-04-26",
+        "subject": "microblog: add schelling entry",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "c7d620a8",
+        "date": "2026-04-27",
+        "subject": "fix dpr resize handling",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d9d64b33",
+        "date": "2026-04-28",
+        "subject": "microblog ising post",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "17ce2745",
+        "date": "2026-04-29",
+        "subject": "tighten mobile viewport handling",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "906c595f",
+        "date": "2026-04-30",
+        "subject": "add aurora microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1ebba411",
+        "date": "2026-05-01",
+        "subject": "tighten mobile viewport handling",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "cec6b217",
+        "date": "2026-05-02",
+        "subject": "add ant colony microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "a46b4c2d",
+        "date": "2026-05-03",
+        "subject": "tighten antcolony mobile layout",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f55cc93b",
+        "date": "2026-05-06",
+        "subject": "microblog: wave interference",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "10428356",
+        "date": "2026-05-08",
+        "subject": "add schotter microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "66f67655",
+        "date": "2026-05-09",
+        "subject": "tighten mobile safe-area padding",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "37ee8f22",
+        "date": "2026-05-10",
+        "subject": "Improve gallery preview performance",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "ea8b5dca",
+        "date": "2026-05-10",
+        "subject": "Replace gallery iframe previews with static thumbnails",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9bcc5f94",
+        "date": "2026-05-10",
+        "subject": "microblog: add pagerank post",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "e6a634be",
+        "date": "2026-05-11",
+        "subject": "tighten mobile preview sizing",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "fd96e6b6",
+        "date": "2026-05-12",
+        "subject": "add electric field microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "73e049eb",
+        "date": "2026-05-13",
+        "subject": "tighten mobile gallery previews",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1f8c5237",
+        "date": "2026-05-14",
+        "subject": "add flow microblog",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "de0c5155",
+        "date": "2026-05-15",
+        "subject": "tighten mobile artifact orientation sync",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "9dac5f5f",
+        "date": "2026-05-16",
+        "subject": "add kh microblog entry",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "1d59da31",
+        "date": "2026-05-17",
+        "subject": "redesign homepage artifact cards",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d2f86142",
+        "date": "2026-05-17",
+        "subject": "harden mobile dpr watchers",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "d83781aa",
+        "date": "2026-05-18",
+        "subject": "microblog: add gradient descent post",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "21507f01",
+        "date": "2026-05-19",
+        "subject": "tighten mobile viewport handling",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "6586072e",
+        "date": "2026-05-20",
+        "subject": "blog: add logistic map microblog",
+        "categories": [
+          "blog"
+        ]
+      },
+      {
+        "sha": "bedb139d",
+        "date": "2026-05-21",
+        "subject": "mobile: tighten recent artifact pages",
+        "categories": [
+          "mobile"
+        ]
+      },
+      {
+        "sha": "ad6b7241",
+        "date": "2026-05-22",
+        "subject": "Merge pull request #3 from milwrite/fix/remove-thumbnails-cap-home",
+        "categories": [
+          "other"
         ]
       },
       {
@@ -1774,8 +1759,8 @@
       }
     ]
   },
-  "quimbot": {
-    "totalCommits": 488,
+  "Quimbot": {
+    "totalCommits": 527,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1795,12 +1780,12 @@
       "2026-03-08": 4,
       "2026-03-09": 2,
       "2026-03-10": 4,
-      "2026-03-11": 2,
-      "2026-03-12": 8,
+      "2026-03-11": 3,
+      "2026-03-12": 13,
       "2026-03-16": 9,
       "2026-03-15": 7,
-      "2026-03-14": 5,
-      "2026-03-13": 23,
+      "2026-03-14": 6,
+      "2026-03-13": 46,
       "2026-03-17": 6,
       "2026-03-18": 16,
       "2026-03-19": 4,
@@ -1813,402 +1798,198 @@
       "2026-03-26": 10,
       "2026-03-27": 20,
       "2026-03-28": 67,
+      "2026-04-21": 3,
       "2026-03-31": 7,
       "2026-03-30": 6,
       "2026-03-29": 12,
-      "2026-04-01": 1,
-      "2026-04-03": 6,
-      "2026-04-04": 20,
-      "2026-04-05": 15,
-      "2026-04-07": 2,
-      "2026-04-09": 2,
-      "2026-04-11": 2,
-      "2026-04-13": 1,
-      "2026-04-15": 2,
-      "2026-04-17": 2,
-      "2026-04-19": 2,
-      "2026-04-21": 2,
-      "2026-04-23": 2,
-      "2026-04-25": 2,
-      "2026-04-27": 2,
-      "2026-04-29": 2,
-      "2026-05-01": 2,
-      "2026-05-03": 2,
-      "2026-05-07": 1,
-      "2026-05-09": 2,
-      "2026-05-11": 2,
-      "2026-05-13": 1,
-      "2026-05-15": 2,
-      "2026-05-17": 2,
+      "2026-05-22": 3,
+      "2026-05-21": 4,
+      "2026-05-20": 4,
       "2026-05-19": 2,
-      "2026-05-21": 2,
-      "2026-05-22": 1
+      "2026-05-17": 2,
+      "2026-05-15": 2,
+      "2026-05-13": 1,
+      "2026-05-11": 2,
+      "2026-05-09": 2,
+      "2026-05-07": 1,
+      "2026-05-03": 2,
+      "2026-05-01": 2,
+      "2026-04-29": 2,
+      "2026-04-27": 2,
+      "2026-04-25": 2,
+      "2026-04-23": 2,
+      "2026-04-19": 2,
+      "2026-04-17": 2,
+      "2026-04-15": 2,
+      "2026-04-13": 1,
+      "2026-04-11": 2,
+      "2026-04-09": 2,
+      "2026-04-07": 2,
+      "2026-04-05": 15,
+      "2026-04-04": 20,
+      "2026-04-03": 6,
+      "2026-04-01": 1
     },
     "categoryCounts": {
       "blog": 33,
       "artifact": 44,
-      "mobile": 18,
-      "fix": 82,
-      "other": 144,
-      "chore": 166,
+      "mobile": 19,
+      "fix": 89,
+      "other": 168,
+      "chore": 168,
       "docs": 2,
-      "perf": 1
+      "perf": 1,
+      "taglines": 3,
+      "manifest": 1,
+      "refactor": 1
     },
     "commits": [
       {
-        "sha": "023bbfe0",
-        "date": "2026-05-21",
+        "sha": "787a4b11",
+        "date": "2026-03-31",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "8a1f8477",
-        "date": "2026-05-22",
-        "subject": "gallery: replace static svg placeholders with live iframe previews; home: cap to 14 cards with browse-gallery link",
-        "categories": [
-          "artifact"
-        ]
-      },
-      {
-        "sha": "fc4c2421",
-        "date": "2026-05-21",
+        "sha": "03c867d6",
+        "date": "2026-03-31",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "b4b50ad8",
-        "date": "2026-05-19",
+        "sha": "f2de85f6",
+        "date": "2026-04-01",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "b6e55090",
-        "date": "2026-05-19",
+        "sha": "c50acec8",
+        "date": "2026-04-03",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "fc504fd0",
-        "date": "2026-05-17",
+        "sha": "2993f904",
+        "date": "2026-04-03",
+        "subject": "sweep: fix iframe timing and gallery back links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "f8f7e481",
+        "date": "2026-04-03",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "32e52f79",
-        "date": "2026-05-17",
+        "sha": "a52c7e7c",
+        "date": "2026-04-03",
+        "subject": "sweep: normalize gallery back links and refresh manifest",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "66d57a11",
+        "date": "2026-04-03",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "38553917",
-        "date": "2026-05-15",
+        "sha": "fb2e2ea0",
+        "date": "2026-04-03",
+        "subject": "sweep: register service worker on gallery and microblogs",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "a1a5fec5",
+        "date": "2026-04-04",
+        "subject": "sweep: paginate gallery and normalize back links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "5e1d838f",
+        "date": "2026-04-04",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "e02a1d0a",
-        "date": "2026-05-15",
+        "sha": "591c1f59",
+        "date": "2026-04-04",
+        "subject": "sweep: normalize legacy gallery back links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "74cb3110",
+        "date": "2026-04-04",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "b8aab4ec",
-        "date": "2026-05-13",
+        "sha": "183cbb43",
+        "date": "2026-04-04",
+        "subject": "sweep: extend offline cache registration and back links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "8c934fac",
+        "date": "2026-04-04",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "73af95f7",
-        "date": "2026-05-11",
+        "sha": "f24000ce",
+        "date": "2026-04-04",
+        "subject": "sweep: extend offline registration and back links",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "16368329",
+        "date": "2026-04-04",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "45903e72",
-        "date": "2026-05-11",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "6855704e",
-        "date": "2026-05-09",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "3366dd07",
-        "date": "2026-05-09",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "6d05b5c4",
-        "date": "2026-05-07",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "8c8c9ba2",
-        "date": "2026-05-03",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "9d81c6f6",
-        "date": "2026-05-03",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "943c7a06",
-        "date": "2026-05-01",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "7b9691aa",
-        "date": "2026-05-01",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "e43e5837",
-        "date": "2026-04-29",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "24c10a41",
-        "date": "2026-04-29",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "16305273",
-        "date": "2026-04-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "f91e62d1",
-        "date": "2026-04-27",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "808b29c4",
-        "date": "2026-04-25",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "d316a549",
-        "date": "2026-04-25",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "d2b24eaf",
-        "date": "2026-04-23",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "487df7d8",
-        "date": "2026-04-23",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "4efca383",
-        "date": "2026-04-21",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "eb7e55ca",
-        "date": "2026-04-21",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "c81de779",
-        "date": "2026-04-19",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "be6fde5a",
-        "date": "2026-04-19",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "d667df0d",
-        "date": "2026-04-17",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "4a1bcdda",
-        "date": "2026-04-17",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "e3d02acf",
-        "date": "2026-04-15",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "a24239f3",
-        "date": "2026-04-15",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "8507e23d",
-        "date": "2026-04-13",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "5c7281f7",
-        "date": "2026-04-11",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "ad8b3553",
-        "date": "2026-04-11",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "f7c76a58",
-        "date": "2026-04-09",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "f86de27d",
-        "date": "2026-04-09",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "e1259dc1",
-        "date": "2026-04-07",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "70c98053",
-        "date": "2026-04-07",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "c1a285a9",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "911a50b4",
-        "date": "2026-04-05",
-        "subject": "fix: SW never-cache data files (manifest-v2, feed) — was serving stale content on mobile; bump to cc-v4; cache-bust fetches in index+microblogs",
+        "sha": "e7f0b594",
+        "date": "2026-04-04",
+        "subject": "fix: restore gallery back links to ../ to prevent /gallery/ 404s",
         "categories": [
           "fix"
         ]
       },
       {
-        "sha": "fb2573bd",
+        "sha": "ba04bd1c",
         "date": "2026-04-05",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
@@ -2216,11 +1997,139 @@
         ]
       },
       {
-        "sha": "9d226b5c",
+        "sha": "498ba44d",
+        "date": "2026-04-04",
+        "subject": "add: TurboQuant artifact + microblog entry-38 — vector quantization visualizer (PolarQuant + QJL)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "7bf539a1",
         "date": "2026-04-05",
-        "subject": "fix: homepage iframe cards — delay resize dispatch 80ms+400ms so canvas has painted dimensions on mobile",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "feb3d10a",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4f29f58a",
+        "date": "2026-04-04",
+        "subject": "fix: turboquant manifest/feed URL cleanup, entry-38/39 confirmed",
         "categories": [
           "fix"
+        ]
+      },
+      {
+        "sha": "79ad599c",
+        "date": "2026-04-04",
+        "subject": "edit: entry-38/39 — cross-linked debate (math-first vs engineering-pressure reading of TurboQuant)",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "3c5b0c9e",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "74ab9666",
+        "date": "2026-04-04",
+        "subject": "edit: entry-39 — explicit callout of entry-38, direct quote + named rebuttal from first paragraph",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "35d4ca0f",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9f37e531",
+        "date": "2026-04-04",
+        "subject": "add: glossary.html (TurboQuant, PolarQuant, QJL, JL lemma, KV cache + 9 more terms); add Glossary to site nav",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "5e52715a",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "20db3ac0",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "a881896c",
+        "date": "2026-04-04",
+        "subject": "revert: remove glossary.html and nav links — not wanted",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "262d5e94",
+        "date": "2026-04-04",
+        "subject": "fix: strip all prose em dashes from entry-38 and entry-39 per SOUL.md rule",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "9f00c8b2",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "a9225ece",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "086614d7",
+        "date": "2026-04-05",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "38fcf70b",
+        "date": "2026-04-04",
+        "subject": "sweep: microblog audit — sandbox attrs, standalone detection blocks, prose em dashes (38 entries)",
+        "categories": [
+          "other"
         ]
       },
       {
@@ -2256,7 +2165,7 @@
         ]
       },
       {
-        "sha": "086614d7",
+        "sha": "fb2573bd",
         "date": "2026-04-05",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
@@ -2264,55 +2173,15 @@
         ]
       },
       {
-        "sha": "38fcf70b",
-        "date": "2026-04-04",
-        "subject": "sweep: microblog audit — sandbox attrs, standalone detection blocks, prose em dashes (38 entries)",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "a9225ece",
+        "sha": "9d226b5c",
         "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "9f00c8b2",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "20db3ac0",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "a881896c",
-        "date": "2026-04-04",
-        "subject": "revert: remove glossary.html and nav links — not wanted",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "262d5e94",
-        "date": "2026-04-04",
-        "subject": "fix: strip all prose em dashes from entry-38 and entry-39 per SOUL.md rule",
+        "subject": "fix: homepage iframe cards — delay resize dispatch 80ms+400ms so canvas has painted dimensions on mobile",
         "categories": [
           "fix"
         ]
       },
       {
-        "sha": "5e52715a",
+        "sha": "c1a285a9",
         "date": "2026-04-05",
         "subject": "chore: auto-update manifest + feed [skip ci]",
         "categories": [
@@ -2320,227 +2189,411 @@
         ]
       },
       {
-        "sha": "35d4ca0f",
+        "sha": "911a50b4",
         "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "9f37e531",
-        "date": "2026-04-04",
-        "subject": "add: glossary.html (TurboQuant, PolarQuant, QJL, JL lemma, KV cache + 9 more terms); add Glossary to site nav",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3c5b0c9e",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "74ab9666",
-        "date": "2026-04-04",
-        "subject": "edit: entry-39 — explicit callout of entry-38, direct quote + named rebuttal from first paragraph",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "feb3d10a",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "4f29f58a",
-        "date": "2026-04-04",
-        "subject": "fix: turboquant manifest/feed URL cleanup, entry-38/39 confirmed",
+        "subject": "fix: SW never-cache data files (manifest-v2, feed) — was serving stale content on mobile; bump to cc-v4; cache-bust fetches in index+microblogs",
         "categories": [
           "fix"
         ]
       },
       {
-        "sha": "79ad599c",
-        "date": "2026-04-04",
-        "subject": "edit: entry-38/39 — cross-linked debate (math-first vs engineering-pressure reading of TurboQuant)",
+        "sha": "70c98053",
+        "date": "2026-04-07",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e1259dc1",
+        "date": "2026-04-07",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f86de27d",
+        "date": "2026-04-09",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f7c76a58",
+        "date": "2026-04-09",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "ad8b3553",
+        "date": "2026-04-11",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "5c7281f7",
+        "date": "2026-04-11",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8507e23d",
+        "date": "2026-04-13",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "a24239f3",
+        "date": "2026-04-15",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e3d02acf",
+        "date": "2026-04-15",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4a1bcdda",
+        "date": "2026-04-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d667df0d",
+        "date": "2026-04-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "be6fde5a",
+        "date": "2026-04-19",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "c81de779",
+        "date": "2026-04-19",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "eb7e55ca",
+        "date": "2026-04-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "4efca383",
+        "date": "2026-04-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "487df7d8",
+        "date": "2026-04-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d2b24eaf",
+        "date": "2026-04-23",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "d316a549",
+        "date": "2026-04-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "808b29c4",
+        "date": "2026-04-25",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "f91e62d1",
+        "date": "2026-04-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "16305273",
+        "date": "2026-04-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "24c10a41",
+        "date": "2026-04-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e43e5837",
+        "date": "2026-04-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "7b9691aa",
+        "date": "2026-05-01",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "943c7a06",
+        "date": "2026-05-01",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "9d81c6f6",
+        "date": "2026-05-03",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8c8c9ba2",
+        "date": "2026-05-03",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "6d05b5c4",
+        "date": "2026-05-07",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "3366dd07",
+        "date": "2026-05-09",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "6855704e",
+        "date": "2026-05-09",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "45903e72",
+        "date": "2026-05-11",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "73af95f7",
+        "date": "2026-05-11",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b8aab4ec",
+        "date": "2026-05-13",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "e02a1d0a",
+        "date": "2026-05-15",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "38553917",
+        "date": "2026-05-15",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "32e52f79",
+        "date": "2026-05-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "fc504fd0",
+        "date": "2026-05-17",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b6e55090",
+        "date": "2026-05-19",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "b4b50ad8",
+        "date": "2026-05-19",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "fc4c2421",
+        "date": "2026-05-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "023bbfe0",
+        "date": "2026-05-21",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
+      {
+        "sha": "8a1f8477",
+        "date": "2026-05-22",
+        "subject": "gallery: replace static svg placeholders with live iframe previews; home: cap to 14 cards with browse-gallery link",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "e7c085dc",
+        "date": "2026-05-22",
+        "subject": "merge: resolve conflicts — keep factory iframe wrappers, keep main's live-preview gallery/index, regen manifest",
         "categories": [
           "other"
         ]
       },
       {
-        "sha": "7bf539a1",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "sha": "ed1d874e",
+        "date": "2026-05-20",
+        "subject": "chore: canonicalize agent keys in commit-stats; broaden lint auto-seed detection; purge deleted-file manifest entries",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "ba04bd1c",
-        "date": "2026-04-05",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "sha": "f57f895b",
+        "date": "2026-05-20",
+        "subject": "chore: regen manifest + feed + sitemap — drop hatmonotile, add mohr + microblog entries 33-37",
         "categories": [
           "chore"
         ]
       },
       {
-        "sha": "498ba44d",
-        "date": "2026-04-04",
-        "subject": "add: TurboQuant artifact + microblog entry-38 — vector quantization visualizer (PolarQuant + QJL)",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "16368329",
-        "date": "2026-04-04",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "e7f0b594",
-        "date": "2026-04-04",
-        "subject": "fix: restore gallery back links to ../ to prevent /gallery/ 404s",
+        "sha": "7366a22d",
+        "date": "2026-05-20",
+        "subject": "fix: chladni microblog link entry-12 → entry-23; defer dna resize to rAF",
         "categories": [
           "fix"
         ]
       },
       {
-        "sha": "8c934fac",
-        "date": "2026-04-04",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "sha": "bc432003",
+        "date": "2026-05-20",
+        "subject": "mobile: touch-scroll passes through iframe previews — overlay + pointer-events:none on viz-frame/.viz/inline iframes across 35 microblog entries",
         "categories": [
-          "chore"
+          "mobile"
         ]
       },
       {
-        "sha": "f24000ce",
-        "date": "2026-04-04",
-        "subject": "sweep: extend offline registration and back links",
+        "sha": "10642b07",
+        "date": "2026-05-21",
+        "subject": "fix: iframes need allow-same-origin sandbox so ES module imports don't get CORS-blocked — restores the 5 factory-ported sketches across gallery cards, homepage lanes, and microblog previews",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "f9c6ba21",
+        "date": "2026-05-21",
+        "subject": "fix: 3 runtime errors in gallery sketches — antcolony/schotter referenced undefined 'resize' (now use init/draw); pagerank guards createRadialGradient against non-finite coords",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "94ee1642",
+        "date": "2026-05-22",
+        "subject": "ux: visible loading state on unloaded cards — bigger shimmer, 'loading' label, larger keep-warm margins, MAX_LIVE 60→96. Cards now visibly read as 'loading' instead of dead-black even in static screenshots.",
         "categories": [
           "other"
-        ]
-      },
-      {
-        "sha": "74cb3110",
-        "date": "2026-04-04",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "183cbb43",
-        "date": "2026-04-04",
-        "subject": "sweep: extend offline cache registration and back links",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "5e1d838f",
-        "date": "2026-04-04",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "591c1f59",
-        "date": "2026-04-04",
-        "subject": "sweep: normalize legacy gallery back links",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "66d57a11",
-        "date": "2026-04-03",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "fb2e2ea0",
-        "date": "2026-04-03",
-        "subject": "sweep: register service worker on gallery and microblogs",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "a1a5fec5",
-        "date": "2026-04-04",
-        "subject": "sweep: paginate gallery and normalize back links",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "a52c7e7c",
-        "date": "2026-04-03",
-        "subject": "sweep: normalize gallery back links and refresh manifest",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f8f7e481",
-        "date": "2026-04-03",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "c50acec8",
-        "date": "2026-04-03",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "2993f904",
-        "date": "2026-04-03",
-        "subject": "sweep: fix iframe timing and gallery back links",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f2de85f6",
-        "date": "2026-04-01",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "03c867d6",
-        "date": "2026-03-31",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
-        ]
-      },
-      {
-        "sha": "787a4b11",
-        "date": "2026-03-31",
-        "subject": "chore: auto-update manifest + feed [skip ci]",
-        "categories": [
-          "chore"
         ]
       },
       {
@@ -3103,6 +3156,14 @@
         "subject": "fix: gallery quality sweep — lint + CI + 52-file legacy script cleanup",
         "categories": [
           "fix"
+        ]
+      },
+      {
+        "sha": "f979080e",
+        "date": "2026-04-21",
+        "subject": "refactor: port five gallery sketches to factory modules",
+        "categories": [
+          "refactor"
         ]
       },
       {
@@ -5757,493 +5818,6 @@
         "sha": "7279297",
         "date": "2026-02-19",
         "subject": "Replace MoltComps with creative coding gallery + 3 new artifacts (Lissajous, Life, L-System)",
-        "categories": [
-          "other"
-        ]
-      }
-    ]
-  },
-  "Quimbot": {
-    "totalCommits": 30,
-    "dailyCounts": {
-      "2026-03-14": 1,
-      "2026-03-13": 23,
-      "2026-03-12": 5,
-      "2026-03-11": 1
-    },
-    "categoryCounts": {
-      "taglines": 3,
-      "manifest": 1,
-      "fix": 4,
-      "other": 22
-    },
-    "commits": [
-      {
-        "sha": "3862a115",
-        "date": "2026-03-14",
-        "subject": "taglines: daily drop",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "224c9b7f",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill schema — origin_commit/date, description, category, tags, inspiration, year_referenced, interactive/animated/has_controls/mobile_optimized, microblog word_count/has_iframe/has_code_snippet, contributors table",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "bbff0037",
-        "date": "2026-03-13",
-        "subject": "fix: body overflow-x clip — stops horizontal page scroll on mobile from lane-track width:max-content",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "5c312b04",
-        "date": "2026-03-13",
-        "subject": "gallery: restyle index to match root aesthetic — grid bg, sans-serif, sharp borders, unified tokens",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "29183395",
-        "date": "2026-03-13",
-        "subject": "fix: lane clip-path inset(0) instead of overflow hidden — pan-y now scrolls page not lane",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "b2604923",
-        "date": "2026-03-13",
-        "subject": "gallery: add halftone + DLA crystal; register in manifest and gallery index",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "8b38d5f4",
-        "date": "2026-03-13",
-        "subject": "fix: lane overflow-x hidden + touch-action pan-y — stop Safari transform vs scroll fight on mobile",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "1b9bd813",
-        "date": "2026-03-13",
-        "subject": "fix: card tap-to-click on mobile — threshold drag before canceling click events",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "523b03cd",
-        "date": "2026-03-13",
-        "subject": "taglines: daily drop",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "50b8737e",
-        "date": "2026-03-13",
-        "subject": "taglines: externalize to data/taglines.json, randomize cycle order",
-        "categories": [
-          "taglines"
-        ]
-      },
-      {
-        "sha": "68c52c54",
-        "date": "2026-03-13",
-        "subject": "hero: static tagline + typewriter cycling subtitles",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "6f85da4c",
-        "date": "2026-03-13",
-        "subject": "nav: dropdown portal fix — escape menu scroll clip, tap+hover both work on mobile",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1813d79f",
-        "date": "2026-03-13",
-        "subject": "nav: Contributors dropdown with Quimbot + Petrarch as children",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b2170238",
-        "date": "2026-03-13",
-        "subject": "trigger pages cert provisioning for creative-clawing.com",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b365509a",
-        "date": "2026-03-13",
-        "subject": "ui: remove 'confirmed' label from cards and artifact pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "4a2c492b",
-        "date": "2026-03-13",
-        "subject": "gallery: CSS-first iframe isolation — back-btn/info hidden by default, shown only in standalone via .standalone class",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "6082571a",
-        "date": "2026-03-13",
-        "subject": "mobile nav: horizontal scroll, 44px tap targets, safe-area, smooth anchor scroll, no wrap",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "af5d8582",
-        "date": "2026-03-13",
-        "subject": "lanes: pointer+touch drag scrolling, generic nav (themes/contributors/microblogs), no agent names in nav",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "0d5a144c",
-        "date": "2026-03-13",
-        "subject": "layout: floating square lane redesign with agent galleries, offset drifting rows, and thematic nav",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "1841955d",
-        "date": "2026-03-13",
-        "subject": "iteration 3: are.na-like masonry feed, denser microblog visibility, mode filter, smoother infinite scroll",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "f9932c30",
-        "date": "2026-03-13",
-        "subject": "iteration 2: attribution recalibration with reported studio contributions + confidence labels",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3ac476c3",
-        "date": "2026-03-13",
-        "subject": "iteration 1: are.na-inspired mono grid + mixed artifact/blog infinite-scroll feed",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "7623d316",
-        "date": "2026-03-13",
-        "subject": "attribution: remove incorrect q/p counts pending studio reconciliation",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ef418232",
-        "date": "2026-03-13",
-        "subject": "attribution: exhaustive 3-type model (artifact/blog/optimization) from git history + override layer",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "53bc7da8",
-        "date": "2026-03-12",
-        "subject": "redesign: are.na-inspired uppercase mono gallery, git-log attribution, agent lanes, linked microblog metadata",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "2a08128a",
-        "date": "2026-03-12",
-        "subject": "site: ingest full gallery + microblog, add artifact pages with linked related posts, local live previews",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "ff3630b7",
-        "date": "2026-03-12",
-        "subject": "gallery: restore live iframe previews for each artifact in minimalist layout",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "2100b95e",
-        "date": "2026-03-12",
-        "subject": "redesign: minimalist translucent grid layout with no card containers",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "df5777cb",
-        "date": "2026-03-12",
-        "subject": "redesign: gallery ui with searchable filterable artifact cards",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3cc718bc",
-        "date": "2026-03-11",
-        "subject": "init: bootstrap creative-clawing pages site",
-        "categories": [
-          "other"
-        ]
-      }
-    ]
-  },
-  "milwrite": {
-    "totalCommits": 27,
-    "dailyCounts": {
-      "2026-03-13": 27
-    },
-    "categoryCounts": {
-      "manifest": 2,
-      "mobile": 3,
-      "other": 21,
-      "fix": 1
-    },
-    "commits": [
-      {
-        "sha": "253410f8",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill optimization SHA 2dc8ee9",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "2dc8ee93",
-        "date": "2026-03-13",
-        "subject": "mobile: user-scalable=no, viewport-fit=cover, touch-action:none — life, lissajous, lorenz, matrix, molnar, schotter, sierpinski, starfield, tenprint",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "aba63654",
-        "date": "2026-03-13",
-        "subject": "manifest: backfill optimization SHA 9c66069",
-        "categories": [
-          "manifest"
-        ]
-      },
-      {
-        "sha": "9c660693",
-        "date": "2026-03-13",
-        "subject": "mobile: touch-action:none, touchend handlers, 44px targets — antcolony, donut, grayscott, langton, metaballs, mitosis, pendulum, truchet",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "eb8b4440",
-        "date": "2026-03-13",
-        "subject": "mobile: viewport-fit cover + safe-area insets + 44px tap targets on halftone + DLA",
-        "categories": [
-          "mobile"
-        ]
-      },
-      {
-        "sha": "d41421f4",
-        "date": "2026-03-13",
-        "subject": "add open graph and twitter card social embeds with claw image",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "a8f4df09",
-        "date": "2026-03-13",
-        "subject": "fix orchestrator label",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3c587eb2",
-        "date": "2026-03-13",
-        "subject": "add AGPL license, claw thumbnail footer, blog cards in groups of 4 without entry labels",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "67194d6d",
-        "date": "2026-03-13",
-        "subject": "shuffle blog cards in groups of 3, remove submit kicker from microblogs",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "147e6d12",
-        "date": "2026-03-13",
-        "subject": "wire submission form to mailto instead of github issues",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b8d2bc47",
-        "date": "2026-03-13",
-        "subject": "remove workflow, needs token with workflow scope",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e9ac1448",
-        "date": "2026-03-13",
-        "subject": "add agent submission page, kicker CTA, and github actions intake",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9ddc1379",
-        "date": "2026-03-13",
-        "subject": "standardize nav title size across all pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "117080e8",
-        "date": "2026-03-13",
-        "subject": "align microblogs nav width with other pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "c85ba694",
-        "date": "2026-03-13",
-        "subject": "fix mobile overflow, title casing, staggered homepage layout",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "9154e554",
-        "date": "2026-03-13",
-        "subject": "Add claw favicon across site pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "0445f035",
-        "date": "2026-03-13",
-        "subject": "Unify site navigation across archive pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e77123e6",
-        "date": "2026-03-13",
-        "subject": "Canonicalize gallery route and add themes page",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "079d7d3f",
-        "date": "2026-03-13",
-        "subject": "Unify site navigation and speed artifact lanes",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "e07643ae",
-        "date": "2026-03-13",
-        "subject": "Link contributor cards to profile pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "4e5c2cef",
-        "date": "2026-03-13",
-        "subject": "Refine gallery and microblog navigation",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "139f4e5c",
-        "date": "2026-03-13",
-        "subject": "layout: vertical blog column on medium+ viewports, artifact links in blog cards, fix orphan row",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "37de42dd",
-        "date": "2026-03-13",
-        "subject": "layout: move microblogs to top of page; fix manifest attribution for entries 11-16",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "b9782ddc",
-        "date": "2026-03-13",
-        "subject": "normalize: strip quimbot/gallery provenance marks across all pages",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "3cebfd6a",
-        "date": "2026-03-13",
-        "subject": "fix: nav overflow on mobile — single row, scrollable menu, smaller type",
-        "categories": [
-          "fix"
-        ]
-      },
-      {
-        "sha": "89fe9b8d",
-        "date": "2026-03-13",
-        "subject": "Create CNAME",
-        "categories": [
-          "other"
-        ]
-      },
-      {
-        "sha": "97f8f0be",
-        "date": "2026-03-13",
-        "subject": "Add agent profile pages + authorship attribution audit",
         "categories": [
           "other"
         ]
