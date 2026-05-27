@@ -146,9 +146,15 @@
       sf.contentWindow.dispatchEvent(new Event('orientationchange'));
     } catch(e) {}
   }
-  if (sf) sf.addEventListener('load', pingFrame, { once: true });
+  if (sf) sf.addEventListener('load', () => {
+    pingFrame();
+    setTimeout(pingFrame, 180);
+  }, { once: true });
   window.addEventListener('resize', pingFrame, { passive: true });
-  window.addEventListener('pageshow', pingFrame, { passive: true });
+  window.addEventListener('pageshow', () => {
+    pingFrame();
+    setTimeout(pingFrame, 120);
+  }, { passive: true });
   window.addEventListener('orientationchange', () => { setTimeout(pingFrame, 120); }, { passive: true });
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) pingFrame();
