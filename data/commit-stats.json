@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 242,
+    "totalCommits": 243,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -78,10 +78,11 @@
       "2026-03-31": 1,
       "2026-05-23": 4,
       "2026-05-24": 1,
-      "2026-05-27": 1
+      "2026-05-27": 1,
+      "2026-05-28": 1
     },
     "categoryCounts": {
-      "blog": 30,
+      "blog": 31,
       "mobile": 19,
       "fix": 35,
       "other": 141,
@@ -93,6 +94,14 @@
       "manifest": 2
     },
     "commits": [
+      {
+        "sha": "4e3d6cce",
+        "date": "2026-05-28",
+        "subject": "blog: add terrain microblog",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "597307d4",
         "date": "2026-05-27",
@@ -1819,7 +1828,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 537,
+    "totalCommits": 538,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1889,7 +1898,8 @@
       "2026-04-03": 6,
       "2026-04-01": 1,
       "2026-05-23": 9,
-      "2026-05-25": 1
+      "2026-05-25": 1,
+      "2026-05-27": 1
     },
     "categoryCounts": {
       "blog": 33,
@@ -1897,7 +1907,7 @@
       "mobile": 19,
       "fix": 90,
       "other": 170,
-      "chore": 173,
+      "chore": 174,
       "docs": 2,
       "perf": 3,
       "taglines": 3,
@@ -1905,6 +1915,14 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "fabc7db5",
+        "date": "2026-05-27",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "bec0b663",
         "date": "2026-05-25",
