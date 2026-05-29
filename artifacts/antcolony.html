@@ -156,7 +156,7 @@
     pingFrame();
     setTimeout(pingFrame, 120);
   }, { passive: true });
-  window.addEventListener('orientationchange', () => { setTimeout(pingFrame, 120); }, { passive: true });
+  window.addEventListener('orientationchange', () => { setTimeout(pingFrame, 120); setTimeout(pingFrame, 260); }, { passive: true });
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) pingFrame();
   }, { passive: true });
