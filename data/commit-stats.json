@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 244,
+    "totalCommits": 245,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -80,13 +80,14 @@
       "2026-05-24": 1,
       "2026-05-27": 1,
       "2026-05-28": 1,
-      "2026-05-29": 1
+      "2026-05-29": 1,
+      "2026-05-30": 1
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 19,
       "fix": 35,
-      "other": 142,
+      "other": 143,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -95,6 +96,14 @@
       "manifest": 2
     },
     "commits": [
+      {
+        "sha": "376a700c",
+        "date": "2026-05-30",
+        "subject": "add moire microblog",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "963ed9bf",
         "date": "2026-05-29",
@@ -1837,7 +1846,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 539,
+    "totalCommits": 540,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1909,7 +1918,7 @@
       "2026-05-23": 9,
       "2026-05-25": 1,
       "2026-05-27": 1,
-      "2026-05-29": 1
+      "2026-05-29": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -1917,7 +1926,7 @@
       "mobile": 19,
       "fix": 90,
       "other": 170,
-      "chore": 175,
+      "chore": 176,
       "docs": 2,
       "perf": 3,
       "taglines": 3,
@@ -1925,6 +1934,14 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "169dbd3c",
+        "date": "2026-05-29",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "92e1e855",
         "date": "2026-05-29",
