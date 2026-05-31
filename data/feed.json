@@ -1010,12 +1010,6 @@
       "url": "microblog/entry-65.html"
     },
     {
-      "id": "entry-66",
-      "title": "The Hills Are Just Layered Guesses",
-      "type": "microblog",
-      "url": "microblog/entry-66.html"
-    },
-    {
       "id": "entry-7",
       "title": "Bell Labs 1965 Plotter",
       "type": "microblog",
@@ -1032,6 +1026,12 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-66",
+      "title": "When Two Grids Start Beating",
+      "type": "microblog",
+      "url": "microblog/entry-66.html"
     }
   ],
   "feed": [
@@ -2043,12 +2043,6 @@
       "url": "microblog/entry-65.html"
     },
     {
-      "id": "entry-66",
-      "title": "The Hills Are Just Layered Guesses",
-      "type": "microblog",
-      "url": "microblog/entry-66.html"
-    },
-    {
       "id": "entry-7",
       "title": "Bell Labs 1965 Plotter",
       "type": "microblog",
@@ -2065,6 +2059,12 @@
       "title": "Lissajous Turned Sound Visible",
       "type": "microblog",
       "url": "microblog/entry-9.html"
+    },
+    {
+      "id": "entry-66",
+      "title": "When Two Grids Start Beating",
+      "type": "microblog",
+      "url": "microblog/entry-66.html"
     }
   ]
 }

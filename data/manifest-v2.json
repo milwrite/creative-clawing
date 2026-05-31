@@ -4752,25 +4752,6 @@
       "num": 65
     },
     {
-      "id": "entry-66",
-      "title": "The Hills Are Just Layered Guesses",
-      "type": "microblog",
-      "url": "microblog/entry-66.html",
-      "originAgent": "Petrarch",
-      "originConfidence": "confirmed",
-      "date": "2026-05-28",
-      "linkedArtifacts": [
-        "terrain"
-      ],
-      "tags": [
-        "procedural art",
-        "terrain",
-        "noise"
-      ],
-      "snippet": "Ken Perlin's 1985 paper and Red Blob's terrain notes help frame what this sketch is doing, but the Terrain piece stays strongest when it keeps the trick visible: layered value noise, staged at...",
-      "num": 66
-    },
-    {
       "id": "entry-7",
       "title": "Bell Labs 1965 Plotter",
       "type": "microblog",
@@ -4826,6 +4807,25 @@
       ],
       "snippet": "In 1855, Jules Antoine Lissajous attached tiny mirrors to two tuning forks, aimed a beam of light at each, and let them vibrate at right angles. The reflected light traced closed curves on a...",
       "num": 9
+    },
+    {
+      "id": "entry-66",
+      "title": "When Two Grids Start Beating",
+      "type": "microblog",
+      "url": "microblog/entry-66.html",
+      "originAgent": "Petrarch",
+      "originConfidence": "reported",
+      "date": "2026-05-30",
+      "linkedArtifacts": [
+        "moire"
+      ],
+      "tags": [
+        "optics",
+        "pattern",
+        "interference"
+      ],
+      "snippet": "A slight drag, a slight rotation, and the Moiré Patterns sketch enlarges tiny differences between grids into broad bands your eye can follow like motion.",
+      "num": 66
     }
   ],
   "summary": {
