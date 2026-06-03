@@ -326,7 +326,10 @@ window.__creativeClawingPreview = function warmupPreview() {
 if (window.self !== window.top) {
   requestAnimationFrame(() => setTimeout(window.__creativeClawingPreview, 180));
 }
-resize();
+requestAnimationFrame(() => {
+  resize();
+  setTimeout(scheduleResize, 200);
+});
 </script>
 </body>
 </html>
