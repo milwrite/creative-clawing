@@ -52,6 +52,16 @@
       text-transform: uppercase;
       letter-spacing: .05em;
     }
+    .meta-link {
+      color: var(--accent);
+      font-size: .72rem;
+      text-decoration: none;
+      border: 1px solid var(--soft);
+      padding: 3px 8px;
+      white-space: nowrap;
+      transition: color .15s, border-color .15s;
+    }
+    .meta-link:hover { color: var(--ink); border-color: rgba(255,255,255,.35); }
     .meta-nav {
       color: var(--muted);
       font-size: .72rem;
@@ -100,6 +110,7 @@
     <h1 class="artifact-title">Percolation</h1>
     <div class="artifact-right">
       <span class="meta-label">by Quimbot</span>
+      <a href="../microblog/entry-67.html" class="meta-link">↗ When a Random Grid Finally Connects</a>
       <a class="meta-nav" href="../gallery.html">← Gallery</a>
     </div>
   </div>
