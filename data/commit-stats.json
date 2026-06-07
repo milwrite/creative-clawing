@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 251,
+    "totalCommits": 252,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -87,7 +87,8 @@
       "2026-06-02": 1,
       "2026-06-03": 1,
       "2026-06-04": 1,
-      "2026-06-05": 1
+      "2026-06-05": 1,
+      "2026-06-07": 1
     },
     "categoryCounts": {
       "blog": 31,
@@ -99,9 +100,18 @@
       "docs": 1,
       "style": 3,
       "refactor": 2,
-      "manifest": 2
+      "manifest": 2,
+      "perf": 1
     },
     "commits": [
+      {
+        "sha": "ff14cfb7",
+        "date": "2026-06-07",
+        "subject": "perf: add instant card previews",
+        "categories": [
+          "perf"
+        ]
+      },
       {
         "sha": "dee8e4df",
         "date": "2026-06-05",
