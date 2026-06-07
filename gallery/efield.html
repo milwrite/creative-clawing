@@ -64,8 +64,10 @@ function resize() {
   const pr = Math.min(window.devicePixelRatio || 1, 2);
   const rect = canvas.getBoundingClientRect();
   const viewport = window.visualViewport;
-  W = Math.max(1, Math.round(viewport?.width || rect.width || window.innerWidth || document.documentElement.clientWidth || 1));
-  H = Math.max(1, Math.round(viewport?.height || rect.height || window.innerHeight || document.documentElement.clientHeight || 1));
+  const layoutWidth = Math.round(window.innerWidth || document.documentElement.clientWidth || rect.width || 1);
+  const layoutHeight = Math.round(document.body.clientHeight || document.documentElement.clientHeight || rect.height || 1);
+  W = Math.max(1, Math.round(viewport?.width || layoutWidth || 1));
+  H = Math.max(1, Math.round(rect.height || layoutHeight || viewport?.height || 1));
   canvas.style.width = `${W}px`;
   canvas.style.height = `${H}px`;
   canvas.width  = Math.max(1, Math.round(W * pr));
