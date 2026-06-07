@@ -351,6 +351,23 @@ function updateInfo() {
 
 const STEPS_PER_FRAME = 6;
 
+function seedPreviewPattern() {
+  init();
+  for (let y = 0; y < GH; y++) {
+    for (let x = 0; x < GW; x++) {
+      const nx = (x - GW / 2) / GW;
+      const ny = (y - GH / 2) / GH;
+      const r = Math.hypot(nx, ny);
+      if (Math.abs(Math.sin(120 * r)) < 0.12 || Math.sin((nx + ny) * 42) > 0.92) {
+        const i = y * GW + x;
+        v[i] = 1.75;
+        w[i] = -0.15;
+      }
+    }
+  }
+  for (let i = 0; i < 24; i++) step();
+}
+
 window.addEventListener('resize', resize);
 if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
 window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
@@ -358,7 +375,8 @@ window.addEventListener('orientationchange', () => { setTimeout(resize, 200); })
 requestAnimationFrame(() => {
   resize();
   setTimeout(resize, 200);
-  seedMode(MODES[modeIdx]);
+  if (window.self !== window.top) seedPreviewPattern();
+  else seedMode(MODES[modeIdx]);
   updateInfo();
   function frame() {
     for (let s = 0; s < STEPS_PER_FRAME; s++) step();

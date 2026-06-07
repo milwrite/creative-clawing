@@ -19,6 +19,7 @@
 <meta name="twitter:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
 <link rel="canonical" href="https://creative-clawing.com/microblogs.html"/>
   <link rel="stylesheet" href="styles/shared.css"/>
+  <script src="scripts/preview-cards.js"></script>
   <style>
 
     /* ── feed ────────────────────────────────────────── */
@@ -56,6 +57,7 @@
       border-bottom: 1px solid var(--soft);
       background: #0a0a0a;
       overflow: hidden;
+      position: relative;
     }
     .entry-viz { position: relative; }
     .entry-viz iframe {
@@ -208,7 +210,9 @@
     const linked = (b.linkedArtifacts || []).slice(0, 2);
     const isLatest = b.num === latestNum;
     const vizHtml = isLatest && linked.length ? linked.map(id =>
-      `<div class="entry-viz" data-iframe-src="gallery/${id}.html" data-iframe-title="${artMap[id]?.title || id}"></div>`
+      `<div class="entry-viz cc-preview-frame" data-iframe-src="gallery/${id}.html" data-preview-id="${id}" data-iframe-title="${artMap[id]?.title || id}">
+        ${CCPreviews.imageHTML(id, artMap[id]?.title || id)}
+      </div>`
     ).join('') : '';
     const chipHtml = linked.map(id => {
       const label = artMap[id]?.title || id;
@@ -238,13 +242,9 @@
         const src = e.target.dataset.iframeSrc;
         const title = e.target.dataset.iframeTitle || '';
         if (src) {
-          const ifr = document.createElement('iframe');
-          ifr.src = src; ifr.loading = 'lazy'; ifr.title = title;
-          ifr.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-          ifr.addEventListener('load', () => {
-            try { ifr.contentWindow.dispatchEvent(new Event('resize')); } catch(ex) {}
-          }, { once: true });
-          e.target.innerHTML = '';
+          CCPreviews.ensureImage(e.target);
+          const ifr = CCPreviews.buildIframe(e.target);
+          if (!ifr) return;
           e.target.appendChild(ifr);
           // Touch-pass-through overlay so the page can scroll vertically even
           // when the artifact's canvas inside the iframe sets touch-action:none.
@@ -253,11 +253,17 @@
           e.target.appendChild(ov);
         }
       } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
-        e.target.innerHTML = '';
+        const ifr = e.target.querySelector('iframe');
+        ifr.src = 'about:blank';
+        ifr.remove();
+        CCPreviews.ensureImage(e.target);
       }
     });
   }, { rootMargin: '300px' });
-  document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => vizObserver.observe(el));
+  document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => {
+    CCPreviews.ensureImage(el);
+    vizObserver.observe(el);
+  });
 })();
 </script>
 <script>

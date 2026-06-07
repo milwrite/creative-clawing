@@ -35,6 +35,11 @@ function resize(){
   canvas.width=Math.round(W*DPR);
   canvas.height=Math.round(H*DPR);
   ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(!hasPointer){
+    mx=W/2; my=H/2;
+    smx=mx; smy=my;
+    lastMx=mx; lastMy=my;
+  }
 }
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
@@ -46,8 +51,9 @@ window.addEventListener('resize',()=>{
 });
 window.addEventListener('orientationchange',()=>setTimeout(resize,200));
 
-let mx=W/2,my=H/2,smx=W/2,smy=H/2;
-let hue=0,clicking=false,lastMx=W/2,lastMy=H/2;
+let hasPointer=false;
+let mx=0,my=0,smx=0,smy=0;
+let hue=0,clicking=false,lastMx=0,lastMy=0;
 const particles=[];
 const trails=[];
 const MAX_PARTICLES=isTouchDevice?260:420;
@@ -160,9 +166,12 @@ function loop(t){
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
+if(window.self!==window.top){
+  setTimeout(()=>{clicking=true;emit(true);clicking=false;},260);
+}
 
-window.addEventListener('pointermove',e=>{ mx=e.clientX; my=e.clientY; });
-window.addEventListener('pointerdown',e=>{ clicking=true; mx=e.clientX; my=e.clientY; emit(true); });
+window.addEventListener('pointermove',e=>{ hasPointer=true; mx=e.clientX; my=e.clientY; });
+window.addEventListener('pointerdown',e=>{ hasPointer=true; clicking=true; mx=e.clientX; my=e.clientY; emit(true); });
 window.addEventListener('pointerup',()=>{ clicking=false; });
 window.addEventListener('pointercancel',()=>{ clicking=false; });
 

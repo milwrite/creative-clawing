@@ -22,6 +22,9 @@ Exit: 0 = clean, 1 = issues found
 import pathlib, sys, re
 
 GALLERY = pathlib.Path(__file__).parent.parent / "gallery"
+ROOT = pathlib.Path(__file__).parent.parent
+PREVIEW_DIR = ROOT / "assets" / "previews"
+PREVIEW_SCRIPT = ROOT / "scripts" / "preview-cards.js"
 SKIP = {"index.html"}
 
 issues = []
@@ -34,6 +37,11 @@ for p in sorted(GALLERY.glob("*.html")):
         continue
     txt = p.read_text(encoding="utf-8", errors="replace")
     name = p.name
+    has_static_preview = (
+        (PREVIEW_DIR / f"{p.stem}.jpg").exists()
+        and PREVIEW_SCRIPT.exists()
+        and "revealWhenPainted" in PREVIEW_SCRIPT.read_text(encoding="utf-8", errors="replace")
+    )
 
     # ── 1. UPPER-LEFT / TINY CANVAS ─────────────────────────────────────
     # Flag: canvas.width = innerWidth (or W=c.width=innerWidth etc.) at top-level
@@ -78,7 +86,7 @@ for p in sorted(GALLERY.glob("*.html")):
         re.search(r'window\.self\s*!==?\s*window\.top', txt) and
         re.search(r'(fill|seed|init|spawn|warmup|applyForce)', txt, re.IGNORECASE)
     )
-    if is_truly_blank and not has_iframe_warmup:
+    if is_truly_blank and not has_iframe_warmup and not has_static_preview:
         warn(name, "BLANK_PREVIEW",
              "artifact may render blank in iframe card (user-driven only) — add iframe warmup fill")
 

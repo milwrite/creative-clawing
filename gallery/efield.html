@@ -224,6 +224,17 @@ function draw() {
   drawCharges();
 }
 
+function seedPreviewCharges() {
+  if (window.self === window.top || charges.length) return;
+  charges = [
+    { x: W * 0.30, y: H * 0.42, q: +1 },
+    { x: W * 0.70, y: H * 0.42, q: -1 },
+    { x: W * 0.46, y: H * 0.68, q: -1 },
+    { x: W * 0.56, y: H * 0.23, q: +1 },
+  ];
+  draw();
+}
+
 // Input
 function getPos(e) {
   const r = canvas.getBoundingClientRect();

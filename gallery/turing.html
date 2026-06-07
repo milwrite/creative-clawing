@@ -143,7 +143,8 @@ function colorMap(t) {
 
 // In-iframe: fast-forward 100 steps/rAF until 2000 steps done, then settle to normal 8/rAF.
 // Avoids a blocking sync warmup while still showing developed patterns within ~20 frames (~0.35s).
-const IFRAME_WARMUP = window.self !== window.top ? 2000 : 0;
+const IFRAME_MODE = window.self !== window.top;
+const IFRAME_WARMUP = 0;
 let frame = 0;
 function paint() {
   for (let i = 0; i < S * S; i++) {
@@ -195,11 +196,29 @@ window.addEventListener('resize', handleResize);
 window.addEventListener('orientationchange', handleResize);
 
 // In iframe: extra seeds so patterns develop across the whole canvas faster
-if (window.self !== window.top) {
-  initSim();
-  for (let i = 0; i < 16; i++) {
-    seed(Math.random() * S, Math.random() * S, 6 + Math.random() * 8);
+function seedPreviewPattern() {
+  u.fill(1);
+  v.fill(0);
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const nx = (x - S / 2) / S;
+      const ny = (y - S / 2) / S;
+      const r = Math.hypot(nx, ny);
+      const waves = Math.sin(90 * r + 8 * Math.sin(nx * 18)) + Math.sin((nx - ny) * 34);
+      const spots = Math.sin(nx * 42) * Math.sin(ny * 38);
+      if (waves + spots > 0.45 || (r < 0.38 && Math.sin(130 * r) > 0.74)) {
+        const i = y * S + x;
+        u[i] = 0.42;
+        v[i] = 0.28 + 0.22 * Math.abs(Math.sin(40 * nx + 22 * ny));
+      }
+    }
   }
+}
+
+if (IFRAME_MODE) {
+  presetIdx = 3;
+  p = presets[presetIdx];
+  seedPreviewPattern();
 } else {
   initSim();
 }

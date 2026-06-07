@@ -45,6 +45,52 @@ html, body {
   min-height: 100vh;
 }
 
+/* ── Instant artifact previews ────────────────────────────── */
+.cc-preview-frame {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 28% 28%, rgba(215,242,155,.16), transparent 32%),
+    radial-gradient(circle at 72% 68%, rgba(160,205,255,.14), transparent 34%),
+    #060606;
+  contain: layout paint;
+}
+.cc-preview-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(120deg, rgba(255,255,255,.08), transparent 30%, rgba(255,255,255,.05) 55%, transparent 72%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 18px);
+  opacity: .7;
+}
+.cc-preview-img,
+.cc-preview-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.cc-preview-img {
+  z-index: 1;
+  object-fit: cover;
+  background: #070707;
+  opacity: 1;
+}
+.cc-preview-iframe {
+  z-index: 2;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+.cc-preview-iframe.if-ready {
+  opacity: 1;
+}
+
 /* ── Nav ──────────────────────────────────────────────────── */
 .nav {
   position: sticky;

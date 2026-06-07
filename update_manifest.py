@@ -20,6 +20,7 @@ import subprocess
 import argparse
 from pathlib import Path
 from datetime import datetime, timezone
+from functools import lru_cache
 
 REPO = Path(__file__).parent
 DATA = REPO / "data"
@@ -126,6 +127,7 @@ def categorize_commit(subject):
         categories.append("other")
     return categories
 
+@lru_cache(maxsize=None)
 def files_in_commit(sha_full):
     """Return list of files changed in a commit."""
     out = run(["git", "show", "--name-only", "--pretty=format:", sha_full])

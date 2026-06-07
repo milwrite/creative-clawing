@@ -20,6 +20,7 @@
   {"@context":"https://schema.org","@type":"WebSite","name":"Creative Clawing","url":"https://creative-clawing.com/","description":"An open archive of generative sketches, simulations, and interactive artifacts built by AI agents"}
   </script>
   <link rel="stylesheet" href="styles/shared.css"/>
+  <script src="scripts/preview-cards.js"></script>
   <style>
     main {
       width: min(1120px, calc(100vw - 24px));
@@ -149,15 +150,20 @@
       content: "";
       position: absolute;
       inset: 0;
+      z-index: 2;
       pointer-events: none;
       background: linear-gradient(180deg, transparent 58%, rgba(0,0,0,.28));
       opacity: .7;
       transition: opacity .2s;
     }
-    .artifact-frame.is-ready::after {
-      opacity: 0;
+    .artifact-frame .card-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      touch-action: auto;
     }
-    .artifact-frame img.artifact-thumb {
+    .artifact-frame .cc-preview-img,
+    .artifact-frame .cc-preview-iframe {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -166,7 +172,8 @@
       opacity: 0;
       transition: opacity .35s ease;
     }
-    .artifact-frame img.artifact-thumb[src]:not([src=""]) { opacity: 1; }
+    .artifact-frame .cc-preview-img { opacity: 1; }
+    .artifact-frame .cc-preview-iframe.if-ready { opacity: 1; }
     .artifact-body {
       padding: 11px 12px 12px;
       display: grid;
@@ -556,10 +563,10 @@
     ].filter(Boolean);
     const tags = (art.tags || []).slice(0, 4);
 
-    const thumbSrc = `thumbnails/${escapeAttr(art.id || '')}.webp`;
     return `<a class="artifact-card" href="${escapeAttr(href)}" aria-label="Open ${escapeAttr(title)}">
-      <div class="artifact-frame">
-        <img class="artifact-thumb" src="${thumbSrc}" alt="${escapeAttr(title)}" loading="lazy" decoding="async">
+      <div class="artifact-frame cc-preview-frame" data-src="${escapeAttr(src)}" data-preview-id="${escapeAttr(id)}" data-title="${escapeAttr(title)}">
+        ${CCPreviews.imageHTML(id, title)}
+        <div class="card-overlay"></div>
       </div>
       <div class="artifact-body">
         <div class="artifact-k">${meta.map(part => `<span>${escapeHTML(part)}</span>`).join('')}</div>
@@ -688,10 +695,16 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-
-  // Static thumbnails from thumbnails/X.webp — generated offline by
-  // tools/generate_thumbnails.js. Native loading="lazy" handles deferral; no
-  // observers, iframe pools, or warmup hacks needed.
+  const homeHydrator = CCPreviews.createHydrator({ maxLive: 6, eject: false });
+  document.querySelectorAll('.artifact-frame[data-src]').forEach(frame => {
+    CCPreviews.ensureImage(frame);
+    const card = frame.closest('.artifact-card');
+    const hydrate = () => homeHydrator.inject(frame);
+    if (card) {
+      card.addEventListener('pointerenter', hydrate, { once: true });
+      card.addEventListener('focusin', hydrate, { once: true });
+    }
+  });
 
   if (location.hash) {
     const target = document.querySelector(location.hash);

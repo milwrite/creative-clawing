@@ -19,6 +19,7 @@
 <meta name="twitter:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
 <link rel="canonical" href="https://creative-clawing.com/gallery.html"/>
 <link rel="stylesheet" href="styles/shared.css"/>
+<script src="scripts/preview-cards.js"></script>
 <style>
 /* ── main ── */
 main{
@@ -78,57 +79,12 @@ a.card{
   transition:border-color .15s;
 }
 a.card:hover{border-color:rgba(255,255,255,.35)}
-.card-preview{
-  overflow:hidden;position:relative;
-  background:#0a0a0a;
-  background-position:center;
-  background-size:cover;
-  contain:layout paint;
+.card-preview{overflow:hidden;position:relative}
+.card-overlay{position:absolute;inset:0;z-index:3;touch-action:auto}
+.card-preview iframe{
+  width:100%;height:100%;border:0;display:block;
+  background:#000;pointer-events:none;
 }
-.card-preview::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  pointer-events:none;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.035),transparent 46%),
-    #0a0a0a;
-  opacity:.18;
-}
-.card-preview img.card-thumb{
-  width:100%;height:100%;display:block;
-  object-fit:cover;background:#0a0a0a;
-  opacity:0;transition:opacity .35s ease;
-}
-.card-preview img.card-thumb.loaded,
-.card-preview img.card-thumb[src]:not([src=""]){opacity:1}
-.card-preview::before{
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:
-    linear-gradient(110deg,
-      rgba(255,255,255,0) 30%,
-      rgba(255,255,255,.10) 48%,
-      rgba(255,255,255,.18) 50%,
-      rgba(255,255,255,.10) 52%,
-      rgba(255,255,255,0) 70%),
-    repeating-linear-gradient(45deg,
-      rgba(255,255,255,.05) 0 8px,
-      rgba(255,255,255,.02) 8px 16px);
-  background-size:220% 100%, auto;
-  animation:cardShimmer 2.6s linear infinite;
-}
-.card-preview::after{
-  content:"loading";position:absolute;left:0;right:0;top:50%;
-  transform:translateY(-50%);text-align:center;z-index:1;pointer-events:none;
-  color:rgba(255,255,255,.34);font:11px/1 ui-monospace,monospace;
-  letter-spacing:.18em;text-transform:uppercase;
-}
-.card-preview.if-ready::before,
-.card-preview.if-ready::after{display:none}
-@keyframes cardShimmer{0%{background-position:-100% 0,0 0}100%{background-position:100% 0,0 0}}
-@media(prefers-reduced-motion:reduce){.card-preview::before{animation:none}}
-.card-overlay{position:absolute;inset:0;z-index:2;touch-action:auto}
 .card-meta{
   border-top:1px solid var(--soft);
   padding:7px 8px;display:grid;gap:2px;
@@ -341,10 +297,14 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     renderPager(totalPages);
     const pageStart = (currentPage - 1) * PAGE_SIZE;
     const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
+    pendingSet.clear();
+    liveSet.clear();
+    if (observer) observer.disconnect();
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview">
-          <img class="card-thumb" src="thumbnails/${escapeAttr(a.file)}.webp" alt="${escapeAttr(a.name)}" loading="lazy" decoding="async">
+        <div class="card-preview cc-preview-frame" data-src="gallery/${a.file}.html" data-preview-id="${a.file}" data-title="${a.name}">
+          ${CCPreviews.imageHTML(a.file, a.name)}
+          <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
           <div class="card-name">${escapeHTML(a.name)}</div>
@@ -352,6 +312,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
           ${a.description ? `<div class="card-desc">${escapeHTML(a.description)}</div>` : ''}
         </div>
       </a>`).join('');
+    attachObserver();
   }
 
   function escapeHTML(value) {
@@ -364,13 +325,39 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     }[ch]));
   }
 
+  // Static snapshots paint first; live canvases only wake on hover/focus.
+  const MAX_LIVE = 18;
+  const liveSet = new Set();
+  const pendingSet = new Set();
+  let observer = null;
+
+  function injectIframe(f) {
+    if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
+      if (!f.querySelector('iframe')) pendingSet.add(f);
+      return;
+    }
+    pendingSet.delete(f);
+    CCPreviews.ensureImage(f);
+    const iframe = CCPreviews.buildIframe(f);
+    if (!iframe) return;
+    f.appendChild(iframe);
+    liveSet.add(f);
+  }
+
   function escapeAttr(value) {
     return escapeHTML(value).replace(/`/g, '&#96;');
   }
 
-  // Static thumbnails: each card renders an <img> from thumbnails/X.webp,
-  // generated offline by tools/generate_thumbnails.js. Native `loading="lazy"`
-  // handles deferral; no observers or rAF queues needed.
+  function attachObserver() {
+    if (observer) observer.disconnect();
+    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
+      CCPreviews.ensureImage(el);
+      const card = el.closest('.card');
+      const hydrate = () => injectIframe(el);
+      card.addEventListener('pointerenter', hydrate, { once: true });
+      card.addEventListener('focusin', hydrate, { once: true });
+    });
+  }
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
   renderFilters();
