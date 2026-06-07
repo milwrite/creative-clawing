@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 252,
+    "totalCommits": 253,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -88,13 +88,13 @@
       "2026-06-03": 1,
       "2026-06-04": 1,
       "2026-06-05": 1,
-      "2026-06-07": 1
+      "2026-06-07": 2
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 20,
       "fix": 35,
-      "other": 148,
+      "other": 149,
       "artifact": 8,
       "chore": 4,
       "docs": 1,
@@ -104,6 +104,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "5d1df0c6",
+        "date": "2026-06-07",
+        "subject": "fix efield mobile canvas sizing",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "ff14cfb7",
         "date": "2026-06-07",
@@ -1910,7 +1918,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 547,
+    "totalCommits": 548,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -1986,7 +1994,8 @@
       "2026-05-31": 2,
       "2026-06-01": 1,
       "2026-06-03": 2,
-      "2026-06-05": 2
+      "2026-06-05": 2,
+      "2026-06-07": 1
     },
     "categoryCounts": {
       "blog": 33,
@@ -1994,7 +2003,7 @@
       "mobile": 19,
       "fix": 90,
       "other": 170,
-      "chore": 183,
+      "chore": 184,
       "docs": 2,
       "perf": 3,
       "taglines": 3,
@@ -2002,6 +2011,14 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "188a4fb9",
+        "date": "2026-06-07",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "d963f0e6",
         "date": "2026-06-05",
