@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 254,
+    "totalCommits": 255,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -89,14 +89,14 @@
       "2026-06-04": 1,
       "2026-06-05": 1,
       "2026-06-07": 2,
-      "2026-06-08": 1
+      "2026-06-08": 2
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 20,
       "fix": 35,
       "other": 149,
-      "artifact": 9,
+      "artifact": 10,
       "chore": 4,
       "docs": 1,
       "style": 3,
@@ -105,6 +105,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "c85891b8",
+        "date": "2026-06-08",
+        "subject": "gallery: harden live preview warmups",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "c6ce5ff9",
         "date": "2026-06-08",
