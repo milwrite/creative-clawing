@@ -48,23 +48,6 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Artifact preview images: cache after first request so card previews stay
-  // fast across gallery filters, homepage cards, and repeat visits.
-  if (url.pathname.startsWith('/assets/previews/')) {
-    e.respondWith(
-      caches.open(CACHE).then(cache =>
-        cache.match(e.request).then(cached => {
-          const fresh = fetch(e.request).then(res => {
-            if (res.ok) cache.put(e.request, res.clone());
-            return res;
-          }).catch(() => cached);
-          return cached || fresh;
-        })
-      )
-    );
-    return;
-  }
-
   const isShell = SHELL.includes(url.pathname);
 
   if (isShell) {

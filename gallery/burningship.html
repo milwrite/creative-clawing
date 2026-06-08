@@ -77,8 +77,9 @@ function palette(t) {
 }
 
 // Precompute palette
-const PAL = new Uint32Array(maxIter + 1);
+let PAL = new Uint32Array(maxIter + 1);
 function buildPalette() {
+  PAL = new Uint32Array(maxIter + 1);
   for (let i = 0; i < maxIter; i++) {
     const t = Math.pow(i / maxIter, 0.45);
     const [r, g, b, a] = palette(t);
@@ -193,21 +194,25 @@ document.getElementById('iterBtn').addEventListener('click', function() {
   const idx = opts.indexOf(maxIter);
   maxIter = opts[(idx + 1) % opts.length];
   this.textContent = `iters: ${maxIter}`;
-  // Rebuild palette for new maxIter
-  PAL.length !== maxIter + 1;
-  for (let i = 0; i < maxIter; i++) {
-    const t = Math.pow(i / maxIter, 0.45);
-    const [r, g, b, a] = palette(t);
-    PAL[i] = (a << 24) | (b << 16) | (g << 8) | r;
-  }
-  PAL[maxIter] = 0xFF000000;
+  buildPalette();
   scheduleRender();
 });
 
 window.addEventListener('resize', resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);});
+function previewView() {
+  cx = -1.744;
+  cy = -0.025;
+  zoom = 360;
+  maxIter = 160;
+  buildPalette();
+}
+requestAnimationFrame(()=>{
+  if (window.self !== window.top) previewView();
+  resize();
+  setTimeout(()=>{if(window.self!==window.top)previewView();resize();},200);
+});
 </script>
 </body>
 </html>

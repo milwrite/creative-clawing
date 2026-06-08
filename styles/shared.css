@@ -45,7 +45,7 @@ html, body {
   min-height: 100vh;
 }
 
-/* ── Instant artifact previews ────────────────────────────── */
+/* ── Live artifact previews ───────────────────────────────── */
 .cc-preview-frame {
   position: relative;
   overflow: hidden;
@@ -65,7 +65,6 @@ html, body {
     repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 18px);
   opacity: .7;
 }
-.cc-preview-img,
 .cc-preview-iframe {
   position: absolute;
   inset: 0;
@@ -74,14 +73,8 @@ html, body {
   border: 0;
   display: block;
 }
-.cc-preview-img {
-  z-index: 1;
-  object-fit: cover;
-  background: #070707;
-  opacity: 1;
-}
 .cc-preview-iframe {
-  z-index: 2;
+  z-index: 1;
   background: transparent;
   pointer-events: none;
   opacity: 0;
@@ -89,6 +82,9 @@ html, body {
 }
 .cc-preview-iframe.if-ready {
   opacity: 1;
+}
+.cc-preview-frame.is-ready::before {
+  opacity: 0;
 }
 
 /* ── Nav ──────────────────────────────────────────────────── */

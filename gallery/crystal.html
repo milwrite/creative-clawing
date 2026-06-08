@@ -114,7 +114,18 @@ function seed() {
     }
   }
 }
+function previewSeed() {
+  for (let r = 4; r < 150; r += 2) {
+    const wobble = Math.sin(r * 0.16) * Math.min(18, r * 0.12);
+    freezePoint(CX + r, CY + Math.round(wobble), r / MAX_R);
+    if (r % 12 === 0) {
+      freezePoint(CX + Math.round(r * 0.72), CY + Math.round(wobble + r * 0.20), r / MAX_R);
+      freezePoint(CX + Math.round(r * 0.72), CY + Math.round(wobble - r * 0.18), r / MAX_R);
+    }
+  }
+}
 seed();
+if (window.self !== window.top) previewSeed();
 
 // ── check if (x,y) is adjacent to crystal ─────────────────
 const DX = [1,-1,0,0,1,-1, 1,-1];

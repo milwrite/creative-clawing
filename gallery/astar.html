@@ -70,15 +70,17 @@ function init(){
   const _r=canvas.parentElement?canvas.parentElement.getBoundingClientRect():null;
   W=_r&&_r.width>0?Math.round(_r.width):window.innerWidth;
   H=_r&&_r.height>0?Math.round(_r.height):window.innerHeight;
+  W=Math.max(160,W);
+  H=Math.max(140,H);
   canvas.width=W*dpr;
   canvas.height=H*dpr;
   canvas.style.width=W+'px';
   canvas.style.height=H+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
   cellSize=Math.max(12,Math.min(28,Math.floor(Math.min(W,H)/40)));
-  cols=Math.floor(W/cellSize);
+  cols=Math.max(7,Math.floor(W/cellSize));
   const uiH = (window.self!==window.top) ? 0 : 60; // no UI bar in iframe
-  rows=Math.floor((H-uiH)/cellSize);
+  rows=Math.max(7,Math.floor((H-uiH)/cellSize));
   grid=[];
   for(let r=0;r<rows;r++){
     grid[r]=[];
@@ -294,6 +296,10 @@ function doRun(astar,dijkstra){
 // Maze generation (recursive backtracker)
 function generateMaze(){
   resetAnim();
+  if(rows<3||cols<3||!grid[1]){
+    init();
+    if(rows<3||cols<3||!grid[1]) return;
+  }
   for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) grid[r][c]=WALL;
   const visited=new Set();
   const stack=[];
@@ -405,6 +411,11 @@ if(inIframe){
 
 function autoDemo(){
   if(!inIframe) return;
+  if(rows<3||cols<3||!grid[1]){
+    init();
+    setTimeout(autoDemo, 200);
+    return;
+  }
   // Generate a random maze, run A*, then loop after a pause
   generateMaze();
   speed = 8;

@@ -31,7 +31,7 @@ let W, H, DPR;
 let renderToken = 0;
 
 function resize() {
-  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  DPR = window.self !== window.top ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   W = innerWidth;
   H = innerHeight;
   c.width = Math.round(W * DPR);
@@ -75,10 +75,11 @@ function scheduleRender() {
   const imgData = ctx.createImageData(PW, PH);
   const data = imgData.data;
   let row = 0;
+  const batchRows = window.self !== window.top ? Math.max(24, Math.ceil(PH / 8)) : 6;
 
   function batch() {
     if (token !== renderToken) return;
-    const end = Math.min(row + 6, PH);
+    const end = Math.min(row + batchRows, PH);
     for (let py = row; py < end; py++) {
       const y0 = cy + (py / DPR - H / 2) * scale;
       for (let px = 0; px < PW; px++) {

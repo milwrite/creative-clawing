@@ -69,6 +69,15 @@ function addSource(x, y) {
 // Initial sources
 for (let i = 0; i < 5; i++) addSource(Math.random() * W, Math.random() * H);
 
+function seedPreviewSources() {
+  sources.length = 0;
+  addSource(W * 0.50, H * 0.50);
+  addSource(W * 0.34, H * 0.42);
+  addSource(W * 0.66, H * 0.58);
+  addSource(W * 0.48, H * 0.28);
+  for (let i = 0; i < 42; i++) step();
+}
+
 canvas.addEventListener('pointerdown', e => { canvas.setPointerCapture(e.pointerId); addSource(e.clientX, e.clientY); });
 canvas.addEventListener('pointermove', e => { if (e.buttons) addSource(e.clientX, e.clientY); });
 canvas.addEventListener('pointercancel', () => {});
@@ -143,7 +152,12 @@ function draw() {
 }
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);draw();});
+requestAnimationFrame(()=>{
+  resize();
+  if (window.self !== window.top) seedPreviewSources();
+  setTimeout(()=>{resize();if(window.self!==window.top)seedPreviewSources();},200);
+  draw();
+});
 </script>
 </body>
 </html>

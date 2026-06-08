@@ -162,17 +162,14 @@
       z-index: 3;
       touch-action: auto;
     }
-    .artifact-frame .cc-preview-img,
     .artifact-frame .cc-preview-iframe {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       display: block;
       background: #0a0a0a;
       opacity: 0;
       transition: opacity .35s ease;
     }
-    .artifact-frame .cc-preview-img { opacity: 1; }
     .artifact-frame .cc-preview-iframe.if-ready { opacity: 1; }
     .artifact-body {
       padding: 11px 12px 12px;
@@ -565,7 +562,6 @@
 
     return `<a class="artifact-card" href="${escapeAttr(href)}" aria-label="Open ${escapeAttr(title)}">
       <div class="artifact-frame cc-preview-frame" data-src="${escapeAttr(src)}" data-preview-id="${escapeAttr(id)}" data-title="${escapeAttr(title)}">
-        ${CCPreviews.imageHTML(id, title)}
         <div class="card-overlay"></div>
       </div>
       <div class="artifact-body">
@@ -695,16 +691,7 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  const homeHydrator = CCPreviews.createHydrator({ maxLive: 6, eject: false });
-  document.querySelectorAll('.artifact-frame[data-src]').forEach(frame => {
-    CCPreviews.ensureImage(frame);
-    const card = frame.closest('.artifact-card');
-    const hydrate = () => homeHydrator.inject(frame);
-    if (card) {
-      card.addEventListener('pointerenter', hydrate, { once: true });
-      card.addEventListener('focusin', hydrate, { once: true });
-    }
-  });
+  CCPreviews.mountAll(container, '.artifact-frame[data-src]');
 
   if (location.hash) {
     const target = document.querySelector(location.hash);

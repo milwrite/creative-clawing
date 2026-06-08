@@ -297,13 +297,9 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     renderPager(totalPages);
     const pageStart = (currentPage - 1) * PAGE_SIZE;
     const pageItems = list.slice(pageStart, pageStart + PAGE_SIZE);
-    pendingSet.clear();
-    liveSet.clear();
-    if (observer) observer.disconnect();
     grid.innerHTML = pageItems.map(a => `
       <a class="card" href="artifacts/${a.file}.html">
-        <div class="card-preview cc-preview-frame" data-src="gallery/${a.file}.html" data-preview-id="${a.file}" data-title="${a.name}">
-          ${CCPreviews.imageHTML(a.file, a.name)}
+        <div class="card-preview cc-preview-frame" data-src="gallery/${escapeAttr(a.file)}.html" data-preview-id="${escapeAttr(a.file)}" data-title="${escapeAttr(a.name)}">
           <div class="card-overlay"></div>
         </div>
         <div class="card-meta">
@@ -325,38 +321,12 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     }[ch]));
   }
 
-  // Static snapshots paint first; live canvases only wake on hover/focus.
-  const MAX_LIVE = 18;
-  const liveSet = new Set();
-  const pendingSet = new Set();
-  let observer = null;
-
-  function injectIframe(f) {
-    if (f.querySelector('iframe') || liveSet.size >= MAX_LIVE) {
-      if (!f.querySelector('iframe')) pendingSet.add(f);
-      return;
-    }
-    pendingSet.delete(f);
-    CCPreviews.ensureImage(f);
-    const iframe = CCPreviews.buildIframe(f);
-    if (!iframe) return;
-    f.appendChild(iframe);
-    liveSet.add(f);
-  }
-
   function escapeAttr(value) {
     return escapeHTML(value).replace(/`/g, '&#96;');
   }
 
   function attachObserver() {
-    if (observer) observer.disconnect();
-    document.querySelectorAll('.card-preview[data-src]').forEach(el => {
-      CCPreviews.ensureImage(el);
-      const card = el.closest('.card');
-      const hydrate = () => injectIframe(el);
-      card.addEventListener('pointerenter', hydrate, { once: true });
-      card.addEventListener('focusin', hydrate, { once: true });
-    });
+    CCPreviews.mountAll(grid, '.card-preview[data-src]');
   }
 
   search.addEventListener('input', () => { currentPage = 1; render(); });

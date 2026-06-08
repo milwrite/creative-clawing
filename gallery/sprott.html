@@ -197,8 +197,8 @@ function frame() {
   if (len < 2) return;
 
   // Draw in segments for color gradient
-  const segSize = 200;
-  for (let i = 1; i < len; i++) {
+  const drawStep = window.self !== window.top && len > 8000 ? 3 : 1;
+  for (let i = 1; i < len; i += drawStep) {
     const t = i / len;
     // Hue: head=cyan/blue, tail=purple/red  (age coloring)
     const hue = 200 + t * 200; // 200 (blue) to 400 (red, wraps to purple)
@@ -209,7 +209,7 @@ function frame() {
     if (Math.hypot(x1-x0, y1-y0) > Math.min(W,H)*0.15) continue;
     ctx.beginPath();
     ctx.strokeStyle = `hsla(${hue%360},80%,65%,${alpha})`;
-    ctx.lineWidth = 1;
+    ctx.lineWidth = window.self !== window.top ? 1.6 : 1;
     ctx.moveTo(x0, y0);
     ctx.lineTo(x1, y1);
     ctx.stroke();
@@ -218,7 +218,7 @@ function frame() {
   // Draw current point
   const [hx, hy] = project(px, py, pz);
   ctx.beginPath();
-  ctx.arc(hx, hy, 2.5, 0, Math.PI*2);
+  ctx.arc(hx, hy, window.self !== window.top ? 4 : 2.5, 0, Math.PI*2);
   ctx.fillStyle = '#fff';
   ctx.fill();
 
@@ -260,9 +260,30 @@ c.addEventListener('pointermove', e => {
 c.addEventListener('pointerup', () => { dragging = false; });
 c.addEventListener('pointercancel', () => { dragging = false; });
 
-window.addEventListener('resize', () => { resize(); resetSystem(); });
-if(window.visualViewport) window.visualViewport.addEventListener('resize', () => { resize(); resetSystem(); });
-window.addEventListener('orientationchange', () => { setTimeout(() => { resize(); resetSystem(); }, 200); });
+function warmPreviewTrail(count) {
+  const sys = SYSTEMS[sysIdx];
+  const dt = 0.004;
+  for (let i = 0; i < count; i++) {
+    [px,py,pz] = rk4(sys.fn, px, py, pz, dt);
+    if (!isFinite(px)||!isFinite(py)||!isFinite(pz)) { px=sys.init[0]; py=sys.init[1]; pz=sys.init[2]; }
+    trail.push([px, py, pz]);
+    if (trail.length > MAX_TRAIL) trail.shift();
+  }
+}
+
+function handleViewportResize() {
+  resize();
+  if (window.self !== window.top) {
+    if (!trail.length) resetSystem();
+    warmPreviewTrail(6000);
+  } else {
+    resetSystem();
+  }
+}
+
+window.addEventListener('resize', handleViewportResize);
+if(window.visualViewport) window.visualViewport.addEventListener('resize', handleViewportResize);
+window.addEventListener('orientationchange', () => { setTimeout(handleViewportResize, 200); });
 
 function start() {
   resize();
@@ -270,14 +291,7 @@ function start() {
   resetSystem();
   // In iframe: pre-fill trail so it's immediately visible, not just a dot
   if (window.self !== window.top) {
-    const sys = SYSTEMS[sysIdx];
-    const dt = 0.004;
-    for (let i = 0; i < 20000; i++) {
-      [px,py,pz] = rk4(sys.fn, px, py, pz, dt);
-      if (!isFinite(px)||!isFinite(py)||!isFinite(pz)) { px=sys.init[0]; py=sys.init[1]; pz=sys.init[2]; }
-      trail.push([px, py, pz]);
-      if (trail.length > MAX_TRAIL) trail.shift();
-    }
+    warmPreviewTrail(24000);
   }
   frame();
 }

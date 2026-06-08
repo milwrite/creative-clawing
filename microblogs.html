@@ -211,7 +211,6 @@
     const isLatest = b.num === latestNum;
     const vizHtml = isLatest && linked.length ? linked.map(id =>
       `<div class="entry-viz cc-preview-frame" data-iframe-src="gallery/${id}.html" data-preview-id="${id}" data-iframe-title="${artMap[id]?.title || id}">
-        ${CCPreviews.imageHTML(id, artMap[id]?.title || id)}
       </div>`
     ).join('') : '';
     const chipHtml = linked.map(id => {
@@ -240,28 +239,23 @@
     entries.forEach(e => {
       if (e.isIntersecting && !e.target.querySelector('iframe')) {
         const src = e.target.dataset.iframeSrc;
-        const title = e.target.dataset.iframeTitle || '';
         if (src) {
-          CCPreviews.ensureImage(e.target);
-          const ifr = CCPreviews.buildIframe(e.target);
+          const ifr = CCPreviews.mountFrame(e.target);
           if (!ifr) return;
-          e.target.appendChild(ifr);
           // Touch-pass-through overlay so the page can scroll vertically even
           // when the artifact's canvas inside the iframe sets touch-action:none.
-          const ov = document.createElement('div');
-          ov.className = 'entry-viz-overlay';
-          e.target.appendChild(ov);
+          if (!e.target.querySelector('.entry-viz-overlay')) {
+            const ov = document.createElement('div');
+            ov.className = 'entry-viz-overlay';
+            e.target.appendChild(ov);
+          }
         }
       } else if (!e.isIntersecting && e.target.querySelector('iframe')) {
-        const ifr = e.target.querySelector('iframe');
-        ifr.src = 'about:blank';
-        ifr.remove();
-        CCPreviews.ensureImage(e.target);
+        CCPreviews.unmountFrame(e.target);
       }
     });
   }, { rootMargin: '300px' });
   document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => {
-    CCPreviews.ensureImage(el);
     vizObserver.observe(el);
   });
 })();

@@ -64,7 +64,7 @@ function resize() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
   cols = Math.floor(width / fontSize);
-  drops = Array(cols).fill(1);
+  drops = Array.from({ length: cols }, () => window.self !== window.top ? Math.random() * (height / fontSize) : 1);
 }
 
 function draw() {
@@ -120,7 +120,14 @@ function toggleSpeed() {
 window.addEventListener('resize', resize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);setInterval(draw,33);});
+requestAnimationFrame(()=>{
+  resize();
+  if (window.self !== window.top) {
+    for (let i = 0; i < 18; i++) draw();
+  }
+  setTimeout(resize,200);
+  setInterval(draw,33);
+});
 </script>
 
 </body>

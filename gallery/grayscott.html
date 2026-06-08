@@ -215,6 +215,12 @@ requestAnimationFrame(() => {
   resize();
   setTimeout(resize, 200);
   init();
+  if (window.self !== window.top) {
+    seed(Math.floor(GW / 2), Math.floor(GH / 2), 18);
+    seed(Math.floor(GW * 0.28), Math.floor(GH * 0.35), 12);
+    seed(Math.floor(GW * 0.72), Math.floor(GH * 0.64), 12);
+    for (let i = 0; i < 180; i++) step();
+  }
   updateInfo();
   function frame() {
     for (let s = 0; s < STEPS_PER_FRAME; s++) step();
