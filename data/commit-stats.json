@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 253,
+    "totalCommits": 254,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -88,14 +88,15 @@
       "2026-06-03": 1,
       "2026-06-04": 1,
       "2026-06-05": 1,
-      "2026-06-07": 2
+      "2026-06-07": 2,
+      "2026-06-08": 1
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 20,
       "fix": 35,
       "other": 149,
-      "artifact": 8,
+      "artifact": 9,
       "chore": 4,
       "docs": 1,
       "style": 3,
@@ -104,6 +105,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "c6ce5ff9",
+        "date": "2026-06-08",
+        "subject": "gallery: restore live card previews",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "5d1df0c6",
         "date": "2026-06-07",
