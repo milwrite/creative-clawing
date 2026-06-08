@@ -114,13 +114,20 @@ function seed() {
     }
   }
 }
+function previewFreeze(x, y, d) {
+  for (let oy = -1; oy <= 1; oy++) {
+    for (let ox = -1; ox <= 1; ox++) {
+      if (ox * ox + oy * oy <= 2) freezePoint(x + ox, y + oy, d);
+    }
+  }
+}
 function previewSeed() {
-  for (let r = 4; r < 150; r += 2) {
+  for (let r = 4; r < 178; r += 2) {
     const wobble = Math.sin(r * 0.16) * Math.min(18, r * 0.12);
-    freezePoint(CX + r, CY + Math.round(wobble), r / MAX_R);
-    if (r % 12 === 0) {
-      freezePoint(CX + Math.round(r * 0.72), CY + Math.round(wobble + r * 0.20), r / MAX_R);
-      freezePoint(CX + Math.round(r * 0.72), CY + Math.round(wobble - r * 0.18), r / MAX_R);
+    previewFreeze(CX + r, CY + Math.round(wobble), r / MAX_R);
+    if (r % 10 === 0) {
+      previewFreeze(CX + Math.round(r * 0.72), CY + Math.round(wobble + r * 0.20), r / MAX_R);
+      previewFreeze(CX + Math.round(r * 0.72), CY + Math.round(wobble - r * 0.18), r / MAX_R);
     }
   }
 }

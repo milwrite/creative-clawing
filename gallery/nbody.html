@@ -57,6 +57,7 @@ const trailC = document.getElementById('trail');
 const mainC = document.getElementById('main');
 const tCtx = trailC.getContext('2d');
 const mCtx = mainC.getContext('2d');
+const inIframe = window.self !== window.top;
 
 let W, H, dpr;
 function resize() {
@@ -301,17 +302,19 @@ function drawBodies() {
   mCtx.clearRect(0, 0, W, H);
   for (const b of bodies) {
     // Glow
-    const grad = mCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * 4);
+    const glowScale = inIframe ? 6 : 4;
+    const bodyScale = inIframe ? 1.45 : 1;
+    const grad = mCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r * glowScale);
     grad.addColorStop(0, b.color + '40');
     grad.addColorStop(1, 'transparent');
     mCtx.fillStyle = grad;
     mCtx.beginPath();
-    mCtx.arc(b.x, b.y, b.r * 4, 0, Math.PI * 2);
+    mCtx.arc(b.x, b.y, b.r * glowScale, 0, Math.PI * 2);
     mCtx.fill();
     // Body
     mCtx.fillStyle = b.color;
     mCtx.beginPath();
-    mCtx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    mCtx.arc(b.x, b.y, b.r * bodyScale, 0, Math.PI * 2);
     mCtx.fill();
   }
 }
@@ -385,10 +388,25 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
+function warmPreview() {
+  for (let i = 0; i < 180; i++) {
+    step();
+    if (showTrails) drawTrails();
+  }
+  drawBodies();
+}
+
 // Init
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
-requestAnimationFrame(()=>{resize();setTimeout(resize,200);computeAccel();loadPreset(0);loop();});
+requestAnimationFrame(()=>{
+  resize();
+  setTimeout(resize,200);
+  computeAccel();
+  loadPreset(inIframe ? 3 : 0);
+  if (inIframe) warmPreview();
+  loop();
+});
 </script>
 </body>
 </html>
