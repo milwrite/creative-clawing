@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 256,
+    "totalCommits": 257,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -89,13 +89,14 @@
       "2026-06-04": 1,
       "2026-06-05": 1,
       "2026-06-07": 2,
-      "2026-06-08": 3
+      "2026-06-08": 3,
+      "2026-06-09": 1
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 20,
       "fix": 35,
-      "other": 150,
+      "other": 151,
       "artifact": 10,
       "chore": 4,
       "docs": 1,
@@ -105,6 +106,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "51ef0477",
+        "date": "2026-06-09",
+        "subject": "fix mobile canvas safe area sizing",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "cfe37417",
         "date": "2026-06-08",
@@ -1943,7 +1952,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 551,
+    "totalCommits": 552,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -2021,7 +2030,8 @@
       "2026-06-03": 2,
       "2026-06-05": 2,
       "2026-06-07": 2,
-      "2026-06-08": 2
+      "2026-06-08": 2,
+      "2026-06-09": 1
     },
     "categoryCounts": {
       "blog": 33,
@@ -2029,7 +2039,7 @@
       "mobile": 19,
       "fix": 90,
       "other": 170,
-      "chore": 187,
+      "chore": 188,
       "docs": 2,
       "perf": 3,
       "taglines": 3,
@@ -2037,6 +2047,14 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "1ba8aac7",
+        "date": "2026-06-09",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "c65f7bed",
         "date": "2026-06-08",
