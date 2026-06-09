@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 255,
+    "totalCommits": 256,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -89,13 +89,13 @@
       "2026-06-04": 1,
       "2026-06-05": 1,
       "2026-06-07": 2,
-      "2026-06-08": 2
+      "2026-06-08": 3
     },
     "categoryCounts": {
       "blog": 31,
       "mobile": 20,
       "fix": 35,
-      "other": 149,
+      "other": 150,
       "artifact": 10,
       "chore": 4,
       "docs": 1,
@@ -105,6 +105,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "cfe37417",
+        "date": "2026-06-08",
+        "subject": "add brian's brain microblog",
+        "categories": [
+          "other"
+        ]
+      },
       {
         "sha": "c85891b8",
         "date": "2026-06-08",
@@ -1935,7 +1943,7 @@
     ]
   },
   "Quimbot": {
-    "totalCommits": 550,
+    "totalCommits": 551,
     "dailyCounts": {
       "2026-02-19": 3,
       "2026-02-20": 14,
@@ -2013,7 +2021,7 @@
       "2026-06-03": 2,
       "2026-06-05": 2,
       "2026-06-07": 2,
-      "2026-06-08": 1
+      "2026-06-08": 2
     },
     "categoryCounts": {
       "blog": 33,
@@ -2021,7 +2029,7 @@
       "mobile": 19,
       "fix": 90,
       "other": 170,
-      "chore": 186,
+      "chore": 187,
       "docs": 2,
       "perf": 3,
       "taglines": 3,
@@ -2029,6 +2037,14 @@
       "refactor": 1
     },
     "commits": [
+      {
+        "sha": "c65f7bed",
+        "date": "2026-06-08",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+        "categories": [
+          "chore"
+        ]
+      },
       {
         "sha": "35a89588",
         "date": "2026-06-08",
