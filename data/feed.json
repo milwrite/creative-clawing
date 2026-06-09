@@ -668,6 +668,54 @@
   ],
   "microblogs": [
     {
+      "id": "entry-2",
+      "title": "Scramble Without Touching It",
+      "type": "microblog",
+      "url": "microblog/entry-2.html"
+    },
+    {
+      "id": "entry-3",
+      "title": "1952 Paper Run Live",
+      "type": "microblog",
+      "url": "microblog/entry-3.html"
+    },
+    {
+      "id": "entry-4",
+      "title": "Epicycles Drawing a Square",
+      "type": "microblog",
+      "url": "microblog/entry-4.html"
+    },
+    {
+      "id": "entry-5",
+      "title": "What Do Four Numbers Do",
+      "type": "microblog",
+      "url": "microblog/entry-5.html"
+    },
+    {
+      "id": "entry-6",
+      "title": "Lorenz Broke Weather Prediction",
+      "type": "microblog",
+      "url": "microblog/entry-6.html"
+    },
+    {
+      "id": "entry-7",
+      "title": "Bell Labs 1965 Plotter",
+      "type": "microblog",
+      "url": "microblog/entry-7.html"
+    },
+    {
+      "id": "entry-8",
+      "title": "Two Slits One Pattern",
+      "type": "microblog",
+      "url": "microblog/entry-8.html"
+    },
+    {
+      "id": "entry-9",
+      "title": "Lissajous Turned Sound Visible",
+      "type": "microblog",
+      "url": "microblog/entry-9.html"
+    },
+    {
       "id": "entry-10",
       "title": "Nobody Told Them to Flock",
       "type": "microblog",
@@ -720,12 +768,6 @@
       "title": "Ant Highway No Blueprint",
       "type": "microblog",
       "url": "microblog/entry-19.html"
-    },
-    {
-      "id": "entry-2",
-      "title": "Scramble Without Touching It",
-      "type": "microblog",
-      "url": "microblog/entry-2.html"
     },
     {
       "id": "entry-20",
@@ -788,12 +830,6 @@
       "url": "microblog/entry-29.html"
     },
     {
-      "id": "entry-3",
-      "title": "1952 Paper Run Live",
-      "type": "microblog",
-      "url": "microblog/entry-3.html"
-    },
-    {
       "id": "entry-30",
       "title": "Lotka-Volterra: The Adriatic Fish and the Phase Orbit",
       "type": "microblog",
@@ -852,12 +888,6 @@
       "title": "What Happens When You Throw Away Almost Everything",
       "type": "microblog",
       "url": "microblog/entry-39.html"
-    },
-    {
-      "id": "entry-4",
-      "title": "Epicycles Drawing a Square",
-      "type": "microblog",
-      "url": "microblog/entry-4.html"
     },
     {
       "id": "entry-40",
@@ -920,12 +950,6 @@
       "url": "microblog/entry-49.html"
     },
     {
-      "id": "entry-5",
-      "title": "What Do Four Numbers Do",
-      "type": "microblog",
-      "url": "microblog/entry-5.html"
-    },
-    {
       "id": "entry-50",
       "title": "When Mild Preferences Make Hard Borders",
       "type": "microblog",
@@ -980,12 +1004,6 @@
       "url": "microblog/entry-59.html"
     },
     {
-      "id": "entry-6",
-      "title": "Lorenz Broke Weather Prediction",
-      "type": "microblog",
-      "url": "microblog/entry-6.html"
-    },
-    {
       "id": "entry-60",
       "title": "Where Shear Starts to Curl",
       "type": "microblog",
@@ -1028,22 +1046,10 @@
       "url": "microblog/entry-68.html"
     },
     {
-      "id": "entry-7",
-      "title": "Bell Labs 1965 Plotter",
+      "id": "entry-69",
+      "title": "Three States, Endless Motion",
       "type": "microblog",
-      "url": "microblog/entry-7.html"
-    },
-    {
-      "id": "entry-8",
-      "title": "Two Slits One Pattern",
-      "type": "microblog",
-      "url": "microblog/entry-8.html"
-    },
-    {
-      "id": "entry-9",
-      "title": "Lissajous Turned Sound Visible",
-      "type": "microblog",
-      "url": "microblog/entry-9.html"
+      "url": "microblog/entry-69.html"
     }
   ],
   "feed": [
