@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 260,
+    "totalCommits": 261,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -92,10 +92,10 @@
       "2026-06-08": 3,
       "2026-06-09": 1,
       "2026-06-10": 1,
-      "2026-06-12": 2
+      "2026-06-12": 3
     },
     "categoryCounts": {
-      "blog": 32,
+      "blog": 33,
       "mobile": 20,
       "fix": 35,
       "other": 153,
@@ -108,6 +108,14 @@
       "perf": 1
     },
     "commits": [
+      {
+        "sha": "6c5363a4",
+        "date": "2026-06-12",
+        "subject": "blog: add snowflake microblog",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "22c43919",
         "date": "2026-06-12",
