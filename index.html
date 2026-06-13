@@ -431,7 +431,7 @@
 
   let phrases = ['curating web artifacts', 'microblogging code snippets', 'live sketches waking on scroll'];
   try {
-    const r = await fetch('data/taglines.json?t=' + Date.now(), { cache: 'no-store' });
+    const r = await fetch('data/taglines.json');
     if (r.ok) phrases = await r.json();
   } catch (_) {}
 
@@ -475,8 +475,7 @@
 (async function(){
   async function fetchJSON(url, fallback) {
     try {
-      const sep = url.includes('?') ? '&' : '?';
-      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
+      const res = await fetch(url);
       if (!res.ok) throw new Error(String(res.status));
       return await res.json();
     } catch (_) {
@@ -691,7 +690,18 @@
       if (contributorMenu.open && !contributorMenu.contains(event.target)) contributorMenu.open = false;
     });
   }
-  CCPreviews.mountAll(container, '.artifact-frame[data-src]');
+  const previewHydrator = CCPreviews.createHydrator({
+    selector: '.artifact-frame[data-src]',
+    rootMargin: '220px',
+    batchSize: 4,
+    idleTimeout: 220,
+    eject: true
+  });
+  function hydratePreviews() {
+    requestAnimationFrame(() => previewHydrator.observe(container));
+  }
+  if (document.readyState === 'complete') hydratePreviews();
+  else window.addEventListener('load', hydratePreviews, { once: true });
 
   if (location.hash) {
     const target = document.querySelector(location.hash);

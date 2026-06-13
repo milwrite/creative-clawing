@@ -50,8 +50,8 @@ def test_card_pages_mount_live_iframe_previews():
         assert "data-preview-id" in text
         assert "<img" not in text
 
-    assert "CCPreviews.mountAll" in pages["index.html"]
-    assert "CCPreviews.mountAll" in pages["gallery.html"]
+    assert "CCPreviews.createHydrator" in pages["index.html"]
+    assert "CCPreviews.createHydrator" in pages["gallery.html"]
     assert "CCPreviews.mountFrame" in pages["microblogs.html"]
 
 
@@ -59,7 +59,7 @@ def test_live_preview_helper_builds_sandboxed_iframes():
     text = (ROOT / "scripts" / "preview-cards.js").read_text(encoding="utf-8")
 
     assert "cc-preview-iframe" in text
-    assert "iframe.loading = 'eager'" in text
+    assert "iframe.loading = 'lazy'" in text
     assert "sandbox', 'allow-scripts allow-same-origin'" in text
     assert "mountFrame" in text
     assert "mountAll" in text

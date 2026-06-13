@@ -34,7 +34,7 @@
     iframe.className = 'cc-preview-iframe';
     iframe.title = frame.dataset.title || frame.dataset.iframeTitle || id || 'artifact preview';
     iframe.src = src;
-    iframe.loading = 'eager';
+    iframe.loading = 'lazy';
     iframe.tabIndex = -1;
     iframe.setAttribute('aria-hidden', 'true');
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
@@ -108,6 +108,10 @@
       const scope = root || document;
       if (observer) observer.disconnect();
       pending.clear();
+      if (!('IntersectionObserver' in window)) {
+        mountAll(scope, config.selector);
+        return;
+      }
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           const frame = entry.target;

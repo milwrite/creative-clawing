@@ -187,8 +187,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
 (async function(){
   async function fetchJSON(url, fallback) {
     try {
-      const sep = url.includes('?') ? '&' : '?';
-      const res = await fetch(url + sep + 't=' + Date.now(), { cache: 'no-store' });
+      const res = await fetch(url);
       if (!res.ok) throw new Error(String(res.status));
       return await res.json();
     } catch (_) {
@@ -226,6 +225,24 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   const filtersEl = document.getElementById('filters');
   const countEl = document.getElementById('count');
   const pagerEl = document.getElementById('pager');
+  const previewHydrator = CCPreviews.createHydrator({
+    selector: '.card-preview[data-src]',
+    rootMargin: '260px',
+    batchSize: 4,
+    idleTimeout: 240,
+    eject: true
+  });
+  let previewsCanHydrate = document.readyState === 'complete';
+  function hydratePreviews() {
+    if (!previewsCanHydrate) return;
+    requestAnimationFrame(() => previewHydrator.observe(grid));
+  }
+  if (!previewsCanHydrate) {
+    window.addEventListener('load', () => {
+      previewsCanHydrate = true;
+      hydratePreviews();
+    }, { once: true });
+  }
 
   function renderFilters(){
     filtersEl.innerHTML = tags.map(t =>
@@ -326,7 +343,7 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   }
 
   function attachObserver() {
-    CCPreviews.mountAll(grid, '.card-preview[data-src]');
+    hydratePreviews();
   }
 
   search.addEventListener('input', () => { currentPage = 1; render(); });
