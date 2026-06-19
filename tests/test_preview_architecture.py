@@ -45,7 +45,7 @@ def test_no_card_image_preview_assets_or_helpers():
 def test_card_pages_mount_live_iframe_previews():
     pages = page_texts()
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js" in text
+        assert "scripts/preview-cards.js?v=20260619-fast-previews" in text
         assert "cc-preview-frame" in text
         assert "data-preview-id" in text
         assert "<img" not in text

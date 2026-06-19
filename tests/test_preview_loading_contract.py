@@ -66,7 +66,7 @@ def test_pages_mount_live_preview_frames_without_static_image_fallbacks():
     combined = "\n".join(pages.values())
 
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js" in text, page_name
+        assert "scripts/preview-cards.js?v=20260619-fast-previews" in text, page_name
         assert "cc-preview-frame" in text, page_name
         assert "data-preview-id" in text, page_name
         assert "<img" not in text, page_name
