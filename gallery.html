@@ -227,9 +227,9 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   const pagerEl = document.getElementById('pager');
   const previewHydrator = CCPreviews.createHydrator({
     selector: '.card-preview[data-src]',
-    rootMargin: '260px',
-    batchSize: 4,
-    idleTimeout: 240,
+    rootMargin: '360px',
+    batchSize: 6,
+    idleTimeout: 90,
     eject: true
   });
   let previewsCanHydrate = document.readyState === 'complete';

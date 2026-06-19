@@ -168,7 +168,7 @@
       display: block;
       background: #0a0a0a;
       opacity: 0;
-      transition: opacity .35s ease;
+      transition: opacity .12s ease;
     }
     .artifact-frame .cc-preview-iframe.if-ready { opacity: 1; }
     .artifact-body {
@@ -692,9 +692,9 @@
   }
   const previewHydrator = CCPreviews.createHydrator({
     selector: '.artifact-frame[data-src]',
-    rootMargin: '220px',
-    batchSize: 4,
-    idleTimeout: 220,
+    rootMargin: '340px',
+    batchSize: 6,
+    idleTimeout: 90,
     eject: true
   });
   function hydratePreviews() {

@@ -1,4 +1,9 @@
 (function () {
+  const READY_PULSES = 2;
+  const READY_PULSE_MS = 70;
+  const SETTLE_RESIZE_MS = 220;
+  const readyTimers = new WeakMap();
+
   function idFromGallerySrc(src) {
     const match = String(src || '').match(/(?:^|\/)gallery\/([^/?#]+)\.html/);
     return match ? decodeURIComponent(match[1]) : '';
@@ -12,16 +17,43 @@
     }
   }
 
+  function setFrameTimer(frame, fn, delay) {
+    const timer = setTimeout(() => {
+      const timers = readyTimers.get(frame);
+      if (timers) timers.delete(timer);
+      fn();
+    }, delay);
+    let timers = readyTimers.get(frame);
+    if (!timers) {
+      timers = new Set();
+      readyTimers.set(frame, timers);
+    }
+    timers.add(timer);
+    return timer;
+  }
+
+  function clearReadyTimers(frame) {
+    const timers = readyTimers.get(frame);
+    if (!timers) return;
+    timers.forEach(clearTimeout);
+    readyTimers.delete(frame);
+  }
+
+  function dispatchFrameResize(iframe) {
+    try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch (_) {}
+  }
+
   function revealWhenReady(frame, iframe, attempt) {
     const nextAttempt = attempt || 0;
-    try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch (_) {}
-    if (nextAttempt >= 3) {
+    if (!frame.isConnected || !iframe.isConnected) return;
+    dispatchFrameResize(iframe);
+    if (nextAttempt >= READY_PULSES) {
       iframe.classList.add('if-ready');
       frame.classList.add('is-ready');
       frame.classList.remove('is-loading');
       return;
     }
-    setTimeout(() => revealWhenReady(frame, iframe, nextAttempt + 1), 120);
+    setFrameTimer(frame, () => revealWhenReady(frame, iframe, nextAttempt + 1), READY_PULSE_MS);
   }
 
   function buildIframe(frame) {
@@ -34,16 +66,15 @@
     iframe.className = 'cc-preview-iframe';
     iframe.title = frame.dataset.title || frame.dataset.iframeTitle || id || 'artifact preview';
     iframe.src = src;
-    iframe.loading = 'lazy';
+    iframe.loading = 'eager';
+    if ('fetchPriority' in iframe) iframe.fetchPriority = 'high';
     iframe.tabIndex = -1;
     iframe.setAttribute('aria-hidden', 'true');
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     iframe.addEventListener('load', () => {
       frame.classList.add('is-loaded');
-      setTimeout(() => revealWhenReady(frame, iframe, 0), 80);
-      setTimeout(() => {
-        try { iframe.contentWindow.dispatchEvent(new Event('resize')); } catch (_) {}
-      }, 400);
+      requestAnimationFrame(() => revealWhenReady(frame, iframe, 0));
+      setFrameTimer(frame, () => dispatchFrameResize(iframe), SETTLE_RESIZE_MS);
     }, { once: true });
     return iframe;
   }
@@ -52,6 +83,8 @@
     if (!frame || frame.querySelector('.cc-preview-iframe')) return null;
     const iframe = buildIframe(frame);
     if (!iframe) return null;
+    clearReadyTimers(frame);
+    frame.classList.remove('is-loaded', 'is-ready');
     frame.classList.add('is-loading');
     frame.appendChild(iframe);
     return iframe;
@@ -60,6 +93,7 @@
   function unmountFrame(frame) {
     const iframe = frame && frame.querySelector('.cc-preview-iframe');
     if (!iframe) return;
+    clearReadyTimers(frame);
     iframe.src = 'about:blank';
     iframe.remove();
     frame.classList.remove('is-loading', 'is-loaded', 'is-ready');
@@ -92,8 +126,8 @@
       for (const frame of pending) {
         if (mounted >= config.batchSize) break;
         pending.delete(frame);
-        mountFrame(frame);
-        mounted++;
+        if (!frame.isConnected || frame.querySelector('.cc-preview-iframe')) continue;
+        if (mountFrame(frame)) mounted++;
       }
       if (pending.size) scheduleDrain();
     }
@@ -116,8 +150,10 @@
         entries.forEach((entry) => {
           const frame = entry.target;
           if (entry.isIntersecting) {
-            pending.add(frame);
-            scheduleDrain();
+            if (!frame.querySelector('.cc-preview-iframe')) {
+              pending.add(frame);
+              scheduleDrain();
+            }
           } else {
             pending.delete(frame);
             if (config.eject) unmountFrame(frame);

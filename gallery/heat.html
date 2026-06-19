@@ -35,7 +35,6 @@ function resize() {
   grid = new Float32Array(cols * rows);
   next = new Float32Array(cols * rows);
 }
-resize();
 window.addEventListener('resize', resize);
 
 function heatColor(t) {
@@ -67,7 +66,10 @@ function addSource(x, y) {
   sources.push({ x: x / cellSize, y: y / cellSize, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, life: 300 + Math.random() * 400 });
 }
 // Initial sources
-for (let i = 0; i < 5; i++) addSource(Math.random() * W, Math.random() * H);
+function seedInitialSources() {
+  sources.length = 0;
+  for (let i = 0; i < 5; i++) addSource(Math.random() * W, Math.random() * H);
+}
 
 function seedPreviewSources() {
   sources.length = 0;
@@ -154,6 +156,7 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',resize)
 window.addEventListener('orientationchange',()=>{setTimeout(resize,200);});
 requestAnimationFrame(()=>{
   resize();
+  seedInitialSources();
   if (window.self !== window.top) seedPreviewSources();
   setTimeout(()=>{resize();if(window.self!==window.top)seedPreviewSources();},200);
   draw();

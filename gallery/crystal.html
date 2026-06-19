@@ -64,7 +64,8 @@ function resize() {
   canvas.height = window.innerHeight;
 }
 window.addEventListener('resize', resize);
-resize();
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resize);
+window.addEventListener('orientationchange', () => { setTimeout(resize, 200); });
 
 // ── 12-fold snowflake symmetry ─────────────────────────────
 // dihedral group D6: 6 rotations × 1 mirror = 12 transforms
@@ -293,7 +294,7 @@ if (resetBtn) {
 }
 
 // initial draw
-requestAnimationFrame(()=>{updateImage();drawDisplay();setTimeout(()=>{updateImage();drawDisplay();},200);loop();});
+requestAnimationFrame(()=>{resize();updateImage();drawDisplay();setTimeout(()=>{resize();updateImage();drawDisplay();},200);loop();});
 </script>
 </body>
 </html>

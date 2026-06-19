@@ -78,7 +78,7 @@ html, body {
   background: transparent;
   pointer-events: none;
   opacity: 0;
-  transition: opacity .24s ease;
+  transition: opacity .12s ease;
 }
 .cc-preview-iframe.if-ready {
   opacity: 1;
