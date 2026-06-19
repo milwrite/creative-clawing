@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 263,
+    "totalCommits": 264,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -94,12 +94,12 @@
       "2026-06-10": 1,
       "2026-06-12": 3,
       "2026-06-13": 1,
-      "2026-06-19": 1
+      "2026-06-19": 2
     },
     "categoryCounts": {
       "blog": 33,
       "mobile": 20,
-      "fix": 36,
+      "fix": 37,
       "other": 153,
       "artifact": 10,
       "chore": 4,
@@ -110,6 +110,14 @@
       "perf": 2
     },
     "commits": [
+      {
+        "sha": "461e0914",
+        "date": "2026-06-19",
+        "subject": "fix: bust preview helper cache",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "26d05d33",
         "date": "2026-06-19",
