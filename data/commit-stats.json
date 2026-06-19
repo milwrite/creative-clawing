@@ -1,6 +1,6 @@
 {
   "Petrarch": {
-    "totalCommits": 262,
+    "totalCommits": 263,
     "dailyCounts": {
       "2026-02-19": 1,
       "2026-02-20": 3,
@@ -93,12 +93,13 @@
       "2026-06-09": 1,
       "2026-06-10": 1,
       "2026-06-12": 3,
-      "2026-06-13": 1
+      "2026-06-13": 1,
+      "2026-06-19": 1
     },
     "categoryCounts": {
       "blog": 33,
       "mobile": 20,
-      "fix": 35,
+      "fix": 36,
       "other": 153,
       "artifact": 10,
       "chore": 4,
@@ -109,6 +110,14 @@
       "perf": 2
     },
     "commits": [
+      {
+        "sha": "26d05d33",
+        "date": "2026-06-19",
+        "subject": "fix: speed up live previews",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "8c0da867",
         "date": "2026-06-13",
