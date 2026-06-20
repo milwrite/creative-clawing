@@ -34,6 +34,13 @@ MANIFEST_JSON = DATA / "manifest.json"
 COMMIT_STATS  = DATA / "commit-stats.json"
 OVERRIDES     = DATA / "overrides.json"
 
+GENERATED_DATA_FILES = {
+    "data/manifest-v2.json",
+    "data/feed.json",
+    "data/manifest.json",
+    "data/commit-stats.json",
+}
+
 # Commit subject prefixes → category labels
 CATEGORY_PREFIXES = {
     "artifact:": "artifact",
@@ -126,6 +133,35 @@ def categorize_commit(subject):
     if not categories:
         categories.append("other")
     return categories
+
+def is_manifest_maintenance_commit(commit, changed_files=None):
+    """Return True for commits that only refresh generated manifest data."""
+    subject = commit.get("subject", "").lower()
+    if not (
+        subject.startswith("chore: auto-update manifest + feed")
+        or subject.startswith("chore: update manifest")
+    ):
+        return False
+
+    files = changed_files
+    if files is None:
+        files = files_in_commit(commit["sha_full"])
+    return bool(files) and all(f in GENERATED_DATA_FILES for f in files)
+
+def stable_generated_value(existing_v2, artifacts, microblogs, agents):
+    """Reuse generated timestamp when the public manifest payload is unchanged."""
+    existing_summary = existing_v2.get("summary", {}) if isinstance(existing_v2, dict) else {}
+    same_payload = (
+        isinstance(existing_v2, dict)
+        and existing_v2.get("artifacts") == artifacts
+        and existing_v2.get("microblogs") == microblogs
+        and existing_summary.get("totalArtifacts") == len(artifacts)
+        and existing_summary.get("totalMicroblogs") == len(microblogs)
+        and existing_summary.get("agents") == agents
+    )
+    if same_payload and existing_summary.get("generated"):
+        return existing_summary["generated"]
+    return datetime.now(timezone.utc).isoformat()
 
 @lru_cache(maxsize=None)
 def files_in_commit(sha_full):
@@ -299,6 +335,11 @@ def main():
                 }
         commit_stats = merged
 
+    # Full-history runs should rebuild commit stats from git log so generated
+    # manifest-only commits can be removed instead of living forever.
+    if not args.since:
+        commit_stats = {}
+
     # Index existing entries by id
     artifact_idx  = {e["id"]: e for e in artifacts_list}
     microblog_idx = {e["id"]: e for e in microblogs_list}
@@ -314,6 +355,10 @@ def main():
     commit_agent_map = {}    # sha → agent (for optimization attribution)
 
     for commit in commits:
+        changed_files_for_commit = files_in_commit(commit["sha_full"])
+        if is_manifest_maintenance_commit(commit, changed_files_for_commit):
+            continue
+
         agent   = detect_agent(commit)
         cats    = categorize_commit(commit["subject"])
         commit_agent_map[commit["sha"]] = agent
@@ -338,16 +383,20 @@ def main():
             cs["dailyCounts"][commit["date"]] = cs["dailyCounts"].get(commit["date"], 0) + 1
             for cat in cats:
                 cs["categoryCounts"][cat] = cs["categoryCounts"].get(cat, 0) + 1
-            cs.setdefault("commits", []).insert(0, {
+            commit_entry = {
                 "sha": commit["sha"],
                 "date": commit["date"],
                 "subject": commit["subject"],
                 "categories": cats,
-            })
+            }
+            if args.since:
+                cs.setdefault("commits", []).insert(0, commit_entry)
+            else:
+                cs.setdefault("commits", []).append(commit_entry)
 
         # ── Scan files touched in this commit ────────────────────────────────
         if not args.reprocess_all:
-            changed_files = files_in_commit(commit["sha_full"])
+            changed_files = changed_files_for_commit
         else:
             changed_files = []
 
@@ -526,14 +575,15 @@ def main():
     artifacts_out  = sorted(artifact_idx.values(),  key=lambda e: e["id"])
     microblogs_out = sorted(microblog_idx.values(), key=lambda e: e["id"])
 
-    summary = {
-        "generated": datetime.now(timezone.utc).isoformat(),
-        "totalArtifacts": len(artifacts_out),
-        "totalMicroblogs": len(microblogs_out),
-        "agents": list({
+    agents_out = sorted({
             a for e in artifacts_out
             for a in e.get("contributors", [])
-        }),
+        })
+    summary = {
+        "generated": stable_generated_value(v2, artifacts_out, microblogs_out, agents_out),
+        "totalArtifacts": len(artifacts_out),
+        "totalMicroblogs": len(microblogs_out),
+        "agents": agents_out,
     }
 
     new_v2 = {

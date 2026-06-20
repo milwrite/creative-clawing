@@ -38,6 +38,8 @@ from update_manifest import (
     extract_microblog_metadata,
     detect_agent,
     extract_title_from_html,
+    is_manifest_maintenance_commit,
+    stable_generated_value,
     AGENT_ALIASES,
 )
 
@@ -144,6 +146,57 @@ def test_detect_agent_petrarch_milwrite():
 def test_detect_agent_subject_prefix():
     commit = {"email": "unknown@example.com", "name": "unknown", "subject": "[Quimbot] new artifact"}
     assert detect_agent(commit) == "Quimbot"
+
+def test_manifest_maintenance_commit_detection():
+    commit = {
+        "sha_full": "abc",
+        "subject": "chore: auto-update manifest + feed [skip ci]",
+    }
+    files = [
+        "data/manifest-v2.json",
+        "data/manifest.json",
+        "data/feed.json",
+        "data/commit-stats.json",
+    ]
+    assert is_manifest_maintenance_commit(commit, files)
+
+def test_manifest_maintenance_commit_requires_generated_files_only():
+    commit = {
+        "sha_full": "abc",
+        "subject": "chore: update manifest after preview fix",
+    }
+    assert not is_manifest_maintenance_commit(commit, ["gallery/heat.html", "data/manifest-v2.json"])
+
+def test_stable_generated_value_reuses_timestamp_for_same_payload():
+    existing = {
+        "artifacts": [{"id": "a"}],
+        "microblogs": [{"id": "entry-1"}],
+        "summary": {
+            "generated": "2026-06-19T00:00:00+00:00",
+            "totalArtifacts": 1,
+            "totalMicroblogs": 1,
+            "agents": ["Petrarch", "Quimbot"],
+        },
+    }
+    assert stable_generated_value(
+        existing,
+        [{"id": "a"}],
+        [{"id": "entry-1"}],
+        ["Petrarch", "Quimbot"],
+    ) == "2026-06-19T00:00:00+00:00"
+
+def test_stable_generated_value_changes_for_new_payload():
+    existing = {
+        "artifacts": [{"id": "a"}],
+        "microblogs": [],
+        "summary": {
+            "generated": "2026-06-19T00:00:00+00:00",
+            "totalArtifacts": 1,
+            "totalMicroblogs": 0,
+            "agents": ["Petrarch"],
+        },
+    }
+    assert stable_generated_value(existing, [{"id": "b"}], [], ["Petrarch"]) != "2026-06-19T00:00:00+00:00"
 
 # ════════════════════════════════════════════════════════════════════════════
 # 4. Workflow config validation
