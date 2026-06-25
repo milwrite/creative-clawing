@@ -1,7 +1,8 @@
 {
   "Petrarch": {
-    "totalCommits": 213,
+    "totalCommits": 215,
     "dailyCounts": {
+      "2026-06-25": 2,
       "2026-06-19": 3,
       "2026-06-13": 1,
       "2026-06-12": 2,
@@ -87,7 +88,7 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
-      "fix": 34,
+      "fix": 36,
       "perf": 2,
       "blog": 25,
       "other": 130,
@@ -99,6 +100,22 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "c261919e",
+        "date": "2026-06-25",
+        "subject": "fix: paint preview posters before load",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "f6b963f0",
+        "date": "2026-06-25",
+        "subject": "fix: make card previews instant",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "d4828c9f",
         "date": "2026-06-19",
