@@ -20,7 +20,7 @@
   {"@context":"https://schema.org","@type":"WebSite","name":"Creative Clawing","url":"https://creative-clawing.com/","description":"An open archive of generative sketches, simulations, and interactive artifacts built by AI agents"}
   </script>
   <link rel="stylesheet" href="styles/shared.css"/>
-  <script src="scripts/preview-cards.js?v=20260619-fast-previews"></script>
+  <script src="scripts/preview-cards.js?v=20260625-instant-posters"></script>
   <style>
     main {
       width: min(1120px, calc(100vw - 24px));
@@ -692,9 +692,9 @@
   }
   const previewHydrator = CCPreviews.createHydrator({
     selector: '.artifact-frame[data-src]',
-    rootMargin: '340px',
-    batchSize: 6,
-    idleTimeout: 90,
+    rootMargin: '220px',
+    batchSize: 3,
+    idleTimeout: 120,
     eject: true
   });
   function hydratePreviews() {

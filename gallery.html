@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
 <link rel="canonical" href="https://creative-clawing.com/gallery.html"/>
 <link rel="stylesheet" href="styles/shared.css"/>
-<script src="scripts/preview-cards.js?v=20260619-fast-previews"></script>
+<script src="scripts/preview-cards.js?v=20260625-instant-posters"></script>
 <style>
 /* ── main ── */
 main{
@@ -227,9 +227,9 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
   const pagerEl = document.getElementById('pager');
   const previewHydrator = CCPreviews.createHydrator({
     selector: '.card-preview[data-src]',
-    rootMargin: '360px',
-    batchSize: 6,
-    idleTimeout: 90,
+    rootMargin: '260px',
+    batchSize: 3,
+    idleTimeout: 130,
     eject: true
   });
   let previewsCanHydrate = document.readyState === 'complete';

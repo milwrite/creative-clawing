@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression contracts for fast, live iframe preview loading."""
+"""Regression contracts for instant posters plus controlled iframe hydration."""
 
 import json
 import re
@@ -40,6 +40,24 @@ def test_preview_helper_loads_iframes_immediately_and_reveals_after_resize_pulse
     assert "frame.classList.remove('is-loading')" in text
 
 
+def test_preview_helper_draws_instant_deterministic_posters_before_iframes():
+    text = read("scripts/preview-cards.js")
+
+    assert "function drawPoster(frame)" in text
+    assert "function paintAll(root, selector)" in text
+    assert "function hashId(value)" in text
+    assert "function seededRandom(seed)" in text
+    assert "function paintPosterCanvas(canvas, id)" in text
+    assert "canvas.className = 'cc-preview-poster'" in text
+    assert "canvas.setAttribute('aria-hidden', 'true')" in text
+    assert "frame.insertBefore(canvas, frame.firstChild)" in text
+    assert "getContext('2d', { alpha: true })" in text
+    assert "Math.min(window.devicePixelRatio || 1, 2)" in text
+    assert "drawPoster(frame);" in text
+    assert "paintAll(scope, config.selector);" in text
+    assert "drawPoster" in text.split("function mountFrame(frame)", 1)[1].split("function unmountFrame", 1)[0]
+
+
 def test_preview_helper_lifecycle_is_idempotent_and_cleans_stale_iframes():
     text = read("scripts/preview-cards.js")
 
@@ -55,9 +73,12 @@ def test_preview_helper_lifecycle_is_idempotent_and_cleans_stale_iframes():
     assert "const frames = Array.from(scope.querySelectorAll" in text
     assert "frames.forEach(mountFrame)" in text
     assert "return frames.length" in text
+    assert "rootMargin: '260px'" in text
+    assert "batchSize: 3" in text
+    assert "idleTimeout: 140" in text
 
 
-def test_pages_mount_live_preview_frames_without_static_image_fallbacks():
+def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     pages = {
         "index.html": read("index.html"),
         "gallery.html": read("gallery.html"),
@@ -66,7 +87,7 @@ def test_pages_mount_live_preview_frames_without_static_image_fallbacks():
     combined = "\n".join(pages.values())
 
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js?v=20260619-fast-previews" in text, page_name
+        assert "scripts/preview-cards.js?v=20260625-instant-posters" in text, page_name
         assert "cc-preview-frame" in text, page_name
         assert "data-preview-id" in text, page_name
         assert "<img" not in text, page_name
@@ -76,20 +97,21 @@ def test_pages_mount_live_preview_frames_without_static_image_fallbacks():
 
     assert "CCPreviews.createHydrator" in pages["index.html"]
     assert "selector: '.artifact-frame[data-src]'" in pages["index.html"]
-    assert "rootMargin: '340px'" in pages["index.html"]
-    assert "batchSize: 6" in pages["index.html"]
-    assert "idleTimeout: 90" in pages["index.html"]
+    assert "rootMargin: '220px'" in pages["index.html"]
+    assert "batchSize: 3" in pages["index.html"]
+    assert "idleTimeout: 120" in pages["index.html"]
     assert "eject: true" in pages["index.html"]
 
     assert "CCPreviews.createHydrator" in pages["gallery.html"]
     assert "selector: '.card-preview[data-src]'" in pages["gallery.html"]
-    assert "rootMargin: '360px'" in pages["gallery.html"]
-    assert "batchSize: 6" in pages["gallery.html"]
-    assert "idleTimeout: 90" in pages["gallery.html"]
+    assert "rootMargin: '260px'" in pages["gallery.html"]
+    assert "batchSize: 3" in pages["gallery.html"]
+    assert "idleTimeout: 130" in pages["gallery.html"]
     assert "attachObserver()" in pages["gallery.html"]
 
+    assert "CCPreviews.paintAll(container, '.entry-viz[data-iframe-src]')" in pages["microblogs.html"]
     assert "new IntersectionObserver" in pages["microblogs.html"]
-    assert "rootMargin: '480px'" in pages["microblogs.html"]
+    assert "rootMargin: '240px'" in pages["microblogs.html"]
     assert "CCPreviews.mountFrame(e.target)" in pages["microblogs.html"]
     assert "CCPreviews.unmountFrame(e.target)" in pages["microblogs.html"]
     assert "entry-viz-overlay" in pages["microblogs.html"]
@@ -98,6 +120,9 @@ def test_pages_mount_live_preview_frames_without_static_image_fallbacks():
 def test_preview_css_keeps_reveal_transition_short():
     combined = read("styles/shared.css") + read("index.html")
 
+    assert ".cc-preview-poster" in combined
+    assert ".cc-preview-frame.is-ready .cc-preview-poster" in combined
+    assert "z-index: 2" in combined
     assert "transition: opacity .12s ease" in combined
     assert "transition: opacity .24s ease" not in combined
     assert "transition: opacity .35s ease" not in combined
@@ -106,6 +131,7 @@ def test_preview_css_keeps_reveal_transition_short():
 def test_service_worker_caches_preview_runtime_but_no_generated_preview_images():
     text = read("sw.js")
 
+    assert "const CACHE = 'cc-v12'" in text
     assert "'/scripts/preview-cards.js'" in text
     assert "assets/previews" not in text
     assert ".jpg" not in text

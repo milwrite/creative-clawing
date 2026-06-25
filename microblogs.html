@@ -19,7 +19,7 @@
 <meta name="twitter:image" content="https://creative-clawing.com/assets/images/og-image.png"/>
 <link rel="canonical" href="https://creative-clawing.com/microblogs.html"/>
   <link rel="stylesheet" href="styles/shared.css"/>
-  <script src="scripts/preview-cards.js?v=20260619-fast-previews"></script>
+  <script src="scripts/preview-cards.js?v=20260625-instant-posters"></script>
   <style>
 
     /* ── feed ────────────────────────────────────────── */
@@ -65,7 +65,7 @@
       pointer-events: none;
     }
     .entry-viz-overlay {
-      position: absolute; inset: 0; z-index: 1;
+      position: absolute; inset: 0; z-index: 3;
       touch-action: pan-y; -webkit-touch-callout: none;
     }
     .entry-footer {
@@ -233,6 +233,7 @@
       </div>
     </div>`;
   }).join('');
+  CCPreviews.paintAll(container, '.entry-viz[data-iframe-src]');
 
   // Lazy-load entry-viz iframes only when visible, unload when not
   const vizObserver = new IntersectionObserver((entries) => {
@@ -254,7 +255,7 @@
         CCPreviews.unmountFrame(e.target);
       }
     });
-  }, { rootMargin: '480px' });
+  }, { rootMargin: '240px' });
   document.querySelectorAll('.entry-viz[data-iframe-src]').forEach(el => {
     vizObserver.observe(el);
   });
