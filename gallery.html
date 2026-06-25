@@ -232,16 +232,11 @@ a.card:hover{border-color:rgba(255,255,255,.35)}
     idleTimeout: 130,
     eject: true
   });
-  let previewsCanHydrate = document.readyState === 'complete';
   function hydratePreviews() {
-    if (!previewsCanHydrate) return;
-    requestAnimationFrame(() => previewHydrator.observe(grid));
-  }
-  if (!previewsCanHydrate) {
-    window.addEventListener('load', () => {
-      previewsCanHydrate = true;
-      hydratePreviews();
-    }, { once: true });
+    requestAnimationFrame(() => {
+      CCPreviews.paintAll(grid, '.card-preview[data-src]');
+      previewHydrator.observe(grid);
+    });
   }
 
   function renderFilters(){

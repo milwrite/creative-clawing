@@ -100,6 +100,7 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     assert "rootMargin: '220px'" in pages["index.html"]
     assert "batchSize: 3" in pages["index.html"]
     assert "idleTimeout: 120" in pages["index.html"]
+    assert "CCPreviews.paintAll(container, '.artifact-frame[data-src]')" in pages["index.html"]
     assert "eject: true" in pages["index.html"]
 
     assert "CCPreviews.createHydrator" in pages["gallery.html"]
@@ -107,6 +108,7 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     assert "rootMargin: '260px'" in pages["gallery.html"]
     assert "batchSize: 3" in pages["gallery.html"]
     assert "idleTimeout: 130" in pages["gallery.html"]
+    assert "CCPreviews.paintAll(grid, '.card-preview[data-src]')" in pages["gallery.html"]
     assert "attachObserver()" in pages["gallery.html"]
 
     assert "CCPreviews.paintAll(container, '.entry-viz[data-iframe-src]')" in pages["microblogs.html"]
@@ -115,6 +117,8 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     assert "CCPreviews.mountFrame(e.target)" in pages["microblogs.html"]
     assert "CCPreviews.unmountFrame(e.target)" in pages["microblogs.html"]
     assert "entry-viz-overlay" in pages["microblogs.html"]
+    assert "previewsCanHydrate" not in pages["index.html"] + pages["gallery.html"]
+    assert "window.addEventListener('load', hydratePreviews" not in pages["index.html"] + pages["gallery.html"]
 
 
 def test_preview_css_keeps_reveal_transition_short():

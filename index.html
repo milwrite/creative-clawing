@@ -698,10 +698,12 @@
     eject: true
   });
   function hydratePreviews() {
-    requestAnimationFrame(() => previewHydrator.observe(container));
+    requestAnimationFrame(() => {
+      CCPreviews.paintAll(container, '.artifact-frame[data-src]');
+      previewHydrator.observe(container);
+    });
   }
-  if (document.readyState === 'complete') hydratePreviews();
-  else window.addEventListener('load', hydratePreviews, { once: true });
+  hydratePreviews();
 
   if (location.hash) {
     const target = document.querySelector(location.hash);
