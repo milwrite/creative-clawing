@@ -1,7 +1,8 @@
 {
   "Petrarch": {
-    "totalCommits": 215,
+    "totalCommits": 216,
     "dailyCounts": {
+      "2026-07-08": 1,
       "2026-06-25": 2,
       "2026-06-19": 3,
       "2026-06-13": 1,
@@ -88,7 +89,7 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
-      "fix": 36,
+      "fix": 37,
       "perf": 2,
       "blog": 25,
       "other": 130,
@@ -100,6 +101,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "c0eeee87",
+        "date": "2026-07-08",
+        "subject": "fix: repair preview loading",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "c261919e",
         "date": "2026-06-25",
