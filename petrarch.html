@@ -306,7 +306,7 @@
   originated.forEach(a => {
     origGrid.innerHTML += `
       <a class="art-card" href="artifacts/${a.id}.html">
-        <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
+        <iframe src="gallery/${a.id}.html?v=20260708-loading-fix" loading="eager" title="${a.title}"></iframe>
         <div class="meta">
           <div class="t">${a.title}</div>
           <div class="s">created by Petrarch</div>
@@ -319,7 +319,7 @@
   contributed.forEach(a => {
     contribGrid.innerHTML += `
       <a class="art-card" href="artifacts/${a.id}.html">
-        <iframe src="gallery/${a.id}.html" loading="lazy" title="${a.title}"></iframe>
+        <iframe src="gallery/${a.id}.html?v=20260708-loading-fix" loading="eager" title="${a.title}"></iframe>
         <div class="meta">
           <div class="t">${a.title}</div>
           <div class="s">mobile · fix · rework</div>

@@ -1,7 +1,7 @@
 // Service Worker — Creative Clawing
 // Caches static shell assets for offline browsing.
 // Data files (manifest, feed) are ALWAYS fetched from network — never cached here.
-const CACHE = 'cc-v12';
+const CACHE = 'cc-v13';
 const SHELL = [
   '/',
   '/index.html',
@@ -19,6 +19,10 @@ const NEVER_CACHE = [
   '/data/feed.json',
   '/data/manifest-v2.json',
   '/data/manifest.json',
+];
+
+const NEVER_CACHE_PREFIXES = [
+  '/gallery/',
 ];
 
 self.addEventListener('install', e => {
@@ -43,7 +47,14 @@ self.addEventListener('fetch', e => {
   // Data files: always network-first, never serve from cache
   if (NEVER_CACHE.includes(url.pathname)) {
     e.respondWith(
-      fetch(e.request).catch(() => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+      fetch(e.request, { cache: 'reload' }).catch(() => new Response('{}', { headers: { 'Content-Type': 'application/json' } }))
+    );
+    return;
+  }
+
+  if (NEVER_CACHE_PREFIXES.some(prefix => url.pathname.startsWith(prefix))) {
+    e.respondWith(
+      fetch(e.request, { cache: 'reload' }).catch(() => caches.match(e.request))
     );
     return;
   }

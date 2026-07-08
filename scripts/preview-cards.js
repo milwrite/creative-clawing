@@ -2,12 +2,24 @@
   const READY_PULSES = 2;
   const READY_PULSE_MS = 70;
   const SETTLE_RESIZE_MS = 220;
+  const PREVIEW_VERSION = '20260708-loading-fix';
   const readyTimers = new WeakMap();
   const posterTimers = new WeakMap();
 
   function idFromGallerySrc(src) {
     const match = String(src || '').match(/(?:^|\/)gallery\/([^/?#]+)\.html/);
     return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  function versionedPreviewSrc(src) {
+    const value = String(src || '');
+    if (!/(?:^|\/)gallery\/[^?#]+\.html(?:[?#]|$)/.test(value)) return value;
+    if (/[?&]v=/.test(value)) return value;
+    const hashIndex = value.indexOf('#');
+    const base = hashIndex === -1 ? value : value.slice(0, hashIndex);
+    const hash = hashIndex === -1 ? '' : value.slice(hashIndex);
+    const separator = base.includes('?') ? '&' : '?';
+    return `${base}${separator}v=${PREVIEW_VERSION}${hash}`;
   }
 
   function previewIdFor(frame) {
@@ -263,7 +275,7 @@
     const iframe = document.createElement('iframe');
     iframe.className = 'cc-preview-iframe';
     iframe.title = frame.dataset.title || frame.dataset.iframeTitle || id || 'artifact preview';
-    iframe.src = src;
+    iframe.src = versionedPreviewSrc(src);
     iframe.loading = 'eager';
     if ('fetchPriority' in iframe) iframe.fetchPriority = 'high';
     iframe.tabIndex = -1;
@@ -308,15 +320,12 @@
   function createHydrator(options) {
     const config = Object.assign({
       selector: '.cc-preview-frame[data-src], .cc-preview-frame[data-iframe-src]',
-      root: null,
-      rootMargin: '260px',
-      batchSize: 3,
-      idleTimeout: 140,
-      eject: false,
+      batchSize: 6,
+      idleTimeout: 80,
+      onMount: null,
     }, options || {});
 
     const pending = new Set();
-    let observer = null;
     let drainScheduled = false;
 
     function drain() {
@@ -326,7 +335,11 @@
         if (mounted >= config.batchSize) break;
         pending.delete(frame);
         if (!frame.isConnected || frame.querySelector('.cc-preview-iframe')) continue;
-        if (mountFrame(frame)) mounted++;
+        const iframe = mountFrame(frame);
+        if (iframe) {
+          mounted++;
+          if (typeof config.onMount === 'function') config.onMount(frame, iframe);
+        }
       }
       if (pending.size) scheduleDrain();
     }
@@ -339,31 +352,12 @@
 
     function observe(root) {
       const scope = root || document;
-      if (observer) observer.disconnect();
       pending.clear();
       paintAll(scope, config.selector);
-      if (!('IntersectionObserver' in window)) {
-        mountAll(scope, config.selector);
-        return;
-      }
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const frame = entry.target;
-          if (entry.isIntersecting) {
-            if (!frame.querySelector('.cc-preview-iframe')) {
-              pending.add(frame);
-              scheduleDrain();
-            }
-          } else {
-            pending.delete(frame);
-            if (config.eject) unmountFrame(frame);
-          }
-        });
-      }, { root: config.root, rootMargin: config.rootMargin });
-
       scope.querySelectorAll(config.selector).forEach((frame) => {
-        observer.observe(frame);
+        if (!frame.querySelector('.cc-preview-iframe')) pending.add(frame);
       });
+      scheduleDrain();
     }
 
     function hydrateNow(root) {

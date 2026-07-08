@@ -29,6 +29,9 @@ def test_preview_helper_loads_iframes_immediately_and_reveals_after_resize_pulse
     assert "iframe.loading = 'lazy'" not in text
     assert "const READY_PULSES = 2" in text
     assert "const READY_PULSE_MS = 70" in text
+    assert "const PREVIEW_VERSION = '20260708-loading-fix'" in text
+    assert "function versionedPreviewSrc(src)" in text
+    assert "iframe.src = versionedPreviewSrc(src)" in text
     assert "if ('fetchPriority' in iframe) iframe.fetchPriority = 'high'" in text
     assert "iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')" in text
     assert "iframe.setAttribute('aria-hidden', 'true')" in text
@@ -73,9 +76,12 @@ def test_preview_helper_lifecycle_is_idempotent_and_cleans_stale_iframes():
     assert "const frames = Array.from(scope.querySelectorAll" in text
     assert "frames.forEach(mountFrame)" in text
     assert "return frames.length" in text
-    assert "rootMargin: '260px'" in text
-    assert "batchSize: 3" in text
-    assert "idleTimeout: 140" in text
+    assert "batchSize: 6" in text
+    assert "idleTimeout: 80" in text
+    assert "onMount: null" in text
+    assert "IntersectionObserver" not in text
+    assert "rootMargin" not in text
+    assert "eject" not in text
 
 
 def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
@@ -87,7 +93,7 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     combined = "\n".join(pages.values())
 
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js?v=20260625-instant-posters" in text, page_name
+        assert "scripts/preview-cards.js?v=20260708-loading-fix" in text, page_name
         assert "cc-preview-frame" in text, page_name
         assert "data-preview-id" in text, page_name
         assert "<img" not in text, page_name
@@ -97,28 +103,52 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
 
     assert "CCPreviews.createHydrator" in pages["index.html"]
     assert "selector: '.artifact-frame[data-src]'" in pages["index.html"]
-    assert "rootMargin: '220px'" in pages["index.html"]
-    assert "batchSize: 3" in pages["index.html"]
-    assert "idleTimeout: 120" in pages["index.html"]
-    assert "CCPreviews.paintAll(container, '.artifact-frame[data-src]')" in pages["index.html"]
-    assert "eject: true" in pages["index.html"]
+    assert "batchSize: 6" in pages["index.html"]
+    assert "idleTimeout: 60" in pages["index.html"]
+    assert "hydratePreviews();" in pages["index.html"]
 
     assert "CCPreviews.createHydrator" in pages["gallery.html"]
     assert "selector: '.card-preview[data-src]'" in pages["gallery.html"]
-    assert "rootMargin: '260px'" in pages["gallery.html"]
-    assert "batchSize: 3" in pages["gallery.html"]
-    assert "idleTimeout: 130" in pages["gallery.html"]
-    assert "CCPreviews.paintAll(grid, '.card-preview[data-src]')" in pages["gallery.html"]
+    assert "batchSize: 6" in pages["gallery.html"]
+    assert "idleTimeout: 60" in pages["gallery.html"]
     assert "attachObserver()" in pages["gallery.html"]
 
-    assert "CCPreviews.paintAll(container, '.entry-viz[data-iframe-src]')" in pages["microblogs.html"]
-    assert "new IntersectionObserver" in pages["microblogs.html"]
-    assert "rootMargin: '240px'" in pages["microblogs.html"]
-    assert "CCPreviews.mountFrame(e.target)" in pages["microblogs.html"]
-    assert "CCPreviews.unmountFrame(e.target)" in pages["microblogs.html"]
+    assert "CCPreviews.createHydrator" in pages["microblogs.html"]
+    assert "selector: '.entry-viz[data-iframe-src]'" in pages["microblogs.html"]
+    assert "batchSize: 4" in pages["microblogs.html"]
+    assert "onMount(frame)" in pages["microblogs.html"]
     assert "entry-viz-overlay" in pages["microblogs.html"]
+    assert "new IntersectionObserver" not in pages["microblogs.html"]
+    assert "CCPreviews.unmountFrame(e.target)" not in pages["microblogs.html"]
     assert "previewsCanHydrate" not in pages["index.html"] + pages["gallery.html"]
     assert "window.addEventListener('load', hydratePreviews" not in pages["index.html"] + pages["gallery.html"]
+
+
+def test_artifact_iframes_do_not_use_browser_lazy_loading():
+    offenders = []
+    for path in ROOT.rglob("*.html"):
+        if "node_modules" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if re.search(r"<iframe[^>]*\sloading=(['\"])lazy\1", text):
+            offenders.append(str(path.relative_to(ROOT)))
+
+    assert not offenders, "lazy iframe loading remains in: " + ", ".join(offenders)
+
+
+def test_static_artifact_iframes_use_loading_fix_cache_key():
+    offenders = []
+    checked_roots = ["artifacts", "microblog"]
+    checked_files = [ROOT / "kmoonshot.html", ROOT / "petrarch.html", ROOT / "quimbot.html"]
+    for root_name in checked_roots:
+        checked_files.extend((ROOT / root_name).glob("*.html"))
+
+    for path in checked_files:
+        text = path.read_text(encoding="utf-8")
+        if re.search(r"<iframe[^>]*\bsrc=(['\"])(?:\.\./)?gallery/[^'\"?#]+\.html\1", text):
+            offenders.append(str(path.relative_to(ROOT)))
+
+    assert not offenders, "unversioned artifact iframe sources remain in: " + ", ".join(offenders)
 
 
 def test_preview_css_keeps_reveal_transition_short():
@@ -135,13 +165,16 @@ def test_preview_css_keeps_reveal_transition_short():
 def test_service_worker_caches_preview_runtime_but_no_generated_preview_images():
     text = read("sw.js")
 
-    assert "const CACHE = 'cc-v12'" in text
+    assert "const CACHE = 'cc-v13'" in text
     assert "'/scripts/preview-cards.js'" in text
     assert "assets/previews" not in text
     assert ".jpg" not in text
     assert "previewSrc" not in text
     assert "cc-preview-img" not in text
     assert "NEVER_CACHE" in text
+    assert "NEVER_CACHE_PREFIXES" in text
+    assert "'/gallery/'" in text
+    assert "fetch(e.request, { cache: 'reload' })" in text
     assert "/data/manifest-v2.json" in text
 
 
@@ -181,6 +214,8 @@ ARTIFACT_WARMUP_CONTRACTS = {
         "function seedPreviewSources()",
         "if (window.self !== window.top) seedPreviewSources()",
         "seedInitialSources()",
+        "bctx.createImageData(cols, rows)",
+        "ctx.drawImage(buffer, 0, 0, cols, rows, 0, 0, W, H)",
     ),
     "mandelbrot": (
         "DPR = window.self !== window.top ? 1",
@@ -218,6 +253,7 @@ def test_resize_sensitive_artifacts_defer_first_canvas_sizing():
         assert "requestAnimationFrame" in text, artifact_id
         assert "visualViewport" in text, artifact_id
         assert "orientationchange" in text, artifact_id
+        assert "ctx.createImageData(W, H)" not in text, artifact_id
         assert not re.search(
             r"(?:window\.)?addEventListener\('resize',\s*resize\);\s*resize\(\);",
             text,

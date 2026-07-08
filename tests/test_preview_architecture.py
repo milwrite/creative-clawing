@@ -45,15 +45,14 @@ def test_no_card_image_preview_assets_or_helpers():
 def test_card_pages_mount_instant_posters_and_live_iframe_previews():
     pages = page_texts()
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js?v=20260625-instant-posters" in text
+        assert "scripts/preview-cards.js?v=20260708-loading-fix" in text
         assert "cc-preview-frame" in text
         assert "data-preview-id" in text
         assert "<img" not in text
 
     assert "CCPreviews.createHydrator" in pages["index.html"]
     assert "CCPreviews.createHydrator" in pages["gallery.html"]
-    assert "CCPreviews.paintAll" in pages["microblogs.html"]
-    assert "CCPreviews.mountFrame" in pages["microblogs.html"]
+    assert "CCPreviews.createHydrator" in pages["microblogs.html"]
 
 
 def test_live_preview_helper_builds_sandboxed_iframes():

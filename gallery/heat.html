@@ -25,6 +25,8 @@
 <script>
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
+const buffer = document.createElement('canvas');
+const bctx = buffer.getContext('2d');
 let W, H, cols, rows, grid, next, cellSize = 4;
 
 function resize() {
@@ -32,6 +34,8 @@ function resize() {
   H = canvas.height = window.innerHeight;
   cols = Math.ceil(W / cellSize);
   rows = Math.ceil(H / cellSize);
+  buffer.width = cols;
+  buffer.height = rows;
   grid = new Float32Array(cols * rows);
   next = new Float32Array(cols * rows);
 }
@@ -122,11 +126,10 @@ function step() {
   [grid, next] = [next, grid];
 }
 
-const imgData = ctx.createImageData(W, H);
 function draw() {
   step();
   // Recreate imagedata if size changed
-  const id = ctx.createImageData(cols, rows);
+  const id = bctx.createImageData(cols, rows);
   for (let i = 0; i < cols * rows; i++) {
     const t = Math.max(0, Math.min(1, grid[i]));
     let r, g, b;
@@ -143,13 +146,10 @@ function draw() {
     const j = i * 4;
     id.data[j] = r; id.data[j + 1] = g; id.data[j + 2] = b; id.data[j + 3] = 255;
   }
-  ctx.save();
+  bctx.putImageData(id, 0, 0);
+  ctx.clearRect(0, 0, W, H);
   ctx.imageSmoothingEnabled = true;
-  ctx.scale(cellSize, cellSize);
-  ctx.putImageData(id, 0, 0);
-  ctx.restore();
-  // Scale up
-  ctx.drawImage(canvas, 0, 0, cols, rows, 0, 0, W, H);
+  ctx.drawImage(buffer, 0, 0, cols, rows, 0, 0, W, H);
   requestAnimationFrame(draw);
 }
 if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
