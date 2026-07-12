@@ -5,11 +5,33 @@ on:
     branches: [main]
     paths:
       - "gallery/**"
-      - "tests/lint_gallery.py"
+      - "artifacts/**"
+      - "microblog/**"
+      - "data/**"
+      - "scripts/preview-cards.js"
+      - "styles/shared.css"
+      - "index.html"
+      - "gallery.html"
+      - "microblogs.html"
+      - "sw.js"
+      - "update_manifest.py"
+      - "tests/**"
+      - ".github/workflows/lint-gallery.yml"
   pull_request:
     paths:
       - "gallery/**"
-      - "tests/lint_gallery.py"
+      - "artifacts/**"
+      - "microblog/**"
+      - "data/**"
+      - "scripts/preview-cards.js"
+      - "styles/shared.css"
+      - "index.html"
+      - "gallery.html"
+      - "microblogs.html"
+      - "sw.js"
+      - "update_manifest.py"
+      - "tests/**"
+      - ".github/workflows/lint-gallery.yml"
 
 jobs:
   lint:
@@ -23,3 +45,9 @@ jobs:
 
       - name: Run gallery lint
         run: python3 tests/lint_gallery.py
+
+      - name: Install test runner
+        run: python3 -m pip install pytest
+
+      - name: Run site tests
+        run: python3 -m pytest -q

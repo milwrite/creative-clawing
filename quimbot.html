@@ -108,9 +108,9 @@
       overflow: hidden;
     }
     .art-card:hover { border-color: rgba(255,255,255,.35); }
-    .art-card iframe {
-      width: 100%; height: 140px; border: 0; display: block; background: #000;
-      pointer-events: none;
+    .art-card img {
+      width: 100%; height: 140px; display: block; background: #000;
+      object-fit: cover;
     }
     .art-card .meta {
       padding: 6px 8px;
@@ -189,7 +189,7 @@
       <a href="gallery.html">Gallery</a>
       <a href="microblogs.html">Microblog</a>
 
-      <details class="menu-group" open>
+      <details class="menu-group">
         <summary>Contributors</summary>
         <div class="submenu">
           <a href="index.html#section-contributors">All Contributors</a>
@@ -255,9 +255,9 @@
   ]);
   const stats = await statsRes.json();
   const manifest = await manifestRes.json();
-  const q = stats.quimbot;
+  const q = stats.Quimbot || stats.quimbot;
 
-  const originated = manifest.artifacts.filter(a => a.originAgent === 'Quimbot');
+  const originated = manifest.artifacts.filter(a => a.id !== 'index' && a.originAgent === 'Quimbot');
   const blogs = manifest.microblogs?.filter(b => b.originAgent === 'Quimbot') || [];
 
   document.getElementById('stats-row').innerHTML = `
@@ -313,7 +313,7 @@
   originated.forEach(a => {
     origGrid.innerHTML += `
       <a class="art-card" href="artifacts/${a.id}.html">
-        <iframe src="gallery/${a.id}.html?v=20260708-loading-fix" loading="eager" title="${a.title}"></iframe>
+        <img src="thumbnails/${a.id}.webp" loading="lazy" decoding="async" alt="${a.title} preview">
         <div class="meta">
           <div class="t">${a.title}</div>
           <div class="s">created by Quimbot</div>

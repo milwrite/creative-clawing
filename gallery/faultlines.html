@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Fault Lines</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#070707;overflow:hidden}
+body{display:flex;flex-direction:column;color:#e8e0d4;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+canvas{display:block;width:100%;height:100%;flex:1;min-height:0;touch-action:none;background:#070707}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:8;color:#d9cab2;text-decoration:none;background:rgba(10,10,10,.72);border:1px solid rgba(217,202,178,.35);padding:8px 12px;border-radius:4px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;backdrop-filter:blur(8px)}
+.panel{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));z-index:8;display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:min(760px,calc(100vw - 28px));padding:10px 12px;background:rgba(10,10,10,.72);border:1px solid rgba(217,202,178,.28);border-radius:4px;backdrop-filter:blur(8px);font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+.panel strong{font-weight:600;color:#f2e6d0;letter-spacing:.02em}
+.panel span{color:#a99b88}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{appearance:none;border:1px solid rgba(217,202,178,.3);background:rgba(255,255,255,.04);color:#e8dbc5;border-radius:4px;padding:7px 10px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;cursor:pointer}
+button:hover{border-color:rgba(244,223,188,.62);background:rgba(255,255,255,.08)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{position:relative;flex:1;min-height:0}
+  html.standalone .panel{position:relative;left:auto;bottom:auto;width:100%;max-width:none;border-left:0;border-right:0;border-bottom:0;border-radius:0;padding:9px max(10px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+}
+</style>
+</head>
+<body>
+<a class="back-btn" href="../gallery.html">← Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel" id="ui">
+  <strong>Fault Lines</strong>
+  <span>drag to add pressure; cracks follow the loaded cells</span>
+  <div class="controls">
+    <button id="settle">settle</button>
+    <button id="reset">reset</button>
+  </div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const isFrame=window.self!==window.top;
+let W=1,H=1,dpr=1;
+let cols=1,rows=1,cell=10;
+let heat,grain,cracked,age;
+let points=[];
+let tick=0;
+let running=true;
+let pointer=null;
+
+function alloc(){
+  heat=new Float32Array(cols*rows);
+  grain=new Float32Array(cols*rows);
+  cracked=new Uint8Array(cols*rows);
+  age=new Float32Array(cols*rows);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=y*cols+x;
+      const nx=x/Math.max(1,cols-1);
+      const ny=y/Math.max(1,rows-1);
+      grain[i]=0.38*Math.sin(nx*31.0)+0.22*Math.cos(ny*27.0)+0.18*Math.sin((nx+ny)*41.0)+Math.random()*0.14;
+      heat[i]=Math.max(0,0.18+grain[i]*0.18);
+    }
+  }
+}
+
+function seed(){
+  points.length=0;
+  const count=Math.max(5,Math.floor((W*H)/110000));
+  for(let i=0;i<count;i++){
+    points.push({
+      x:W*(0.12+Math.random()*0.76),
+      y:H*(0.14+Math.random()*0.72),
+      r:70+Math.random()*130,
+      s:0.7+Math.random()*0.9,
+      p:Math.random()*Math.PI*2
+    });
+  }
+  if(isFrame){
+    points.push({x:W*.52,y:H*.46,r:Math.min(W,H)*.42,s:1.6,p:0});
+  }
+}
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+  const nw=Math.max(1,Math.floor(rect.width||innerWidth));
+  const nh=Math.max(1,Math.floor(rect.height||innerHeight));
+  const ndpr=Math.min(window.devicePixelRatio||1,2);
+  if(nw===W&&nh===H&&ndpr===dpr) return;
+  W=nw;H=nh;dpr=ndpr;
+  canvas.width=Math.max(1,Math.floor(W*dpr));
+  canvas.height=Math.max(1,Math.floor(H*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cell=Math.max(7,Math.min(15,Math.floor(Math.sqrt(W*H)/64)));
+  cols=Math.ceil(W/cell);
+  rows=Math.ceil(H/cell);
+  alloc();
+  seed();
+}
+
+function idx(x,y){return y*cols+x}
+
+function addPressure(px,py,amount,radius){
+  const gx=Math.floor(px/cell),gy=Math.floor(py/cell);
+  const gr=Math.ceil(radius/cell);
+  for(let y=Math.max(0,gy-gr);y<Math.min(rows,gy+gr+1);y++){
+    for(let x=Math.max(0,gx-gr);x<Math.min(cols,gx+gr+1);x++){
+      const dx=(x+.5)*cell-px;
+      const dy=(y+.5)*cell-py;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<radius){
+        const fall=1-d/radius;
+        heat[idx(x,y)]+=amount*fall*fall;
+      }
+    }
+  }
+}
+
+function relax(){
+  const next=new Float32Array(heat.length);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      let sum=heat[i]*0.62;
+      let weight=0.62;
+      if(x>0){sum+=heat[i-1]*0.09;weight+=0.09}
+      if(x<cols-1){sum+=heat[i+1]*0.09;weight+=0.09}
+      if(y>0){sum+=heat[i-cols]*0.09;weight+=0.09}
+      if(y<rows-1){sum+=heat[i+cols]*0.09;weight+=0.09}
+      next[i]=sum/weight*0.993;
+    }
+  }
+  heat=next;
+}
+
+function crackStep(){
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=idx(x,y);
+      const stress=heat[i]+grain[i]*0.55+(cracked[i]?0.2:0);
+      if(stress>1.05&&Math.random()<0.08+Math.min(0.22,(stress-1.05)*0.12)){
+        cracked[i]=1;
+        age[i]=Math.min(1,age[i]+0.1);
+        const dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1]];
+        dirs.sort(()=>Math.random()-.5);
+        for(let n=0;n<2;n++){
+          const nx=x+dirs[n][0],ny=y+dirs[n][1];
+          const ni=idx(nx,ny);
+          heat[ni]+=0.18+grain[i]*0.06;
+          if(Math.random()<0.45) cracked[ni]=1;
+        }
+      }
+    }
+  }
+}
+
+function step(){
+  tick++;
+  for(const p of points){
+    const orbit=Math.sin(tick*.008+p.p)*p.r*.18;
+    addPressure(p.x+Math.cos(p.p+tick*.003)*orbit,p.y+Math.sin(p.p+tick*.004)*orbit,p.s*.032,p.r);
+  }
+  if(pointer) addPressure(pointer.x,pointer.y,0.18,90);
+  relax();
+  crackStep();
+  for(let i=0;i<age.length;i++) if(cracked[i]) age[i]=Math.min(1,age[i]+0.012);
+}
+
+function render(){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#070707';
+  ctx.fillRect(0,0,W,H);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      const h=Math.max(0,Math.min(1.35,heat[i]));
+      const warm=Math.max(0,Math.min(1,h*.75+grain[i]*.25));
+      const r=24+warm*92;
+      const g=22+warm*62;
+      const b=20+warm*34;
+      ctx.fillStyle=`rgb(${r|0},${g|0},${b|0})`;
+      ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      if(!cracked[i]) continue;
+      const a=.18+age[i]*.62;
+      ctx.strokeStyle=`rgba(255,226,172,${a})`;
+      ctx.lineWidth=Math.max(1,cell*.16);
+      const cx=(x+.5)*cell,cy=(y+.5)*cell;
+      ctx.beginPath();
+      ctx.moveTo(cx-cell*.44,cy+Math.sin((x+y)*1.7)*cell*.12);
+      ctx.lineTo(cx+cell*.44,cy+Math.cos((x-y)*1.3)*cell*.12);
+      ctx.stroke();
+    }
+  }
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='rgba(255,235,194,.8)';
+  for(const p of points){
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2.1,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function frame(){
+  if(running){
+    step();
+    if(isFrame) step();
+  }
+  render();
+  requestAnimationFrame(frame);
+}
+
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  pointer=pos(e);
+  canvas.setPointerCapture(e.pointerId);
+  addPressure(pointer.x,pointer.y,0.9,120);
+});
+canvas.addEventListener('pointermove',e=>{if(pointer) pointer=pos(e)});
+canvas.addEventListener('pointerup',()=>{pointer=null});
+canvas.addEventListener('pointercancel',()=>{pointer=null});
+
+document.getElementById('settle').addEventListener('click',()=>{
+  for(let i=0;i<110;i++) step();
+});
+document.getElementById('reset').addEventListener('click',()=>{
+  alloc();
+  seed();
+  tick=0;
+});
+
+window.addEventListener('resize',resize);
+if(window.visualViewport) window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+requestAnimationFrame(()=>{
+  resize();
+  for(let i=0;i<(isFrame?90:28);i++) step();
+  setTimeout(resize,200);
+  frame();
+});
+</script>
+</body>
+</html>

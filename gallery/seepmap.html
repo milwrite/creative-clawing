@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Seep Map</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#0a0c0b;overflow:hidden}
+body{font-family:ui-monospace,Menlo,Consolas,monospace}
+canvas{display:block;width:100%;height:100%;touch-action:none;background:#0a0c0b}
+#info{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);max-width:min(92vw,720px);padding:7px 12px;border:1px solid rgba(205,213,185,.32);background:rgba(8,11,10,.72);color:#e4dfc6;border-radius:6px;font:12px/1.45 ui-monospace,monospace;text-align:center;pointer-events:none}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));padding:8px 12px;border:1px solid rgba(205,213,185,.34);background:rgba(8,11,10,.72);color:#e4dfc6;border-radius:6px;font:12px ui-monospace,monospace;text-decoration:none;z-index:4}
+.back-btn:hover{border-color:rgba(240,238,210,.76)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone #info{position:relative;left:auto;bottom:auto;transform:none;margin:0 auto;padding-bottom:calc(10px + env(safe-area-inset-bottom));width:100%;max-width:100%;border-left:0;border-right:0;border-bottom:0;border-radius:0}
+}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Seep Map · drag to raise the water table · tap to open a spring</div>
+<script>
+// originAgent: moonshot
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+let W=0,H=0,DPR=1,cols=0,rows=0,cell=5,t=0,last=0;
+let pressure=new Float32Array(0),wet=new Float32Array(0),sand=new Float32Array(0),mark=new Float32Array(0);
+let nextPressure=new Float32Array(0),nextWet=new Float32Array(0);
+let pointer={x:.5,y:.58,down:false};
+const palette={
+  dry:[43,42,33],
+  sand:[103,96,70],
+  wet:[43,91,86],
+  seep:[122,165,145],
+  chalk:[225,219,185],
+  iron:[184,112,83]
+};
+function idx(x,y){return y*cols+x}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function mix(a,b,k){return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k]}
+function noise(x,y){return (Math.sin(x*127.13+y*311.91)*43758.5453)%1}
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  const rect=canvas.getBoundingClientRect();
+  W=Math.max(1,Math.floor(rect.width||innerWidth));
+  H=Math.max(1,Math.floor(rect.height||innerHeight));
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cell=window.self!==window.top?6:5;
+  cols=Math.max(68,Math.ceil(W/cell));
+  rows=Math.max(48,Math.ceil(H/cell));
+  pressure=new Float32Array(cols*rows);
+  wet=new Float32Array(cols*rows);
+  sand=new Float32Array(cols*rows);
+  mark=new Float32Array(cols*rows);
+  nextPressure=new Float32Array(cols*rows);
+  nextWet=new Float32Array(cols*rows);
+  seed();
+}
+function seed(){
+  for(let y=0;y<rows;y++){
+    const gy=y/rows;
+    for(let x=0;x<cols;x++){
+      const gx=x/cols;
+      const swale=.22*Math.sin(gx*Math.PI*1.7+.45)+.08*Math.sin((x+y*.4)*.08);
+      const grain=(noise(x*.31,y*.27)-.5)*.055;
+      const i=idx(x,y);
+      sand[i]=clamp(.46+gy*.16+swale+grain,0,1);
+      pressure[i]=clamp(.18+(1-gy)*.08+.13*Math.sin((x*.041+y*.025)+1.6)-sand[i]*.08,0,.7);
+      wet[i]=clamp(pressure[i]*.55+Math.max(0,.38-sand[i])*.22,0,.8);
+      mark[i]=clamp((noise(x*.17,y*.19)+.5)*.05,0,.12);
+    }
+  }
+  openSpring(cols*.32,rows*.62,1.1);
+  openSpring(cols*.72,rows*.38,.72);
+}
+function openSpring(cx,cy,force){
+  const r=window.self!==window.top?15:22;
+  for(let y=Math.floor(cy-r);y<=Math.ceil(cy+r);y++){
+    for(let x=Math.floor(cx-r);x<=Math.ceil(cx+r);x++){
+      if(x<1||y<1||x>=cols-1||y>=rows-1)continue;
+      const d=Math.hypot(x-cx,y-cy);
+      if(d>r)continue;
+      const k=(1-d/r)*force;
+      const i=idx(x,y);
+      pressure[i]=clamp(pressure[i]+k*.42,0,1.4);
+      wet[i]=clamp(wet[i]+k*.38,0,1.3);
+      mark[i]=clamp(mark[i]+k*.12,0,1);
+      sand[i]=clamp(sand[i]-k*.01,0,1);
+    }
+  }
+}
+function disturb(dt){
+  const px=pointer.x*cols,py=pointer.y*rows;
+  if(pointer.down)openSpring(px,py,dt*48);
+  else if(window.self!==window.top)openSpring(px,py,dt*10);
+}
+function step(dt){
+  nextPressure.fill(0);
+  nextWet.fill(0);
+  disturb(dt);
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=idx(x,y);
+      let p=pressure[i];
+      let w=wet[i];
+      const slope=sand[i]+w*.2-p*.32;
+      const n=[idx(x+1,y),idx(x-1,y),idx(x,y+1),idx(x,y-1)];
+      let movedP=0,movedW=0;
+      for(let k=0;k<4;k++){
+        const j=n[k];
+        const drop=slope-(sand[j]+wet[j]*.2-pressure[j]*.32);
+        if(drop>.001&&p>.002){
+          const flow=Math.min(p*.16,drop*.2);
+          const seep=Math.min(w*.1,flow*.7+w*.04);
+          nextPressure[j]+=flow;
+          nextWet[j]+=seep;
+          movedP+=flow;
+          movedW+=seep;
+          mark[j]=clamp(mark[j]+flow*.01,0,1);
+        }
+      }
+      const rise=.0018+.0014*Math.sin(t*.018+x*.043);
+      p=clamp(p-movedP+rise*(1-y/rows),0,1.5);
+      w=clamp(w-movedW+p*.006-.0024*(.7+sand[i]),0,1.4);
+      if(w>.46){
+        mark[i]=clamp(mark[i]+(w-.46)*.006,0,1);
+        sand[i]=clamp(sand[i]-(w-.46)*.0009,0,1);
+      }
+      nextPressure[i]+=p*.994;
+      nextWet[i]+=w*.992;
+    }
+  }
+  pressure.set(nextPressure);
+  wet.set(nextWet);
+}
+function colorAt(i,x,y){
+  const w=wet[i],p=pressure[i],s=sand[i],m=mark[i];
+  let base=mix(palette.dry,palette.sand,clamp(s*1.15,0,1));
+  base=mix(base,palette.wet,clamp(w*.78,0,.72));
+  base=mix(base,palette.seep,clamp(p*.28+w*.22,0,.48));
+  base=mix(base,palette.chalk,clamp(m*.42+Math.max(0,w-.72)*.28,0,.42));
+  const iron=clamp(Math.sin((x*.11-y*.04)+t*.006)*.12+m*.2,0,.3);
+  base=mix(base,palette.iron,iron);
+  const shade=.82+.18*Math.sin(x*.06+y*.31+t*.007);
+  return `rgb(${base[0]*shade|0},${base[1]*shade|0},${base[2]*shade|0})`;
+}
+function draw(){
+  ctx.fillStyle='#0a0c0b';
+  ctx.fillRect(0,0,W,H);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      ctx.fillStyle=colorAt(i,x,y);
+      ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  for(let y=2;y<rows-2;y+=4){
+    ctx.beginPath();
+    let drawing=false;
+    for(let x=2;x<cols-2;x++){
+      const i=idx(x,y);
+      if(wet[i]+mark[i]>.62){
+        const xx=x*cell;
+        const yy=(y+.5)*cell+Math.sin(x*.18+t*.014)*2;
+        if(!drawing){ctx.moveTo(xx,yy);drawing=true}else ctx.lineTo(xx,yy);
+      }else if(drawing){
+        ctx.strokeStyle='rgba(221,226,191,.14)';
+        ctx.lineWidth=1;
+        ctx.stroke();
+        drawing=false;
+        ctx.beginPath();
+      }
+    }
+    if(drawing){ctx.strokeStyle='rgba(221,226,191,.14)';ctx.lineWidth=1;ctx.stroke()}
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function frame(now){
+  const dt=Math.min(.05,((now||0)-last)/1000||.016);
+  last=now||0;
+  t+=dt*60;
+  if(window.self!==window.top){
+    pointer.x=clamp(.5+.32*Math.sin(t*.008),.08,.92);
+    pointer.y=clamp(.52+.18*Math.sin(t*.011),.12,.88);
+  }
+  for(let i=0;i<2;i++)step(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+function setPointer(e){
+  const r=canvas.getBoundingClientRect();
+  pointer.x=clamp((e.clientX-r.left)/Math.max(1,r.width),0,1);
+  pointer.y=clamp((e.clientY-r.top)/Math.max(1,r.height),0,1);
+}
+canvas.addEventListener('pointerdown',e=>{setPointer(e);pointer.down=true;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{setPointer(e);});
+canvas.addEventListener('pointerup',e=>{pointer.down=false;try{canvas.releasePointerCapture(e.pointerId)}catch(err){}});
+canvas.addEventListener('pointercancel',()=>{pointer.down=false;});
+canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+addEventListener('resize',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,200));
+requestAnimationFrame(()=>{
+  resize();
+  if(window.self!==window.top){
+    pointer.down=true;
+    for(let i=0;i<90;i++)step(.018);
+    pointer.down=false;
+  }
+  setTimeout(resize,200);
+  requestAnimationFrame(frame);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Silt Ledger</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#07100e;overflow:hidden}
+body{font-family:ui-monospace,Menlo,Consolas,monospace}
+canvas{display:block;width:100%;height:100%;touch-action:none;background:#07100e}
+#info{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);max-width:min(92vw,680px);padding:7px 12px;border:1px solid rgba(205,185,146,.32);background:rgba(6,10,9,.62);color:#e5d7b4;border-radius:6px;font:12px/1.45 ui-monospace,monospace;text-align:center;pointer-events:none}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));padding:8px 12px;border:1px solid rgba(205,185,146,.34);background:rgba(6,10,9,.62);color:#e5d7b4;border-radius:6px;font:12px ui-monospace,monospace;text-decoration:none;z-index:4}
+.back-btn:hover{border-color:rgba(240,225,185,.7)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone #info{position:relative;left:auto;bottom:auto;transform:none;margin:0 auto;padding-bottom:calc(10px + env(safe-area-inset-bottom));width:100%;max-width:100%;border-left:0;border-right:0;border-bottom:0;border-radius:0}
+}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Silt Ledger · drag to cut a channel · tap to drop heavier grain</div>
+<script>
+// originAgent: moonshot
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+let W=0,H=0,DPR=1,cols=0,rows=0,cell=4,t=0,last=0;
+let height=new Float32Array(0),water=new Float32Array(0),silt=new Float32Array(0),nextWater=new Float32Array(0),nextSilt=new Float32Array(0);
+let pointer={x:.52,y:.34,down:false,active:false};
+const palette=[
+  [29,55,48],[53,77,61],[82,89,63],[116,105,73],[153,131,89],
+  [185,158,111],[210,190,143],[94,117,97],[48,86,84],[22,42,45]
+];
+function idx(x,y){return y*cols+x}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function noise(x,y){
+  return Math.sin(x*12.9898+y*78.233)*43758.5453%1;
+}
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  const rect=canvas.getBoundingClientRect();
+  W=Math.max(1,Math.floor(rect.width||innerWidth));
+  H=Math.max(1,Math.floor(rect.height||innerHeight));
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cell=window.self!==window.top?5:4;
+  cols=Math.max(70,Math.ceil(W/cell));
+  rows=Math.max(46,Math.ceil(H/cell));
+  height=new Float32Array(cols*rows);
+  water=new Float32Array(cols*rows);
+  silt=new Float32Array(cols*rows);
+  nextWater=new Float32Array(cols*rows);
+  nextSilt=new Float32Array(cols*rows);
+  seed();
+}
+function seed(){
+  for(let y=0;y<rows;y++){
+    const slope=y/rows;
+    for(let x=0;x<cols;x++){
+      const band=Math.sin(y*.42+Math.sin(x*.045)*1.8)*.055;
+      const rib=Math.sin((x+y*.18)*.11)*.026;
+      const speck=(noise(x*.17,y*.23)-.5)*.028;
+      const i=idx(x,y);
+      height[i]=clamp(.68-slope*.42+band+rib+speck,0,1);
+      silt[i]=.22+.22*Math.max(0,Math.sin(y*.25+x*.035));
+      water[i]=0;
+    }
+  }
+  addStream(cols*.18,rows*.18,1.4);
+  addStream(cols*.62,rows*.08,1.0);
+}
+function addStream(cx,cy,force){
+  const r=window.self!==window.top?18:22;
+  for(let y=Math.floor(cy-r);y<=Math.ceil(cy+r);y++){
+    for(let x=Math.floor(cx-r);x<=Math.ceil(cx+r);x++){
+      if(x<1||y<1||x>=cols-1||y>=rows-1)continue;
+      const d=Math.hypot(x-cx,y-cy);
+      if(d>r)continue;
+      const k=(1-d/r)*force;
+      const i=idx(x,y);
+      water[i]+=k*.7;
+      silt[i]+=k*.22;
+      height[i]-=k*.018;
+    }
+  }
+}
+function disturb(dt){
+  const px=pointer.x*cols,py=pointer.y*rows;
+  const moving=pointer.down||window.self!==window.top;
+  if(!moving)return;
+  addStream(px,py,(pointer.down?1.7:.55)*dt*42);
+}
+function step(dt){
+  nextWater.fill(0);
+  nextSilt.fill(0);
+  disturb(dt);
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=idx(x,y);
+      let w=water[i]*.984;
+      let carried=silt[i]*.992;
+      const base=height[i]+w*.45;
+      let best=i,bestDrop=0;
+      const n=[idx(x+1,y),idx(x-1,y),idx(x,y+1),idx(x,y-1)];
+      for(let k=0;k<4;k++){
+        const j=n[k];
+        const drop=base-(height[j]+water[j]*.45);
+        if(drop>bestDrop){bestDrop=drop;best=j}
+      }
+      if(best!==i&&w>.002){
+        const flow=Math.min(w*.52,bestDrop*.36);
+        nextWater[best]+=flow;
+        nextSilt[best]+=carried*(flow/Math.max(w,.001));
+        w-=flow;
+        carried*=1-flow/Math.max(w+flow,.001);
+        height[i]-=flow*.006+carried*.0015;
+      }
+      const settle=Math.min(carried,.006+Math.max(0,.055-w)*.045);
+      carried-=settle;
+      height[i]+=settle*.05;
+      nextWater[i]+=w;
+      nextSilt[i]+=carried;
+    }
+  }
+  water.set(nextWater);
+  silt.set(nextSilt);
+}
+function colorFor(v,w,ss,y){
+  const band=Math.floor(clamp(v*palette.length,0,palette.length-1));
+  const p=palette[band],q=palette[Math.min(palette.length-1,band+1)];
+  const f=(v*palette.length)%1;
+  let r=p[0]+(q[0]-p[0])*f;
+  let g=p[1]+(q[1]-p[1])*f;
+  let b=p[2]+(q[2]-p[2])*f;
+  const wet=clamp(w*.65,0,.55), load=clamp(ss*.8,0,.35);
+  r=r*(1-wet)+28*wet+load*38;
+  g=g*(1-wet)+72*wet+load*32;
+  b=b*(1-wet)+76*wet+load*12;
+  const shade=.86+.14*Math.sin(y*.41+t*.12);
+  return `rgb(${r*shade|0},${g*shade|0},${b*shade|0})`;
+}
+function draw(){
+  ctx.fillStyle='#07100e';
+  ctx.fillRect(0,0,W,H);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      const h=height[i];
+      const grad=y>0?h-height[idx(x,y-1)]:0;
+      const shade=clamp(h+grad*1.8,0,1);
+      ctx.fillStyle=colorFor(shade,water[i],silt[i],y);
+      ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  for(let y=2;y<rows-2;y+=2){
+    ctx.beginPath();
+    let open=false;
+    for(let x=2;x<cols-2;x++){
+      const i=idx(x,y);
+      if(water[i]>.06){
+        const xx=x*cell,yy=(y+.5)*cell+Math.sin(x*.4+t)*1.4;
+        if(!open){ctx.moveTo(xx,yy);open=true}else ctx.lineTo(xx,yy);
+      }else if(open){
+        ctx.strokeStyle=`rgba(142,190,184,${clamp(water[i-1]*.5,.04,.28)})`;
+        ctx.lineWidth=1.1;
+        ctx.stroke();
+        open=false;
+        ctx.beginPath();
+      }
+    }
+    if(open){ctx.strokeStyle='rgba(142,190,184,.18)';ctx.lineWidth=1.1;ctx.stroke()}
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function frame(now){
+  const dt=Math.min(.05,((now||0)-last)/1000||.016);
+  last=now||0;
+  t+=dt*60;
+  pointer.x=clamp(pointer.x+.0008*Math.sin(t*.011),.05,.95);
+  if(window.self!==window.top)pointer.y=clamp(.34+.16*Math.sin(t*.008),.08,.82);
+  for(let i=0;i<2;i++)step(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+function setPointer(e){
+  const r=canvas.getBoundingClientRect();
+  pointer.x=clamp((e.clientX-r.left)/Math.max(1,r.width),0,1);
+  pointer.y=clamp((e.clientY-r.top)/Math.max(1,r.height),0,1);
+  pointer.active=true;
+}
+canvas.addEventListener('pointerdown',e=>{setPointer(e);pointer.down=true;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{setPointer(e);});
+canvas.addEventListener('pointerup',e=>{pointer.down=false;try{canvas.releasePointerCapture(e.pointerId)}catch(err){}});
+canvas.addEventListener('pointercancel',()=>{pointer.down=false;});
+canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+addEventListener('resize',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,200));
+requestAnimationFrame(()=>{
+  resize();
+  if(window.self!==window.top){
+    pointer.down=true;
+    for(let i=0;i<90;i++)step(.018);
+    pointer.down=false;
+  }
+  setTimeout(resize,200);
+  requestAnimationFrame(frame);
+});
+</script>
+</body>
+</html>

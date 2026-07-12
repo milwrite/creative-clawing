@@ -29,10 +29,10 @@ def test_preview_helper_loads_iframes_immediately_and_reveals_after_resize_pulse
     assert "iframe.loading = 'lazy'" not in text
     assert "const READY_PULSES = 2" in text
     assert "const READY_PULSE_MS = 70" in text
-    assert "const PREVIEW_VERSION = '20260708-loading-fix'" in text
+    assert "const PREVIEW_VERSION = '20260712-content-sync'" in text
     assert "function versionedPreviewSrc(src)" in text
     assert "iframe.src = versionedPreviewSrc(src)" in text
-    assert "if ('fetchPriority' in iframe) iframe.fetchPriority = 'high'" in text
+    assert "if ('fetchPriority' in iframe) iframe.fetchPriority = 'auto'" in text
     assert "iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')" in text
     assert "iframe.setAttribute('aria-hidden', 'true')" in text
     assert "iframe.tabIndex = -1" in text
@@ -93,7 +93,7 @@ def test_pages_paint_posters_and_hydrate_live_frames_without_image_fallbacks():
     combined = "\n".join(pages.values())
 
     for page_name, text in pages.items():
-        assert "scripts/preview-cards.js?v=20260708-loading-fix" in text, page_name
+        assert "scripts/preview-cards.js?v=20260712-content-sync" in text, page_name
         assert "cc-preview-frame" in text, page_name
         assert "data-preview-id" in text, page_name
         assert "<img" not in text, page_name
@@ -162,18 +162,21 @@ def test_preview_css_keeps_reveal_transition_short():
     assert "transition: opacity .35s ease" not in combined
 
 
-def test_service_worker_caches_preview_runtime_but_no_generated_preview_images():
+def test_service_worker_caches_versioned_gallery_responses_for_reuse_and_fallback():
     text = read("sw.js")
 
-    assert "const CACHE = 'cc-v13'" in text
+    assert "const CACHE = 'cc-v14'" in text
     assert "'/scripts/preview-cards.js'" in text
     assert "assets/previews" not in text
     assert ".jpg" not in text
     assert "previewSrc" not in text
     assert "cc-preview-img" not in text
     assert "NEVER_CACHE" in text
-    assert "NEVER_CACHE_PREFIXES" in text
-    assert "'/gallery/'" in text
+    assert "url.pathname.startsWith('/gallery/')" in text
+    assert "async function fetchAndRemember(request)" in text
+    assert "cache.put(request, response.clone())" in text
+    assert "const cached = await cache.match(request)" in text
+    assert "e.respondWith(fetchAndRemember(e.request))" in text
     assert "fetch(e.request, { cache: 'reload' })" in text
     assert "/data/manifest-v2.json" in text
 

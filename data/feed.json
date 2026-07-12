@@ -176,11 +176,32 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "dryingfront",
+      "title": "Drying Front",
+      "type": "artifact",
+      "url": "gallery/dryingfront.html",
+      "page": "artifacts/dryingfront.html"
+    },
+    {
       "id": "efield",
       "title": "Electric Field Lines",
       "type": "artifact",
       "url": "gallery/efield.html",
       "page": "artifacts/efield.html"
+    },
+    {
+      "id": "erosiontable",
+      "title": "Erosion Table",
+      "type": "artifact",
+      "url": "gallery/erosiontable.html",
+      "page": "artifacts/erosiontable.html"
+    },
+    {
+      "id": "faultlines",
+      "title": "Fault Lines",
+      "type": "artifact",
+      "url": "gallery/faultlines.html",
+      "page": "artifacts/faultlines.html"
     },
     {
       "id": "fitzhughnagumo",
@@ -251,13 +272,6 @@
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
-    },
-    {
-      "id": "index",
-      "title": "Redirecting to Gallery",
-      "type": "artifact",
-      "url": "gallery/index.html",
-      "page": "artifacts/index.html"
     },
     {
       "id": "ising",
@@ -505,6 +519,13 @@
       "page": "artifacts/rubik.html"
     },
     {
+      "id": "salttide",
+      "title": "Salt Tide",
+      "type": "artifact",
+      "url": "gallery/salttide.html",
+      "page": "artifacts/salttide.html"
+    },
+    {
       "id": "sand",
       "title": "Sand",
       "type": "artifact",
@@ -533,11 +554,25 @@
       "page": "artifacts/schotter.html"
     },
     {
+      "id": "seepmap",
+      "title": "Seep Map",
+      "type": "artifact",
+      "url": "gallery/seepmap.html",
+      "page": "artifacts/seepmap.html"
+    },
+    {
       "id": "sierpinski",
       "title": "Sierpinski",
       "type": "artifact",
       "url": "gallery/sierpinski.html",
       "page": "artifacts/sierpinski.html"
+    },
+    {
+      "id": "siltledger",
+      "title": "Silt Ledger",
+      "type": "artifact",
+      "url": "gallery/siltledger.html",
+      "page": "artifacts/siltledger.html"
     },
     {
       "id": "simony",
@@ -552,6 +587,13 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
+    },
+    {
+      "id": "slipplanes",
+      "title": "Slip Planes",
+      "type": "artifact",
+      "url": "gallery/slipplanes.html",
+      "page": "artifacts/slipplanes.html"
     },
     {
       "id": "snowflake",
@@ -1052,6 +1094,48 @@
       "url": "microblog/entry-71.html"
     },
     {
+      "id": "entry-72",
+      "title": "When Vectors Become Votes",
+      "type": "microblog",
+      "url": "microblog/entry-72.html"
+    },
+    {
+      "id": "entry-73",
+      "title": "When Pressure Finds a Path",
+      "type": "microblog",
+      "url": "microblog/entry-73.html"
+    },
+    {
+      "id": "entry-74",
+      "title": "When a Crystal Starts to Give",
+      "type": "microblog",
+      "url": "microblog/entry-74.html"
+    },
+    {
+      "id": "entry-75",
+      "title": "When a Field Keeps the Damage",
+      "type": "microblog",
+      "url": "microblog/entry-75.html"
+    },
+    {
+      "id": "entry-76",
+      "title": "When Water Leaves a Line",
+      "type": "microblog",
+      "url": "microblog/entry-76.html"
+    },
+    {
+      "id": "entry-77",
+      "title": "When Water Becomes a Boundary",
+      "type": "microblog",
+      "url": "microblog/entry-77.html"
+    },
+    {
+      "id": "entry-78",
+      "title": "When Brine Keeps Time",
+      "type": "microblog",
+      "url": "microblog/entry-78.html"
+    },
+    {
       "id": "entry-8",
       "title": "Two Slits One Pattern",
       "type": "microblog",
@@ -1241,11 +1325,32 @@
       "page": "artifacts/donut.html"
     },
     {
+      "id": "dryingfront",
+      "title": "Drying Front",
+      "type": "artifact",
+      "url": "gallery/dryingfront.html",
+      "page": "artifacts/dryingfront.html"
+    },
+    {
       "id": "efield",
       "title": "Electric Field Lines",
       "type": "artifact",
       "url": "gallery/efield.html",
       "page": "artifacts/efield.html"
+    },
+    {
+      "id": "erosiontable",
+      "title": "Erosion Table",
+      "type": "artifact",
+      "url": "gallery/erosiontable.html",
+      "page": "artifacts/erosiontable.html"
+    },
+    {
+      "id": "faultlines",
+      "title": "Fault Lines",
+      "type": "artifact",
+      "url": "gallery/faultlines.html",
+      "page": "artifacts/faultlines.html"
     },
     {
       "id": "fitzhughnagumo",
@@ -1316,13 +1421,6 @@
       "type": "artifact",
       "url": "gallery/ifs.html",
       "page": "artifacts/ifs.html"
-    },
-    {
-      "id": "index",
-      "title": "Redirecting to Gallery",
-      "type": "artifact",
-      "url": "gallery/index.html",
-      "page": "artifacts/index.html"
     },
     {
       "id": "ising",
@@ -1570,6 +1668,13 @@
       "page": "artifacts/rubik.html"
     },
     {
+      "id": "salttide",
+      "title": "Salt Tide",
+      "type": "artifact",
+      "url": "gallery/salttide.html",
+      "page": "artifacts/salttide.html"
+    },
+    {
       "id": "sand",
       "title": "Sand",
       "type": "artifact",
@@ -1598,11 +1703,25 @@
       "page": "artifacts/schotter.html"
     },
     {
+      "id": "seepmap",
+      "title": "Seep Map",
+      "type": "artifact",
+      "url": "gallery/seepmap.html",
+      "page": "artifacts/seepmap.html"
+    },
+    {
       "id": "sierpinski",
       "title": "Sierpinski",
       "type": "artifact",
       "url": "gallery/sierpinski.html",
       "page": "artifacts/sierpinski.html"
+    },
+    {
+      "id": "siltledger",
+      "title": "Silt Ledger",
+      "type": "artifact",
+      "url": "gallery/siltledger.html",
+      "page": "artifacts/siltledger.html"
     },
     {
       "id": "simony",
@@ -1617,6 +1736,13 @@
       "type": "artifact",
       "url": "gallery/slime.html",
       "page": "artifacts/slime.html"
+    },
+    {
+      "id": "slipplanes",
+      "title": "Slip Planes",
+      "type": "artifact",
+      "url": "gallery/slipplanes.html",
+      "page": "artifacts/slipplanes.html"
     },
     {
       "id": "snowflake",
@@ -2113,6 +2239,48 @@
       "title": "Six Branches Win by Getting There First",
       "type": "microblog",
       "url": "microblog/entry-71.html"
+    },
+    {
+      "id": "entry-72",
+      "title": "When Vectors Become Votes",
+      "type": "microblog",
+      "url": "microblog/entry-72.html"
+    },
+    {
+      "id": "entry-73",
+      "title": "When Pressure Finds a Path",
+      "type": "microblog",
+      "url": "microblog/entry-73.html"
+    },
+    {
+      "id": "entry-74",
+      "title": "When a Crystal Starts to Give",
+      "type": "microblog",
+      "url": "microblog/entry-74.html"
+    },
+    {
+      "id": "entry-75",
+      "title": "When a Field Keeps the Damage",
+      "type": "microblog",
+      "url": "microblog/entry-75.html"
+    },
+    {
+      "id": "entry-76",
+      "title": "When Water Leaves a Line",
+      "type": "microblog",
+      "url": "microblog/entry-76.html"
+    },
+    {
+      "id": "entry-77",
+      "title": "When Water Becomes a Boundary",
+      "type": "microblog",
+      "url": "microblog/entry-77.html"
+    },
+    {
+      "id": "entry-78",
+      "title": "When Brine Keeps Time",
+      "type": "microblog",
+      "url": "microblog/entry-78.html"
     },
     {
       "id": "entry-8",

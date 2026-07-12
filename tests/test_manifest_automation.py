@@ -269,6 +269,38 @@ def test_milwrite_not_a_contributor():
         contribs = art.get("contributors", [])
         assert "milwrite" not in contribs, f"milwrite in contributors for {art['id']}"
 
+def test_manifest_excludes_gallery_redirect():
+    m = load_json(REPO / "data" / "manifest-v2.json")
+    assert "index" not in {a["id"] for a in m.get("artifacts", [])}
+
+def test_origin_is_first_contributor():
+    m = load_json(REPO / "data" / "manifest-v2.json")
+    for entry in m.get("artifacts", []) + m.get("microblogs", []):
+        contributors = entry.get("contributors", [])
+        assert contributors, f"Missing contributors for {entry['id']}"
+        assert contributors[0] == entry.get("originAgent"), (
+            f"Origin is not first for {entry['id']}: {contributors}"
+        )
+
+def test_confirmed_origin_overrides_are_reflected():
+    m = load_json(REPO / "data" / "manifest-v2.json")
+    overrides = load_json(REPO / "data" / "overrides.json")
+    entries = {
+        entry["id"]: entry
+        for entry in m.get("artifacts", []) + m.get("microblogs", [])
+    }
+    for entry_id in set(overrides.get("artifactOrigins", {})) | set(overrides.get("blogOrigins", {})):
+        assert entries[entry_id]["originConfidence"] == "confirmed", entry_id
+
+def test_profile_thumbnails_cover_every_manifest_artifact():
+    m = load_json(REPO / "data" / "manifest-v2.json")
+    missing = [
+        artifact["id"]
+        for artifact in m.get("artifacts", [])
+        if not (REPO / "thumbnails" / f"{artifact['id']}.webp").is_file()
+    ]
+    assert not missing, f"Missing profile thumbnails: {missing}"
+
 # ════════════════════════════════════════════════════════════════════════════
 # Runner
 # ════════════════════════════════════════════════════════════════════════════

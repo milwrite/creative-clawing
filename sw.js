@@ -1,7 +1,7 @@
 // Service Worker — Creative Clawing
 // Caches static shell assets for offline browsing.
 // Data files (manifest, feed) are ALWAYS fetched from network — never cached here.
-const CACHE = 'cc-v13';
+const CACHE = 'cc-v14';
 const SHELL = [
   '/',
   '/index.html',
@@ -21,10 +21,6 @@ const NEVER_CACHE = [
   '/data/manifest.json',
 ];
 
-const NEVER_CACHE_PREFIXES = [
-  '/gallery/',
-];
-
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
@@ -39,6 +35,19 @@ self.addEventListener('activate', e => {
   );
 });
 
+async function fetchAndRemember(request) {
+  const cache = await caches.open(CACHE);
+  try {
+    const response = await fetch(request);
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    throw error;
+  }
+}
+
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
@@ -52,10 +61,8 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  if (NEVER_CACHE_PREFIXES.some(prefix => url.pathname.startsWith(prefix))) {
-    e.respondWith(
-      fetch(e.request, { cache: 'reload' }).catch(() => caches.match(e.request))
-    );
+  if (url.pathname.startsWith('/gallery/')) {
+    e.respondWith(fetchAndRemember(e.request));
     return;
   }
 

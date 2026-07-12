@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Slip Planes</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#090b0c;overflow:hidden}
+body{display:flex;flex-direction:column;color:#d8e1dd;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+canvas{display:block;width:100%;height:100%;flex:1;min-height:0;touch-action:none;background:#090b0c}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:8;color:#d7e7df;text-decoration:none;background:rgba(5,8,9,.74);border:1px solid rgba(174,204,190,.32);padding:8px 12px;border-radius:4px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;backdrop-filter:blur(8px)}
+.panel{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));z-index:8;display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:min(780px,calc(100vw - 28px));padding:10px 12px;background:rgba(5,8,9,.74);border:1px solid rgba(174,204,190,.26);border-radius:4px;backdrop-filter:blur(8px);font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+.panel strong{font-weight:600;color:#eef8f3;letter-spacing:.02em}
+.panel span{color:#a8b8b1}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{appearance:none;border:1px solid rgba(174,204,190,.3);background:rgba(255,255,255,.04);color:#d7e7df;border-radius:4px;padding:7px 10px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;cursor:pointer}
+button:hover{border-color:rgba(207,237,222,.62);background:rgba(255,255,255,.08)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{position:relative;flex:1;min-height:0}
+  html.standalone .panel{position:relative;left:auto;bottom:auto;width:100%;max-width:none;border-left:0;border-right:0;border-bottom:0;border-radius:0;padding:9px max(10px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+}
+</style>
+</head>
+<body>
+<a class="back-btn" href="../gallery.html">Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel" id="ui">
+  <strong>Slip Planes</strong>
+  <span>drag to shear the lattice; dislocations travel through weak rows</span>
+  <div class="controls">
+    <button id="anneal">anneal</button>
+    <button id="reset">reset</button>
+  </div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const isFrame=window.self!==window.top;
+let W=1,H=1,dpr=1;
+let cols=1,rows=1,cell=12;
+let phase,slip,strain,weakness;
+let dislocations=[];
+let bands=[];
+let tick=0;
+let pointer=null;
+
+function idx(x,y){return y*cols+x}
+
+function alloc(){
+  phase=new Float32Array(cols*rows);
+  slip=new Float32Array(cols*rows);
+  strain=new Float32Array(cols*rows);
+  weakness=new Float32Array(cols*rows);
+  bands.length=0;
+  const bandCount=Math.max(5,Math.floor(rows/9));
+  for(let b=0;b<bandCount;b++){
+    bands.push({
+      y:Math.floor((b+0.55+Math.random()*0.35)*rows/bandCount),
+      drift:(Math.random()-.5)*0.018,
+      load:0.5+Math.random()*0.7
+    });
+  }
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      const nx=x/Math.max(1,cols-1);
+      const ny=y/Math.max(1,rows-1);
+      let lane=0;
+      for(const b of bands){
+        const d=Math.abs(y-b.y);
+        lane+=Math.exp(-d*d/14)*b.load;
+      }
+      weakness[i]=Math.min(1,0.18+lane*.45+Math.random()*.12);
+      phase[i]=Math.sin(nx*18+ny*7)*0.18+Math.cos(ny*24)*0.12;
+      strain[i]=weakness[i]*0.16;
+    }
+  }
+}
+
+function seed(){
+  dislocations.length=0;
+  const count=Math.max(7,Math.floor((W*H)/85000));
+  for(let i=0;i<count;i++){
+    const band=bands[i%Math.max(1,bands.length)];
+    dislocations.push({
+      x:Math.random()*W,
+      y:(band?band.y/rows:.5)*H+(Math.random()-.5)*cell*4,
+      vx:(Math.random()<.5?-1:1)*(0.18+Math.random()*0.42),
+      r:34+Math.random()*56,
+      life:0.5+Math.random()*0.5
+    });
+  }
+  if(isFrame){
+    for(let i=0;i<8;i++) addShear(W*(.18+.08*i),H*(.3+.04*i),0.75,120);
+  }
+}
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+  const nw=Math.max(1,Math.floor(rect.width||innerWidth));
+  const nh=Math.max(1,Math.floor(rect.height||innerHeight));
+  const ndpr=Math.min(window.devicePixelRatio||1,2);
+  if(nw===W&&nh===H&&ndpr===dpr) return;
+  W=nw;H=nh;dpr=ndpr;
+  canvas.width=Math.max(1,Math.floor(W*dpr));
+  canvas.height=Math.max(1,Math.floor(H*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cell=Math.max(8,Math.min(16,Math.floor(Math.sqrt(W*H)/72)));
+  cols=Math.ceil(W/cell);
+  rows=Math.ceil(H/cell);
+  alloc();
+  seed();
+}
+
+function addShear(px,py,amount,radius){
+  const gx=Math.floor(px/cell),gy=Math.floor(py/cell);
+  const gr=Math.ceil(radius/cell);
+  for(let y=Math.max(0,gy-gr);y<Math.min(rows,gy+gr+1);y++){
+    for(let x=Math.max(0,gx-gr);x<Math.min(cols,gx+gr+1);x++){
+      const dx=(x+.5)*cell-px;
+      const dy=(y+.5)*cell-py;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<radius){
+        const fall=1-dist/radius;
+        const i=idx(x,y);
+        strain[i]+=amount*fall*fall*(0.45+weakness[i]);
+        slip[i]+=amount*fall*.18*Math.sign(dx||1);
+      }
+    }
+  }
+}
+
+function diffuse(){
+  const next=new Float32Array(strain.length);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      let sum=strain[i]*0.58;
+      let weight=0.58;
+      if(x>0){sum+=strain[i-1]*0.08;weight+=0.08}
+      if(x<cols-1){sum+=strain[i+1]*0.08;weight+=0.08}
+      if(y>0){sum+=strain[i-cols]*0.13;weight+=0.13}
+      if(y<rows-1){sum+=strain[i+cols]*0.13;weight+=0.13}
+      next[i]=(sum/weight)*0.992;
+    }
+  }
+  strain=next;
+}
+
+function glide(){
+  for(const d of dislocations){
+    d.x+=d.vx*(1+d.life*1.7);
+    d.y+=Math.sin(tick*.018+d.x*.01)*0.18;
+    if(d.x<-d.r)d.x=W+d.r;
+    if(d.x>W+d.r)d.x=-d.r;
+    addShear(d.x,d.y,0.028*d.life,d.r);
+  }
+  if(pointer) addShear(pointer.x,pointer.y,0.2,92);
+}
+
+function yieldRows(){
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=idx(x,y);
+      const threshold=0.68-weakness[i]*0.34;
+      if(strain[i]>threshold){
+        const direction=(Math.sin(y*.7+tick*.012)>0)?1:-1;
+        const release=(strain[i]-threshold)*0.42;
+        slip[i]+=release*direction;
+        strain[i]*=0.62;
+        strain[idx(Math.max(0,Math.min(cols-1,x+direction)),y)]+=release*.28;
+        phase[i]+=release*.8;
+      }
+      slip[i]*=0.992;
+    }
+  }
+}
+
+function step(){
+  tick++;
+  for(const b of bands){
+    b.y+=b.drift;
+    if(b.y<2||b.y>rows-3)b.drift*=-1;
+  }
+  glide();
+  diffuse();
+  yieldRows();
+}
+
+function render(){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#090b0c';
+  ctx.fillRect(0,0,W,H);
+  ctx.lineWidth=1;
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      const s=Math.max(-1.5,Math.min(1.5,slip[i]));
+      const st=Math.max(0,Math.min(1.3,strain[i]));
+      const weak=weakness[i];
+      const ox=s*cell*.42+Math.sin(phase[i]+tick*.005)*cell*.08;
+      const px=x*cell+cell*.5+ox;
+      const py=y*cell+cell*.5;
+      const warm=st*.7+weak*.3;
+      ctx.strokeStyle=`rgba(${Math.floor(35+warm*95)},${Math.floor(80+warm*112)},${Math.floor(92+warm*88)},${0.22+warm*.45})`;
+      ctx.beginPath();
+      ctx.moveTo(px-cell*.36,py);
+      ctx.lineTo(px+cell*.36,py);
+      ctx.stroke();
+      if(st>0.45){
+        ctx.fillStyle=`rgba(238,248,222,${Math.min(.72,(st-.42)*.62)})`;
+        ctx.fillRect(px-1.2,py-1.2,2.4,2.4);
+      }
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  for(const d of dislocations){
+    const g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r);
+    g.addColorStop(0,'rgba(214,244,226,.26)');
+    g.addColorStop(.35,'rgba(113,188,186,.12)');
+    g.addColorStop(1,'rgba(113,188,186,0)');
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle='rgba(234,255,238,.72)';
+    ctx.lineWidth=1.4;
+    ctx.beginPath();
+    ctx.moveTo(d.x-5,d.y);
+    ctx.lineTo(d.x+5,d.y);
+    ctx.moveTo(d.x,d.y-5);
+    ctx.lineTo(d.x,d.y+5);
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+
+function frame(){
+  step();
+  if(isFrame) step();
+  render();
+  requestAnimationFrame(frame);
+}
+
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  pointer=pos(e);
+  canvas.setPointerCapture(e.pointerId);
+  addShear(pointer.x,pointer.y,0.95,130);
+});
+canvas.addEventListener('pointermove',e=>{if(pointer) pointer=pos(e)});
+canvas.addEventListener('pointerup',()=>{pointer=null});
+canvas.addEventListener('pointercancel',()=>{pointer=null});
+
+document.getElementById('anneal').addEventListener('click',()=>{
+  for(let i=0;i<strain.length;i++){
+    strain[i]*=0.45;
+    slip[i]*=0.68;
+  }
+});
+document.getElementById('reset').addEventListener('click',()=>{
+  alloc();
+  seed();
+  tick=0;
+});
+
+window.addEventListener('resize',resize);
+if(window.visualViewport) window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+requestAnimationFrame(()=>{
+  resize();
+  for(let i=0;i<(isFrame?120:36);i++) step();
+  setTimeout(resize,200);
+  frame();
+});
+</script>
+</body>
+</html>

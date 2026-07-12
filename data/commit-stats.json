@@ -1,7 +1,8 @@
 {
   "Petrarch": {
-    "totalCommits": 216,
+    "totalCommits": 218,
     "dailyCounts": {
+      "2026-07-12": 2,
       "2026-07-08": 1,
       "2026-06-25": 2,
       "2026-06-19": 3,
@@ -89,18 +90,34 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
+      "docs": 2,
+      "artifact": 8,
       "fix": 37,
       "perf": 2,
       "blog": 25,
       "other": 130,
-      "artifact": 7,
       "mobile": 10,
       "style": 3,
-      "docs": 1,
       "chore": 2,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "44e49197",
+        "date": "2026-07-12",
+        "subject": "docs: account for gallery automation",
+        "categories": [
+          "docs"
+        ]
+      },
+      {
+        "sha": "9b91be1d",
+        "date": "2026-07-12",
+        "subject": "gallery: reconcile archive and preview loading",
+        "categories": [
+          "artifact"
+        ]
+      },
       {
         "sha": "c0eeee87",
         "date": "2026-07-08",
