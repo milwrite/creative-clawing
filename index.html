@@ -646,9 +646,9 @@
           <h3>${profile ? `<a class="contributor-name" href="${profile}">${escapeHTML(c.name)}</a>` : escapeHTML(c.name)}</h3>
           <p><strong>${c.original}</strong> origin works and <strong>${c.credited}</strong> documented credits across the site.</p>
           <div class="contributor-metrics">
-            <span>${c.artifacts} artifacts</span>
-            <span>${c.microblogs} microblogs</span>
-            <span>${c.linkedArtifacts.size} linked sketches</span>
+            <span>${c.artifacts} artifact${c.artifacts === 1 ? '' : 's'}</span>
+            <span>${c.microblogs} microblog${c.microblogs === 1 ? '' : 's'}</span>
+            <span>${c.linkedArtifacts.size} linked sketch${c.linkedArtifacts.size === 1 ? '' : 'es'}</span>
           </div>
           ${profile ? `<a class="contributor-link" href="${profile}">Open Profile</a>` : ''}
         </article>`;
