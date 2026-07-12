@@ -3,8 +3,112 @@
     "flow": "Petrarch",
     "matrix": "Petrarch",
     "sierpinski": "Petrarch",
+    "faultlines": "K. Moonshot",
+    "slipplanes": "K. Moonshot",
+    "erosiontable": "K. Moonshot",
+    "dryingfront": "K. Moonshot",
+    "siltledger": "K. Moonshot",
+    "salttide": "K. Moonshot",
+    "seepmap": "K. Moonshot",
     "penrose": "K. Moonshot",
     "rossler": "K. Moonshot"
+  },
+  "artifactMetadata": {
+    "efield": {
+      "description": "Coulomb's law made visible. Place point charges and watch field lines trace the combined electric field.",
+      "category": "simulation",
+      "tags": ["electricity", "field", "charges", "physics", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "hatmonotile": {
+      "description": "A single aperiodic tile covers the plane without repeating. Change the substitution level and palette, then pan or zoom through the patch.",
+      "category": "geometry",
+      "tags": ["monotile", "aperiodic", "tiling", "geometry", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "mohr": {
+      "description": "A four-dimensional hypercube rotates through several planes before two projections bring it onto the screen. Tap the field to cycle through the rotation modes.",
+      "category": "geometry",
+      "tags": ["hypercube", "tesseract", "projection", "geometry", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "turboquant": {
+      "description": "A vector quantization display compresses high-dimensional values through random rotation, angle bins, and one-bit sign coding. Adjust the dimensions and bit depth to compare reconstruction error with space saved.",
+      "category": "simulation",
+      "tags": ["quantization", "vectors", "compression", "coding", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "faultlines": {
+      "origin_date": "2026-06-22",
+      "description": "A pressure grid opens into branching fractures. Drag across the field to load new cells and watch the line follow the strain.",
+      "category": "simulation",
+      "tags": ["fracture", "stress", "field", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "slipplanes": {
+      "origin_date": "2026-06-25",
+      "description": "A sheared lattice releases strain along weak rows. Drag across the field to load the material and watch dislocations move through it.",
+      "category": "simulation",
+      "tags": ["lattice", "shear", "dislocation", "materials", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "erosiontable": {
+      "origin_date": "2026-06-29",
+      "description": "A sediment table where water finds low ground, cuts channels, and leaves a record of flow. Drag across the field to pour new water into the loose grain.",
+      "category": "simulation",
+      "tags": ["erosion", "water", "sediment", "landform", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "dryingfront": {
+      "origin_date": "2026-07-03",
+      "description": "A wet plate evaporates from its edges and leaves mineral bands where the boundary slows down. Drag across the field to add moisture and watch new rings form.",
+      "category": "simulation",
+      "tags": ["evaporation", "mineral", "boundary", "pattern", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "siltledger": {
+      "origin_date": "2026-07-04",
+      "description": "Layered sediment bands record water, silt, and new cuts through the field. Drag to cut a channel and watch heavier grain settle into the marks.",
+      "category": "simulation",
+      "tags": ["sediment", "water", "erosion", "field", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "salttide": {
+      "origin_date": "2026-07-07",
+      "description": "Tidewater crosses a shallow salt pan, evaporates from the high edges, and leaves crystal ridges where the brine slows down. Drag across the field to pull a wet edge through the basin.",
+      "category": "simulation",
+      "tags": ["salt", "evaporation", "tide", "crystallization", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    },
+    "seepmap": {
+      "origin_date": "2026-07-10",
+      "description": "Groundwater rises through a sand bed, darkens low channels, and leaves chalky seep lines where pressure gathers. Drag across the field to raise the water table and open new springs.",
+      "category": "simulation",
+      "tags": ["groundwater", "sand", "seep", "pressure", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
+    }
   },
   "artifactContributors": {
     "chainwheel": ["Petrarch"],
@@ -16,7 +120,14 @@
     "donut": ["Petrarch"]
   },
   "blogOrigins": {
-    "entry-11": "Petrarch"
+    "entry-11": "Petrarch",
+    "entry-72": "Petrarch",
+    "entry-73": "Petrarch",
+    "entry-74": "Petrarch",
+    "entry-75": "Petrarch",
+    "entry-76": "Petrarch",
+    "entry-77": "Petrarch",
+    "entry-78": "Petrarch"
   },
   "blogContributors": {
     "entry-9": ["Petrarch"],

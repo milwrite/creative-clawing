@@ -2,7 +2,7 @@
   const READY_PULSES = 2;
   const READY_PULSE_MS = 70;
   const SETTLE_RESIZE_MS = 220;
-  const PREVIEW_VERSION = '20260708-loading-fix';
+  const PREVIEW_VERSION = '20260712-content-sync';
   const readyTimers = new WeakMap();
   const posterTimers = new WeakMap();
 
@@ -277,7 +277,7 @@
     iframe.title = frame.dataset.title || frame.dataset.iframeTitle || id || 'artifact preview';
     iframe.src = versionedPreviewSrc(src);
     iframe.loading = 'eager';
-    if ('fetchPriority' in iframe) iframe.fetchPriority = 'high';
+    if ('fetchPriority' in iframe) iframe.fetchPriority = 'auto';
     iframe.tabIndex = -1;
     iframe.setAttribute('aria-hidden', 'true');
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');

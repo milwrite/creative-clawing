@@ -411,14 +411,19 @@ def main():
     # ── 2. If --all, scan all HTML files directly ─────────────────────────────
     if args.reprocess_all:
         for f in GALLERY.glob("*.html"):
-            new_artifacts.add(id_from_path(f))
+            art_id = id_from_path(f)
+            if art_id != "index":
+                new_artifacts.add(art_id)
         for f in MICROBLOG.glob("*.html"):
             new_microblogs.add(id_from_path(f))
 
     # ── 3. Update manifest-v2 artifact entries ────────────────────────────────
     art_overrides = overrides.get("artifactOrigins", {})
+    metadata_overrides = overrides.get("artifactMetadata", {})
     contrib_overrides = overrides.get("artifactContributors", {})
+    optimization_contrib_overrides = overrides.get("optimizationContributors", {})
     blog_overrides = overrides.get("blogOrigins", {})
+    blog_contrib_overrides = overrides.get("blogContributors", {})
 
     def resolve_origin(id_, git_agent, overrides_map, confidence_map=None):
         if id_ in overrides_map:
@@ -460,11 +465,8 @@ def main():
         # Apply manual overrides
         for extra in contrib_overrides.get(art_id, []):
             contributing_agents.add(extra)
-
-        # Strip Unknown and excluded names before building list
-        contributing_agents -= EXCLUDE_CONTRIBUTORS
-        # Sort contributors: origin first
-        contributors = [final_origin] + sorted(contributing_agents - {final_origin})
+        for extra in optimization_contrib_overrides.get(art_id, []):
+            contributing_agents.add(extra)
 
         # Collect optimizations from commits
         optimizations = []
@@ -486,6 +488,26 @@ def main():
                         })
 
         existing = artifact_idx.get(art_id, {})
+        metadata = metadata_overrides.get(art_id, {})
+        existing_origin = normalize_agent(existing.get("originAgent"))
+        resolved_origin = final_origin if art_id in art_overrides else (existing_origin or final_origin)
+        resolved_confidence = (
+            "confirmed" if art_id in art_overrides
+            else existing.get("originConfidence") or origin_conf
+        )
+
+        # Merge every recorded source of credit, then keep the origin first.
+        contributing_agents.update(existing.get("contributors", []))
+        contributing_agents.update(
+            optimization.get("agent") for optimization in optimizations
+            if optimization.get("agent")
+        )
+        contributing_agents = {
+            normalize_agent(agent) for agent in contributing_agents if agent
+        }
+        contributing_agents -= EXCLUDE_CONTRIBUTORS
+        contributors = [resolved_origin] + sorted(contributing_agents - {resolved_origin})
+
         # Merge: keep existing fields, update detected ones
         entry = {
             "id": art_id,
@@ -493,16 +515,18 @@ def main():
             "type": "artifact",
             "url": f"gallery/{art_id}.html",
             "page": f"artifacts/{art_id}.html",
-            "originAgent": normalize_agent(existing.get("originAgent")) if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin,
-            "originConfidence": existing.get("originConfidence") or origin_conf,
-            "origin_date": existing.get("origin_date") or origin_date,
-            "contributors": ([c for c in existing.get("contributors", []) if c not in EXCLUDE_CONTRIBUTORS] or contributors) if existing.get("contributors") else contributors,
+            "originAgent": resolved_origin,
+            "originConfidence": resolved_confidence,
+            "origin_date": metadata.get("origin_date") or existing.get("origin_date") or origin_date,
+            "contributors": contributors,
             "optimizations": existing.get("optimizations") or optimizations,
         }
         # Preserve optional rich fields if already present
         for field in ("description", "category", "tags", "interactive", "animated",
                       "mobile_optimized", "inspiration", "year_referenced"):
-            if field in existing:
+            if field in metadata:
+                entry[field] = metadata[field]
+            elif field in existing:
                 entry[field] = existing[field]
             elif field in ("mobile_optimized", "interactive", "animated"):
                 entry.setdefault(field, False)
@@ -535,14 +559,28 @@ def main():
         origin_conf = "confirmed" if blog_id in bo else "reported"
 
         existing = microblog_idx.get(blog_id, {})
+        existing_origin = normalize_agent(existing.get("originAgent"))
+        resolved_origin = final_origin if blog_id in bo else (existing_origin or final_origin)
+        resolved_confidence = (
+            "confirmed" if blog_id in bo
+            else existing.get("originConfidence") or origin_conf
+        )
+        blog_contributors = {
+            normalize_agent(agent)
+            for agent in existing.get("contributors", []) + blog_contrib_overrides.get(blog_id, [])
+            if agent
+        }
+        blog_contributors -= EXCLUDE_CONTRIBUTORS
+        contributors = [resolved_origin] + sorted(blog_contributors - {resolved_origin})
         meta = extract_microblog_metadata(blog_path)
         entry = {
             "id": blog_id,
             "title": existing.get("title") or title,
             "type": "microblog",
             "url": f"microblog/{blog_id}.html",
-            "originAgent": normalize_agent(existing.get("originAgent")) if existing.get("originAgent") and existing.get("originAgent") != "Unknown" else final_origin,
-            "originConfidence": existing.get("originConfidence") or origin_conf,
+            "originAgent": resolved_origin,
+            "originConfidence": resolved_confidence,
+            "contributors": contributors,
             "date": existing.get("date") or meta.get("date"),
             "linkedArtifacts": existing.get("linkedArtifacts") or meta.get("linkedArtifacts", []),
             "tags": existing.get("tags") or meta.get("tags", []),
@@ -567,7 +605,7 @@ def main():
     # Drop any artifact/microblog entries whose underlying file is gone — keeps
     # the manifest from accruing stale references to deleted sketches.
     artifact_idx = {k: v for k, v in artifact_idx.items()
-                    if (GALLERY / f"{k}.html").exists()}
+                    if k != "index" and (GALLERY / f"{k}.html").exists()}
     microblog_idx = {k: v for k, v in microblog_idx.items()
                      if (MICROBLOG / f"{k}.html").exists()}
 

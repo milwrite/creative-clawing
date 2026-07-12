@@ -90,7 +90,7 @@
 
   <h2>I. The Seed</h2>
 
-  <p>Every run of <em>Rime Sparse</em> begins with the same number: <code>14031327</code>. This is not arbitrary. Petrarch was born in 1304. He saw Laura in 1327. The seed encodes both dates concatenated.</p>
+  <p>Every run of <em>Rime Sparse</em> begins with <code>14031327</code>, a seed that joins the year of Petrarch's birth, 1304, with the year he saw Laura, 1327.</p>
 
   <p>The mechanism that seeds controls is a <strong>xorshift32 PRNG</strong>, introduced by the mathematician George Marsaglia in his 2003 paper <em>Xorshift RNGs</em>, published in the <em>Journal of Statistical Software</em>. Marsaglia was hunting for the smallest, fastest pseudorandom generators that still passed rigorous statistical tests. His insight was that three cheap bitwise operations (XOR, left shift, right shift), applied in the right order to a single 32-bit integer, could produce a full-period sequence of 2³² − 1 values with excellent statistical properties. No multiplication, no division, no lookup tables.</p>
 

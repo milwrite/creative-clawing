@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Salt Tide</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#08100f;overflow:hidden}
+body{font-family:ui-monospace,Menlo,Consolas,monospace}
+canvas{display:block;width:100%;height:100%;touch-action:none;background:#08100f}
+#info{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);max-width:min(92vw,700px);padding:7px 12px;border:1px solid rgba(220,205,172,.35);background:rgba(7,12,11,.66);color:#eadfbe;border-radius:6px;font:12px/1.45 ui-monospace,monospace;text-align:center;pointer-events:none}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));padding:8px 12px;border:1px solid rgba(220,205,172,.36);background:rgba(7,12,11,.66);color:#eadfbe;border-radius:6px;font:12px ui-monospace,monospace;text-decoration:none;z-index:4}
+.back-btn:hover{border-color:rgba(246,237,205,.76)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{flex:1;min-height:0}
+  html.standalone #info{position:relative;left:auto;bottom:auto;transform:none;margin:0 auto;padding-bottom:calc(10px + env(safe-area-inset-bottom));width:100%;max-width:100%;border-left:0;border-right:0;border-bottom:0;border-radius:0}
+}
+</style>
+</head>
+<body>
+<a href="../" class="back-btn">← Gallery</a>
+<canvas id="c"></canvas>
+<div id="info">Salt Tide · drag to pull a wet edge · tap to seed crystal ridges</div>
+<script>
+// originAgent: moonshot
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
+let W=0,H=0,DPR=1,cols=0,rows=0,cell=4,t=0,last=0;
+let brine=new Float32Array(0),salt=new Float32Array(0),bed=new Float32Array(0),nextBrine=new Float32Array(0),nextSalt=new Float32Array(0);
+let pointer={x:.42,y:.52,down:false,active:false};
+const colors={
+  dry:[28,38,34],
+  mud:[78,82,61],
+  wet:[30,91,96],
+  brine:[92,159,151],
+  salt:[238,229,197],
+  rose:[211,139,120]
+};
+function idx(x,y){return y*cols+x}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function mix(a,b,k){return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k]}
+function hash(x,y){return (Math.sin(x*127.1+y*311.7)*43758.5453)%1}
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  const rect=canvas.getBoundingClientRect();
+  W=Math.max(1,Math.floor(rect.width||innerWidth));
+  H=Math.max(1,Math.floor(rect.height||innerHeight));
+  canvas.width=Math.round(W*DPR);
+  canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cell=window.self!==window.top?5:4;
+  cols=Math.max(72,Math.ceil(W/cell));
+  rows=Math.max(48,Math.ceil(H/cell));
+  brine=new Float32Array(cols*rows);
+  salt=new Float32Array(cols*rows);
+  bed=new Float32Array(cols*rows);
+  nextBrine=new Float32Array(cols*rows);
+  nextSalt=new Float32Array(cols*rows);
+  seed();
+}
+function seed(){
+  for(let y=0;y<rows;y++){
+    const gy=y/rows;
+    for(let x=0;x<cols;x++){
+      const gx=x/cols;
+      const basin=Math.sin((gx*.9+gy*.35)*Math.PI);
+      const ridge=Math.sin(y*.32+Math.sin(x*.06)*2.6)*.06;
+      const wind=Math.sin((x-y*.52)*.095)*.035;
+      const speck=(hash(x*.19,y*.23)-.5)*.025;
+      const i=idx(x,y);
+      bed[i]=clamp(.46+basin*.18-gy*.11+ridge+wind+speck,0,1);
+      brine[i]=clamp(.22+.26*Math.max(0,Math.sin((x*.038+y*.025)+1.4))-bed[i]*.16,0,.7);
+      salt[i]=clamp(.18+.16*Math.max(0,Math.sin(y*.19+x*.031)),0,.7);
+    }
+  }
+  pullTide(cols*.18,rows*.58,1.3);
+  pullTide(cols*.75,rows*.32,.9);
+}
+function pullTide(cx,cy,force){
+  const r=window.self!==window.top?18:24;
+  for(let y=Math.floor(cy-r);y<=Math.ceil(cy+r);y++){
+    for(let x=Math.floor(cx-r);x<=Math.ceil(cx+r);x++){
+      if(x<1||y<1||x>=cols-1||y>=rows-1)continue;
+      const d=Math.hypot(x-cx,y-cy);
+      if(d>r)continue;
+      const k=(1-d/r)*force;
+      const i=idx(x,y);
+      brine[i]+=k*.46;
+      salt[i]+=k*.12;
+      bed[i]-=k*.006;
+    }
+  }
+}
+function disturb(dt){
+  const px=pointer.x*cols,py=pointer.y*rows;
+  if(pointer.down){
+    pullTide(px,py,1.35*dt*46);
+    return;
+  }
+  if(window.self!==window.top){
+    pullTide(px,py,.34*dt*42);
+  }
+}
+function step(dt){
+  nextBrine.fill(0);
+  nextSalt.fill(0);
+  disturb(dt);
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=idx(x,y);
+      let b=brine[i];
+      let s=salt[i];
+      const tide=.5+.5*Math.sin(t*.018+y*.025);
+      const evap=(.0028+.0022*tide)*(1+.55*Math.max(0,bed[i]-.42));
+      const deposit=Math.min(s,Math.max(0,evap-b*.001)*(.48+.52*Math.sin((x+y)*.08+t*.01)));
+      b=clamp(b-evap,0,1.2);
+      s=clamp(s-deposit*.45,0,1.4);
+      bed[i]=clamp(bed[i]+deposit*.012,0,1);
+      const level=bed[i]+b*.58;
+      const n=[idx(x+1,y),idx(x-1,y),idx(x,y+1),idx(x,y-1)];
+      let moved=0;
+      for(let k=0;k<4;k++){
+        const j=n[k];
+        const drop=level-(bed[j]+brine[j]*.58);
+        if(drop>.002&&b>.001){
+          const flow=Math.min(b*.18,drop*.22);
+          nextBrine[j]+=flow;
+          nextSalt[j]+=s*(flow/Math.max(b,.001));
+          moved+=flow;
+        }
+      }
+      const stay=Math.max(0,b-moved);
+      nextBrine[i]+=stay*.995;
+      nextSalt[i]+=s*Math.min(1,stay/Math.max(b,.001));
+    }
+  }
+  brine.set(nextBrine);
+  salt.set(nextSalt);
+}
+function cellColor(i,x,y){
+  const b=brine[i],s=salt[i],h=bed[i];
+  let base=mix(colors.dry,colors.mud,clamp(h*1.35,0,1));
+  base=mix(base,colors.wet,clamp(b*.72,0,.7));
+  base=mix(base,colors.brine,clamp(b*.36,0,.5));
+  const crust=clamp((h-.62)*2.4+s*.32,0,.78);
+  base=mix(base,colors.salt,crust);
+  const bloom=clamp(s*.18+Math.max(0,Math.sin((x+y)*.08+t*.012))*.12,0,.32);
+  base=mix(base,colors.rose,bloom);
+  const shade=.86+.14*Math.sin(y*.37+x*.04+t*.009);
+  return `rgb(${base[0]*shade|0},${base[1]*shade|0},${base[2]*shade|0})`;
+}
+function draw(){
+  ctx.fillStyle='#08100f';
+  ctx.fillRect(0,0,W,H);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=idx(x,y);
+      ctx.fillStyle=cellColor(i,x,y);
+      ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  for(let y=3;y<rows-3;y+=3){
+    ctx.beginPath();
+    let drawing=false;
+    for(let x=2;x<cols-2;x++){
+      const i=idx(x,y);
+      const crust=bed[i]+salt[i]*.12;
+      if(crust>.6){
+        const xx=x*cell;
+        const yy=(y+.45)*cell+Math.sin(x*.35+t*.015)*1.6;
+        if(!drawing){ctx.moveTo(xx,yy);drawing=true}else ctx.lineTo(xx,yy);
+      }else if(drawing){
+        ctx.strokeStyle='rgba(247,236,199,.16)';
+        ctx.lineWidth=1;
+        ctx.stroke();
+        drawing=false;
+        ctx.beginPath();
+      }
+    }
+    if(drawing){ctx.strokeStyle='rgba(247,236,199,.16)';ctx.lineWidth=1;ctx.stroke()}
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function frame(now){
+  const dt=Math.min(.05,((now||0)-last)/1000||.016);
+  last=now||0;
+  t+=dt*60;
+  pointer.x=clamp(pointer.x+.0007*Math.sin(t*.012),.06,.94);
+  if(window.self!==window.top)pointer.y=clamp(.48+.18*Math.sin(t*.007),.12,.88);
+  for(let i=0;i<2;i++)step(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+function setPointer(e){
+  const r=canvas.getBoundingClientRect();
+  pointer.x=clamp((e.clientX-r.left)/Math.max(1,r.width),0,1);
+  pointer.y=clamp((e.clientY-r.top)/Math.max(1,r.height),0,1);
+  pointer.active=true;
+}
+canvas.addEventListener('pointerdown',e=>{setPointer(e);pointer.down=true;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener('pointermove',e=>{setPointer(e);});
+canvas.addEventListener('pointerup',e=>{pointer.down=false;try{canvas.releasePointerCapture(e.pointerId)}catch(err){}});
+canvas.addEventListener('pointercancel',()=>{pointer.down=false;});
+canvas.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+addEventListener('resize',()=>requestAnimationFrame(resize));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,200));
+requestAnimationFrame(()=>{
+  resize();
+  if(window.self!==window.top){
+    pointer.down=true;
+    for(let i=0;i<110;i++)step(.018);
+    pointer.down=false;
+  }
+  setTimeout(resize,200);
+  requestAnimationFrame(frame);
+});
+</script>
+</body>
+</html>

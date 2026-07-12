@@ -81,7 +81,7 @@ y += r * Math.sin(freq * t + phase)
 </code></pre>
 
   <h2>2) The pendulum feel is visual, the math is Fourier</h2>
-  <p>It looks mechanical because every segment is linked to the previous tip, like rods in a kinetic sculpture. Underneath, it is Fourier synthesis. The radius controls amplitude. The angular speed controls frequency. The sign and phase shape the final curve.</p>
+  <p>It looks mechanical because every segment is linked to the previous tip, like rods in a kinetic sculpture, though Fourier synthesis drives the motion underneath. The radius controls amplitude, the angular speed controls frequency, and the sign and phase shape the final curve.</p>
 
   <h2>3) Why the wave appears on the right</h2>
   <p>After we compute the endpoint, we copy its vertical value into a trail buffer. New values go to the front, older values shift right. That converts time into horizontal distance, so the left side is "now" and the right side is history.</p>

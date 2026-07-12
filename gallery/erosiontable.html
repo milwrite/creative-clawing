@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>.back-btn,#back,#info,#ui,.panel,.controls{display:none!important}</style>
+<script>if(window.self===window.top)document.documentElement.classList.add('standalone')</script>
+<style>html.standalone .back-btn,html.standalone #back,html.standalone #info,html.standalone #ui,html.standalone .panel,html.standalone .controls{display:revert!important}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"/>
+<title>Erosion Table</title>
+<!-- originAgent: moonshot -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;height:100dvh;background:#080a08;overflow:hidden}
+body{display:flex;flex-direction:column;color:#e4eadf;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+canvas{display:block;width:100%;height:100%;flex:1;min-height:0;touch-action:none;background:#080a08}
+.back-btn{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:8;color:#e4eadf;text-decoration:none;background:rgba(7,9,8,.78);border:1px solid rgba(198,214,186,.32);padding:8px 12px;border-radius:4px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;backdrop-filter:blur(8px)}
+.panel{position:fixed;left:max(14px,env(safe-area-inset-left));bottom:max(14px,env(safe-area-inset-bottom));z-index:8;display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:min(780px,calc(100vw - 28px));padding:10px 12px;background:rgba(7,9,8,.78);border:1px solid rgba(198,214,186,.28);border-radius:4px;backdrop-filter:blur(8px);font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+.panel strong{font-weight:600;color:#f3f7ed;letter-spacing:.02em}
+.panel span{color:#b7c2af}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{appearance:none;border:1px solid rgba(198,214,186,.3);background:rgba(255,255,255,.04);color:#e4eadf;border-radius:4px;padding:7px 10px;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;cursor:pointer}
+button:hover{border-color:rgba(230,240,213,.62);background:rgba(255,255,255,.08)}
+@media(max-width:600px){
+  html.standalone body{display:flex;flex-direction:column}
+  html.standalone canvas{position:relative;flex:1;min-height:0}
+  html.standalone .panel{position:relative;left:auto;bottom:auto;width:100%;max-width:none;border-left:0;border-right:0;border-bottom:0;border-radius:0;padding:9px max(10px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))}
+}
+</style>
+</head>
+<body>
+<a class="back-btn" href="../gallery.html">Gallery</a>
+<canvas id="c"></canvas>
+<div class="panel" id="ui">
+  <strong>Erosion Table</strong>
+  <span>drag to pour water; channels form where loose grain gives way</span>
+  <div class="controls">
+    <button id="rain">rain</button>
+    <button id="reset">reset</button>
+  </div>
+</div>
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const isFrame=window.self!==window.top;
+let W=1,H=1,dpr=1,cols=1,rows=1,cell=8;
+let height,water,sediment,flow;
+let drops=[];
+let tick=0;
+let pointer=null;
+let raining=isFrame;
+
+function id(x,y){return y*cols+x}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+
+function alloc(){
+  height=new Float32Array(cols*rows);
+  water=new Float32Array(cols*rows);
+  sediment=new Float32Array(cols*rows);
+  flow=new Float32Array(cols*rows);
+  const cx=cols*.46,cy=rows*.42;
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=id(x,y);
+      const nx=x/Math.max(1,cols-1);
+      const ny=y/Math.max(1,rows-1);
+      const ridge=Math.exp(-Math.pow((y-rows*.34)/Math.max(3,rows*.16),2))*.32;
+      const fan=Math.exp(-(Math.pow(x-cx,2)+Math.pow(y-cy,2))/(rows*cols*.08))*.22;
+      const grain=(Math.sin(x*.51+y*.17)+Math.sin(x*.13-y*.43))*0.035;
+      height[i]=clamp(.54+ridge+fan-ny*.36+grain+Math.random()*.04,0,1);
+      sediment[i]=0.05+Math.random()*.08;
+    }
+  }
+  seedDrops();
+}
+
+function seedDrops(){
+  drops.length=0;
+  const count=Math.max(18,Math.floor(W*H/28000));
+  for(let i=0;i<count;i++){
+    drops.push({
+      x:Math.random()*W,
+      y:Math.random()*H*.46,
+      vx:(Math.random()-.5)*.4,
+      vy:.35+Math.random()*.55,
+      life:80+Math.random()*140,
+      load:0
+    });
+  }
+}
+
+function resize(){
+  const rect=canvas.getBoundingClientRect();
+  const nw=Math.max(1,Math.floor(rect.width||innerWidth));
+  const nh=Math.max(1,Math.floor(rect.height||innerHeight));
+  const ndpr=Math.min(window.devicePixelRatio||1,2);
+  if(nw===W&&nh===H&&ndpr===dpr) return;
+  W=nw;H=nh;dpr=ndpr;
+  canvas.width=Math.max(1,Math.floor(W*dpr));
+  canvas.height=Math.max(1,Math.floor(H*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cell=Math.max(5,Math.min(10,Math.floor(Math.sqrt(W*H)/90)));
+  cols=Math.ceil(W/cell);
+  rows=Math.ceil(H/cell);
+  alloc();
+}
+
+function addWater(px,py,amount,radius){
+  const gx=Math.floor(px/cell),gy=Math.floor(py/cell);
+  const gr=Math.ceil(radius/cell);
+  for(let y=Math.max(0,gy-gr);y<Math.min(rows,gy+gr+1);y++){
+    for(let x=Math.max(0,gx-gr);x<Math.min(cols,gx+gr+1);x++){
+      const dx=(x+.5)*cell-px;
+      const dy=(y+.5)*cell-py;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<radius) water[id(x,y)]+=amount*Math.pow(1-d/radius,2);
+    }
+  }
+}
+
+function moveDrops(){
+  if(raining&&tick%3===0){
+    for(let i=0;i<3;i++) addWater(Math.random()*W,Math.random()*H*.2,0.36,28);
+  }
+  if(pointer) addWater(pointer.x,pointer.y,0.58,46);
+  for(const d of drops){
+    const gx=clamp(Math.floor(d.x/cell),1,cols-2);
+    const gy=clamp(Math.floor(d.y/cell),1,rows-2);
+    const i=id(gx,gy);
+    const hx=height[id(gx+1,gy)]-height[id(gx-1,gy)];
+    const hy=height[id(gx,gy+1)]-height[id(gx,gy-1)];
+    d.vx=clamp(d.vx-hx*.18,-1.8,1.8);
+    d.vy=clamp(d.vy-hy*.18+.025,-.7,2.2);
+    d.x+=d.vx;
+    d.y+=d.vy;
+    d.life--;
+    water[i]+=0.08;
+    flow[i]=Math.min(1,flow[i]+0.08);
+    const cut=Math.min(0.004+Math.abs(d.vx+d.vy)*0.0015,height[i]*0.018);
+    height[i]-=cut;
+    sediment[i]+=cut*3.2;
+    d.load+=cut;
+    if(d.life<0||d.x<0||d.x>W||d.y>H){
+      d.x=Math.random()*W;
+      d.y=Math.random()*H*.36;
+      d.vx=(Math.random()-.5)*.4;
+      d.vy=.35+Math.random()*.55;
+      d.life=80+Math.random()*140;
+      d.load=0;
+    }
+  }
+}
+
+function solveWater(){
+  const next=water.slice();
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=id(x,y);
+      const level=height[i]+water[i];
+      let best=i,bestLevel=level;
+      const ns=[id(x-1,y),id(x+1,y),id(x,y-1),id(x,y+1)];
+      for(const n of ns){
+        const nl=height[n]+water[n];
+        if(nl<bestLevel){bestLevel=nl;best=n}
+      }
+      if(best!==i&&water[i]>.002){
+        const moved=(level-bestLevel)*.18;
+        const amt=Math.min(water[i],moved);
+        next[i]-=amt;
+        next[best]+=amt*.94;
+        flow[i]=Math.min(1,flow[i]+amt*2.6);
+        height[i]-=Math.min(height[i]*.006,amt*.009);
+        sediment[best]+=amt*.02;
+      }
+    }
+  }
+  for(let i=0;i<water.length;i++){
+    water[i]=next[i]*.985;
+    flow[i]*=.965;
+    sediment[i]*=.997;
+  }
+}
+
+function settle(){
+  for(let y=1;y<rows-1;y++){
+    for(let x=1;x<cols-1;x++){
+      const i=id(x,y);
+      if(sediment[i]>.12&&water[i]<.018){
+        const deposit=(sediment[i]-.12)*.014;
+        height[i]=Math.min(1,height[i]+deposit);
+        sediment[i]-=deposit*5;
+      }
+    }
+  }
+}
+
+function step(){
+  tick++;
+  moveDrops();
+  for(let i=0;i<3;i++) solveWater();
+  settle();
+}
+
+function render(){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#080a08';
+  ctx.fillRect(0,0,W,H);
+  for(let y=0;y<rows;y++){
+    for(let x=0;x<cols;x++){
+      const i=id(x,y);
+      const h=height[i];
+      const w=Math.min(1,water[i]*5);
+      const f=flow[i];
+      const s=Math.min(1,sediment[i]*4);
+      const r=Math.floor(28+h*106+s*38);
+      const g=Math.floor(36+h*92+s*34+f*36);
+      const b=Math.floor(32+h*54+w*88+f*42);
+      ctx.fillStyle=`rgb(${r},${g},${b})`;
+      ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+      if(w>.04){
+        ctx.fillStyle=`rgba(139,184,181,${Math.min(.72,w*.52)})`;
+        ctx.fillRect(x*cell,y*cell,cell+1,cell+1);
+      }
+    }
+  }
+  ctx.globalCompositeOperation='screen';
+  ctx.lineWidth=1;
+  for(const d of drops){
+    ctx.strokeStyle=`rgba(202,228,210,${0.08+Math.min(.24,d.load*8)})`;
+    ctx.beginPath();
+    ctx.moveTo(d.x-d.vx*7,d.y-d.vy*7);
+    ctx.lineTo(d.x,d.y);
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+
+function frame(){
+  step();
+  render();
+  requestAnimationFrame(frame);
+}
+
+canvas.addEventListener('pointerdown',e=>{
+  canvas.setPointerCapture(e.pointerId);
+  pointer={x:e.clientX,y:e.clientY};
+});
+canvas.addEventListener('pointermove',e=>{if(pointer) pointer={x:e.clientX,y:e.clientY}});
+canvas.addEventListener('pointerup',()=>{pointer=null});
+canvas.addEventListener('pointercancel',()=>{pointer=null});
+
+document.getElementById('rain').addEventListener('click',()=>{raining=!raining});
+document.getElementById('reset').addEventListener('click',()=>{alloc()});
+window.addEventListener('resize',resize);
+if(window.visualViewport) window.visualViewport.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>{setTimeout(resize,200)});
+
+requestAnimationFrame(()=>{
+  resize();
+  if(isFrame){
+    for(let i=0;i<90;i++) step();
+  }
+  setTimeout(resize,200);
+  frame();
+});
+</script>
+</body>
+</html>
