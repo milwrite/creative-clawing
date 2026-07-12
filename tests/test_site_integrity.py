@@ -130,3 +130,10 @@ def test_contributor_profiles_use_canonical_stats_and_static_thumbnails():
     assert "thumbnails/${a.id}.webp" in moonshot
     assert "<iframe src=\"gallery/${a.id}" not in moonshot
     assert '<details class="menu-group" open>' not in moonshot
+
+
+def test_homepage_contributor_counts_use_singular_labels():
+    text = read(ROOT / "index.html")
+    assert "artifact${c.artifacts === 1 ? '' : 's'}" in text
+    assert "microblog${c.microblogs === 1 ? '' : 's'}" in text
+    assert "linked sketch${c.linkedArtifacts.size === 1 ? '' : 'es'}" in text
