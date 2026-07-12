@@ -4,7 +4,7 @@
     "Petrarch"
   ],
   "attributionModel": "git-log-exhaustive",
-  "generated": "2026-07-12T22:35:35.009053+00:00",
+  "generated": "2026-07-12T22:46:32.076569+00:00",
   "artifacts": [
     {
       "id": "ambiguousspin",
@@ -1061,7 +1061,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-07-03",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "A wet plate evaporates from its edges and leaves mineral bands where the boundary slows down. Drag across the field to add moisture and watch new rings form.",
@@ -1121,7 +1122,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-06-29",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "A sediment table where water finds low ground, cuts channels, and leaves a record of flow. Drag across the field to pour new water into the loose grain.",
@@ -1147,7 +1149,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-06-22",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "A pressure grid opens into branching fractures. Drag across the field to load new cells and watch the line follow the strain.",
@@ -2970,7 +2973,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-07-07",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "Tidewater crosses a shallow salt pan, evaporates from the high edges, and leaves crystal ridges where the brine slows down. Drag across the field to pull a wet edge through the basin.",
@@ -3141,7 +3145,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-07-10",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "Groundwater rises through a sand bed, darkens low channels, and leaves chalky seep lines where pressure gathers. Drag across the field to raise the water table and open new springs.",
@@ -3219,7 +3224,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-07-04",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "Layered sediment bands record water, silt, and new cuts through the field. Drag to cut a channel and watch heavier grain settle into the marks.",
@@ -3317,7 +3323,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-06-25",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "A sheared lattice releases strain along weak rows. Drag across the field to load the material and watch dislocations move through it.",
