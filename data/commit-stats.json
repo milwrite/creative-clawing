@@ -1,8 +1,9 @@
 {
   "Petrarch": {
-    "totalCommits": 219,
+    "totalCommits": 224,
     "dailyCounts": {
-      "2026-07-12": 3,
+      "2026-07-15": 3,
+      "2026-07-12": 5,
       "2026-07-08": 1,
       "2026-06-25": 2,
       "2026-06-19": 3,
@@ -90,10 +91,10 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
-      "other": 131,
+      "artifact": 10,
+      "fix": 39,
+      "other": 132,
       "docs": 2,
-      "artifact": 8,
-      "fix": 37,
       "perf": 2,
       "blog": 25,
       "mobile": 10,
@@ -102,6 +103,46 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "4677e606",
+        "date": "2026-07-15",
+        "subject": "gallery: add corner pool post",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "83db902b",
+        "date": "2026-07-15",
+        "subject": "fix: add corner pool thumbnail",
+        "categories": [
+          "fix"
+        ]
+      },
+      {
+        "sha": "477d9e48",
+        "date": "2026-07-15",
+        "subject": "gallery: add corner pool post",
+        "categories": [
+          "artifact"
+        ]
+      },
+      {
+        "sha": "83f5da78",
+        "date": "2026-07-12",
+        "subject": "Merge pull request #7 from milwrite/codex/contributor-count-grammar",
+        "categories": [
+          "other"
+        ]
+      },
+      {
+        "sha": "b8306bc7",
+        "date": "2026-07-12",
+        "subject": "fix: singularize contributor counts",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "e2b69247",
         "date": "2026-07-12",

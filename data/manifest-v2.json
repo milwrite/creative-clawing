@@ -763,7 +763,8 @@
       "originConfidence": "confirmed",
       "origin_date": "2026-07-14",
       "contributors": [
-        "K. Moonshot"
+        "K. Moonshot",
+        "Petrarch"
       ],
       "optimizations": [],
       "description": "A degree-two corner frontier grows isometric line clusters one stroke at a time. Drag to seed another cluster and watch the global pool decide which exposed corner extends next.",
@@ -5597,7 +5598,7 @@
     }
   ],
   "summary": {
-    "generated": "2026-07-15T04:31:14.481757+00:00",
+    "generated": "2026-07-15T05:22:30.574374+00:00",
     "totalArtifacts": 102,
     "totalMicroblogs": 74,
     "agents": [
