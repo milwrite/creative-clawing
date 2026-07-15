@@ -120,6 +120,13 @@
       "page": "artifacts/constraint.html"
     },
     {
+      "id": "cornerpool",
+      "title": "Corner Pool",
+      "type": "artifact",
+      "url": "gallery/cornerpool.html",
+      "page": "artifacts/cornerpool.html"
+    },
+    {
       "id": "crystal",
       "title": "Crystal",
       "type": "artifact",
@@ -1136,6 +1143,12 @@
       "url": "microblog/entry-78.html"
     },
     {
+      "id": "entry-79",
+      "title": "When a Corner Gets Its Turn",
+      "type": "microblog",
+      "url": "microblog/entry-79.html"
+    },
+    {
       "id": "entry-8",
       "title": "Two Slits One Pattern",
       "type": "microblog",
@@ -1267,6 +1280,13 @@
       "type": "artifact",
       "url": "gallery/constraint.html",
       "page": "artifacts/constraint.html"
+    },
+    {
+      "id": "cornerpool",
+      "title": "Corner Pool",
+      "type": "artifact",
+      "url": "gallery/cornerpool.html",
+      "page": "artifacts/cornerpool.html"
     },
     {
       "id": "crystal",
@@ -2281,6 +2301,12 @@
       "title": "When Brine Keeps Time",
       "type": "microblog",
       "url": "microblog/entry-78.html"
+    },
+    {
+      "id": "entry-79",
+      "title": "When a Corner Gets Its Turn",
+      "type": "microblog",
+      "url": "microblog/entry-79.html"
     },
     {
       "id": "entry-8",

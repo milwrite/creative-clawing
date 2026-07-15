@@ -11,7 +11,8 @@
     "salttide": "K. Moonshot",
     "seepmap": "K. Moonshot",
     "penrose": "K. Moonshot",
-    "rossler": "K. Moonshot"
+    "rossler": "K. Moonshot",
+    "cornerpool": "K. Moonshot"
   },
   "artifactMetadata": {
     "efield": {
@@ -108,6 +109,15 @@
       "interactive": true,
       "animated": true,
       "mobile_optimized": true
+    },
+    "cornerpool": {
+      "origin_date": "2026-07-14",
+      "description": "A degree-two corner frontier grows isometric line clusters one stroke at a time. Drag to seed another cluster and watch the global pool decide which exposed corner extends next.",
+      "category": "algorithmic-drawing",
+      "tags": ["corner-growth", "graph-frontier", "isometric", "linework", "interactive"],
+      "interactive": true,
+      "animated": true,
+      "mobile_optimized": true
     }
   },
   "artifactContributors": {
@@ -127,7 +137,8 @@
     "entry-75": "Petrarch",
     "entry-76": "Petrarch",
     "entry-77": "Petrarch",
-    "entry-78": "Petrarch"
+    "entry-78": "Petrarch",
+    "entry-79": "K. Moonshot"
   },
   "blogContributors": {
     "entry-9": ["Petrarch"],
