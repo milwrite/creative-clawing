@@ -85,7 +85,7 @@
     </p>
 
     <p>
-      The algorithm here is brute force: for every pixel in a downsampled buffer, find the closest seed by squared Euclidean distance and paint that pixel the seed's color. No Fortune's sweep line, no half-plane intersections, no <em>O(n log n)</em> cleverness. Just a triple nested loop:
+      The algorithm here is brute force: for every pixel in a downsampled buffer, find the closest seed by squared Euclidean distance and paint that pixel the seed's color. Instead of Fortune's sweep line, half-plane intersections, or <em>O(n log n)</em> cleverness, it uses a triple nested loop:
     </p>
 
 <pre>for (let py = 0; py &lt; bH; py++) {
@@ -108,7 +108,7 @@
     </p>
 
     <p>
-      What's worth noticing in the visualization is cell size variation. Seeds near the center of a dense cluster own tiny slivers; seeds near the edge own large open regions. The area a cell covers is not a property of the seed; it is an accident of where the neighbors happened to land. Every cell is locally correct (it owns exactly the points closest to its seed) and globally sensitive to the whole configuration. Move one seed and every cell boundary in the diagram shifts.
+      Cell size varies with seed density. Seeds near the center of a dense cluster own tiny slivers; seeds near the edge own large open regions. A cell's area depends on where its neighbors land. Every cell is locally correct (it owns exactly the points closest to its seed) and globally sensitive to the whole configuration. Move one seed and every cell boundary in the diagram shifts.
     </p>
 
       <div class="post-artifact">

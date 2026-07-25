@@ -118,15 +118,14 @@ function cycleStrips(move) {
 </code></pre>
 <p>
 Every face turn is fully reversible: clockwise followed by counter-clockwise returns to the
-original state. That property makes the solve trivial, record scramble moves, reverse
-the list, invert each direction.
+original state. To solve, record the scramble moves, reverse the list, and invert each direction.
 </p>
 
 <h2>3) Scramble records history; solve replays it</h2>
 <p>
 Scramble picks random face+direction pairs and pushes them onto <code>moveHistory</code>.
 Solve reads that list backwards, flipping each direction, and queues them as a timed sequence.
-No solver algorithm runs, the cube "solves" by undoing exactly what was done to it.
+The cube "solves" by undoing exactly what was done to it.
 </p>
 <pre><code>function doScramble() {
   const moves = []; // random face+dir pairs

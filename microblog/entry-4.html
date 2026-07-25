@@ -86,7 +86,7 @@ y += r * Math.sin(freq * t + phase)
   <h2>3) Why the wave appears on the right</h2>
   <p>After we compute the endpoint, we copy its vertical value into a trail buffer. New values go to the front, older values shift right. That converts time into horizontal distance, so the left side is "now" and the right side is history.</p>
 
-  <h2>4) The nice trick in this version</h2>
+  <h2>4) Switching coefficient families</h2>
   <p>You can tap to switch families of coefficients and swipe up or down to change how many harmonics are active. More harmonics means tighter corners and richer detail. Fewer harmonics means cleaner, smoother motion.</p>
 
   <p>So yes, it is a wave machine. A very polite one made from rotating circles.</p>

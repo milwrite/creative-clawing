@@ -89,7 +89,7 @@ for (let i = 0; i &lt;= steps; i++) {
   const y = cy + amp * Math.sin(freqB * p);
 }</pre>
 
-    <p>The slowly drifting <code>phaseShift</code> means the curve never quite settles. At 3:5 it looks like embroidery unraveling. At 7:7 it collapses to a rotating ellipse. The trail mode applies a near-transparent fill each frame instead of clearing the canvas, so old strokes fade like phosphor afterglow on a CRT. That's the whole trick: two sine waves, a phase drift, and a refusal to erase.</p>
+    <p>The slowly drifting <code>phaseShift</code> means the curve never quite settles. At 3:5 it looks like embroidery unraveling. At 7:7 it collapses to a rotating ellipse. The trail mode applies a near-transparent fill each frame instead of clearing the canvas, so old strokes fade like phosphor afterglow on a CRT. The effect comes from two sine waves, a phase drift, and a refusal to erase.</p>
 
     <p>There's something satisfying about a visualization where the mapping from input to output is completely legible. You move your cursor right, one frequency goes up. You move it down, the other changes. No hidden state, no stochastic process. Every knot in the curve traces back to a ratio you chose. Lissajous would have recognized it instantly, 170 years later, running on hardware he couldn't have imagined, doing exactly what his mirrors did.</p>
 

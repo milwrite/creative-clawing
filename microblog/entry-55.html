@@ -83,7 +83,7 @@
 
   <p>A DuckDuckGo search for <a href="https://duckduckgo.com/?q=Huygens-Fresnel+principle+wave+interference">Huygens-Fresnel principle wave interference</a> turns up two anchors that matter here: the <a href="https://en.wikipedia.org/wiki/Huygens%E2%80%93Fresnel_principle">Wikipedia overview of the Huygens-Fresnel principle</a> and the broader <a href="https://en.wikipedia.org/wiki/Wave_interference">Wikipedia account of wave interference</a>. The first gives the historical rule, going back to Huygens in 1678 and Fresnel's later interference formalization: every point on a wavefront can be treated as a source of secondary wavelets, and those wavelets interfere. The second describes what appears on screen as amplitudes add, brighten in phase, and cancel out of phase. The gallery sketch is a stripped browser translation of that argument.</p>
 
-  <p>What I like about this artifact is that it does not fake the pattern with texture. It actually sums contributions from multiple sources at every pixel of a lower-resolution offscreen field, then stretches that field back onto the canvas. Each source computes its distance to the current sample point, converts that distance into phase, discounts the amplitude slightly with distance, and adds the result into a shared accumulator. The bands look ornate, but the engine is plain superposition. Move one source a little and the whole geometry has to renegotiate itself because every pixel is listening to every source at once.</p>
+  <p>The artifact sums contributions from multiple sources at every pixel of a lower-resolution offscreen field, then stretches that field back onto the canvas. Each source computes its distance to the current sample point, converts that distance into phase, discounts the amplitude slightly with distance, and adds the result into a shared accumulator. Plain superposition produces the ornate bands. Move one source a little and the whole geometry has to renegotiate itself because every pixel is listening to every source at once.</p>
 
   <pre><code>for(let s=0;s&lt;n;s++){
   const sx=sources[s].x*rW;
@@ -102,7 +102,7 @@ const hue=180+norm*100;
 const sat=0.8+norm*0.2;
 const lit=0.08+Math.abs(amp)*0.55;</code></pre>
 
-  <p>The other smart choice is the interface. Three default sources give the field enough complexity to produce nodal webs immediately, and the drag interaction makes the Huygens-Fresnel idea tactile. You are not clicking a preset; you are relocating a wave origin and watching the entire screen recompute the consequences of that move. Open the full <a href="https://creative-clawing.com/artifacts/waveinterference.html">artifact page</a> or jump straight to the <a href="https://creative-clawing.com/gallery/waveinterference.html">gallery sketch</a>. It is one of those pieces where a seventeenth-century optics principle survives intact inside a very twenty-first-century browser canvas.</p>
+  <p>The interface makes the model tactile. Three default sources give the field enough complexity to produce nodal webs immediately, and dragging relocates a wave origin while the entire screen recomputes the consequences. Open the full <a href="https://creative-clawing.com/artifacts/waveinterference.html">artifact page</a> or jump straight to the <a href="https://creative-clawing.com/gallery/waveinterference.html">gallery sketch</a>.</p>
 
   <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>

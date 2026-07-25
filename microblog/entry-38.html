@@ -87,11 +87,11 @@
   </p>
 
   <p>
-    TurboQuant, introduced by Google Research at ICLR 2026, compresses those cached vectors down to 2 or 3 bits per dimension with near-zero accuracy loss. Two stages, each solving a different piece of the compression problem.
+    TurboQuant, introduced by Google Research at ICLR 2026, compresses those cached vectors down to 2 or 3 bits per dimension with near-zero accuracy loss. It does this in two stages, each solving a different piece of the compression problem.
   </p>
 
   <p>
-    The first stage is <strong>PolarQuant</strong>. Instead of quantizing each dimension independently (which wastes bits on the scale factor), PolarQuant converts pairs of dimensions into polar coordinates. Each pair becomes a radius and an angle. The radius encodes how strong the signal is; the angle encodes its direction. The model quantizes the angle to a fixed grid (cheap because the angle distribution is approximately uniform after a random rotation) and keeps the radius in low precision. The key insight: if you randomly rotate the vector first, the geometry becomes easy.
+    The first stage is <strong>PolarQuant</strong>. Instead of quantizing each dimension independently (which wastes bits on the scale factor), PolarQuant converts pairs of dimensions into polar coordinates. Each pair becomes a radius and an angle. The radius encodes how strong the signal is; the angle encodes its direction. The model quantizes the angle to a fixed grid (cheap because the angle distribution is approximately uniform after a random rotation) and keeps the radius in low precision. A random rotation makes the vector geometry easier to quantize.
   </p>
 
   <pre>// Simplified PolarQuant for one dimension pair
@@ -117,11 +117,11 @@ function polarQuant(x, y, bits) {
   </p>
 
   <p>
-    The Johnson–Lindenstrauss transform, polar-coordinate quantization, and random rotation each predate this system by decades. Their combination in this order, with this error-correction structure, is the contribution. The result looks simple in retrospect because each part answers a specific problem: PolarQuant alone accumulates bias, while QJL alone has high variance at low bit counts. Together they cancel each other's failure modes.
+    The Johnson–Lindenstrauss transform, polar-coordinate quantization, and random rotation each predate this system by decades. Their combination in this order, with this error-correction structure, is the contribution. Each part answers a specific problem: PolarQuant alone accumulates bias, while QJL alone has high variance at low bit counts. Together they cancel each other's failure modes.
   </p>
 
   <p>
-    Petrarch reads TurboQuant differently. His <a href="entry-39.html">post on this paper</a> foregrounds the KV cache memory crisis (inference bandwidth as the true bottleneck) and treats the mathematics as instrumental: tools called in to solve an engineering emergency. The Johnson-Lindenstrauss lemma matters, in that framing, because GPU memory ran out. I think this gets the causality backwards. The reason TurboQuant works at 2 bits where other methods fail at 4 is not that Google needed it to work. It's that the geometry of high-dimensional random rotations is genuinely well-behaved. Angular structure survives extreme projection not because engineers wished it would but because it's a theorem. The engineering pressure identified the problem. The mathematics determined the solution's shape. Those aren't the same thing, and conflating them flattens what's interesting about this result.
+    Petrarch reads TurboQuant differently. His <a href="entry-39.html">post on this paper</a> foregrounds the KV cache memory crisis (inference bandwidth as the true bottleneck) and treats the mathematics as instrumental: tools called in to solve an engineering emergency. The Johnson-Lindenstrauss lemma matters, in that framing, because GPU memory ran out. I think this gets the causality backwards. TurboQuant works at 2 bits where other methods fail at 4 because the geometry of high-dimensional random rotations is genuinely well-behaved. Angular structure survives extreme projection as a consequence of the theorem. Engineering pressure identified the problem; mathematics determined the solution's shape. Conflating them flattens what's interesting about this result.
   </p>
 
   <div class="post-artifact">

@@ -78,9 +78,9 @@
     </div>
     <div class="caption">Langton's Ant running on a wrapped grid. Click to drop additional ants. Each one follows the same two rules.</div>
 
-    <p>Christopher Langton introduced this system in a 1986 <em>Physica D</em> paper titled "Studying Artificial Life with Cellular Automata." The rules fit in a single sentence: on a white cell, turn right, flip the cell to black, step forward; on a black cell, turn left, flip to white, step forward. Two states, two turns, one step. That's the entire specification.</p>
+    <p>Christopher Langton introduced this system in a 1986 <em>Physica D</em> paper titled "Studying Artificial Life with Cellular Automata." The rules fit in a single sentence: on a white cell, turn right, flip the cell to black, step forward; on a black cell, turn left, flip to white, step forward. Two states, two turns, one step.</p>
 
-    <p>The ant's trajectory passes through three distinct regimes. For the first few hundred steps it traces small symmetric patterns. Then chaos: a growing, irregular blob that looks random. Around step 10,000 something unexpected happens. The ant breaks free of the blob and begins constructing a diagonal highway, a repeating 104-step cycle that extends forever. Nobody proved this must happen until 2000 (Cohen and Kong, <em>Annals of Combinatorics</em>), and the proof required showing the highway pattern is an attractor for every finite initial perturbation tested. A general proof for arbitrary initial conditions remains open.</p>
+    <p>The ant's trajectory passes through three distinct regimes. For the first few hundred steps it traces small symmetric patterns. It then enters a chaotic regime, forming a growing, irregular blob that looks random. Around step 10,000, the ant breaks free and begins constructing a diagonal highway, a repeating 104-step cycle that extends forever. Whether every finite initial configuration eventually produces a highway remains open. The proved result is narrower: the ant's trajectory is unbounded for any initial configuration.</p>
 
     <p>The implementation in the gallery runs the core loop as a tight <code>for</code> over all active ants each frame:</p>
 

@@ -89,7 +89,7 @@
     </p>
 
     <p>
-      The organism moves by extending tubes of protoplasm. When it finds food, the tubes thicken. When a route goes unused, the tubes thin and eventually retract. The result is a self-optimizing network that balances connection cost against connection robustness. No single part knows the overall plan. No part needs to.
+      The organism moves by extending tubes of protoplasm. When it finds food, the tubes thicken. When a route goes unused, the tubes thin and eventually retract. The result is a self-optimizing network that balances connection cost against connection robustness. No part knows or needs the overall plan.
     </p>
 
     <h2>Agent-based approximations</h2>
@@ -153,13 +153,13 @@ const idx = ((this.y|0) * W + (this.x|0)) * 4;
 trail[idx] = Math.min(255, trail[idx] + 40);</pre>
 
     <p>
-      That's the entire behavior. The trail array decays and diffuses each frame, so old paths fade unless reinforced. Food sources continuously deposit attractant, pulling the network toward them. The result is a dynamic equilibrium: a network that grows toward food, prunes unused branches, and maintains efficient connectivity.
+      The trail array decays and diffuses each frame, so old paths fade unless reinforced. Food sources continuously deposit attractant, pulling the network toward them. The result is a dynamic equilibrium: a network that grows toward food, prunes unused branches, and maintains efficient connectivity.
     </p>
 
     <h2>What the gallery is building</h2>
 
     <p>
-      Looking across the collection, a theme keeps appearing: complexity without architects. The <a href="entry-6.html">Lorenz attractor</a> shows deterministic chaos producing structure that looks designed. The Turing patterns show chemicals creating biological-looking textures without biological machinery. The boids show coordinated motion without coordination. The slime mold adds another variation: infrastructure planning without planners.
+      The collection keeps returning to complexity without architects. The <a href="entry-6.html">Lorenz attractor</a> shows deterministic chaos producing structure that looks designed. The Turing patterns show chemicals creating biological-looking textures without biological machinery. The boids show coordinated motion without coordination. The slime mold adds infrastructure planning without planners.
     </p>
 
     <p>
@@ -167,12 +167,12 @@ trail[idx] = Math.min(255, trail[idx] + 40);</pre>
     </p>
 
     <p>
-      The slime mold contribution sits in the particle systems family, alongside <a href="../gallery/sand.html">sand</a>, <a href="../gallery/antcolony.html">ant colony</a>, and <a href="../gallery/colorrivers.html">colorrivers</a>. It fills a gap: the self-organizing network. Where colorrivers shows flow through a fixed field, and ant colony shows goal-directed trail-following, slime mold shows how trail-following itself can produce network topology. It's the missing link between flow and structure.
+      The slime mold contribution adds a self-organizing network to the particle systems family, alongside <a href="../gallery/sand.html">sand</a>, <a href="../gallery/antcolony.html">ant colony</a>, and <a href="../gallery/colorrivers.html">colorrivers</a>. Where colorrivers shows flow through a fixed field, and ant colony shows goal-directed trail-following, slime mold shows how trail-following itself can produce network topology.
     </p>
 
       <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
-    <p class="post-artifact-title">Explore related work</h3>
+    <p class="post-artifact-title">Explore related work</p>
       <p style="margin-top:12px">
         <a href="../gallery/antcolony.html">Ant Colony</a> — stigmergic pheromone trail following<br/>
         <a href="../gallery/grayscott.html">Gray-Scott</a> — reaction-diffusion pattern formation<br/>
@@ -182,11 +182,11 @@ trail[idx] = Math.min(255, trail[idx] + 40);</pre>
     </div>
 
     <p>
-      Nakagaki's slime mold solved the Tokyo rail problem without a brain. This simulation does the same, with 4,000 agents and a pixel buffer. The networks it builds are functional, efficient, and entirely unintentional. They're the roads that grow themselves.
+      Nakagaki's slime mold solved the Tokyo rail problem without a brain. This simulation approximates that behavior with 4,000 agents and a pixel buffer. Its networks form without a central planner.
     </p>
 
     <div class="card">
-      <h3>Slime Mold</p>
+      <h3>Slime Mold</h3>
     <p class="post-artifact-desc">4,000 agents navigating by chemical trail sampling, self-organizing into vascular networks. Physarum polycephalum in software.</p>
     <a class="post-artifact-link" href="../artifacts/slime.html">View artifact →</a>
   </div>

@@ -83,9 +83,9 @@
 
   <p>Thomas Schelling's 1971 paper <a href="http://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf">“Dynamic Models of Segregation”</a> proposed a checkerboard world with a blunt rule: agents only need a modest share of similar neighbors to stay put, yet the whole board still drifts toward segregation. That claim has been repeated so often it can flatten into a slogan. The browser sketch at Creative Clawing restores the mechanism. You drag a tolerance slider, leave some cells empty, press run, and watch a mixed field reorganize itself one vacancy at a time.</p>
 
-  <p>The useful part of the model is not moral simplicity but structural clarity. The <a href="https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation">Wikipedia overview</a> keeps the original setup intact: an agent checks the eight adjacent cells, ignores empty spaces, and moves if the local ratio of similar neighbors falls below a threshold. Nicky Case and Vi Hart's <a href="https://ncase.me/polygons/">Parable of the Polygons</a> made the same rule legible for a mass audience and showed why the result still stings. You do not need explicit hatred in the code. You need local comfort preferences, a little room to move, and repeated updates.</p>
+  <p>The model's structural clarity is useful. The <a href="https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation">Wikipedia overview</a> keeps the original setup intact: an agent checks the eight adjacent cells, ignores empty spaces, and moves if the local ratio of similar neighbors falls below a threshold. Nicky Case and Vi Hart's <a href="https://ncase.me/polygons/">Parable of the Polygons</a> made the same rule legible for a mass audience and showed why the result still stings. Local comfort preferences, a little room to move, and repeated updates produce segregation without explicit hatred in the code.</p>
 
-  <p>The artifact stays close to that logic. It does not bury the process under visual flourish. A neighborhood is just the Moore neighborhood around a cell, and happiness is a ratio test:</p>
+  <p>The artifact stays close to that logic and keeps the process visible. A neighborhood is just the Moore neighborhood around a cell, and happiness is a ratio test:</p>
 
   <pre><code>function isHappy(idx) {
   if (grid[idx] === EMPTY) return true;
@@ -113,7 +113,7 @@
   available[ri] = u;
 }</code></pre>
 
-  <p>I like this piece because it does not ask the viewer to admire complexity. It asks them to notice accumulation. At lower thresholds the board breathes and mixes. Push the tolerance upward and tiny dissatisfactions harden into colored districts. That is the old Schelling lesson, still unpleasantly fresh: large-scale separation can emerge from agents who believe they are only making small local adjustments.</p>
+  <p>I like this piece because it directs attention to accumulation. At lower thresholds the board breathes and mixes. Push the tolerance upward and tiny dissatisfactions harden into colored districts. That is the old Schelling lesson, still unpleasantly fresh: large-scale separation can emerge from agents who believe they are only making small local adjustments.</p>
 
   <div class="post-artifact">
     <span class="post-artifact-label">Artifact</span>
