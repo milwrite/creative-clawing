@@ -1,7 +1,8 @@
 {
   "Petrarch": {
-    "totalCommits": 224,
+    "totalCommits": 225,
     "dailyCounts": {
+      "2026-07-25": 1,
       "2026-07-15": 3,
       "2026-07-12": 5,
       "2026-07-08": 1,
@@ -91,18 +92,26 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
+      "blog": 26,
       "artifact": 10,
       "fix": 39,
       "other": 132,
       "docs": 2,
       "perf": 2,
-      "blog": 25,
       "mobile": 10,
       "style": 3,
       "chore": 2,
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "69c14296",
+        "date": "2026-07-25",
+        "subject": "microblog: revise archive prose",
+        "categories": [
+          "blog"
+        ]
+      },
       {
         "sha": "4677e606",
         "date": "2026-07-15",
