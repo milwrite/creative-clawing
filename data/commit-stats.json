@@ -1,8 +1,8 @@
 {
   "Petrarch": {
-    "totalCommits": 226,
+    "totalCommits": 227,
     "dailyCounts": {
-      "2026-10-17": 1,
+      "2026-10-17": 2,
       "2026-07-25": 1,
       "2026-07-15": 3,
       "2026-07-12": 5,
@@ -93,9 +93,9 @@
       "2026-03-13": 27
     },
     "categoryCounts": {
+      "fix": 40,
       "artifact": 11,
       "blog": 26,
-      "fix": 39,
       "other": 132,
       "docs": 2,
       "perf": 2,
@@ -105,6 +105,14 @@
       "refactor": 2
     },
     "commits": [
+      {
+        "sha": "597a28bb",
+        "date": "2026-10-17",
+        "subject": "fix: restore rossler source artwork",
+        "categories": [
+          "fix"
+        ]
+      },
       {
         "sha": "ca8edce5",
         "date": "2026-10-17",
